@@ -15,7 +15,6 @@ the structural segmentation is done using the models from the following github r
 
 The beat tracking uses librosa's beat track function
 
-
 ```t
 @inproceedings{Salamon:Segmentation:ISMIR:2021,
 	Author = {J. Salamon and O. Nieto and N.J. Bryan},
