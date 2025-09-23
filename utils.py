@@ -1,7 +1,7 @@
 import librosa
 import soundfile as sf
 import json
-import np
+import numpy as np
 
 def getDurtion(audioFile):
     info = sf.info(audioFile)
