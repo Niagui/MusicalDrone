@@ -10,7 +10,7 @@ All our data is kept in the ```/json``` folder
 
 ## New Pipeline
 
-Audio → segment the song into verse, chorus, etc. [DONE] then chop it down further → CLAP (maybe put some controllable knobs here too) → list(timestamps, descriptions)
+Audio → segment the song into verse, chorus, etc. [DONE] then chop it down further → CLAP (maybe put some controllable knobs here too) https://huggingface.co/laion/larger_clap_general→ list(timestamps, descriptions)
 
 Audio → Valence-arousal (need to adjust)→ list(timestampls, emotion weights) [basically what we had before]
 
@@ -43,6 +43,9 @@ The beat tracking uses librosa's beat track function
 
 - not quite enough emotional shiftings to make the choreography interesting, especially for sad emotions (it's just spinning in circles)
 
+## Sources
+
+https://drive.google.com/drive/folders/1biQv9RM5Vp0RZNin3hbTd6s_QeQOvaPC?usp=drive_link
 
 ## Todo list
 
