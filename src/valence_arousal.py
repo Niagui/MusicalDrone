@@ -6,8 +6,6 @@ from utils import *
 from essentia.standard import MonoLoader, TensorflowPredictMusiCNN, TensorflowPredict2D
 from matplotlib.animation import FuncAnimation, PillowWriter
 
-AUDIO = 'audio/testSong.mp3'
-
 def predict_valence_arousal_values(audio_file, save_to_json=False) -> np.ndarray:
     """_summary_
 
@@ -122,6 +120,7 @@ def animate_valence_arousal(predictions):
 
 if __name__ == '__main__':
     # print(predictions)
+    AUDIO = 'audio/testSong.mp3'
     valence = predict_valence_arousal_values(AUDIO)[:,0]
     arousal = predict_valence_arousal_values(AUDIO)[:,1]
     times = np.arange(len(valence)) * 1.5  # hop length is 1.5 seconds
