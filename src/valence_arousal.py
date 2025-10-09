@@ -13,7 +13,7 @@ def predict_valence_arousal_values(audio_file, save_to_json=False) -> np.ndarray
         audio_file (path): path to audio file
 
     Returns:
-        predictions (list): predictions of valence and arousal values with shape [n_samples, 2]
+        predictions (list): predictions of [valence, arousal] values with shape (n_samples, 2)
         time_stamps (list): time stamps corresponding to the predictions
     """
     y, sr = librosa.load(audio_file, sr=22050)
@@ -67,6 +67,8 @@ def soft_classify_emotion(emotion_centers, prediction, sigma=0.3):
         weights[k] /= total
         
     return weights
+
+
 
 
 def animate_valence_arousal(predictions):

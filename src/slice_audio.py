@@ -3,12 +3,14 @@ import librosa
 import json
 import numpy as np
 from pathlib import Path
+from typing import Tuple
 
-def parse_segments(json_file, level=12) -> tuple:
+
+def parse_segments(json_file, level=12) -> Tuple:
     """select the level of detail we want from different levels of segmentations
 
     Args:
-        json_file (_type_): the json file that documents the splitting points of different sections of a song (verse, chorus, etc).
+        json_file (str): the json file that documents the splitting points of different sections of a song (verse, chorus, etc).
             This can be genereated from the musicseg_deepemb model used in segment.ipynb
         level (int, optional): level of detail extracted from the segmentation files. default to deepest level with most amount of detail. Defaults to 12.
 
@@ -26,9 +28,9 @@ def slice_audio(time_stamps, audio_file, output_dir=None, sr=22050) -> None:
     """slice audio based on the time stamps
 
     Args:
-        time_stamps (_type_): list of [start, end] time pairs in seconds
-        audio_file (_type_): path to the audio file to be sliced
-        output_dir (_type_, optional): directory to save the sliced audio files. If None, will create a directory. Defaults to None.
+        time_stamps (list): list of [start, end] time pairs in seconds
+        audio_file (str): path to the audio file to be sliced
+        output_dir (str, optional): directory to save the sliced audio files. If None, will create a directory. Defaults to None.
         sr (int, optional): sample rate. Defaults to 22050.
     """
 

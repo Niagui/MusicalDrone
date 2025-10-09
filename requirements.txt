@@ -1,6 +1,5 @@
 numpy
 matplotlib
-pandas
 essentia
 essentia-tensorflow
 transformers
