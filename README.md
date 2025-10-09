@@ -22,8 +22,9 @@ Then we can use the motion principles to control how to shift from one visual to
 
 
 ## Valence-arousal to Emotion
-This part is implemented in
-```va.ipynb```
+We uses the Russuell complex to classify our emotion from the music. The va score is calculated using essentia library which does not
+work on Windows. If you need to run ```predict_valence_arousal_values``` function in ```valence_arousal.py```, you would have to
+install essentia on Linux (I use WSL) or Macos (unless you are ok with building from source). 
 
 ## segmentation
 the structural segmentation is done using the models from the following github repo. Detailed instruction could be found in https://github.com/justinsalamon/musicseg_deepemb
@@ -51,4 +52,4 @@ https://drive.google.com/drive/folders/1biQv9RM5Vp0RZNin3hbTd6s_QeQOvaPC?usp=dri
 
 Sprint 1:
 
-complete the 
+Fork the file and test out some of the functions. I put all the useful stuff in ```/src``` folder and refactored them into functions, but feel free to play around with the jupyter notebooks in ```/notebook``` folder
