@@ -1,5 +1,10 @@
 numpy
 matplotlib
+pandas
 essentia
 essentia-tensorflow
 transformers
+soundfile
+librosa
+scipy
+json

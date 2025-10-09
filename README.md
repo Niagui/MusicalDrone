@@ -49,3 +49,6 @@ https://drive.google.com/drive/folders/1biQv9RM5Vp0RZNin3hbTd6s_QeQOvaPC?usp=dri
 
 ## Todo list
 
+Sprint 1:
+
+complete the 
