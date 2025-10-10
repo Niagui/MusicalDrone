@@ -1,4 +1,4 @@
 /audio
-/musicseg_deepemb
-
+external/*
+pre.txt
 /__pycache__
