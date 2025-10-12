@@ -1,4 +1,4 @@
-/audio
+/audio/MEMD_audio
 external/*
 pre.txt
 /__pycache__
