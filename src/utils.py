@@ -26,7 +26,7 @@ def save_as_json(filename, data) -> None:
         filename: file name for the json file to be store (without extension)
         data (list): data stored as array
     """
-    with open(f'json/{filename}.json', 'w', encoding='utf-8') as file:
+    with open(f'../json/{filename}.json', 'w', encoding='utf-8') as file:
         json.dump(data, file, indent=4)
     return
 

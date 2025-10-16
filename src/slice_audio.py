@@ -48,9 +48,9 @@ def slice_audio(time_stamps, audio_file, output_dir=None, sr=22050) -> None:
 
 
 if __name__ == '__main__':
-
+    AUDIO = "otsukareSummer"
     # example usage
-    timestamps, themes = parse_segments("json/segmentation.json", level=12)
+    timestamps, themes = parse_segments("json/otsukaresama_seg.json", level=12)
     print(timestamps)
     print(themes)
-    slice_audio(timestamps, "audio/testSong.mp3")
+    slice_audio(timestamps, f"audio/{AUDIO}.mp3")
