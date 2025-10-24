@@ -1,4 +1,5 @@
 import soundfile as sf
+import scipy
 import librosa
 import json
 import numpy as np
@@ -48,9 +49,10 @@ def slice_audio(time_stamps, audio_file, output_dir=None, sr=22050) -> None:
 
 
 if __name__ == '__main__':
-    AUDIO = "otsukareSummer"
+    AUDIO = "testSong"  #match this with your segmentation file name
+    FILE_NAME = 'segmentation'
     # example usage
-    timestamps, themes = parse_segments("json/otsukaresama_seg.json", level=12)
+    timestamps, themes = parse_segments(f"json/{FILE_NAME}.json", level=12)
     print(timestamps)
     print(themes)
     slice_audio(timestamps, f"audio/{AUDIO}.mp3")

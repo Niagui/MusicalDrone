@@ -1,0 +1,2066 @@
+[
+    {
+        "moods": [
+            {
+                "score": 0.32931241393089294,
+                "label": "happy"
+            },
+            {
+                "score": 0.1867881417274475,
+                "label": "tense"
+            },
+            {
+                "score": 0.1548956334590912,
+                "label": "funny"
+            },
+            {
+                "score": 0.05576636269688606,
+                "label": "playful"
+            },
+            {
+                "score": 0.052579499781131744,
+                "label": "anxious"
+            },
+            {
+                "score": 0.05206162482500076,
+                "label": "exciting"
+            },
+            {
+                "score": 0.03406553715467453,
+                "label": "hopeful"
+            },
+            {
+                "score": 0.03334038704633713,
+                "label": "groovy"
+            },
+            {
+                "score": 0.019085494801402092,
+                "label": "uplifting"
+            },
+            {
+                "score": 0.016199618577957153,
+                "label": "empowering"
+            },
+            {
+                "score": 0.01505424827337265,
+                "label": "epic"
+            },
+            {
+                "score": 0.011082086712121964,
+                "label": "scary"
+            },
+            {
+                "score": 0.010964775457978249,
+                "label": "nostalgic"
+            },
+            {
+                "score": 0.006554850842803717,
+                "label": "sexy"
+            },
+            {
+                "score": 0.005905408412218094,
+                "label": "inspirational"
+            },
+            {
+                "score": 0.005237496457993984,
+                "label": "love"
+            },
+            {
+                "score": 0.002480137627571821,
+                "label": "dramatic"
+            },
+            {
+                "score": 0.0024122484028339386,
+                "label": "powerful"
+            },
+            {
+                "score": 0.002153598703444004,
+                "label": "romantic"
+            },
+            {
+                "score": 0.0013759023277089,
+                "label": "peaceful"
+            },
+            {
+                "score": 0.0008328016265295446,
+                "label": "carefree"
+            },
+            {
+                "score": 0.0007865449879318476,
+                "label": "mysterious"
+            },
+            {
+                "score": 0.0005151130608282983,
+                "label": "dark"
+            },
+            {
+                "score": 0.00025306353927589953,
+                "label": "serious"
+            },
+            {
+                "score": 0.00023897411301732063,
+                "label": "angry"
+            },
+            {
+                "score": 4.44329489255324e-05,
+                "label": "reflective"
+            },
+            {
+                "score": 1.361796421406325e-05,
+                "label": "sad"
+            }
+        ],
+        "genre": [
+            {
+                "score": 0.5194888710975647,
+                "label": "world"
+            },
+            {
+                "score": 0.12216968834400177,
+                "label": "children"
+            },
+            {
+                "score": 0.11028441786766052,
+                "label": "lounge"
+            },
+            {
+                "score": 0.058237139135599136,
+                "label": "folk"
+            },
+            {
+                "score": 0.04951363056898117,
+                "label": "rock"
+            },
+            {
+                "score": 0.025074897333979607,
+                "label": "corporate"
+            },
+            {
+                "score": 0.020185843110084534,
+                "label": "reggae"
+            },
+            {
+                "score": 0.016587140038609505,
+                "label": "hip hop"
+            },
+            {
+                "score": 0.013737956993281841,
+                "label": "latin"
+            },
+            {
+                "score": 0.012419107370078564,
+                "label": "jazz"
+            },
+            {
+                "score": 0.010560233145952225,
+                "label": "country"
+            },
+            {
+                "score": 0.008900370448827744,
+                "label": "celtic"
+            },
+            {
+                "score": 0.008537260815501213,
+                "label": "funk"
+            },
+            {
+                "score": 0.007045441307127476,
+                "label": "electronic"
+            },
+            {
+                "score": 0.0039039324037730694,
+                "label": "bollywood"
+            },
+            {
+                "score": 0.0027587697841227055,
+                "label": "middle eastern"
+            },
+            {
+                "score": 0.0020244538318365812,
+                "label": "caribbean"
+            },
+            {
+                "score": 0.0018996105063706636,
+                "label": "retro"
+            },
+            {
+                "score": 0.001397533342242241,
+                "label": "shibuya-kei"
+            },
+            {
+                "score": 0.001024316530674696,
+                "label": "soul & RnB"
+            },
+            {
+                "score": 0.0009176346356980503,
+                "label": "fantasy"
+            },
+            {
+                "score": 0.000635540287476033,
+                "label": "ambient"
+            },
+            {
+                "score": 0.0006121278274804354,
+                "label": "blues"
+            },
+            {
+                "score": 0.0005374702159315348,
+                "label": "singer-songwriter"
+            },
+            {
+                "score": 0.0005331568536348641,
+                "label": "acoustic"
+            },
+            {
+                "score": 0.00033848138991743326,
+                "label": "indie"
+            },
+            {
+                "score": 0.00015854494995437562,
+                "label": "native american"
+            },
+            {
+                "score": 0.00012087234063073993,
+                "label": "cinematic"
+            },
+            {
+                "score": 9.26652573980391e-05,
+                "label": "afrobeat"
+            },
+            {
+                "score": 8.354381134267896e-05,
+                "label": "worship"
+            },
+            {
+                "score": 8.258750312961638e-05,
+                "label": "holiday"
+            },
+            {
+                "score": 6.734325143042952e-05,
+                "label": "k-pop"
+            },
+            {
+                "score": 3.6618392186937854e-05,
+                "label": "j-pop"
+            },
+            {
+                "score": 1.6520620192750357e-05,
+                "label": "lofi & chill beats"
+            },
+            {
+                "score": 1.2164256077085156e-05,
+                "label": "classical"
+            },
+            {
+                "score": 4.041230567963794e-06,
+                "label": "pop"
+            }
+        ]
+    },
+    {
+        "moods": [
+            {
+                "score": 0.359074205160141,
+                "label": "happy"
+            },
+            {
+                "score": 0.08574072271585464,
+                "label": "groovy"
+            },
+            {
+                "score": 0.07593268901109695,
+                "label": "carefree"
+            },
+            {
+                "score": 0.06638781726360321,
+                "label": "playful"
+            },
+            {
+                "score": 0.0645463764667511,
+                "label": "funny"
+            },
+            {
+                "score": 0.06376998126506805,
+                "label": "tense"
+            },
+            {
+                "score": 0.05165109038352966,
+                "label": "exciting"
+            },
+            {
+                "score": 0.03581275790929794,
+                "label": "epic"
+            },
+            {
+                "score": 0.03428414836525917,
+                "label": "hopeful"
+            },
+            {
+                "score": 0.03039132058620453,
+                "label": "anxious"
+            },
+            {
+                "score": 0.027844706550240517,
+                "label": "uplifting"
+            },
+            {
+                "score": 0.02023633010685444,
+                "label": "nostalgic"
+            },
+            {
+                "score": 0.01865433342754841,
+                "label": "sexy"
+            },
+            {
+                "score": 0.015794264152646065,
+                "label": "love"
+            },
+            {
+                "score": 0.01217731460928917,
+                "label": "scary"
+            },
+            {
+                "score": 0.010885742492973804,
+                "label": "inspirational"
+            },
+            {
+                "score": 0.008881896734237671,
+                "label": "empowering"
+            },
+            {
+                "score": 0.004405285697430372,
+                "label": "romantic"
+            },
+            {
+                "score": 0.0037413982208818197,
+                "label": "dramatic"
+            },
+            {
+                "score": 0.0033464638981968164,
+                "label": "powerful"
+            },
+            {
+                "score": 0.0021917258854955435,
+                "label": "dark"
+            },
+            {
+                "score": 0.002010673051699996,
+                "label": "peaceful"
+            },
+            {
+                "score": 0.0013681758427992463,
+                "label": "angry"
+            },
+            {
+                "score": 0.0005086978198960423,
+                "label": "serious"
+            },
+            {
+                "score": 0.00018062134040519595,
+                "label": "mysterious"
+            },
+            {
+                "score": 0.00013492295693140477,
+                "label": "sad"
+            },
+            {
+                "score": 4.6344881411641836e-05,
+                "label": "reflective"
+            }
+        ],
+        "genre": [
+            {
+                "score": 0.23726654052734375,
+                "label": "rock"
+            },
+            {
+                "score": 0.23381048440933228,
+                "label": "lounge"
+            },
+            {
+                "score": 0.21183961629867554,
+                "label": "jazz"
+            },
+            {
+                "score": 0.10973745584487915,
+                "label": "funk"
+            },
+            {
+                "score": 0.04741090163588524,
+                "label": "shibuya-kei"
+            },
+            {
+                "score": 0.037539929151535034,
+                "label": "world"
+            },
+            {
+                "score": 0.0324476920068264,
+                "label": "children"
+            },
+            {
+                "score": 0.01870160922408104,
+                "label": "folk"
+            },
+            {
+                "score": 0.014932186342775822,
+                "label": "blues"
+            },
+            {
+                "score": 0.010293456725776196,
+                "label": "caribbean"
+            },
+            {
+                "score": 0.010198265314102173,
+                "label": "country"
+            },
+            {
+                "score": 0.007460110820829868,
+                "label": "latin"
+            },
+            {
+                "score": 0.006310791242867708,
+                "label": "celtic"
+            },
+            {
+                "score": 0.0060432120226323605,
+                "label": "middle eastern"
+            },
+            {
+                "score": 0.002860093954950571,
+                "label": "k-pop"
+            },
+            {
+                "score": 0.002765519078820944,
+                "label": "soul & RnB"
+            },
+            {
+                "score": 0.002705872757360339,
+                "label": "bollywood"
+            },
+            {
+                "score": 0.0017422990640625358,
+                "label": "reggae"
+            },
+            {
+                "score": 0.0014578390400856733,
+                "label": "corporate"
+            },
+            {
+                "score": 0.0010168058797717094,
+                "label": "hip hop"
+            },
+            {
+                "score": 0.0006578249740414321,
+                "label": "afrobeat"
+            },
+            {
+                "score": 0.0005082671996206045,
+                "label": "indie"
+            },
+            {
+                "score": 0.00045512570068240166,
+                "label": "electronic"
+            },
+            {
+                "score": 0.0003897090209648013,
+                "label": "singer-songwriter"
+            },
+            {
+                "score": 0.0003100523608736694,
+                "label": "worship"
+            },
+            {
+                "score": 0.0001893568696686998,
+                "label": "retro"
+            },
+            {
+                "score": 0.00018746955902315676,
+                "label": "acoustic"
+            },
+            {
+                "score": 0.0001740995212458074,
+                "label": "classical"
+            },
+            {
+                "score": 0.00015905086183920503,
+                "label": "ambient"
+            },
+            {
+                "score": 0.00013713199587073177,
+                "label": "j-pop"
+            },
+            {
+                "score": 0.0001363325136480853,
+                "label": "cinematic"
+            },
+            {
+                "score": 7.70688711781986e-05,
+                "label": "pop"
+            },
+            {
+                "score": 4.8482059355592355e-05,
+                "label": "fantasy"
+            },
+            {
+                "score": 2.1690790163120255e-05,
+                "label": "holiday"
+            },
+            {
+                "score": 4.093821189599112e-06,
+                "label": "lofi & chill beats"
+            },
+            {
+                "score": 3.5247353480372112e-06,
+                "label": "native american"
+            }
+        ]
+    },
+    {
+        "moods": [
+            {
+                "score": 0.43607911467552185,
+                "label": "carefree"
+            },
+            {
+                "score": 0.11782144755125046,
+                "label": "uplifting"
+            },
+            {
+                "score": 0.11229939758777618,
+                "label": "hopeful"
+            },
+            {
+                "score": 0.08167790621519089,
+                "label": "nostalgic"
+            },
+            {
+                "score": 0.054842591285705566,
+                "label": "inspirational"
+            },
+            {
+                "score": 0.047741424292325974,
+                "label": "exciting"
+            },
+            {
+                "score": 0.035055916756391525,
+                "label": "empowering"
+            },
+            {
+                "score": 0.028152696788311005,
+                "label": "romantic"
+            },
+            {
+                "score": 0.01919078268110752,
+                "label": "happy"
+            },
+            {
+                "score": 0.017232218757271767,
+                "label": "epic"
+            },
+            {
+                "score": 0.012986081652343273,
+                "label": "groovy"
+            },
+            {
+                "score": 0.00811072252690792,
+                "label": "dramatic"
+            },
+            {
+                "score": 0.00540743675082922,
+                "label": "playful"
+            },
+            {
+                "score": 0.005159652326256037,
+                "label": "love"
+            },
+            {
+                "score": 0.0039499374106526375,
+                "label": "peaceful"
+            },
+            {
+                "score": 0.003472997574135661,
+                "label": "anxious"
+            },
+            {
+                "score": 0.0030549890361726284,
+                "label": "tense"
+            },
+            {
+                "score": 0.0018435101956129074,
+                "label": "sexy"
+            },
+            {
+                "score": 0.0013820413732901216,
+                "label": "serious"
+            },
+            {
+                "score": 0.0010808728402480483,
+                "label": "powerful"
+            },
+            {
+                "score": 0.001061120885424316,
+                "label": "scary"
+            },
+            {
+                "score": 0.0010315330000594258,
+                "label": "funny"
+            },
+            {
+                "score": 0.0007652334752492607,
+                "label": "sad"
+            },
+            {
+                "score": 0.0002533665392547846,
+                "label": "mysterious"
+            },
+            {
+                "score": 0.00019383685139473528,
+                "label": "reflective"
+            },
+            {
+                "score": 0.00014925947471056134,
+                "label": "dark"
+            },
+            {
+                "score": 3.928321348212194e-06,
+                "label": "angry"
+            }
+        ],
+        "genre": [
+            {
+                "score": 0.38324496150016785,
+                "label": "soul & RnB"
+            },
+            {
+                "score": 0.1513393521308899,
+                "label": "middle eastern"
+            },
+            {
+                "score": 0.11536306142807007,
+                "label": "jazz"
+            },
+            {
+                "score": 0.09654445946216583,
+                "label": "rock"
+            },
+            {
+                "score": 0.06089511513710022,
+                "label": "bollywood"
+            },
+            {
+                "score": 0.036791954189538956,
+                "label": "celtic"
+            },
+            {
+                "score": 0.03252219408750534,
+                "label": "world"
+            },
+            {
+                "score": 0.02260584570467472,
+                "label": "folk"
+            },
+            {
+                "score": 0.01635618880391121,
+                "label": "hip hop"
+            },
+            {
+                "score": 0.0130403907969594,
+                "label": "reggae"
+            },
+            {
+                "score": 0.011081868782639503,
+                "label": "country"
+            },
+            {
+                "score": 0.01068298239260912,
+                "label": "blues"
+            },
+            {
+                "score": 0.010223081335425377,
+                "label": "singer-songwriter"
+            },
+            {
+                "score": 0.007607774809002876,
+                "label": "funk"
+            },
+            {
+                "score": 0.006553934421390295,
+                "label": "lounge"
+            },
+            {
+                "score": 0.004549213219434023,
+                "label": "k-pop"
+            },
+            {
+                "score": 0.004373062867671251,
+                "label": "retro"
+            },
+            {
+                "score": 0.0029560006223618984,
+                "label": "caribbean"
+            },
+            {
+                "score": 0.002398118609562516,
+                "label": "latin"
+            },
+            {
+                "score": 0.0018392063211649656,
+                "label": "j-pop"
+            },
+            {
+                "score": 0.0015643268125131726,
+                "label": "indie"
+            },
+            {
+                "score": 0.001324608107097447,
+                "label": "worship"
+            },
+            {
+                "score": 0.0012046273332089186,
+                "label": "children"
+            },
+            {
+                "score": 0.0009447386837564409,
+                "label": "corporate"
+            },
+            {
+                "score": 0.0009008249035105109,
+                "label": "acoustic"
+            },
+            {
+                "score": 0.0007704612798988819,
+                "label": "shibuya-kei"
+            },
+            {
+                "score": 0.000692581117618829,
+                "label": "afrobeat"
+            },
+            {
+                "score": 0.00045577416312880814,
+                "label": "electronic"
+            },
+            {
+                "score": 0.00035220824065618217,
+                "label": "ambient"
+            },
+            {
+                "score": 0.00022614901536144316,
+                "label": "lofi & chill beats"
+            },
+            {
+                "score": 0.00017975017544813454,
+                "label": "holiday"
+            },
+            {
+                "score": 0.00015922271995805204,
+                "label": "classical"
+            },
+            {
+                "score": 0.00013509152631741017,
+                "label": "cinematic"
+            },
+            {
+                "score": 6.398838013410568e-05,
+                "label": "pop"
+            },
+            {
+                "score": 3.4322285500820726e-05,
+                "label": "fantasy"
+            },
+            {
+                "score": 2.2521835489897057e-05,
+                "label": "native american"
+            }
+        ]
+    },
+    {
+        "moods": [
+            {
+                "score": 0.6234047412872314,
+                "label": "happy"
+            },
+            {
+                "score": 0.09343132376670837,
+                "label": "playful"
+            },
+            {
+                "score": 0.0592995285987854,
+                "label": "carefree"
+            },
+            {
+                "score": 0.02899191901087761,
+                "label": "epic"
+            },
+            {
+                "score": 0.02855311706662178,
+                "label": "funny"
+            },
+            {
+                "score": 0.023914821445941925,
+                "label": "exciting"
+            },
+            {
+                "score": 0.023362059146165848,
+                "label": "groovy"
+            },
+            {
+                "score": 0.022492526099085808,
+                "label": "hopeful"
+            },
+            {
+                "score": 0.019879579544067383,
+                "label": "tense"
+            },
+            {
+                "score": 0.015561722218990326,
+                "label": "uplifting"
+            },
+            {
+                "score": 0.012738937512040138,
+                "label": "anxious"
+            },
+            {
+                "score": 0.010395714081823826,
+                "label": "sexy"
+            },
+            {
+                "score": 0.008019505999982357,
+                "label": "nostalgic"
+            },
+            {
+                "score": 0.007681241724640131,
+                "label": "love"
+            },
+            {
+                "score": 0.004261164925992489,
+                "label": "empowering"
+            },
+            {
+                "score": 0.00353223062120378,
+                "label": "scary"
+            },
+            {
+                "score": 0.0034118378534913063,
+                "label": "inspirational"
+            },
+            {
+                "score": 0.00269205030053854,
+                "label": "peaceful"
+            },
+            {
+                "score": 0.002310181502252817,
+                "label": "romantic"
+            },
+            {
+                "score": 0.0019737675320357084,
+                "label": "angry"
+            },
+            {
+                "score": 0.0013394438428804278,
+                "label": "powerful"
+            },
+            {
+                "score": 0.0011845100671052933,
+                "label": "dramatic"
+            },
+            {
+                "score": 0.0010582255199551582,
+                "label": "dark"
+            },
+            {
+                "score": 0.00025005676434375346,
+                "label": "serious"
+            },
+            {
+                "score": 0.0001627884485060349,
+                "label": "sad"
+            },
+            {
+                "score": 8.060288382694125e-05,
+                "label": "mysterious"
+            },
+            {
+                "score": 1.6417563529103063e-05,
+                "label": "reflective"
+            }
+        ],
+        "genre": [
+            {
+                "score": 0.2252396196126938,
+                "label": "lounge"
+            },
+            {
+                "score": 0.21688832342624664,
+                "label": "jazz"
+            },
+            {
+                "score": 0.13366639614105225,
+                "label": "bollywood"
+            },
+            {
+                "score": 0.13124379515647888,
+                "label": "rock"
+            },
+            {
+                "score": 0.05669320374727249,
+                "label": "shibuya-kei"
+            },
+            {
+                "score": 0.039055559784173965,
+                "label": "middle eastern"
+            },
+            {
+                "score": 0.03345799073576927,
+                "label": "hip hop"
+            },
+            {
+                "score": 0.028969500213861465,
+                "label": "latin"
+            },
+            {
+                "score": 0.02490454725921154,
+                "label": "caribbean"
+            },
+            {
+                "score": 0.015570633113384247,
+                "label": "corporate"
+            },
+            {
+                "score": 0.015364720486104488,
+                "label": "blues"
+            },
+            {
+                "score": 0.015005169436335564,
+                "label": "soul & RnB"
+            },
+            {
+                "score": 0.014243705198168755,
+                "label": "reggae"
+            },
+            {
+                "score": 0.01277044415473938,
+                "label": "k-pop"
+            },
+            {
+                "score": 0.005117520224303007,
+                "label": "funk"
+            },
+            {
+                "score": 0.004649701528251171,
+                "label": "indie"
+            },
+            {
+                "score": 0.004331270232796669,
+                "label": "children"
+            },
+            {
+                "score": 0.004263382405042648,
+                "label": "world"
+            },
+            {
+                "score": 0.00422701658681035,
+                "label": "country"
+            },
+            {
+                "score": 0.0038115105126053095,
+                "label": "electronic"
+            },
+            {
+                "score": 0.0027943546883761883,
+                "label": "folk"
+            },
+            {
+                "score": 0.0026742967311292887,
+                "label": "retro"
+            },
+            {
+                "score": 0.000944104918744415,
+                "label": "singer-songwriter"
+            },
+            {
+                "score": 0.0008227642974816263,
+                "label": "j-pop"
+            },
+            {
+                "score": 0.0007406139629893005,
+                "label": "celtic"
+            },
+            {
+                "score": 0.000648090208414942,
+                "label": "afrobeat"
+            },
+            {
+                "score": 0.0006277927313931286,
+                "label": "acoustic"
+            },
+            {
+                "score": 0.0005991311627440155,
+                "label": "pop"
+            },
+            {
+                "score": 0.0002151090739062056,
+                "label": "ambient"
+            },
+            {
+                "score": 0.00013898614270146936,
+                "label": "holiday"
+            },
+            {
+                "score": 9.024090104503557e-05,
+                "label": "worship"
+            },
+            {
+                "score": 7.009186811046675e-05,
+                "label": "fantasy"
+            },
+            {
+                "score": 4.569188968162052e-05,
+                "label": "lofi & chill beats"
+            },
+            {
+                "score": 4.084182728547603e-05,
+                "label": "classical"
+            },
+            {
+                "score": 3.874386311508715e-05,
+                "label": "cinematic"
+            },
+            {
+                "score": 3.5197579563828185e-05,
+                "label": "native american"
+            }
+        ]
+    },
+    {
+        "moods": [
+            {
+                "score": 0.2463110089302063,
+                "label": "playful"
+            },
+            {
+                "score": 0.18269051611423492,
+                "label": "tense"
+            },
+            {
+                "score": 0.11743742972612381,
+                "label": "carefree"
+            },
+            {
+                "score": 0.10803357511758804,
+                "label": "exciting"
+            },
+            {
+                "score": 0.09992749243974686,
+                "label": "anxious"
+            },
+            {
+                "score": 0.05644002929329872,
+                "label": "hopeful"
+            },
+            {
+                "score": 0.030870258808135986,
+                "label": "nostalgic"
+            },
+            {
+                "score": 0.026774967089295387,
+                "label": "epic"
+            },
+            {
+                "score": 0.01801704242825508,
+                "label": "scary"
+            },
+            {
+                "score": 0.015214020386338234,
+                "label": "romantic"
+            },
+            {
+                "score": 0.01452880259603262,
+                "label": "love"
+            },
+            {
+                "score": 0.014386937022209167,
+                "label": "happy"
+            },
+            {
+                "score": 0.013666625134646893,
+                "label": "groovy"
+            },
+            {
+                "score": 0.012542719021439552,
+                "label": "uplifting"
+            },
+            {
+                "score": 0.008897041901946068,
+                "label": "sexy"
+            },
+            {
+                "score": 0.008428600616753101,
+                "label": "empowering"
+            },
+            {
+                "score": 0.007909861393272877,
+                "label": "funny"
+            },
+            {
+                "score": 0.006011706776916981,
+                "label": "dramatic"
+            },
+            {
+                "score": 0.004406195133924484,
+                "label": "serious"
+            },
+            {
+                "score": 0.002889288356527686,
+                "label": "inspirational"
+            },
+            {
+                "score": 0.001892132917419076,
+                "label": "peaceful"
+            },
+            {
+                "score": 0.0014457778306677938,
+                "label": "powerful"
+            },
+            {
+                "score": 0.0005291497800499201,
+                "label": "dark"
+            },
+            {
+                "score": 0.0005122076836414635,
+                "label": "mysterious"
+            },
+            {
+                "score": 0.00021627297974191606,
+                "label": "sad"
+            },
+            {
+                "score": 1.3223615496826824e-05,
+                "label": "angry"
+            },
+            {
+                "score": 7.171217021095799e-06,
+                "label": "reflective"
+            }
+        ],
+        "genre": [
+            {
+                "score": 0.4058779776096344,
+                "label": "world"
+            },
+            {
+                "score": 0.25227218866348267,
+                "label": "jazz"
+            },
+            {
+                "score": 0.08477357774972916,
+                "label": "children"
+            },
+            {
+                "score": 0.05544602498412132,
+                "label": "rock"
+            },
+            {
+                "score": 0.033585354685783386,
+                "label": "hip hop"
+            },
+            {
+                "score": 0.03013134002685547,
+                "label": "folk"
+            },
+            {
+                "score": 0.029507292434573174,
+                "label": "lounge"
+            },
+            {
+                "score": 0.029053175821900368,
+                "label": "celtic"
+            },
+            {
+                "score": 0.020330103114247322,
+                "label": "bollywood"
+            },
+            {
+                "score": 0.01446598768234253,
+                "label": "shibuya-kei"
+            },
+            {
+                "score": 0.010203026235103607,
+                "label": "country"
+            },
+            {
+                "score": 0.009981297887861729,
+                "label": "funk"
+            },
+            {
+                "score": 0.004879310727119446,
+                "label": "middle eastern"
+            },
+            {
+                "score": 0.0042281374335289,
+                "label": "retro"
+            },
+            {
+                "score": 0.004224786069244146,
+                "label": "corporate"
+            },
+            {
+                "score": 0.0025083408690989017,
+                "label": "latin"
+            },
+            {
+                "score": 0.0018223889637738466,
+                "label": "caribbean"
+            },
+            {
+                "score": 0.001214095507748425,
+                "label": "soul & RnB"
+            },
+            {
+                "score": 0.0010051368735730648,
+                "label": "acoustic"
+            },
+            {
+                "score": 0.00097166548948735,
+                "label": "k-pop"
+            },
+            {
+                "score": 0.0006498774164356291,
+                "label": "blues"
+            },
+            {
+                "score": 0.000594134908169508,
+                "label": "fantasy"
+            },
+            {
+                "score": 0.0005843886756338179,
+                "label": "reggae"
+            },
+            {
+                "score": 0.0004362315230537206,
+                "label": "electronic"
+            },
+            {
+                "score": 0.0002564442402217537,
+                "label": "cinematic"
+            },
+            {
+                "score": 0.00021191695122979581,
+                "label": "ambient"
+            },
+            {
+                "score": 0.00019151126616634429,
+                "label": "holiday"
+            },
+            {
+                "score": 0.0001531713205622509,
+                "label": "j-pop"
+            },
+            {
+                "score": 0.00014421323430724442,
+                "label": "classical"
+            },
+            {
+                "score": 0.00011127372272312641,
+                "label": "singer-songwriter"
+            },
+            {
+                "score": 6.51985828881152e-05,
+                "label": "lofi & chill beats"
+            },
+            {
+                "score": 4.8536152462475e-05,
+                "label": "indie"
+            },
+            {
+                "score": 2.9404993256321177e-05,
+                "label": "worship"
+            },
+            {
+                "score": 2.1822363123646937e-05,
+                "label": "pop"
+            },
+            {
+                "score": 1.9299388441140763e-05,
+                "label": "afrobeat"
+            },
+            {
+                "score": 1.3272923524709768e-06,
+                "label": "native american"
+            }
+        ]
+    },
+    {
+        "moods": [
+            {
+                "score": 0.498035728931427,
+                "label": "playful"
+            },
+            {
+                "score": 0.1361071616411209,
+                "label": "groovy"
+            },
+            {
+                "score": 0.05202445760369301,
+                "label": "carefree"
+            },
+            {
+                "score": 0.04894260689616203,
+                "label": "happy"
+            },
+            {
+                "score": 0.04396063834428787,
+                "label": "hopeful"
+            },
+            {
+                "score": 0.03614022582769394,
+                "label": "peaceful"
+            },
+            {
+                "score": 0.0314081609249115,
+                "label": "tense"
+            },
+            {
+                "score": 0.025289757177233696,
+                "label": "exciting"
+            },
+            {
+                "score": 0.02330709621310234,
+                "label": "sexy"
+            },
+            {
+                "score": 0.022745149210095406,
+                "label": "funny"
+            },
+            {
+                "score": 0.019739657640457153,
+                "label": "nostalgic"
+            },
+            {
+                "score": 0.015561561100184917,
+                "label": "epic"
+            },
+            {
+                "score": 0.010643081739544868,
+                "label": "anxious"
+            },
+            {
+                "score": 0.009222518652677536,
+                "label": "love"
+            },
+            {
+                "score": 0.008147498592734337,
+                "label": "uplifting"
+            },
+            {
+                "score": 0.006804469041526318,
+                "label": "romantic"
+            },
+            {
+                "score": 0.004467410501092672,
+                "label": "inspirational"
+            },
+            {
+                "score": 0.0021894362289458513,
+                "label": "dark"
+            },
+            {
+                "score": 0.0020266894716769457,
+                "label": "dramatic"
+            },
+            {
+                "score": 0.001410993398167193,
+                "label": "scary"
+            },
+            {
+                "score": 0.000816546322312206,
+                "label": "serious"
+            },
+            {
+                "score": 0.0005701776826754212,
+                "label": "sad"
+            },
+            {
+                "score": 0.00018750186427496374,
+                "label": "empowering"
+            },
+            {
+                "score": 0.00010991662566084415,
+                "label": "mysterious"
+            },
+            {
+                "score": 7.710771023994312e-05,
+                "label": "powerful"
+            },
+            {
+                "score": 5.960496127954684e-05,
+                "label": "reflective"
+            },
+            {
+                "score": 4.871419150731526e-06,
+                "label": "angry"
+            }
+        ],
+        "genre": [
+            {
+                "score": 0.4288107752799988,
+                "label": "bollywood"
+            },
+            {
+                "score": 0.23538967967033386,
+                "label": "world"
+            },
+            {
+                "score": 0.08890823274850845,
+                "label": "folk"
+            },
+            {
+                "score": 0.04349062964320183,
+                "label": "k-pop"
+            },
+            {
+                "score": 0.03356137499213219,
+                "label": "electronic"
+            },
+            {
+                "score": 0.02754516527056694,
+                "label": "country"
+            },
+            {
+                "score": 0.022268706932663918,
+                "label": "celtic"
+            },
+            {
+                "score": 0.02224372699856758,
+                "label": "hip hop"
+            },
+            {
+                "score": 0.018958091735839844,
+                "label": "reggae"
+            },
+            {
+                "score": 0.013120044022798538,
+                "label": "afrobeat"
+            },
+            {
+                "score": 0.010824806056916714,
+                "label": "lounge"
+            },
+            {
+                "score": 0.010356365703046322,
+                "label": "soul & RnB"
+            },
+            {
+                "score": 0.009859402664005756,
+                "label": "shibuya-kei"
+            },
+            {
+                "score": 0.00869788508862257,
+                "label": "funk"
+            },
+            {
+                "score": 0.007329635787755251,
+                "label": "middle eastern"
+            },
+            {
+                "score": 0.006813288200646639,
+                "label": "jazz"
+            },
+            {
+                "score": 0.002573377452790737,
+                "label": "indie"
+            },
+            {
+                "score": 0.0014471790054813027,
+                "label": "caribbean"
+            },
+            {
+                "score": 0.0013280580751597881,
+                "label": "j-pop"
+            },
+            {
+                "score": 0.001285696867853403,
+                "label": "latin"
+            },
+            {
+                "score": 0.0011183717288076878,
+                "label": "retro"
+            },
+            {
+                "score": 0.0006181697244755924,
+                "label": "rock"
+            },
+            {
+                "score": 0.0005713052814826369,
+                "label": "lofi & chill beats"
+            },
+            {
+                "score": 0.0005450752796605229,
+                "label": "blues"
+            },
+            {
+                "score": 0.0004535223124548793,
+                "label": "singer-songwriter"
+            },
+            {
+                "score": 0.00045331259025260806,
+                "label": "ambient"
+            },
+            {
+                "score": 0.00039345474215224385,
+                "label": "children"
+            },
+            {
+                "score": 0.0003234475734643638,
+                "label": "corporate"
+            },
+            {
+                "score": 0.0002373463794356212,
+                "label": "acoustic"
+            },
+            {
+                "score": 0.00013215684157330543,
+                "label": "holiday"
+            },
+            {
+                "score": 0.0001249113556696102,
+                "label": "pop"
+            },
+            {
+                "score": 8.084643195616081e-05,
+                "label": "cinematic"
+            },
+            {
+                "score": 4.4381547922967e-05,
+                "label": "classical"
+            },
+            {
+                "score": 4.356195859145373e-05,
+                "label": "fantasy"
+            },
+            {
+                "score": 2.7541707822820172e-05,
+                "label": "worship"
+            },
+            {
+                "score": 2.0473018594202586e-05,
+                "label": "native american"
+            }
+        ]
+    },
+    {
+        "moods": [
+            {
+                "score": 0.6555653810501099,
+                "label": "carefree"
+            },
+            {
+                "score": 0.04990227892994881,
+                "label": "love"
+            },
+            {
+                "score": 0.04339604079723358,
+                "label": "sexy"
+            },
+            {
+                "score": 0.03691486269235611,
+                "label": "uplifting"
+            },
+            {
+                "score": 0.03577035292983055,
+                "label": "epic"
+            },
+            {
+                "score": 0.027290629222989082,
+                "label": "happy"
+            },
+            {
+                "score": 0.025063546374440193,
+                "label": "hopeful"
+            },
+            {
+                "score": 0.02261713519692421,
+                "label": "nostalgic"
+            },
+            {
+                "score": 0.019170938059687614,
+                "label": "groovy"
+            },
+            {
+                "score": 0.014867523685097694,
+                "label": "exciting"
+            },
+            {
+                "score": 0.0145718390122056,
+                "label": "anxious"
+            },
+            {
+                "score": 0.013387540355324745,
+                "label": "tense"
+            },
+            {
+                "score": 0.01109394896775484,
+                "label": "playful"
+            },
+            {
+                "score": 0.008391272276639938,
+                "label": "romantic"
+            },
+            {
+                "score": 0.005970615427941084,
+                "label": "empowering"
+            },
+            {
+                "score": 0.002573023783043027,
+                "label": "funny"
+            },
+            {
+                "score": 0.0022902272175997496,
+                "label": "inspirational"
+            },
+            {
+                "score": 0.0022601489908993244,
+                "label": "peaceful"
+            },
+            {
+                "score": 0.0022241221740841866,
+                "label": "dark"
+            },
+            {
+                "score": 0.002221696777269244,
+                "label": "scary"
+            },
+            {
+                "score": 0.001737968297675252,
+                "label": "serious"
+            },
+            {
+                "score": 0.001650884049013257,
+                "label": "dramatic"
+            },
+            {
+                "score": 0.0007446121890097857,
+                "label": "powerful"
+            },
+            {
+                "score": 0.00016189785674214363,
+                "label": "angry"
+            },
+            {
+                "score": 0.00011487636220408604,
+                "label": "sad"
+            },
+            {
+                "score": 3.0049708584556356e-05,
+                "label": "reflective"
+            },
+            {
+                "score": 1.6544679965591058e-05,
+                "label": "mysterious"
+            }
+        ],
+        "genre": [
+            {
+                "score": 0.30070072412490845,
+                "label": "rock"
+            },
+            {
+                "score": 0.19966654479503632,
+                "label": "folk"
+            },
+            {
+                "score": 0.12609197199344635,
+                "label": "country"
+            },
+            {
+                "score": 0.05284956470131874,
+                "label": "jazz"
+            },
+            {
+                "score": 0.05122721940279007,
+                "label": "lounge"
+            },
+            {
+                "score": 0.031532056629657745,
+                "label": "soul & RnB"
+            },
+            {
+                "score": 0.025963328778743744,
+                "label": "world"
+            },
+            {
+                "score": 0.02428988367319107,
+                "label": "indie"
+            },
+            {
+                "score": 0.02360653504729271,
+                "label": "blues"
+            },
+            {
+                "score": 0.02253223955631256,
+                "label": "bollywood"
+            },
+            {
+                "score": 0.021565478295087814,
+                "label": "funk"
+            },
+            {
+                "score": 0.02030201256275177,
+                "label": "celtic"
+            },
+            {
+                "score": 0.01909889653325081,
+                "label": "k-pop"
+            },
+            {
+                "score": 0.01870826445519924,
+                "label": "middle eastern"
+            },
+            {
+                "score": 0.015087519772350788,
+                "label": "children"
+            },
+            {
+                "score": 0.01078585535287857,
+                "label": "shibuya-kei"
+            },
+            {
+                "score": 0.009003483690321445,
+                "label": "singer-songwriter"
+            },
+            {
+                "score": 0.005723242647945881,
+                "label": "electronic"
+            },
+            {
+                "score": 0.005034290719777346,
+                "label": "caribbean"
+            },
+            {
+                "score": 0.0038353181444108486,
+                "label": "retro"
+            },
+            {
+                "score": 0.002678211312741041,
+                "label": "hip hop"
+            },
+            {
+                "score": 0.0025748959742486477,
+                "label": "worship"
+            },
+            {
+                "score": 0.0018953194376081228,
+                "label": "reggae"
+            },
+            {
+                "score": 0.0012030006619170308,
+                "label": "ambient"
+            },
+            {
+                "score": 0.0011951025808230042,
+                "label": "latin"
+            },
+            {
+                "score": 0.0007597439107485116,
+                "label": "j-pop"
+            },
+            {
+                "score": 0.000704574107658118,
+                "label": "afrobeat"
+            },
+            {
+                "score": 0.0004191668995190412,
+                "label": "acoustic"
+            },
+            {
+                "score": 0.00023883229005150497,
+                "label": "pop"
+            },
+            {
+                "score": 0.0002115131646860391,
+                "label": "cinematic"
+            },
+            {
+                "score": 0.00015824814909137785,
+                "label": "holiday"
+            },
+            {
+                "score": 0.0001339375739917159,
+                "label": "corporate"
+            },
+            {
+                "score": 7.939508941490203e-05,
+                "label": "fantasy"
+            },
+            {
+                "score": 7.511852163588628e-05,
+                "label": "lofi & chill beats"
+            },
+            {
+                "score": 6.187194958329201e-05,
+                "label": "classical"
+            },
+            {
+                "score": 6.647688223893056e-06,
+                "label": "native american"
+            }
+        ]
+    },
+    {
+        "moods": [
+            {
+                "score": 0.27698326110839844,
+                "label": "epic"
+            },
+            {
+                "score": 0.2566676139831543,
+                "label": "carefree"
+            },
+            {
+                "score": 0.09867975115776062,
+                "label": "tense"
+            },
+            {
+                "score": 0.08065259456634521,
+                "label": "groovy"
+            },
+            {
+                "score": 0.06991885602474213,
+                "label": "nostalgic"
+            },
+            {
+                "score": 0.029588330537080765,
+                "label": "romantic"
+            },
+            {
+                "score": 0.027429332956671715,
+                "label": "uplifting"
+            },
+            {
+                "score": 0.02561081573367119,
+                "label": "anxious"
+            },
+            {
+                "score": 0.019453221932053566,
+                "label": "exciting"
+            },
+            {
+                "score": 0.018656259402632713,
+                "label": "sexy"
+            },
+            {
+                "score": 0.018098294734954834,
+                "label": "love"
+            },
+            {
+                "score": 0.01532804686576128,
+                "label": "dramatic"
+            },
+            {
+                "score": 0.013963348232209682,
+                "label": "hopeful"
+            },
+            {
+                "score": 0.012226646766066551,
+                "label": "powerful"
+            },
+            {
+                "score": 0.008143032900989056,
+                "label": "playful"
+            },
+            {
+                "score": 0.007936296984553337,
+                "label": "scary"
+            },
+            {
+                "score": 0.006781448144465685,
+                "label": "serious"
+            },
+            {
+                "score": 0.003536647418513894,
+                "label": "empowering"
+            },
+            {
+                "score": 0.0024995801504701376,
+                "label": "inspirational"
+            },
+            {
+                "score": 0.002193690510466695,
+                "label": "funny"
+            },
+            {
+                "score": 0.0019783710595220327,
+                "label": "dark"
+            },
+            {
+                "score": 0.0016206520376726985,
+                "label": "peaceful"
+            },
+            {
+                "score": 0.0015945290215313435,
+                "label": "happy"
+            },
+            {
+                "score": 0.0002311124262632802,
+                "label": "angry"
+            },
+            {
+                "score": 0.00013423606287688017,
+                "label": "sad"
+            },
+            {
+                "score": 5.548428089241497e-05,
+                "label": "reflective"
+            },
+            {
+                "score": 3.847240441245958e-05,
+                "label": "mysterious"
+            }
+        ],
+        "genre": [
+            {
+                "score": 0.715954601764679,
+                "label": "rock"
+            },
+            {
+                "score": 0.15316268801689148,
+                "label": "hip hop"
+            },
+            {
+                "score": 0.036688610911369324,
+                "label": "world"
+            },
+            {
+                "score": 0.034815043210983276,
+                "label": "soul & RnB"
+            },
+            {
+                "score": 0.01406950131058693,
+                "label": "country"
+            },
+            {
+                "score": 0.014008061029016972,
+                "label": "lounge"
+            },
+            {
+                "score": 0.004772927612066269,
+                "label": "folk"
+            },
+            {
+                "score": 0.004377287346869707,
+                "label": "jazz"
+            },
+            {
+                "score": 0.003203646745532751,
+                "label": "funk"
+            },
+            {
+                "score": 0.0029028088320046663,
+                "label": "blues"
+            },
+            {
+                "score": 0.0027558791916817427,
+                "label": "middle eastern"
+            },
+            {
+                "score": 0.0018345003481954336,
+                "label": "shibuya-kei"
+            },
+            {
+                "score": 0.0013837642036378384,
+                "label": "celtic"
+            },
+            {
+                "score": 0.001362286857329309,
+                "label": "singer-songwriter"
+            },
+            {
+                "score": 0.0010586975840851665,
+                "label": "reggae"
+            },
+            {
+                "score": 0.0009523814078420401,
+                "label": "bollywood"
+            },
+            {
+                "score": 0.000949096807744354,
+                "label": "corporate"
+            },
+            {
+                "score": 0.0008363322704099119,
+                "label": "k-pop"
+            },
+            {
+                "score": 0.0007971552549861372,
+                "label": "acoustic"
+            },
+            {
+                "score": 0.000766858400311321,
+                "label": "retro"
+            },
+            {
+                "score": 0.0007272649090737104,
+                "label": "latin"
+            },
+            {
+                "score": 0.0005181683227419853,
+                "label": "indie"
+            },
+            {
+                "score": 0.0004570471355691552,
+                "label": "cinematic"
+            },
+            {
+                "score": 0.00037094115396030247,
+                "label": "fantasy"
+            },
+            {
+                "score": 0.0003340104012750089,
+                "label": "caribbean"
+            },
+            {
+                "score": 0.00024411393678747118,
+                "label": "lofi & chill beats"
+            },
+            {
+                "score": 0.00023740209871903062,
+                "label": "worship"
+            },
+            {
+                "score": 0.00022346551122609526,
+                "label": "electronic"
+            },
+            {
+                "score": 9.407796460436657e-05,
+                "label": "children"
+            },
+            {
+                "score": 3.599550836952403e-05,
+                "label": "ambient"
+            },
+            {
+                "score": 3.280192686361261e-05,
+                "label": "classical"
+            },
+            {
+                "score": 2.828625110851135e-05,
+                "label": "holiday"
+            },
+            {
+                "score": 1.8701921362662688e-05,
+                "label": "j-pop"
+            },
+            {
+                "score": 1.4048228877072688e-05,
+                "label": "afrobeat"
+            },
+            {
+                "score": 9.287685315939598e-06,
+                "label": "pop"
+            },
+            {
+                "score": 2.3863078695285367e-06,
+                "label": "native american"
+            }
+        ]
+    }
+]

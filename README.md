@@ -53,3 +53,10 @@ https://drive.google.com/drive/folders/1biQv9RM5Vp0RZNin3hbTd6s_QeQOvaPC?usp=dri
 Sprint 1:
 
 Fork the file and test out some of the functions. I put all the useful stuff in ```/src``` folder and refactored them into functions, but feel free to play around with the jupyter notebooks in ```/notebook``` folder
+
+### Update 10/24/25
+
+Clap has been half implemented. We just need to figure out what emotions do we wanna feed it
+
+```slice_audio.py``` will now slice a whole song into meaningful segments (verse, chorus, etc.)
+```clap.ipynb``` will now generate ```clap_results.json```. These are the emotion of each meaningful segment of the music. You can find a list of emotion and genres we have currently in ```clap.ipynb```
