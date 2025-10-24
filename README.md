@@ -59,4 +59,4 @@ Fork the file and test out some of the functions. I put all the useful stuff in 
 Clap has been half implemented. We just need to figure out what emotions do we wanna feed it
 
 ```slice_audio.py``` will now slice a whole song into meaningful segments (verse, chorus, etc.)
-```clap.ipynb``` will now generate ```clap_results.json```. These are the emotion of each meaningful segment of the music. You can find a list of emotion and genres we have currently in ```clap.ipynb```
+```clap.ipynb``` will now generate ```clap_results.json```. These are the emotion of each meaningful segment of the music. You can find a list of emotion and genres we have currently in ```clap_labels.json```
