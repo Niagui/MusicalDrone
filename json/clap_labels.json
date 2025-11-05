@@ -1,33 +1,18 @@
 {
   "moods": [
-    "happy",
-    "exciting",
-    "peaceful",
-    "hopeful",
-    "uplifting",
-    "powerful",
-    "love",
-    "epic",
-    "carefree",
-    "mysterious",
-    "groovy",
     "sad",
-    "dramatic",
-    "playful",
-    "tense",
-    "scary",
-    "serious",
-    "sexy",
-    "dark",
-    "angry",
-    "funny",
-    "nostalgic",
-    "empowering",
-    "romantic",
-    "inspirational",
-    "reflective",
-    "anxious"
+    "dopey",
+    "sleepy",
+    "depressed",
+    "grumpy",
+    "happy",
+    "brave",
+    "surprise",
+    "exciting",
+    "anxious",
+    "scared"
   ],
+  
   "genre": [
     "cinematic",
     "corporate",
@@ -65,5 +50,50 @@
     "caribbean",
     "shibuya-kei",
     "j-pop"
+  ],
+
+  "characteristics": [
+    "driving",
+    "pulsing",
+    "swelling",
+    "simple",
+    "complicated",
+    "groovy",
+    "sparse", 
+    "dense",
+    "legato", 
+    "staccato", 
+    "percussive", 
+    "syncopated", 
+    "polyrhythmic",
+    "atmospheric", 
+    "airy", 
+    "gritty", 
+    "glitchy",
+    "static"
+  ],
+
+  "valence": [
+    "high valence",
+    "moderate valence",
+    "low valence"
+  ],
+
+  "arousal": [
+    "high arousal",
+    "moderate arousal",
+    "low arousal"
+  ],
+
+  "stance": [
+    "high stance",
+    "moderate stance",
+    "low stance"
+  ],
+
+  "tension": [
+    "high tension",
+    "moderate tension",
+    "low tension"
   ]
 }
