@@ -1,7 +1,6 @@
 {
   "moods": [
     "sad",
-    "dopey",
     "sleepy",
     "depressed",
     "grumpy",
@@ -11,45 +10,6 @@
     "exciting",
     "anxious",
     "scared"
-  ],
-  
-  "genre": [
-    "cinematic",
-    "corporate",
-    "funk",
-    "hip hop",
-    "classical",
-    "jazz",
-    "lofi & chill beats",
-    "ambient",
-    "lounge",
-    "children",
-    "acoustic",
-    "country",
-    "indie",
-    "folk",
-    "soul & RnB",
-    "latin",
-    "retro",
-    "pop",
-    "world",
-    "electronic",
-    "rock",
-    "blues",
-    "reggae",
-    "fantasy",
-    "singer-songwriter",
-    "worship",
-    "holiday",
-    "afrobeat",
-    "k-pop",
-    "bollywood",
-    "middle eastern",
-    "celtic",
-    "native american",
-    "caribbean",
-    "shibuya-kei",
-    "j-pop"
   ],
 
   "characteristics": [
@@ -83,12 +43,6 @@
     "high arousal",
     "moderate arousal",
     "low arousal"
-  ],
-
-  "stance": [
-    "high stance",
-    "moderate stance",
-    "low stance"
   ],
 
   "tension": [

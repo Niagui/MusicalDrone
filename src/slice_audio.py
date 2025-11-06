@@ -33,6 +33,8 @@ def slice_audio(time_stamps, audio_file, output_dir=None, sr=22050) -> None:
         audio_file (str): path to the audio file to be sliced
         output_dir (str, optional): directory to save the sliced audio files. If None, will create a directory. Defaults to None.
         sr (int, optional): sample rate. Defaults to 22050.
+        beat_track (optional): the beat_time file that splits the music into beats
+        k (optional): 
     """
 
     y, sr = librosa.load(audio_file, sr=None)
