@@ -17,7 +17,7 @@ def get_duration(audio_file) -> float:
     info = sf.info(audio_file)
     return info.frames / info.samplerate
 
-def save_as_json(filename, data) -> None:
+def save_as_json(filename, data, folder="../") -> None:
 
     """
     Save data as a json file
@@ -26,7 +26,7 @@ def save_as_json(filename, data) -> None:
         filename: file name for the json file to be store (without extension)
         data (list): data stored as array
     """
-    with open(f'../json/{filename}.json', 'w', encoding='utf-8') as file:
+    with open(f'{folder}json/{filename}.json', 'w', encoding='utf-8') as file:
         json.dump(data, file, indent=4)
     return
 
