@@ -1,5 +1,4 @@
 from transformers import pipeline
-import librosa, json
 from logger_config import *
 
 def clap_generate_features():

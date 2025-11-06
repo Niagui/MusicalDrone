@@ -1,9 +1,9 @@
-import essentia
+#import essentia
 import numpy as np
 import matplotlib.pyplot as plt
 import librosa
 from utils import *
-from essentia.standard import MonoLoader, TensorflowPredictMusiCNN, TensorflowPredict2D
+from essentia.standard import TensorflowPredictMusiCNN, TensorflowPredict2D
 from matplotlib.animation import FuncAnimation, PillowWriter
 
 def predict_valence_arousal_values(audio_file, save_to_json=False) -> np.ndarray:

@@ -1,4 +1,3 @@
-import librosa
 import soundfile as sf
 import json
 import numpy as np
@@ -50,4 +49,4 @@ def normalize(values: ArrayLike) -> np.ndarray:
         np.ndarray: normalized values between -1 and 1
     """
     v = np.asarray(values, dtype=float)
-    return 2 * ((values - 1) / 8) - 1
+    return 2 * ((v - 1) / 8) - 1

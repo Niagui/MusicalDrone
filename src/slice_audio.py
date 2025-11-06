@@ -1,8 +1,6 @@
 import soundfile as sf
-import scipy
 import librosa
 import json
-import numpy as np
 from pathlib import Path
 from typing import Tuple
 
