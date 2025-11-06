@@ -1,10 +1,6 @@
 import librosa
-import librosa.display
-import matplotlib.pyplot as plt
 import numpy as np
-import json
-from utils import save_as_json
-from typing import List
+from utils import *
 
 def beat_track(audio_file, save_to_json=False) -> tuple:
     """
