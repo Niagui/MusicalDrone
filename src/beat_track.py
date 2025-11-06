@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import json
 from utils import save_as_json
-
+from typing import List
 
 def beat_track(audio_file, save_to_json=False) -> tuple:
     """
@@ -26,14 +26,34 @@ def beat_track(audio_file, save_to_json=False) -> tuple:
     tempo, beattrack = librosa.beat.beat_track(y=y, sr=sr)
     beat_times = librosa.frames_to_time(beattrack, sr=sr)
     if save_to_json:
-        save_as_json('beat_times', beat_times)
+        save_as_json('beat_times', list(beat_times), folder="")
     return np.array(beat_times), np.round(tempo)     #cast bpm to int for convenience
 
+def group_beats(beat_times, k=8, save_to_json=False, destination=None) -> list:
+    """_summary_
 
+    Args:
+        beat_times (_type_): _description_
+        k (int, optional): _description_. Defaults to 4.
+        save_to_json (bool, optional): _description_. Defaults to False.
+
+    Returns:
+        list: _description_
+    """
+    b = list(beat_times)
+    segments = []
+    for i in range(0, len(b) - k, k):
+        segments.append((b[i], b[i + k])) 
+
+    if save_to_json:
+        save_as_json('k_beat_segments', list(segments), folder="")
+    return segments
 
 if __name__ == '__main__':
     #demo
     audiofile = 'audio/testSong.mp3'
-    beat_times, tempo = beat_track(audiofile)
+    beat_times, tempo = beat_track(audiofile, save_to_json=True)
+    print("ok")
+    group_beats(beat_times, save_to_json=True)
     print(f"Estimated tempo: {tempo} BPM")
     print("Beat times (s):", beat_times)
