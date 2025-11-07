@@ -1,0 +1,3 @@
+[submodule "musicseg_deepemb"]
+	path = external/musicseg_deepemb
+	url = https://github.com/justinsalamon/musicseg_deepemb.git
