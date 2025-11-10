@@ -29,7 +29,7 @@ def main():
 
     logger.log_debug("Begin calculating emotion embeddings")
     for i, seg in enumerate(result):
-        print(f"\n------------------------------------------------")
+        print("\n------------------------------------------------")
         print(f"Segment {seg['start']:.2f}-{seg['end']:.2f}s")
 
         moods = seg["feature"].get("moods", [])

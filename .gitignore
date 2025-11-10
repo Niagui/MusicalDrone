@@ -5,3 +5,4 @@ pre.txt
 segments/*
 .env
 logs/*
+.ruff_cache/*

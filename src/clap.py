@@ -147,7 +147,7 @@ def clap_pipeline(audio_file):
     w = []
     js = []
     for seg in result:
-        print(f"\n------")
+        print("\n------")
         print(f"Segment {seg['start']:.2f}-{seg['end']:.2f}s")
         moods = seg["feature"].get("moods", [])
         labels = [m["label"] for m in moods]    #don't cast to nparray
