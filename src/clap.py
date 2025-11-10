@@ -129,6 +129,7 @@ class Clap:
         w /= (w.sum(axis=1, keepdims=True) + np.finfo(float).eps)
         log_debug(f"weights:{w.shape}")
 
+        
         for i, (s, idxs) in enumerate(zip(sims, top_idx)):
             print(f"\n--- Emotion vector {i} ---")
             for j in idxs:
@@ -136,26 +137,23 @@ class Clap:
         return w
 
 
-    def _softmax(x, temperature=0.05):
-        x = np.asarray(x, dtype=np.float32)
-        z = (x / max(temperature, 1e-6))
-        z = z - z.max()
-        e = np.exp(z)
-        return e / (e.sum() + np.finfo(float).eps)
-
-
 def clap_pipeline(audio_file):
     clap = Clap()
     clap.retrieve_info()
     result = clap.analyze_audio(audio_file)
     
+    ## variation 
     w = []
     js = []
     for seg in result:
         print(f"\n------")
+        print(f"Segment {seg['start']:.2f}-{seg['end']:.2f}s")
         moods = seg["feature"].get("moods", [])
         labels = [m["label"] for m in moods]    #don't cast to nparray
         scores = np.array([m["score"] for m in moods])
+
+        ## replace the 
+
         emb = clap.get_text_embedding(labels).numpy()
         weights = clap.classify_new_emotion(emb)
         final_weights = (weights * scores[:, None]).sum(axis=0)
@@ -168,7 +166,6 @@ def clap_pipeline(audio_file):
             }
         )
 
-        print(f"Segment {seg['start']:.2f}-{seg['end']:.2f}s")
         print("Labels:", labels)
         print("Scores:", scores)
         print("weights", final_weights)
