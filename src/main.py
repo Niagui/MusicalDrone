@@ -1,6 +1,6 @@
-import beat_track
-from clap import *
-from utils import *
+import src.beat_track
+from src.clap import *
+from src.utils import *
 
 AUDIO = 'audio/testSong.mp3'
 

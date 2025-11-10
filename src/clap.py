@@ -3,8 +3,8 @@ import librosa
 import torch
 from transformers import pipeline, ClapProcessor, ClapModel
 import json
-from logger_config import *
-from utils import *
+from src.logger_config import *
+from src.utils import *
 
 class Clap:
     def __init__(self, model_name="laion/larger_clap_general", device=None):

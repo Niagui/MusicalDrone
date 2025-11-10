@@ -34,9 +34,11 @@ jobs:
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           pip install -r requirements-dev.txt
 
-      # - name: Ruff (lint)
-      #   run: ruff check .
+      #linter
+      - name: Ruff (lint)
+        run: ruff check .
 
+      #coverage
       - name: Tests with coverage
         run: |
           coverage run -m pytest
