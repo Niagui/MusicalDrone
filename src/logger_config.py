@@ -17,17 +17,17 @@ color_formatter = colorlog.ColoredFormatter(
     fmt="%(log_color)s%(asctime)s | %(levelname)-8s | %(name)s | %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S",
     log_colors={
-        "DEBUG":    "cyan",
-        "INFO":     "green",
-        "WARNING":  "yellow",
-        "ERROR":    "red",
+        "DEBUG": "cyan",
+        "INFO": "green",
+        "WARNING": "yellow",
+        "ERROR": "red",
         "CRITICAL": "bold_red",
-    }
+    },
 )
 
 formatter = logging.Formatter(
     fmt="%(asctime)s | %(levelname)-8s | %(name)s | %(message)s",
-    datefmt="%Y-%m-%d %H:%M:%S"
+    datefmt="%Y-%m-%d %H:%M:%S",
 )
 console_handler.setFormatter(formatter)
 file_handler.setFormatter(formatter)
@@ -37,26 +37,32 @@ if not logger.handlers:  # prevent adding twice if re-imported
     logger.addHandler(console_handler)
     logger.addHandler(file_handler)
 
+
 # Logging functions
 def log_debug(message):
     """Log a debug message."""
     logger.debug(message)
 
+
 def log_info(message):
     """Log an informational message."""
     logger.info(message)
+
 
 def log_warning(message):
     """Log a warning message."""
     logger.warning(message)
 
+
 def log_error(message):
     """Log an error message."""
     logger.error(message)
 
+
 def log_critical(message):
     """Log a critical error message."""
     logger.critical(message)
+
 
 if __name__ == "__main__":
     log_debug("Debugging details.")
