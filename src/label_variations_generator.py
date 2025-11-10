@@ -21,6 +21,7 @@ import math
 import datetime
 from typing import Any, Dict, List, Tuple, Optional
 from dataclasses import dataclass
+from dotenv import load_dotenv
 
 try:
     from openai import OpenAI
@@ -32,11 +33,11 @@ except Exception:
 # =============================================================================
 # Configuration
 # =============================================================================
-
-INPUT_JSON = "../json/clap_results.json"       # path to CLAP export
-OUTPUT_JSON = "../json/llm_weights.json"       # where we write variations
+load_dotenv()
+INPUT_JSON = "json/clap_results.json"       # path to CLAP export
+OUTPUT_JSON = "json/llm_weights.json"       # where we write variations
 MODEL_NAME = "gpt-4o-mini"             # model to use
-OPENAI_API_KEY = None                  # set your API key here or use os.environ['OPENAI_API_KEY']
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY") # set your API key here or use os.environ['OPENAI_API_KEY']
 
 # Sizing & batching
 TARGET_PROMPT_TOKENS = 1400
