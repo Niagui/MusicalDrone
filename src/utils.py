@@ -1,6 +1,8 @@
 import soundfile as sf
 import json
 import numpy as np
+import torch
+from logger_config import *
 from numpy.typing import ArrayLike
 
 def get_duration(audio_file) -> float:
@@ -40,7 +42,7 @@ def smooth_step(t: float) -> float:
     t = np.clip(t, 0.0, 1.0)
     return t*t*(3.0 - 2.0*t)
 
-def normalize(values: ArrayLike) -> np.ndarray:
+def normalize(values) -> np.ndarray:
 
     """arousal and valences are ranged from [1,9] and normalize to [-1,1]
     Args:
@@ -50,3 +52,9 @@ def normalize(values: ArrayLike) -> np.ndarray:
     """
     v = np.asarray(values, dtype=float)
     return 2 * ((v - 1) / 8) - 1
+
+def check_environment():
+    torch.backends.cudnn.enabled = True
+    if torch.cuda.is_available():
+        print("GPU(s):", torch.cuda.device_count(), torch.cuda.get_device_name(0))
+    return

@@ -40,9 +40,10 @@ def group_beats(beat_times, k=8, save_to_json=False, destination=None) -> list:
     segments = []
     for i in range(0, len(b) - k, k):
         segments.append((b[i], b[i + k])) 
-
+    segments = list(segments)
+    
     if save_to_json:
-        save_as_json('k_beat_segments', list(segments), folder="")
+        save_as_json('k_beat_segments', segments, folder="")
     return segments
 
 if __name__ == '__main__':
