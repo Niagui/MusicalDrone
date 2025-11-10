@@ -1,4 +1,6 @@
-import logging, os, colorlog
+import logging
+import os
+import colorlog
 
 logger = logging.getLogger("clap_logger")
 logger.setLevel(logging.DEBUG)  # Capture all levels
