@@ -1,7 +1,7 @@
 import librosa
 import numpy as np
-from utils import *
-from logger_config import *
+from src.utils import *
+from src.logger_config import *
 
 def beat_track(audio_file, save_to_json=False) -> tuple:
     """
@@ -52,7 +52,8 @@ if __name__ == '__main__':
     #demo
     audiofile = 'audio/testSong.mp3'
     beat_times, tempo = beat_track(audiofile, save_to_json=True)
-    print("ok")
+    print(len(beat_times))
+    print(tempo)
     group_beats(beat_times, save_to_json=True)
     print(f"Estimated tempo: {tempo} BPM")
     print("Beat times (s):", beat_times)

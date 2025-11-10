@@ -2,7 +2,7 @@ import soundfile as sf
 import json
 import numpy as np
 import torch
-from logger_config import *
+from src.logger_config import *
 from numpy.typing import ArrayLike
 
 def get_duration(audio_file) -> float:
