@@ -56,5 +56,7 @@ def normalize(values) -> np.ndarray:
 def check_environment():
     torch.backends.cudnn.enabled = True
     if torch.cuda.is_available():
-        print("GPU(s):", torch.cuda.device_count(), torch.cuda.get_device_name(0))
+        log_info(f"GPU(s):{torch.cuda.device_count()} {torch.cuda.get_device_name(0)}")
+    else:
+        log_info("Running on cpu")
     return

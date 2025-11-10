@@ -1,6 +1,7 @@
 import librosa
 import numpy as np
 from utils import *
+from logger_config import *
 
 def beat_track(audio_file, save_to_json=False) -> tuple:
     """
@@ -18,6 +19,7 @@ def beat_track(audio_file, save_to_json=False) -> tuple:
         beat_times (np.ndarray): Array of beat times in seconds.
         tempo (float): Estimated tempo in beats per minute (BPM).
     """
+    log_info("Running beat tracker...")
     y, sr = librosa.load(audio_file, sr=22050)
     tempo, beattrack = librosa.beat.beat_track(y=y, sr=sr)
     beat_times = librosa.frames_to_time(beattrack, sr=sr)
