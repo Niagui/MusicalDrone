@@ -28,7 +28,7 @@ def main():
         print("labels:", labels)
         print("scores", scores)
         ## switch out the label and the score here:
-        
+
 
         emb = clap.get_text_embedding(labels).numpy()
         weights = clap.classify_new_emotion(emb)
@@ -44,7 +44,6 @@ def main():
 
         print("weights", final_weights)
 
-    print(np.array(w))
     save_as_json("clap_weights", js, folder="")
     return w
 
