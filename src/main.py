@@ -4,11 +4,13 @@ import beat_track as bt
 import clap as cp
 import utils
 import logger_config as logger
-
-AUDIO = "audio/testSong.mp3"
+from pathlib import Path
 
 
 def main():
+    PROJECT_ROOT = Path(__file__).resolve().parents[1]
+    AUDIO = PROJECT_ROOT / "audio" / "testSong.mp3"
+
     beat_times, _ = bt.beat_track(AUDIO)
     bt.group_beats(beat_times, save_to_json=True)
     utils.check_environment()
