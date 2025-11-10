@@ -36,7 +36,7 @@ def main():
         ## switch out the label and the score here:
         top = max(llm_segments[i]["variations"], key=lambda x: x["weight"])
         labels.append(top["variant"])
-        scores = np.append(scores, top["weight"])
+        scores = np.append(scores/4, top["weight"])
 
         # check labels and weights
         print("labels:", labels)
