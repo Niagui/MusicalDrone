@@ -3,3 +3,5 @@ external/*
 pre.txt
 /__pycache__
 segments/*
+
+logs/*
