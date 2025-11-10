@@ -8,6 +8,7 @@ certifi==2024.7.4
 cffi==1.16.0
 charset-normalizer==3.3.2
 click==8.3.0
+colorlog==6.10.1
 comm==0.2.3
 contourpy==1.2.1
 coverage==7.11.0
