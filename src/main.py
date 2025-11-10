@@ -1,18 +1,21 @@
-import src.beat_track
-from src.clap import *
-from src.utils import *
+import json
+import numpy as np
+import beat_track as bt
+import clap as cp
+import utils
+import logger_config as logger
 
 AUDIO = 'audio/testSong.mp3'
 
 def main():
-    beat_times, _ = beat_track.beat_track(AUDIO)
-    beat_track.group_beats(beat_times, save_to_json=True)
-    check_environment()
-    clap = Clap()
+    beat_times, _ = bt.beat_track(AUDIO)
+    bt.group_beats(beat_times, save_to_json=True)
+    utils.check_environment()
+    clap = cp.Clap()
     clap.retrieve_info()
     result = clap.analyze_audio(AUDIO)
 
-    log_debug("reading from llm variations")
+    logger.log_debug("reading from llm variations")
     with open('json/llm_weights.json', 'r') as f:
         llm_weights = json.load(f)
     llm_segments = llm_weights["segments"]
@@ -24,7 +27,7 @@ def main():
     w = []  #weights
     js = [] #data in json format
 
-    log_debug("Begin calculating emotion embeddings")
+    logger.log_debug("Begin calculating emotion embeddings")
     for i, seg in enumerate(result):
         print(f"\n------------------------------------------------")
         print(f"Segment {seg['start']:.2f}-{seg['end']:.2f}s")
@@ -56,7 +59,7 @@ def main():
 
         print("weights", final_weights)
 
-    save_as_json("clap_weights", js, folder="")
+    utils.save_as_json("clap_weights", js, folder="")
     return w
 
 if __name__ == "__main__":

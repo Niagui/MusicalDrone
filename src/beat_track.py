@@ -1,7 +1,7 @@
 import librosa
 import numpy as np
-from src.utils import *
-from src.logger_config import *
+import utils
+import logger_config as logger
 
 def beat_track(audio_file, save_to_json=False) -> tuple:
     """
@@ -19,12 +19,12 @@ def beat_track(audio_file, save_to_json=False) -> tuple:
         beat_times (np.ndarray): Array of beat times in seconds.
         tempo (float): Estimated tempo in beats per minute (BPM).
     """
-    log_info("Running beat tracker...")
+    logger.log_info("Running beat tracker...")
     y, sr = librosa.load(audio_file, sr=22050)
     tempo, beattrack = librosa.beat.beat_track(y=y, sr=sr)
     beat_times = librosa.frames_to_time(beattrack, sr=sr)
     if save_to_json:
-        save_as_json('beat_times', list(beat_times), folder="")
+        utils.save_as_json('beat_times', list(beat_times), folder="")
     return np.array(beat_times), np.round(tempo)     #cast bpm to int for convenience
 
 def group_beats(beat_times, k=8, save_to_json=False, destination=None) -> list:
@@ -45,7 +45,7 @@ def group_beats(beat_times, k=8, save_to_json=False, destination=None) -> list:
     segments = list(segments)
     
     if save_to_json:
-        save_as_json('k_beat_segments', segments, folder="")
+        utils.save_as_json('k_beat_segments', segments, folder="")
     return segments
 
 if __name__ == '__main__':

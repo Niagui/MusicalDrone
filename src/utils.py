@@ -2,8 +2,7 @@ import soundfile as sf
 import json
 import numpy as np
 import torch
-from src.logger_config import *
-from numpy.typing import ArrayLike
+import logger_config as logger
 
 def get_duration(audio_file) -> float:
 
@@ -56,7 +55,7 @@ def normalize(values) -> np.ndarray:
 def check_environment():
     torch.backends.cudnn.enabled = True
     if torch.cuda.is_available():
-        log_info(f"GPU(s):{torch.cuda.device_count()} {torch.cuda.get_device_name(0)}")
+        logger.log_info(f"GPU(s):{torch.cuda.device_count()} {torch.cuda.get_device_name(0)}")
     else:
-        log_info("Running on cpu")
+        logger.log_info("Running on cpu")
     return

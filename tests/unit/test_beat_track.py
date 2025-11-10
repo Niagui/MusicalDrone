@@ -1,4 +1,4 @@
-from src.beat_track import *
+from src.beat_track import beat_track
 
 AUDIO = "audio/testSong.mp3"
 
