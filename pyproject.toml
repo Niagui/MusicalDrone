@@ -8,6 +8,19 @@ addopts = "-ra"
 requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
+[project]
+name = "Musical_Drone"
+authors = [{name = "", email = ""}]
+version = "0.1.0"
+readme = README.md
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest"
+]
+
 [tool.ruff]
 exclude = [
     ".git",
