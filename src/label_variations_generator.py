@@ -2,8 +2,8 @@
 """
 Label Variation Generator — Moods & Characteristics Only (with Segment Timing)
 
-This script reads `clap_results.json`, generates variations **only for moods and 
-characteristics** (excluding valence, arousal, and tension), and writes 
+This script reads `clap_results.json`, generates variations **only for moods and
+characteristics** (excluding valence, arousal, and tension), and writes
 `llm_weights.json` with label variations **preserving the original time segments**.
 
 Key features:
@@ -24,6 +24,7 @@ from dotenv import load_dotenv
 
 try:
     from openai import OpenAI
+
     SDK = "v1"
 except Exception:
     OpenAI = None
@@ -33,10 +34,12 @@ except Exception:
 # Configuration
 # =============================================================================
 load_dotenv()
-INPUT_JSON = "json/clap_results.json"       # path to CLAP export
-OUTPUT_JSON = "json/llm_weights.json"       # where we write variations
-MODEL_NAME = "gpt-4o-mini"             # model to use
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY") # set your API key here or use os.environ['OPENAI_API_KEY']
+INPUT_JSON = "json/clap_results.json"  # path to CLAP export
+OUTPUT_JSON = "json/llm_weights.json"  # where we write variations
+MODEL_NAME = "gpt-4o-mini"  # model to use
+OPENAI_API_KEY = os.getenv(
+    "OPENAI_API_KEY"
+)  # set your API key here or use os.environ['OPENAI_API_KEY']
 
 # Sizing & batching
 TARGET_PROMPT_TOKENS = 1400
@@ -62,6 +65,7 @@ TOP_PER_CATEGORY = 2
 # Utility Functions
 # =============================================================================
 
+
 def estimate_tokens_from_text(s: str) -> int:
     """Rough token estimator: ~4 chars per token"""
     return max(1, int(len(s) / 4))
@@ -80,8 +84,16 @@ class UsageTally:
 
 
 def usd_cost(usage: UsageTally) -> Dict[str, Optional[float]]:
-    inp = None if INPUT_USD_PER_1K is None else usage.prompt_tokens / 1000.0 * INPUT_USD_PER_1K
-    out = None if OUTPUT_USD_PER_1K is None else usage.completion_tokens / 1000.0 * OUTPUT_USD_PER_1K
+    inp = (
+        None
+        if INPUT_USD_PER_1K is None
+        else usage.prompt_tokens / 1000.0 * INPUT_USD_PER_1K
+    )
+    out = (
+        None
+        if OUTPUT_USD_PER_1K is None
+        else usage.completion_tokens / 1000.0 * OUTPUT_USD_PER_1K
+    )
     tot = None if inp is None or out is None else inp + out
     return {"input_usd": inp, "output_usd": out, "total_usd": tot}
 
@@ -89,6 +101,7 @@ def usd_cost(usage: UsageTally) -> Dict[str, Optional[float]]:
 # =============================================================================
 # JSON Parsing Helpers
 # =============================================================================
+
 
 def _strip_code_fences(text: str) -> str:
     """Remove markdown code fences from JSON"""
@@ -100,21 +113,21 @@ def _strip_code_fences(text: str) -> str:
 def _balanced_brace_slice(text: str) -> Optional[str]:
     """Extract the first balanced JSON object from text"""
     s = text
-    start = s.find('{')
+    start = s.find("{")
     if start == -1:
         return None
     depth = 0
     last_valid_end = None
     for i in range(start, len(s)):
         ch = s[i]
-        if ch == '{':
+        if ch == "{":
             depth += 1
-        elif ch == '}':
+        elif ch == "}":
             depth -= 1
             if depth == 0:
                 last_valid_end = i
     if last_valid_end is not None:
-        return s[start:last_valid_end + 1]
+        return s[start : last_valid_end + 1]
     return None
 
 
@@ -162,17 +175,20 @@ def normalize_variations(obj: Dict[str, Any]) -> List[Dict[str, Any]]:
     """Normalize variation records to standard format"""
     out = []
     for rec in obj["variations"]:
-        out.append({
-            "source": str(rec["source"]),
-            "variant": str(rec["variant"]),
-            "weight": float(rec["weight"]),
-        })
+        out.append(
+            {
+                "source": str(rec["source"]),
+                "variant": str(rec["variant"]),
+                "weight": float(rec["weight"]),
+            }
+        )
     return out
 
 
 # =============================================================================
 # Prompt Building
 # =============================================================================
+
 
 def topn(items, n=3, key=lambda x: x.get("score", 0.0)):
     """Get top N items by score"""
@@ -182,11 +198,14 @@ def topn(items, n=3, key=lambda x: x.get("score", 0.0)):
 @dataclass
 class SegmentBlock:
     """Represents a segment with its prompt block and metadata"""
+
     segment_index: int
     start: float
     end: float
     prompt_text: str
-    original_labels: List[Dict[str, Any]]  # Store the original labels with their categories
+    original_labels: List[
+        Dict[str, Any]
+    ]  # Store the original labels with their categories
 
 
 def segment_to_block(seg: Dict[str, Any], index: int) -> SegmentBlock:
@@ -194,7 +213,7 @@ def segment_to_block(seg: Dict[str, Any], index: int) -> SegmentBlock:
     feat = seg.get("feature", {})
     lines = []
     original_labels = []
-    
+
     # Extract time window
     start = seg.get("start", 0.0)
     end = seg.get("end", 0.0)
@@ -210,19 +229,15 @@ def segment_to_block(seg: Dict[str, Any], index: int) -> SegmentBlock:
             lab = it.get("label", "")
             sc = float(it.get("score", 0.0))
             lines.append(f"- {lab} (weight={sc:.3f})")
-            original_labels.append({
-                "category": cat,
-                "label": lab,
-                "score": sc
-            })
-    
+            original_labels.append({"category": cat, "label": lab, "score": sc})
+
     prompt_text = "\n".join(lines)
     return SegmentBlock(
         segment_index=index,
         start=start,
         end=end,
         prompt_text=prompt_text,
-        original_labels=original_labels
+        original_labels=original_labels,
     )
 
 
@@ -252,18 +267,23 @@ def build_prompt(blocks: List[SegmentBlock]) -> str:
 # OpenAI API Calls
 # =============================================================================
 
+
 def get_openai_client():
     """Initialize OpenAI client"""
     key = OPENAI_API_KEY or os.getenv("OPENAI_API_KEY")
     if not key:
-        raise RuntimeError("Set OPENAI_API_KEY in the config or as an environment variable.")
+        raise RuntimeError(
+            "Set OPENAI_API_KEY in the config or as an environment variable."
+        )
     if OpenAI is None:
         raise RuntimeError("OpenAI SDK not found. `pip install openai>=1.0.0`")
     client = OpenAI(api_key=key)
     return client
 
 
-def call_json_mode(prompt: str, *, model: str, max_tokens: int) -> Tuple[Dict[str, Any], Dict[str, Any]]:
+def call_json_mode(
+    prompt: str, *, model: str, max_tokens: int
+) -> Tuple[Dict[str, Any], Dict[str, Any]]:
     """Call OpenAI API in JSON mode"""
     client = get_openai_client()
     resp = client.chat.completions.create(
@@ -271,26 +291,36 @@ def call_json_mode(prompt: str, *, model: str, max_tokens: int) -> Tuple[Dict[st
         messages=[
             {"role": "system", "content": SYSTEM_JSON_SCHEMA},
             {"role": "user", "content": prompt},
-            {"role": "assistant", "content": "Respond ONLY with a JSON object per the schema."},
+            {
+                "role": "assistant",
+                "content": "Respond ONLY with a JSON object per the schema.",
+            },
         ],
         temperature=0.2,
         max_tokens=max_tokens,
         response_format={"type": "json_object"},
     )
     raw = resp.choices[0].message.content
-    print("RAW FROM MODEL >>>", repr(raw)[:200] + ("..." if len(repr(raw)) > 200 else ""))
+    print(
+        "RAW FROM MODEL >>>", repr(raw)[:200] + ("..." if len(repr(raw)) > 200 else "")
+    )
     obj = parse_json_strict(raw)
     validate_variations_schema(obj)
     usage = getattr(resp, "usage", {}) or {}
     usage = {
-        "prompt_tokens": getattr(usage, "prompt_tokens", None) or usage.get("prompt_tokens"),
-        "completion_tokens": getattr(usage, "completion_tokens", None) or usage.get("completion_tokens"),
-        "total_tokens": getattr(usage, "total_tokens", None) or usage.get("total_tokens"),
+        "prompt_tokens": getattr(usage, "prompt_tokens", None)
+        or usage.get("prompt_tokens"),
+        "completion_tokens": getattr(usage, "completion_tokens", None)
+        or usage.get("completion_tokens"),
+        "total_tokens": getattr(usage, "total_tokens", None)
+        or usage.get("total_tokens"),
     }
     return obj, usage
 
 
-def call_with_retries(prompt: str, *, model: str, max_tokens: int, retries: int, backoff_base_s: float):
+def call_with_retries(
+    prompt: str, *, model: str, max_tokens: int, retries: int, backoff_base_s: float
+):
     """Call OpenAI with exponential backoff retries"""
     last_err = None
     for i in range(1, retries + 1):
@@ -308,6 +338,7 @@ def call_with_retries(prompt: str, *, model: str, max_tokens: int, retries: int,
 # Batching Strategy
 # =============================================================================
 
+
 def load_clap(path: str) -> List[Dict[str, Any]]:
     """Load CLAP results from JSON file"""
     with open(path, "r", encoding="utf-8") as f:
@@ -321,7 +352,9 @@ def build_segment_blocks(segments: List[Dict[str, Any]]) -> List[SegmentBlock]:
 
 def count_labels_in_block(block: SegmentBlock) -> int:
     """Count the number of labels in a SegmentBlock"""
-    return sum(1 for line in block.prompt_text.splitlines() if line.strip().startswith("- "))
+    return sum(
+        1 for line in block.prompt_text.splitlines() if line.strip().startswith("- ")
+    )
 
 
 def estimate_completion_tokens_for_block(block: SegmentBlock) -> int:
@@ -331,14 +364,19 @@ def estimate_completion_tokens_for_block(block: SegmentBlock) -> int:
     return labels * VARIANTS_PER_LABEL * VAR_TOKENS
 
 
-def pack_batches(blocks: List[SegmentBlock], target_prompt_tokens: int, target_completion_tokens: int) -> List[List[SegmentBlock]]:
+def pack_batches(
+    blocks: List[SegmentBlock], target_prompt_tokens: int, target_completion_tokens: int
+) -> List[List[SegmentBlock]]:
     """Pack SegmentBlocks into batches respecting token limits"""
     batches = []
     cur, cur_p_tokens, cur_c_tokens = [], 0, 0
     for b in blocks:
         bp = estimate_tokens_from_text(b.prompt_text)
         bc = estimate_completion_tokens_for_block(b)
-        if cur and ((cur_p_tokens + bp) > target_prompt_tokens or (cur_c_tokens + bc) > target_completion_tokens):
+        if cur and (
+            (cur_p_tokens + bp) > target_prompt_tokens
+            or (cur_c_tokens + bc) > target_completion_tokens
+        ):
             batches.append(cur)
             cur, cur_p_tokens, cur_c_tokens = [], 0, 0
         cur.append(b)
@@ -363,15 +401,14 @@ def plan_calls(clap_segments: List[Dict[str, Any]]):
 
 
 def distribute_variations_to_segments(
-    batch: List[SegmentBlock], 
-    variations: List[Dict[str, Any]]
+    batch: List[SegmentBlock], variations: List[Dict[str, Any]]
 ) -> Dict[int, List[Dict[str, Any]]]:
     """
     Distribute variations back to their source segments.
     Matches variations to segments based on source labels.
     """
     segment_variations = {block.segment_index: [] for block in batch}
-    
+
     # Create a mapping of source labels to segment indices
     label_to_segments = {}
     for block in batch:
@@ -380,7 +417,7 @@ def distribute_variations_to_segments(
             if label not in label_to_segments:
                 label_to_segments[label] = []
             label_to_segments[label].append(block.segment_index)
-    
+
     # Distribute variations to segments
     for var in variations:
         source = var["source"]
@@ -388,7 +425,7 @@ def distribute_variations_to_segments(
             # Add this variation to all segments that have this source label
             for seg_idx in label_to_segments[source]:
                 segment_variations[seg_idx].append(var)
-    
+
     return segment_variations
 
 
@@ -396,13 +433,14 @@ def distribute_variations_to_segments(
 # Main Execution
 # =============================================================================
 
+
 def main():
     """Main execution function"""
     print("=" * 70)
     print("Label Variation Generator — Moods & Characteristics Only")
     print("(Preserving Time Segments)")
     print("=" * 70)
-    
+
     print("\nLoading CLAP results...")
     clap = load_clap(INPUT_JSON)
     print(f"Loaded {len(clap)} segments")
@@ -414,7 +452,7 @@ def main():
     print(f"Estimated prompt tokens (total): {plan['estimated_prompt_tokens_total']}")
 
     usage_total = UsageTally()
-    
+
     # Initialize segment variations storage
     all_segment_variations = {i: [] for i in range(len(clap))}
 
@@ -427,14 +465,14 @@ def main():
             model=MODEL_NAME,
             max_tokens=TARGET_COMPLETION_TOKENS,
             retries=RETRIES,
-            backoff_base_s=BACKOFF_BASE_S
+            backoff_base_s=BACKOFF_BASE_S,
         )
         usage_total.add(usage or {})
-        
+
         # Get normalized variations
         variations = normalize_variations(obj)
         print(f"Received {len(variations)} variations")
-        
+
         # Distribute variations to their source segments
         segment_vars = distribute_variations_to_segments(batch, variations)
         for seg_idx, vars_list in segment_vars.items():
@@ -455,7 +493,7 @@ def main():
                 for cat in CATEGORIES
                 if seg.get("feature", {}).get(cat)
             },
-            "variations": all_segment_variations[i]
+            "variations": all_segment_variations[i],
         }
         output_segments.append(segment_out)
 
@@ -464,7 +502,8 @@ def main():
     out = {
         "source_file": os.path.basename(INPUT_JSON),
         "model": MODEL_NAME,
-        "generated_at": datetime.datetime.utcnow().replace(microsecond=0).isoformat() + "Z",
+        "generated_at": datetime.datetime.utcnow().replace(microsecond=0).isoformat()
+        + "Z",
         "categories_processed": CATEGORIES,
         "total_segments": len(output_segments),
         "segments": output_segments,
@@ -486,7 +525,7 @@ def main():
     print(f"Usage: {usage_total}")
 
     cost = usd_cost(usage_total)
-    if cost['total_usd'] is not None:
+    if cost["total_usd"] is not None:
         print(f"✓ Estimated cost: ${cost['total_usd']:.4f}")
     else:
         print("✓ Set INPUT_USD_PER_1K and OUTPUT_USD_PER_1K for cost estimates")
