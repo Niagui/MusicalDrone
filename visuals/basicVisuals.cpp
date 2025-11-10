@@ -22,6 +22,7 @@
 
 #include "boids.h"
 
+
 #if defined(__APPLE__)
   #include <GLUT/glut.h>   //macOS
 #else
@@ -32,6 +33,7 @@
 #include <vector>
 #include <algorithm>
 #include <cstdio>
+#include <iostream>
 
 
 #ifndef M_PI
@@ -47,6 +49,9 @@ float gTime = 0.0f;             // seconds (advances when playing)
 bool  gPlaying = true;          // Space toggles
 bool  gSpin = true;             // S toggles
 bool  gUseBoids = false;        // b toggles
+static std::string gHudMsg;
+static char gHudBuf[128];
+static float gHudUntil = 0.0; 
 
 // Sphere cam params
 float gCamTheta = 0.7f;   // azimuth
@@ -195,6 +200,45 @@ static void DrawDrone(){
     glutSolidCone(0.06, 0.15, 10, 1);
 }
 
+static void DrawBitmapString(float x, float y, void* font, const char* s) {
+    glRasterPos2f(x, y);
+    for (const char* p = s; *p; ++p) glutBitmapCharacter(font, *p);
+}
+
+static void DrawHUD() {
+    if (gTime > gHudUntil) return;
+    if (gHudMsg.empty()) return;
+
+    // switch to screen-space
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+
+    int w = glutGet(GLUT_WINDOW_WIDTH);
+    int h = glutGet(GLUT_WINDOW_HEIGHT);
+    gluOrtho2D(0, w, 0, h);
+
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glLoadIdentity();
+
+    glDisable(GL_LIGHTING);
+    glColor3f(1.0f, 1.0f, 1.0f);
+
+    glRasterPos2i(20, h - 40);
+
+    for (char c : gHudMsg)
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
+
+    glEnable(GL_LIGHTING);
+
+    glPopMatrix();
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
+    
+}
+
 // Simple bitmap text (overlay/HUD)
 static void DoRasterString(float x, float y, const char *s){
     glRasterPos3f(x, y, 0);
@@ -236,7 +280,7 @@ static void Display(){
             glColor3f(0.7f, 0.85f*u, 1.0f - 0.6f*u);
             DrawDrone();
         glPopMatrix();
-}
+    }
 
     // HUD text (top-left in world space near camera; simpler than switching to ortho)
     glDisable(GL_LIGHTING);
@@ -246,13 +290,13 @@ static void Display(){
     //move text slightly in front of camera
     glTranslatef(-3.5f, 3.5f, -10.0f);
 
-        const char* state = gPlaying ? ">" : "||";  // << use string not multi-char '||'
-        char buf[256];
-        std::snprintf(buf, sizeof(buf),
-                "Drones: %d  |  Formation: %s  |  Speed: %.2fx  |  [%s]",
-                gDroneCount,
-                (gForm==CIRCLE? "Circle": gForm==LINE? "Line": gForm==WAVE? "Wave": "Heart"),
-                gSpeed, state);
+    const char* state = gPlaying ? ">" : "||";  // << use string not multi-char '||'
+    char buf[256];
+    std::snprintf(buf, sizeof(buf),
+        "Drones: %d  |  Formation: %s  |  Speed: %.2fx  |  [%s]",
+        gDroneCount,
+        (gForm==CIRCLE? "Circle": gForm==LINE? "Line": gForm==WAVE? "Wave": "Heart"),
+        gSpeed, state);
     DoRasterString(0, 0, buf);
     DoRasterString(0, -0.5f,
         "Keys: 1 Circle  2 Line  3 Wave  4 Heart  |  +/- Drones  |  Space Play/Pause  |  S Spin  |  , . Speed  |  Drag/Wheel Camera");
@@ -276,6 +320,8 @@ static void Display(){
     glEnable(GL_LIGHTING);
 
     glutSwapBuffers();
+
+    DrawHUD();
 }
 
 static void Idle(){
@@ -325,7 +371,17 @@ static void Keyboard(unsigned char key, int, int){
         case 's': case 'S': gSpin = !gSpin; break;
         case ',': gSpeed = clampf(gSpeed - 0.05f, 0.1f, 3.0f); break;
         case '.': gSpeed = clampf(gSpeed + 0.05f, 0.1f, 3.0f); break;
-        default: break;
+        case 'e': case 'E': {
+            float t = gTime;  // use current clock
+            bool ok = ReloadAndApplyEmotions(t);
+            const char* msg = ok
+            ? "Emotions loaded from clap_weights.json and applied"
+            : "Emotion load failed";
+            gHudMsg = msg;
+            gHudUntil = t + 1.5f;
+            glutPostRedisplay();
+        break;
+}
     }
 }
 
