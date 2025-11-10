@@ -3,17 +3,18 @@ import librosa
 import torch
 from transformers import pipeline, ClapProcessor, ClapModel
 import json
-from src.logger_config import *
-from src.utils import *
+import logger_config as logger
+import utils
+from pathlib import Path
 
 class Clap:
     def __init__(self, model_name="laion/larger_clap_general", device=None):
-        log_info("initiating clap")
+        logger.log_info("initiating clap")
         self.device = device or ("cuda" if torch.cuda.is_available() else "cpu")
         self.model = ClapModel.from_pretrained("laion/larger_clap_general")
         self.processor = ClapProcessor.from_pretrained(model_name)
         self.audio_classifier = pipeline(task="zero-shot-audio-classification", model="laion/larger_clap_general", batch=8, device=device)
-        log_info("clap initiation successful")
+        logger.log_info("clap initiation successful")
 
     
     def _emb(self, text):
@@ -34,7 +35,7 @@ class Clap:
 
 
     def retrieve_info(self):
-        log_info("retrieving clap info")
+        logger.log_info("retrieving clap info")
         clap_label_json = "json/clap_labels.json"
         with open(clap_label_json, 'r') as f:
             self.music_labels = json.load(f)
@@ -53,7 +54,7 @@ class Clap:
         for i, label in enumerate(self.anchor_labels):
             self.anchor_labels_emb[label] = emb[i].tolist()
 
-        log_info("retrieving clap info successful")
+        logger.log_info("retrieving clap info successful")
 
 
     def analyze_audio(self, audio, time_base=None, labels=None, sr=22050, k=3, threshold=0.1):
@@ -63,7 +64,7 @@ class Clap:
         if labels is None:
             labels = self.music_labels
         
-        log_info("analyzing audio")
+        logger.log_info("analyzing audio")
         result = []
         y, sr = librosa.load(audio, sr=sr)
         for [start, end] in time_base:
@@ -82,7 +83,7 @@ class Clap:
                 "end": end,
                 "feature": features
             })
-        log_info("retrieving clap info")
+        logger.log_info("retrieving clap info")
         return result
 
 
@@ -120,14 +121,14 @@ class Clap:
         key = list(self.anchor_labels_emb.keys())
         # emotion_vector = np.array(self.get_text_embedding(emotion_vector).tolist()[0])
         sims = np.array([self.get_cosine_similarity(vec, val) for vec in emotion_vector])
-        log_debug(f"sims:{sims.shape}")
+        logger.log_debug(f"sims:{sims.shape}")
 
         top_idx = np.argpartition(-sims, k-1, axis=1)[:, :k]
         w = np.zeros_like(sims)
         row_idx = np.arange(sims.shape[0])[:, None]
         w[row_idx, top_idx] = np.exp(sims[row_idx, top_idx] / temperature)
         w /= (w.sum(axis=1, keepdims=True) + np.finfo(float).eps)
-        log_debug(f"weights:{w.shape}")
+        logger.log_debug(f"weights:{w.shape}")
 
         
         for i, (s, idxs) in enumerate(zip(sims, top_idx)):
@@ -171,10 +172,11 @@ def clap_pipeline(audio_file):
         print("weights", final_weights)
 
     print(np.array(w))
-    save_as_json("clap_weights", js, folder="")
+    utils.save_as_json("clap_weights", js, folder="")
     return w
 
 
 if __name__ == "__main__":
-    audio_file = 'audio/testSong.mp3'
-    final_weights = clap_pipeline(audio_file)
+    PROJECT_ROOT = Path(__file__).resolve().parents[1]
+    AUDIO = PROJECT_ROOT / "audio" / "testSong.mp3"
+    final_weights = clap_pipeline(AUDIO)

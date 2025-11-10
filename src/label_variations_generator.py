@@ -474,7 +474,7 @@ def main():
         json.dump(out, f, ensure_ascii=False, indent=2)
 
     # Calculate statistics
-    total_variations = sum(len(seg["variations"]) for seg in output_segments)
+    # total_variations = sum(len(seg["variations"]) for seg in output_segments)
     segments_with_variations = sum(1 for seg in output_segments if seg["variations"])
 
     print("\n" + "=" * 70)
@@ -492,7 +492,7 @@ def main():
         print("✓ Set INPUT_USD_PER_1K and OUTPUT_USD_PER_1K for cost estimates")
 
     print(f"\n✓ Categories processed: {', '.join(CATEGORIES)}")
-    print(f"✓ Categories excluded: valence, arousal, tension")
+    print("✓ Categories excluded: valence, arousal, tension")
     print("=" * 70)
 
 

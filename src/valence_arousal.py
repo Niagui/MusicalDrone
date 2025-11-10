@@ -2,7 +2,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import librosa
-from utils import *
+from utils import save_as_json, get_duration, normalize
 from essentia.standard import TensorflowPredictMusiCNN, TensorflowPredict2D
 from matplotlib.animation import FuncAnimation, PillowWriter
 
