@@ -1,5 +1,8 @@
 #pragma once
 #include <vector>
+#include <string>
+
+bool ReloadAndApplyEmotions(float t);
 
 // basic vector struct for positions/velocities
 struct Vec3 {
@@ -39,12 +42,17 @@ struct BoidParams {
     float jitter;
 };
 
+bool LoadEmotionFile(const std::string& path);
+std::vector<float> GetEmotionWeights(float t);
+void ApplyEmotion(const std::vector<float>& w, BoidParams& P);
+bool ReloadAndApplyEmotions(float t);
+
 // External functions
 void InitBoids(int count);
 void ResizeBoids(int count);
 void UpdateBoids(float dt, const std::vector<Vec3>& targets);
 void SetBoidParams(const BoidParams& p);
 void ResetVelocities();
-std::vector<Vec3>& GetBoidPositions();  //to draw in basicVisuals.cpp
 
+std::vector<Vec3>& GetBoidPositions();  //to draw in basicVisuals.cpp
 const BoidParams& GetBoidParams();
