@@ -3,5 +3,5 @@ external/*
 pre.txt
 /__pycache__
 segments/*
-
+.env
 logs/*

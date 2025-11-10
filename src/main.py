@@ -12,12 +12,20 @@ def main():
     clap.retrieve_info()
     result = clap.analyze_audio(AUDIO)
 
+    log_debug("reading from llm variations")
+    with open('json/llm_weights.json', 'r') as f:
+        llm_weights = json.load(f)
+    llm_segments = llm_weights["segments"]
+
+
     ##put it through llm and replace updated labels. main should generate a clap_weights.json that could be
     ##used for the boids.cpp
     ##-----------------------------------------------------------------
     w = []  #weights
-    js = [] #
-    for seg in result:
+    js = [] #data in json format
+
+    log_debug("Begin calculating emotion embeddings")
+    for i, seg in enumerate(result):
         print(f"\n------------------------------------------------")
         print(f"Segment {seg['start']:.2f}-{seg['end']:.2f}s")
 
@@ -25,13 +33,17 @@ def main():
         labels = [m["label"] for m in moods]    #don't cast to nparray
         scores = np.array([m["score"] for m in moods])
 
+        ## switch out the label and the score here:
+        top = max(llm_segments[i]["variations"], key=lambda x: x["weight"])
+        labels.append(top["variant"])
+        scores = np.append(scores, top["weight"])
+
+        # check labels and weights
         print("labels:", labels)
         print("scores", scores)
-        ## switch out the label and the score here:
-
 
         emb = clap.get_text_embedding(labels).numpy()
-        weights = clap.classify_new_emotion(emb)
+        weights = clap.classify_new_emotion(emb, k=3)
         final_weights = (weights * scores[:, None]).sum(axis=0)
         w.append(final_weights)
         js.append(
