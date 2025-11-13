@@ -4,7 +4,6 @@ import beat_track as bt
 import clap as cp
 import utils
 import logger_config as logger
-import subprocess
 from pathlib import Path
 
 
@@ -61,10 +60,7 @@ def main():
     utils.save_as_json("clap_weights", js, folder="")
     return w
 
-def run_cpp_part():
-    subprocess.run(["visuals/drones"], check=True)
 
 if __name__ == "__main__":
     main()
-    # run_cpp_part()
     
