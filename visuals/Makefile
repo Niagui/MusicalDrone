@@ -1,12 +1,10 @@
-#This only works on macos
-# basicVisuals:
-# 	clang++ -std=c++14 basicVisuals.cpp boids.cpp -DGL_SILENCE_DEPRECATION \
-# 		-framework OpenGL -framework GLUT \
-# 		-o drones
+UNAME := $(shell uname)		#check your os
 
-#this works on linux
+ifeq ($(UNAME), Darwin)
+LDFLAGS = -framework OpenGL -framework GLUT	# macos
+else
+LDFLAGS = -lGL -lGLU -lglut	# Linux
+endif
+
 basicVisuals:
-	clang++ -std=c++14 basicVisuals.cpp boids.cpp \
-		-lGL -lGLU -lglut \
-		-o drones
-
+	$(CXX) -std=c++14 basicVisuals.cpp boids.cpp $(LDFLAGS) -o drones
