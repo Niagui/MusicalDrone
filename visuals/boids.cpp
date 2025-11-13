@@ -276,12 +276,12 @@ bool LoadEmotionFile(const std::string& path){
 
 static void EnsureEmotionsLoaded() {
     if (!gEmoLoaded){
-            bool ok = LoadEmotionFile("../json/clap_weights.json");
+            bool ok = LoadEmotionFile("json/clap_weights.json");
 
         if (!ok) {
-            std::cout << "[EMO] ERROR: Could not load emotion JSON file\n";
+            std::cout << "ERROR: Could not load clap weights file\n";
         } else {
-            std::cout << "[EMO] Loaded JSON successfully. #Segments = " 
+            std::cout << "Loaded JSON successfully. #Segments = " 
                     << EMO.size() << "\n";
         }
         gEmoLoaded = ok;
@@ -289,11 +289,12 @@ static void EnsureEmotionsLoaded() {
 
 
     if (!gLabelsLoaded) {
-        bool ok = LoadEmotionLabels("../json/anchor_labels.json") ||
-                  LoadEmotionLabels("/mnt/data/labels.json");
+        bool ok = LoadEmotionLabels("json/anchor_labels.json");
 
         if (!ok) {
-            std::cout << "[EMO] ERROR: Could not load labels.json\n";
+            std::cout << "ERROR: Could not load anchor_labels.json\n";
+        } else {
+            std::cout << "Loaded JSON successfully." << "\n";
         }
         gLabelsLoaded = ok;
     }
