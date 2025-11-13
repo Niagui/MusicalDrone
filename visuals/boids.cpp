@@ -22,15 +22,147 @@
 
 
 static std::vector<Vec3> gPos, gVel, gAcc;
+static std::vector<float> gLastWeights;
+static std::vector<std::string> EMO_LABELS;
+static bool gLabelsLoaded = false;
+
 static inline float clampf(float x, float lo, float hi) {
     return std::max(lo, std::min(hi, x));
 }
 
-static BoidParams P = {
+static float gTime = 0.0f;
+
+void SetSimTime(float t){
+    gTime = t;
+}
+
+static BoidParams P = {        //original neutral parameters
     /* r_sep */ 0.6f,  /* r_nei */ 2.5f,
     /* k_sep */ 1.0f,  /* k_ali */ 1.0f,  /* k_coh */ 0.7f,  /* k_goal */ 1.1f,
     /* vmax  */ 6.0f,  /* amax  */ 12.0f,
     /* altitude */ 1.7f, /* jitter */ 0.25f
+};
+
+struct StyleParams {
+    float spin_rate;        // yaw rotation around goal
+    float bob_amp;          // vertical bobbing amplitude
+    float bob_freq;         // vertical bobbing frequency
+    float pause_prob;       // chance to briefly freeze / hesitate
+    float turn_sharpness;   // extra curvature in paths
+};
+
+struct ParamDelta {     //For easier batch update
+    float r_sep    = 0.0f;
+    float r_nei    = 0.0f;
+    float k_sep    = 0.0f;
+    float k_ali    = 0.0f;
+    float k_coh    = 0.0f;
+    float k_goal   = 0.0f;
+    float vmax     = 0.0f;
+    float amax     = 0.0f;
+    float altitude = 0.0f;
+    float jitter   = 0.0f;
+};
+
+
+
+static const ParamDelta ANCHORS[7] = {
+    {
+        /* r_sep   */ -0.15f,   // likes being close
+        /* r_nei   */ +0.20f,   // sees neighbors a bit further out
+        /* k_sep   */ -0.30f,   // less "get away from me"
+        /* k_ali   */ +0.40f,   // strongly aligns with the group
+        /* k_coh   */ +0.30f,   // wants to flock
+        /* k_goal  */ +0.30f,   // reacts quickly to goals/targets
+        /* vmax    */ +2.0f,    // faster than neutral (hero: 7.7 mph vs others)
+        /* amax    */ +4.0f,    // snappier acceleration
+        /* altitude*/ +0.70f,   // flies higher
+        /* jitter  */ +0.15f    // playful / excited
+    },
+
+    /* 1: sad (Exhausted Drone) */
+    {
+        /* r_sep   */  0.00f,   // not especially pushy
+        /* r_nei   */ -0.40f,   // pays attention to a smaller neighborhood
+        /* k_sep   */ -0.20f,   // doesn't strongly avoid others
+        /* k_ali   */ -0.40f,   // poor alignment, kind of drifts
+        /* k_coh   */ -0.10f,   // mild cohesion, it's just "there"
+        /* k_goal  */ -0.45f,   // slow to respond to commands
+        /* vmax    */ -3.0f,    // much slower (dragging)
+        /* amax    */ -7.0f,    // weak acceleration
+        /* altitude*/ -0.70f,   // stays low
+        /* jitter  */ +0.10f    // slight wobble / tired shakiness
+    },
+
+    /* 2: sleepy (Exhausted Drone variant) */
+    {
+        /* r_sep   */  0.00f,
+        /* r_nei   */ -0.40f,
+        /* k_sep   */ -0.25f,   // even less separation, kind of "slumps" into group
+        /* k_ali   */ -0.45f,
+        /* k_coh   */ -0.05f,
+        /* k_goal  */ -0.55f,   // even slower to act than "sad"
+        /* vmax    */ -3.5f,    // really slow
+        /* amax    */ -8.0f,    // sluggish
+        /* altitude*/ -0.80f,   // very low
+        /* jitter  */ +0.05f    // more "heavy" than wobbly
+    },
+
+    /* 3: brave (Adventurer Hero) */
+    {
+        /* r_sep   */ -0.10f,   // still comfortable close
+        /* r_nei   */ +0.20f,
+        /* k_sep   */ -0.20f,
+        /* k_ali   */ +0.35f,
+        /* k_coh   */ +0.25f,
+        /* k_goal  */ +0.35f,   // very direct in executing commands
+        /* vmax    */ +2.2f,    // slightly faster than "happy"
+        /* amax    */ +4.5f,
+        /* altitude*/ +0.70f,
+        /* jitter  */ +0.10f    // brave more than "giggly"
+    },
+
+    /* 4: grumpy (Anti-Social Drone) */
+    {
+        /* r_sep   */ +0.35f,   // keeps its distance
+        /* r_nei   */ -0.50f,   // narrow social radius
+        /* k_sep   */ +0.40f,   // strong "get away from me"
+        /* k_ali   */ -0.30f,   // doesn't like aligning
+        /* k_coh   */ -0.35f,   // low cohesion, hangs back
+        /* k_goal  */ -0.30f,   // reluctant to follow commands
+        /* vmax    */ -1.0f,    // a bit slower
+        /* amax    */ -3.0f,    // drags into motion
+        /* altitude*/  0.00f,   // middle altitude
+        /* jitter  */ +0.10f    // a little twitchy / begrudging
+    },
+
+    /* 5: scared (Sneaky Spy Drone) */
+    {
+        /* r_sep   */ +0.50f,   // stays far from others
+        /* r_nei   */  0.00f,   // normal neighbor radius
+        /* k_sep   */ +0.60f,   // strong avoidance
+        /* k_ali   */ +0.10f,   // slightly aligns when fleeing
+        /* k_coh   */ -0.20f,   // doesn't like the group
+        /* k_goal  */ -0.35f,   // hesitant to go directly to goal
+        /* vmax    */ +0.5f,    // quick but not the fastest
+        /* amax    */ +2.0f,    // sharp jerks / nervous moves
+        /* altitude*/ -0.60f,   // low altitude
+        /* jitter  */ +0.30f    // very jittery -> "looking around"
+    },
+
+    /* 6: shy (Anti-Social-ish but less harsh) */
+    {
+        /* r_sep   */ +0.25f,   // keeps a bit of distance
+        /* r_nei   */ -0.30f,
+        /* k_sep   */ +0.25f,
+        /* k_ali   */ -0.20f,
+        /* k_coh   */ -0.20f,
+        /* k_goal  */ -0.20f,   // needs coaxing
+        /* vmax    */ -0.8f,    // slightly slower
+        /* amax    */ -2.5f,
+        /* altitude*/ -0.10f,   // slightly lower than neutral
+        /* jitter  */ +0.15f    // anxious
+    }
 };
 
 // --- JSON / Emotion Labeleling --- //
@@ -38,7 +170,33 @@ static BoidParams P = {
 using json = nlohmann::json;
 static json EMO;                //holds loaded json array
 static bool gEmoLoaded = false; //only load once
-static float gTime = 0.0f;     
+
+bool LoadEmotionLabels(const std::string& path) {
+    std::ifstream f(path);
+    if (!f) return false;
+
+    json J;
+    f >> J;
+
+    if (!J.is_array()) return false;
+
+    EMO_LABELS.clear();
+    for (auto& item : J) {
+        if (item.is_string()) {
+            EMO_LABELS.push_back(item.get<std::string>());
+        }
+    }
+
+    std::cout << "Loaded labels (" << EMO_LABELS.size() << "): ";
+    for (auto& s : EMO_LABELS) std::cout << s << " ";
+    std::cout << "\n";
+
+    return true;
+}
+
+const std::vector<std::string>& GetEmotionLabels(){
+    return EMO_LABELS;
+}
 
 std::vector<float> GetEmotionWeights(float t){
     if(!EMO.is_array() || EMO.empty()) return {};
@@ -54,9 +212,7 @@ std::vector<float> GetEmotionWeights(float t){
     auto& last = EMO.back();
     if(last.contains("weights")) return last["weights"].get<std::vector<float>>();
     return{};
-
 }
-
 
 
 static inline float clamp01(float x){ return x < 0.f ? 0.f : (x > 1.f ? 1.f : x); }
@@ -78,6 +234,36 @@ void ApplyEmotion(const std::vector<float>& w, BoidParams& P) {
     P.k_sep = clampf(new_ksep, 0.1f, 2.5f);
 }
 
+void ApplyEmotionHard(const std::vector<float>& w)
+{
+    if (w.empty()) return;
+
+    // Top-1 winner index
+    int idx = 0;
+    float best = w[0];
+    for (int i = 1; i < (int)w.size(); ++i) {
+        if (w[i] > best) {
+            best = w[i];
+            idx = i;
+        }
+    }
+
+    const ParamDelta& D = ANCHORS[idx];
+
+    // Apply exact preset deltas on current P (no lerp)
+    P.r_sep    = clampf(P.r_sep    + D.r_sep,    0.10f,  5.0f);
+    P.r_nei    = clampf(P.r_nei    + D.r_nei,    0.50f, 10.0f);
+    P.k_sep    = clampf(P.k_sep    + D.k_sep,    0.10f,  2.5f);
+    P.k_ali    = clampf(P.k_ali    + D.k_ali,    0.00f,  3.0f);
+    P.k_coh    = clampf(P.k_coh    + D.k_coh,    0.00f,  3.0f);
+    P.k_goal   = clampf(P.k_goal   + D.k_goal,   0.20f,  3.0f);
+    P.vmax     = clampf(P.vmax     + D.vmax,     0.50f, 12.0f);
+    P.amax     = clampf(P.amax     + D.amax,     1.00f, 20.0f);
+    P.altitude = clampf(P.altitude + D.altitude, 0.50f, 10.0f);
+    P.jitter   = clampf(P.jitter   + D.jitter,   0.00f,  1.0f);
+}
+
+
 bool LoadEmotionFile(const std::string& path){
     std::ifstream f(path);
     if (!f) return false;
@@ -89,9 +275,28 @@ bool LoadEmotionFile(const std::string& path){
 
 
 static void EnsureEmotionsLoaded() {
-    if (gEmoLoaded) return;
-    gEmoLoaded = LoadEmotionFile("clap_weights.json") ||
-                 LoadEmotionFile("/mnt/data/clap_weights.json");
+    if (!gEmoLoaded){
+            bool ok = LoadEmotionFile("../json/clap_weights.json");
+
+        if (!ok) {
+            std::cout << "[EMO] ERROR: Could not load emotion JSON file\n";
+        } else {
+            std::cout << "[EMO] Loaded JSON successfully. #Segments = " 
+                    << EMO.size() << "\n";
+        }
+        gEmoLoaded = ok;
+    }
+
+
+    if (!gLabelsLoaded) {
+        bool ok = LoadEmotionLabels("../json/anchor_labels.json") ||
+                  LoadEmotionLabels("/mnt/data/labels.json");
+
+        if (!ok) {
+            std::cout << "[EMO] ERROR: Could not load labels.json\n";
+        }
+        gLabelsLoaded = ok;
+    }
 }
 
 
@@ -107,29 +312,29 @@ bool ReloadAndApplyEmotions(float t) {
 
     // mutate current params
     BoidParams& Pmut = const_cast<BoidParams&>(GetBoidParams());
-    ApplyEmotion(w, Pmut);
+    ApplyEmotionHard(w);
     return true;
 }
 
-static BoidParams PFrom = P, PTo = P;
-static float gTransLeft = 0.0f, gTransTotal = 0.0f;
-static std::string gEmotion = "neutral";
+// static BoidParams PFrom = P, PTo = P;
+// static float gTransLeft = 0.0f, gTransTotal = 0.0f;
+// static std::string gEmotion = "neutral";
 
-static inline float lerp(float a, float b, float t){ return a + (b - a) * t; }
-static inline BoidParams lerpParams(const BoidParams& A, const BoidParams& B, float t){
-    BoidParams R = A;
-    R.r_sep   = lerp(A.r_sep,   B.r_sep,   t);
-    R.r_nei   = lerp(A.r_nei,   B.r_nei,   t);
-    R.k_sep   = lerp(A.k_sep,   B.k_sep,   t);
-    R.k_ali   = lerp(A.k_ali,   B.k_ali,   t);
-    R.k_coh   = lerp(A.k_coh,   B.k_coh,   t);
-    R.k_goal  = lerp(A.k_goal,  B.k_goal,  t);
-    R.vmax    = lerp(A.vmax,    B.vmax,    t);
-    R.amax    = lerp(A.amax,    B.amax,    t);
-    R.altitude= lerp(A.altitude,B.altitude,t);
-    R.jitter  = lerp(A.jitter,  B.jitter,  t);
-    return R;
-}
+// static inline float lerp(float a, float b, float t){ return a + (b - a) * t; }
+// static inline BoidParams lerpParams(const BoidParams& A, const BoidParams& B, float t){
+//     BoidParams R = A;
+//     R.r_sep   = lerp(A.r_sep,   B.r_sep,   t);
+//     R.r_nei   = lerp(A.r_nei,   B.r_nei,   t);
+//     R.k_sep   = lerp(A.k_sep,   B.k_sep,   t);
+//     R.k_ali   = lerp(A.k_ali,   B.k_ali,   t);
+//     R.k_coh   = lerp(A.k_coh,   B.k_coh,   t);
+//     R.k_goal  = lerp(A.k_goal,  B.k_goal,  t);
+//     R.vmax    = lerp(A.vmax,    B.vmax,    t);
+//     R.amax    = lerp(A.amax,    B.amax,    t);
+//     R.altitude= lerp(A.altitude,B.altitude,t);
+//     R.jitter  = lerp(A.jitter,  B.jitter,  t);
+//     return R;
+// }
 
 
 // current params for HUD/debug
@@ -179,14 +384,18 @@ void ResetVelocities(){
 
 std::vector<Vec3>& GetBoidPositions(){ return gPos; }
 
+const std::vector<float>& GetLastWeights(){
+    return gLastWeights;
+}
+
 //Integration station: advance positions and velocities by dt(seconds)
 void UpdateBoids(float dt, const std::vector<Vec3>& targets){
     EnsureEmotionsLoaded();
-    gTime += dt;
     float t = gTime;
 
     auto w = GetEmotionWeights(t);
-    ApplyEmotion(w, P);
+    gLastWeights = w; 
+    ApplyEmotionHard(w);
 
 
     int n = gPos.size();
