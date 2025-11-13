@@ -42,9 +42,11 @@ struct BoidParams {
     float jitter;
 };
 
+const std::vector<float>& GetLastWeights();
 bool LoadEmotionFile(const std::string& path);
 std::vector<float> GetEmotionWeights(float t);
 void ApplyEmotion(const std::vector<float>& w, BoidParams& P);
+void ApplyEmotionHard(const std::vector<float>& w, BoidParams& P);
 bool ReloadAndApplyEmotions(float t);
 
 // External functions
@@ -52,7 +54,10 @@ void InitBoids(int count);
 void ResizeBoids(int count);
 void UpdateBoids(float dt, const std::vector<Vec3>& targets);
 void SetBoidParams(const BoidParams& p);
+void SetSimTime(float t);
 void ResetVelocities();
 
 std::vector<Vec3>& GetBoidPositions();  //to draw in basicVisuals.cpp
 const BoidParams& GetBoidParams();
+const std::vector<std::string>& GetEmotionLabels();
+

@@ -44,11 +44,13 @@
 // --- GLOBAL VARIABLES ---
 
 int   gWinW = 1200, gWinH = 800; //window size
-int   gDroneCount = 300;        // +/- to change
+int   gDroneCount = 17;        // +/- to change
 float gTime = 0.0f;             // seconds (advances when playing)
+static float gSimTime = 0.0f;               // simulation time in seconds
+static const float kFixedDt = 1.0f / 60.0f; // 60 FPS sim step
 bool  gPlaying = true;          // Space toggles
 bool  gSpin = true;             // S toggles
-bool  gUseBoids = false;        // b toggles
+bool  gUseBoids = true;        // b toggles, true by default
 static std::string gHudMsg;
 static char gHudBuf[128];
 static float gHudUntil = 0.0; 
@@ -183,6 +185,9 @@ static void UpdateFollowSlots(float dt) {
     }
 }
 
+//data
+
+auto& labels = GetEmotionLabels();
 
 // --- CAMERA ---
 static void ApplyCamera(){
@@ -292,29 +297,50 @@ static void Display(){
 
     const char* state = gPlaying ? ">" : "||";  // << use string not multi-char '||'
     char buf[256];
-    std::snprintf(buf, sizeof(buf),
-        "Drones: %d  |  Formation: %s  |  Speed: %.2fx  |  [%s]",
-        gDroneCount,
-        (gForm==CIRCLE? "Circle": gForm==LINE? "Line": gForm==WAVE? "Wave": "Heart"),
-        gSpeed, state);
-    DoRasterString(0, 0, buf);
-    DoRasterString(0, -0.5f,
-        "Keys: 1 Circle  2 Line  3 Wave  4 Heart  |  +/- Drones  |  Space Play/Pause  |  S Spin  |  , . Speed  |  Drag/Wheel Camera");
 
-    //if boids is on, show params
     if (gUseBoids){
         const BoidParams& P = GetBoidParams();
-
+        const auto& w      = GetLastWeights();
+        
+        std::snprintf(buf, sizeof(buf),
+            "t: %.2f s", gSimTime);
+        DoRasterString(0, 0.f, buf);
+        
         std::snprintf(buf, sizeof(buf),
             "r_sep: %.2f  r_nei: %.2f  |  k_sep: %.2f  k_ali: %.2f  k_coh: %.2f  k_goal: %.2f",
             P.r_sep, P.r_nei, P.k_sep, P.k_ali, P.k_coh, P.k_goal);
-        DoRasterString(0, -1.0f, buf);
+        DoRasterString(0, -0.5f, buf);
 
         std::snprintf(buf, sizeof(buf),
             "vmax: %.2f  amax: %.2f  |  altitude: %.2f  jitter: %.2f",
             P.vmax, P.amax, P.altitude, P.jitter);
-        DoRasterString(0, -1.5f, buf);
+        DoRasterString(0, -1.f, buf);
 
+        if (!labels.empty() && !w.empty()) {
+            float y = -1.5f;
+            float dy = 0.4f;
+            float x = 0.f;
+            float dx = 0.4f;
+            std::string line;
+
+            for (int i = 0; i < (int)labels.size(); i++) {
+                char buf2[64];
+                std::snprintf(buf2, sizeof(buf2), "%s:%.2f  ",
+                            labels[i].c_str(),
+                            (i < (int)w.size() ? w[i] : 0.0f));
+
+                // Append to current line
+                line += buf2;
+
+                // Wrap every ~4 labels
+                if ((i+1) % 4 == 0 || i == (int)labels.size() - 1) {
+                    DoRasterString(x, y, line.c_str());
+                    x += dx;
+                    y -= dy;
+                    line.clear();
+                }
+            }
+        }
     }
     glPopMatrix();
     glEnable(GL_LIGHTING);
@@ -325,21 +351,21 @@ static void Display(){
 }
 
 static void Idle(){
-    static int prev = glutGet(GLUT_ELAPSED_TIME);
-    int now = glutGet(GLUT_ELAPSED_TIME);
-    float dt = (now - prev) * 0.001f; // seconds
-    prev = now;
+    // 1) Advance simulation time if playing (no wall clock)
+    if (gPlaying) {
+        gSimTime += kFixedDt * gSpeed;  // you can change gSpeed to scrub faster/slower
+    }
+    SetSimTime(gSimTime);
+    // 2) Update targets for this time
+    ResampleSlots(); // still uses gTime internally; we’ll align that below
 
-    if (gPlaying) gTime += dt * gSpeed;
-
-    // 1) Update formation targets first
-    ResampleSlots();
-
-    // 2) Advance positions using ONE mode
-    if (gUseBoids){
-        UpdateBoids(dt * gSpeed, gSlots);
+    // 3) Advance positions
+    if (gUseBoids) {
+        // we’ll pass time into the boids system
+        
+        UpdateBoids(kFixedDt * gSpeed, gSlots);
     } else {
-        UpdateFollowSlots(dt * gSpeed);
+        UpdateFollowSlots(kFixedDt * gSpeed);
     }
 
     glutPostRedisplay();
