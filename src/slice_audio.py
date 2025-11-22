@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Tuple
 
 
+
 def parse_segments(json_file, level=12) -> Tuple:
     """select the level of detail we want from different levels of segmentations
 

@@ -9,6 +9,7 @@ from pathlib import Path
 
 
 class Clap:
+    
     def __init__(self, model_name="laion/larger_clap_general", device=None):
         logger.log_info("initiating clap")
         self.device = device or ("cuda" if torch.cuda.is_available() else "cpu")
