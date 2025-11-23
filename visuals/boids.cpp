@@ -19,6 +19,7 @@
 #include <fstream>
 #include <string>
 #include <iostream>
+#include <filesystem>
 
 
 static std::vector<Vec3> gPos, gVel, gAcc;
@@ -187,9 +188,9 @@ bool LoadEmotionLabels(const std::string& path) {
         }
     }
 
-    std::cout << "Loaded labels (" << EMO_LABELS.size() << "): ";
-    for (auto& s : EMO_LABELS) std::cout << s << " ";
-    std::cout << "\n";
+    std::cerr << "Loaded labels (" << EMO_LABELS.size() << "): ";
+    for (auto& s : EMO_LABELS) std::cerr << s << " ";
+    std::cerr << "\n";
 
     return true;
 }
@@ -273,28 +274,62 @@ bool LoadEmotionFile(const std::string& path){
     return true;
 }
 
+static std::filesystem::path find_json_file(const std::string &filename) {
+    namespace fs = std::filesystem;
+    fs::path cwd = fs::current_path();
 
-static void EnsureEmotionsLoaded() {
+    // look from these folder:
+    std::vector<fs::path> candidates = {
+        cwd / "json" / filename,
+        cwd.parent_path() / "json" / filename,
+    };
+
+    for (const auto &p : candidates) {
+        std::cerr << "[DEBUG] trying: " << p.string() << "\n";
+        if (fs::exists(p)) {
+            return p;
+        }
+    }
+
+    return {};  // empty path = not found
+}
+
+static void EnsureEmotionsLoaded(bool debug = false) {
+
     if (!gEmoLoaded){
-            bool ok = LoadEmotionFile("json/clap_weights.json");
+        auto clap_path = find_json_file("clap_weights.json");
+        bool ok = LoadEmotionFile(clap_path.string());
+
+        if (clap_path.empty()) {
+            std::cerr << "ERROR: Could not find clap_weights.json\n";
+            gEmoLoaded = false;
+            return;
+        }
 
         if (!ok) {
-            std::cout << "ERROR: Could not load clap weights file\n";
+            std::cerr << "ERROR: Could not load clap weights file\n"
+                      << clap_path.string() << "\n";  
         } else {
-            std::cout << "Loaded JSON successfully. #Segments = " 
+            std::cerr << "Loaded JSON successfully. #Segments = " 
                     << EMO.size() << "\n";
         }
         gEmoLoaded = ok;
     }
 
-
     if (!gLabelsLoaded) {
-        bool ok = LoadEmotionLabels("json/anchor_labels.json");
+        auto anchor_path = find_json_file("anchor_labels.json");
+        bool ok = LoadEmotionLabels(anchor_path.string());
+
+        if (anchor_path.empty()) {
+            std::cerr << "ERROR: Could not find anchor_labels.json\n";
+            gEmoLoaded = false;
+            return;
+        }
 
         if (!ok) {
-            std::cout << "ERROR: Could not load anchor_labels.json\n";
+            std::cerr << "ERROR: Could not load anchor_labels.json\n";
         } else {
-            std::cout << "Loaded JSON successfully." << "\n";
+            std::cerr << "Loaded JSON successfully." << "\n";
         }
         gLabelsLoaded = ok;
     }
