@@ -1,4 +1,4 @@
-happy sad sleepy brave grumpy scared shy t,drone,x,y,z,r_sep,r_nei,k_sep,k_ali,k_coh,k_goal,vmax,amax,altitude,jitter
+t,drone,x,y,z,r_sep,r_nei,k_sep,k_ali,k_coh,k_goal,vmax,amax,altitude,jitter
 0.000,0,0.0005,1.6998,0.0000,0.450,2.700,0.700,1.400,1.000,1.400,8.000,16.000,2.400,0.400
 0.000,1,0.1007,1.6997,0.0003,0.450,2.700,0.700,1.400,1.000,1.400,8.000,16.000,2.400,0.400
 0.000,2,0.2002,1.6997,0.0004,0.450,2.700,0.700,1.400,1.000,1.400,8.000,16.000,2.400,0.400

@@ -189,7 +189,7 @@ bool LoadEmotionLabels(const std::string& path) {
     }
 
     std::cerr << "Loaded labels (" << EMO_LABELS.size() << "): ";
-    for (auto& s : EMO_LABELS) std::cout << s << " ";
+    for (auto& s : EMO_LABELS) std::cerr << s << " ";
     std::cerr << "\n";
 
     return true;
