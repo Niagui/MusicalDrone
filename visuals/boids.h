@@ -56,6 +56,8 @@ void UpdateBoids(float dt, const std::vector<Vec3>& targets);
 void SetBoidParams(const BoidParams& p);
 void SetSimTime(float t);
 void ResetVelocities();
+void EnsureEmotionsLoaded();
+float GetAudioLength();
 
 std::vector<Vec3>& GetBoidPositions();  //to draw in basicVisuals.cpp
 const BoidParams& GetBoidParams();
