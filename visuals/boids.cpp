@@ -189,7 +189,7 @@ bool LoadEmotionLabels(const std::string& path) {
     }
 
     std::cerr << "Loaded labels (" << EMO_LABELS.size() << "): ";
-    for (auto& s : EMO_LABELS) std::cerr << s << " ";
+    for (auto& s : EMO_LABELS) std::cout << s << " ";
     std::cerr << "\n";
 
     return true;
@@ -286,6 +286,7 @@ static std::filesystem::path find_json_file(const std::string &filename) {
 
     for (const auto &p : candidates) {
         std::cerr << "[DEBUG] trying: " << p.string() << "\n";
+
         if (fs::exists(p)) {
             return p;
         }
@@ -294,7 +295,7 @@ static std::filesystem::path find_json_file(const std::string &filename) {
     return {};  // empty path = not found
 }
 
-static void EnsureEmotionsLoaded(bool debug = false) {
+void EnsureEmotionsLoaded() {
 
     if (!gEmoLoaded){
         auto clap_path = find_json_file("clap_weights.json");
@@ -350,6 +351,18 @@ bool ReloadAndApplyEmotions(float t) {
     BoidParams& Pmut = const_cast<BoidParams&>(GetBoidParams());
     ApplyEmotionHard(w);
     return true;
+}
+
+
+float GetAudioLength(){
+    EnsureEmotionsLoaded();
+    if(!EMO.is_array() || EMO.empty()) {
+        std::cerr << "[DEBUG] EMO is empty or not an array\n";
+        return 0.0f;
+    }
+
+    const auto& last = EMO.back();
+    return last.value("end", 0.0f);
 }
 
 // static BoidParams PFrom = P, PTo = P;
