@@ -7,4 +7,7 @@ LDFLAGS = -lGL -lGLU -lglut	# Linux
 endif
 
 basicVisuals:
-	$(CXX) -std=c++14 basicVisuals.cpp boids.cpp $(LDFLAGS) -o drones
+	$(CXX) -std=c++17 basicVisuals.cpp boids.cpp $(LDFLAGS) -o drones
+
+trajectories:
+	$(CXX) -std=c++17 simulateBoids.cpp boids.cpp $(LDFLAGS) -o traj
