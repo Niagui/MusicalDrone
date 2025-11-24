@@ -37,12 +37,14 @@ void SetSimTime(float t){
     gTime = t;
 }
 
-static BoidParams P = {        //original neutral parameters
+static const BoidParams Neutral = {        //original neutral parameters
     /* r_sep */ 0.6f,  /* r_nei */ 2.5f,
     /* k_sep */ 1.0f,  /* k_ali */ 1.0f,  /* k_coh */ 0.7f,  /* k_goal */ 1.1f,
     /* vmax  */ 6.0f,  /* amax  */ 12.0f,
     /* altitude */ 1.7f, /* jitter */ 0.25f
 };
+
+static BoidParams P = Neutral; 
 
 struct StyleParams {
     float spin_rate;        // yaw rotation around goal
@@ -235,21 +237,25 @@ void ApplyEmotion(const std::vector<float>& w, BoidParams& P) {
     P.k_sep = clampf(new_ksep, 0.1f, 2.5f);
 }
 
-void ApplyEmotionHard(const std::vector<float>& w)
+void ApplyEmotionHard(const std::vector<float>& w, BoidParams& P)
 {
     if (w.empty()) return;
 
-    // Top-1 winner index
-    int idx = 0;
-    float best = w[0];
-    for (int i = 1; i < (int)w.size(); ++i) {
-        if (w[i] > best) {
-            best = w[i];
-            idx = i;
-        }
+    // Accumulate weighted deltas
+    ParamDelta D{};
+    for (int i = 0; i < 7; ++i) {
+        const ParamDelta& A = ANCHORS[i];
+        D.r_sep    += w[i] * A.r_sep;
+        D.r_nei    += w[i] * A.r_nei;
+        D.k_sep    += w[i] * A.k_sep;
+        D.k_ali    += w[i] * A.k_ali;
+        D.k_coh    += w[i] * A.k_coh;
+        D.k_goal   += w[i] * A.k_goal;
+        D.vmax     += w[i] * A.vmax;
+        D.amax     += w[i] * A.amax;
+        D.altitude += w[i] * A.altitude;
+        D.jitter   += w[i] * A.jitter;
     }
-
-    const ParamDelta& D = ANCHORS[idx];
 
     // Apply exact preset deltas on current P (no lerp)
     P.r_sep    = clampf(P.r_sep    + D.r_sep,    0.10f,  5.0f);
@@ -339,17 +345,17 @@ void EnsureEmotionsLoaded() {
 
 
 bool ReloadAndApplyEmotions(float t) {
-    // try local path first, then /mnt/data as fallback
-    bool ok = LoadEmotionFile("clap_weights.json");
-    if (!ok) ok = LoadEmotionFile("/mnt/data/clap_weights.json");
-    if (!ok) return false;
+    // // try local path first, then /mnt/data as fallback
+    // bool ok = LoadEmotionFile("clap_weights.json");
+    // if (!ok) ok = LoadEmotionFile("/mnt/data/clap_weights.json");
+    // if (!ok) return false;
 
-    auto w = GetEmotionWeights(t);
-    if (w.empty()) return false;
+    // auto w = GetEmotionWeights(t);
+    // if (w.empty()) return false;
 
-    // mutate current params
-    BoidParams& Pmut = const_cast<BoidParams&>(GetBoidParams());
-    ApplyEmotionHard(w);
+    // // mutate current params
+    // BoidParams& Pmut = const_cast<BoidParams&>(GetBoidParams());
+    // ApplyEmotionHard(w, P);
     return true;
 }
 
@@ -444,7 +450,7 @@ void UpdateBoids(float dt, const std::vector<Vec3>& targets){
 
     auto w = GetEmotionWeights(t);
     gLastWeights = w; 
-    ApplyEmotionHard(w);
+    ApplyEmotionHard(w,P);
 
 
     int n = gPos.size();
