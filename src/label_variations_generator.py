@@ -57,8 +57,8 @@ BACKOFF_BASE_S = 0.8
 INPUT_USD_PER_1K = None
 OUTPUT_USD_PER_1K = None
 
-# REFACTORED: Only include moods and characteristics
-CATEGORIES = ["moods", "characteristics"]
+# REFACTORED: Only include moods
+CATEGORIES = ["moods"]
 TOP_PER_CATEGORY = 2
 
 # =============================================================================
