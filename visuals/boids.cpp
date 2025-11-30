@@ -50,6 +50,7 @@ std::vector<float> gResetTimes;
 static int   gNextResetIndex = 0;
 static bool  gResetTimesInit = false;
 static float gLastBoidsTime  = 0.0f;
+bool gSegmentsLoaded = false;
 
 
 struct StyleParams {
@@ -323,34 +324,35 @@ void ApplyEmotionHard(const std::vector<float>& w, BoidParams& P)
     P.jitter   = clampf(P.jitter   + D.jitter,   0.00f,  1.0f);
 }
 
-void LoadResetTimes(const std::string& filename)
+bool LoadResetTimes(const std::string& filename = "sections.json")
 {
     namespace fs = std::filesystem;
-    fs::path cwd  = fs::current_path();
+    fs::path cwd = fs::current_path();
     fs::path path = cwd.parent_path() / "json" / filename;
     std::string pathStr = path.string();
 
     gResetTimes.clear();
     gNextResetIndex = 0;
 
-    std::ifstream in(filename);
+    std::ifstream in(pathStr);
     if (!in) {
-        std::cerr << "Failed to open reset-times JSON: " << filename << "\n";
-        return;
+        std::cerr << "Failed to open reset-times JSON: " << pathStr << "\n";
+        return false;
     }
 
     json j;
     in >> j;
 
-    // j should be an array of [start, end]
     for (const auto& seg : j) {
-        if (!seg.is_array() || seg.size() < 2) continue;
-        float endTime = seg[1].get<float>();
-        gResetTimes.push_back(endTime);
+        if (seg.is_array() && seg.size() >= 2) {
+            float endTime = seg[1].get<float>();
+            gResetTimes.push_back(endTime);
+        }
     }
 
     std::cerr << "Loaded " << gResetTimes.size()
               << " reset times from " << filename << "\n";
+    return true;
 }
 
 bool LoadEmotionFile(const std::string& path){
@@ -383,8 +385,8 @@ static std::filesystem::path find_json_file(const std::string &filename) {
     return {};  // empty path = not found
 }
 
-void EnsureEmotionsLoaded() {
-
+void EnsureEmotionsLoaded() 
+{
     if (!gEmoLoaded){
         auto clap_path = find_json_file("clap_weights.json");
         bool ok = LoadEmotionFile(clap_path.string());
@@ -424,7 +426,21 @@ void EnsureEmotionsLoaded() {
     }
 }
 
+void EnsureSegmentsLoaded()
+{
+    if (!gSegmentsLoaded)
+    {
+        bool ok = LoadResetTimes();
 
+        if(!ok){
+            std::cerr << "Could not load segments\n";
+        }else{
+            std::cerr << "Loaded segments successfully." << "\n";
+            gSegmentsLoaded = true;
+        }
+    }
+    return;
+}
 
 bool ReloadAndApplyEmotions(float t) {
     // // try local path first, then /mnt/data as fallback
@@ -531,7 +547,28 @@ const std::vector<float>& GetLastWeights(){
 //Integration station: advance positions and velocities by dt(seconds)
 void UpdateBoids(float dt, const std::vector<Vec3>& targets){
     EnsureEmotionsLoaded();
+    EnsureSegmentsLoaded();
     float t = gTime;
+
+
+    if (gNextResetIndex < (int)gResetTimes.size()) {
+        float resetT = gResetTimes[gNextResetIndex];
+
+        // trigger when current time crosses the reset timestamp
+        if (gLastBoidsTime < resetT && t >= resetT) {
+            std::cerr << "Resetting BoidParams at t=" << resetT << "\n";
+            
+            // Reset parameters to neutral
+            std::cerr << "Before reset vmax=" << P.vmax << "\n";
+            P = Neutral;
+            std::cerr << "After reset vmax=" << P.vmax << "\n";
+
+            //Reset velocities so old emotion doesn't persist
+            ResetVelocities();
+            gNextResetIndex++;
+        }
+    }
+    gLastBoidsTime = t;
 
     auto w = GetEmotionWeights(t);
     gLastWeights = w; 
