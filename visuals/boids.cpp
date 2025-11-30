@@ -43,8 +43,14 @@ static const BoidParams Neutral = {        //original neutral parameters
     /* vmax  */ 6.0f,  /* amax  */ 12.0f,
     /* altitude */ 1.7f, /* jitter */ 0.25f
 };
+static BoidParams P = Neutral;
 
-static BoidParams P = Neutral; 
+//resetting
+std::vector<float> gResetTimes;
+static int   gNextResetIndex = 0;
+static bool  gResetTimesInit = false;
+static float gLastBoidsTime  = 0.0f;
+
 
 struct StyleParams {
     float spin_rate;        // yaw rotation around goal
@@ -68,6 +74,17 @@ struct ParamDelta {     //For easier batch update
 };
 
 
+//bound
+static const float X_MIN = -5.0f;
+static const float X_MAX =  5.0f;
+static const float Z_MIN = -5.0f;
+static const float Z_MAX =  5.0f;
+static const float Y_MIN = 0.5f;
+static const float Y_MAX = 5.0f;
+
+Boundaries GetBoxBounds() {
+    return Boundaries{ X_MIN, X_MAX, Y_MIN, Y_MAX, Z_MIN, Z_MAX };
+}
 
 static const ParamDelta ANCHORS[7] = {
     {
@@ -174,6 +191,42 @@ using json = nlohmann::json;
 static json EMO;                //holds loaded json array
 static bool gEmoLoaded = false; //only load once
 
+static inline void clampToBox(Vec3& p) {
+    p.x = clampf(p.x, X_MIN, X_MAX);
+    p.y = clampf(p.y, Y_MIN, Y_MAX);
+    p.z = clampf(p.z, Z_MIN, Z_MAX);
+}
+
+static inline void applyBoxConstraint(Vec3& p, Vec3& v) {
+    // X walls
+    if (p.x < X_MIN) {
+        p.x = X_MIN;
+        if (v.x < 0.0f) v.x = -v.x;   // bounce
+    } else if (p.x > X_MAX) {
+        p.x = X_MAX;
+        if (v.x > 0.0f) v.x = -v.x;
+    }
+
+    // Y walls
+    if (p.y < Y_MIN) {
+        p.y = Y_MIN;
+        if (v.y < 0.0f) v.y = -v.y;
+    } else if (p.y > Y_MAX) {
+        p.y = Y_MAX;
+        if (v.y > 0.0f) v.y = -v.y;
+    }
+
+    // Z walls
+    if (p.z < Z_MIN) {
+        p.z = Z_MIN;
+        if (v.z < 0.0f) v.z = -v.z;
+    } else if (p.z > Z_MAX) {
+        p.z = Z_MAX;
+        if (v.z > 0.0f) v.z = -v.z;
+    }
+}
+
+
 bool LoadEmotionLabels(const std::string& path) {
     std::ifstream f(path);
     if (!f) return false;
@@ -270,6 +323,35 @@ void ApplyEmotionHard(const std::vector<float>& w, BoidParams& P)
     P.jitter   = clampf(P.jitter   + D.jitter,   0.00f,  1.0f);
 }
 
+void LoadResetTimes(const std::string& filename)
+{
+    namespace fs = std::filesystem;
+    fs::path cwd  = fs::current_path();
+    fs::path path = cwd.parent_path() / "json" / filename;
+    std::string pathStr = path.string();
+
+    gResetTimes.clear();
+    gNextResetIndex = 0;
+
+    std::ifstream in(filename);
+    if (!in) {
+        std::cerr << "Failed to open reset-times JSON: " << filename << "\n";
+        return;
+    }
+
+    json j;
+    in >> j;
+
+    // j should be an array of [start, end]
+    for (const auto& seg : j) {
+        if (!seg.is_array() || seg.size() < 2) continue;
+        float endTime = seg[1].get<float>();
+        gResetTimes.push_back(endTime);
+    }
+
+    std::cerr << "Loaded " << gResetTimes.size()
+              << " reset times from " << filename << "\n";
+}
 
 bool LoadEmotionFile(const std::string& path){
     std::ifstream f(path);
@@ -397,6 +479,8 @@ const BoidParams& GetBoidParams(){
     return P;
 }
 
+
+
 // math help
 static inline Vec3 add(Vec3 a, Vec3 b){ return {a.x+b.x,a.y+b.y,a.z+b.z}; }
 static inline Vec3 sub(Vec3 a, Vec3 b){ return {a.x-b.x,a.y-b.y,a.z-b.z}; }
@@ -431,6 +515,7 @@ void ResizeBoids(int count){
 
 //replace all params at once
 void SetBoidParams(const BoidParams& p){ P = p; }
+
 
 //zeroes all velocities when switching out from boids
 void ResetVelocities(){
@@ -513,6 +598,10 @@ void UpdateBoids(float dt, const std::vector<Vec3>& targets){
         acc = clampLen(acc, P.amax);
         vi  = clampLen(add(vi, mul(acc, dt)), P.vmax);
         pi  = add(pi, mul(vi, dt));
+        
+        //bound to a rectangular box
+        clampToBox(pi);
+        //applyBoxConstraint(pi, vi);
 
         gVel[i] = vi;
         gPos[i] = pi;
