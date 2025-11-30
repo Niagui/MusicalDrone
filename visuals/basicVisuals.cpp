@@ -86,11 +86,16 @@ static inline float Lerp(float a, float b, float t) { return a + (b-a)*t; }
 ma_engine gEngine;
 ma_sound  gMusic;
 bool gAudioInit = false;
+static bool gAudioLoaded = false;      // Track if sound file is loaded
+static bool gAudioSyncMode = false;    // When true, sync visuals to audio
+static float gAudioDuration = 0.0f;    // Total audio length in seconds
 
+//music helper functions
 void StartAudio(const std::string &filename = "testSong.mp3")
 {
     namespace fs = std::filesystem;
 
+    // Initialize engine if needed
     if (!gAudioInit) {
         ma_result r = ma_engine_init(NULL, &gEngine);
         if (r != MA_SUCCESS) {
@@ -98,24 +103,92 @@ void StartAudio(const std::string &filename = "testSong.mp3")
             return;
         }
         gAudioInit = true;
+        std::cout << "Audio engine initialized\n";
     }
     
+    // Clean up previous sound if loaded
+    if (gAudioLoaded) {
+        ma_sound_uninit(&gMusic);
+        gAudioLoaded = false;
+    }
+    
+    // Build file path
     fs::path cwd  = fs::current_path();
     fs::path path = cwd.parent_path() / "audio" / filename;
     std::string pathStr = path.string();
 
-    std::cout << "Audio path: " << pathStr << "\n";
+    std::cout << "Loading audio: " << pathStr << "\n";
 
+    // Load audio file
     ma_result r = ma_sound_init_from_file(&gEngine,
                                           pathStr.c_str(),
                                           0, nullptr, nullptr,
                                           &gMusic);
     if (r != MA_SUCCESS) {
-        std::cerr << "Failed to init sound from file, code = " << r << "\n";
+        std::cerr << "Failed to load audio file, code = " << r << "\n";
         return;
     }
 
-    ma_sound_start(&gMusic);
+    // Get audio duration
+    ma_uint64 lengthInFrames;
+    ma_sound_get_length_in_pcm_frames(&gMusic, &lengthInFrames);
+    ma_uint32 sampleRate = ma_engine_get_sample_rate(&gEngine);
+    gAudioDuration = (float)lengthInFrames / (float)sampleRate;
+    
+    gAudioLoaded = true;
+    
+    std::cout << "Audio loaded successfully (duration: " 
+              << gAudioDuration << "s)\n";
+    
+}
+
+void PauseAudio() {
+    if (gAudioLoaded && ma_sound_is_playing(&gMusic)) {
+        ma_sound_stop(&gMusic);
+        std::cout << "Audio paused\n";
+    }
+}
+
+void ResumeAudio() {
+    if (gAudioLoaded && !ma_sound_is_playing(&gMusic)) {
+        ma_sound_start(&gMusic);
+        std::cout << "Audio resumed\n";
+    }
+}
+
+void StopAudioAndReset() {
+    if (gAudioLoaded) {
+        ma_sound_stop(&gMusic);
+        ma_sound_seek_to_pcm_frame(&gMusic, 0);  // Reset to beginning
+        gAudioSyncMode = false;
+        std::cout << "Audio stopped and reset\n";
+    }
+}
+
+void SeekAudioTo(float timeInSeconds) {
+    if (!gAudioLoaded) return;
+    
+    ma_uint32 sampleRate = ma_engine_get_sample_rate(&gEngine);
+    ma_uint64 frameIndex = (ma_uint64)(timeInSeconds * sampleRate);
+    ma_sound_seek_to_pcm_frame(&gMusic, frameIndex);
+    
+    std::cout << "Audio seeked to " << timeInSeconds << "s\n";
+}
+
+float GetAudioPlaybackTime() {
+    if (!gAudioLoaded) return 0.0f;
+    
+    float cursor;
+    ma_sound_get_cursor_in_seconds(&gMusic, &cursor);
+    return cursor;
+}
+
+bool IsAudioActuallyPlaying() {
+    return gAudioLoaded && ma_sound_is_playing(&gMusic);
+}
+
+float GetAudioDuration() {
+    return gAudioDuration;
 }
 
 
@@ -435,7 +508,6 @@ static void Display(){
 }
 
 static void Idle(){
-
     static bool first = true;
     static float lastWallTime = 0.0f;
 
@@ -446,25 +518,27 @@ static void Idle(){
         first = false;
     }
 
-    // 2) Compute dt = elapsed real time
+    // Compute dt = elapsed real time
     float dt = wallTime - lastWallTime;
     lastWallTime = wallTime;
 
-    // Safety clamps for huge jumps (minimize instability)
+    // Safety clamps for huge jumps
     if (dt < 0.0f) dt = 0.0f;
     if (dt > 0.1f) dt = 0.1f;
 
-
+    // Audio driven time sync
     // 1) Advance simulation time if playing (no wall clock)
     if (gPlaying) {
         gSimTime += dt * gSpeed;  // you can change gSpeed to scrub faster/slower
     }
     SetSimTime(gSimTime);
     // 2) Update targets for this time
-    //ResampleSlots(); // still uses gTime internally; we’ll align that below
+    //ResampleSlots(); // still uses gTime internally
 
-    // 3) Advance positions
-    UpdateBoids(kFixedDt * gSpeed, gSlots);
+    // 3) Advance positions - ONLY WHEN PLAYING
+    if (gPlaying) {
+        UpdateBoids(kFixedDt * gSpeed, gSlots);
+    }
 
     glutPostRedisplay();
 }
@@ -483,29 +557,135 @@ static void Keyboard(unsigned char key, int, int){
         case 'b': case 'B':
             gUseBoids = !gUseBoids;
             if (!gUseBoids) ResetVelocities();
-                break;
-        case 27: std::exit(0); break; // ESC
-        case ' ': gPlaying = !gPlaying; break;
-        case '+': case '=': gDroneCount = std::min(3000, gDroneCount + 1); ResizeArrays(); break;
-        case '-': case '_': gDroneCount = std::max(1,   gDroneCount - 1); ResizeArrays(); break;
+            break;
+            
+        case 27: 
+            // ESC: cleanup and exit
+            if (gAudioLoaded) {
+                ma_sound_uninit(&gMusic);
+            }
+            if (gAudioInit) {
+                ma_engine_uninit(&gEngine);
+            }
+            std::exit(0); 
+            break;
+            
+        // space bar: controls both audio and visual
+        case ' ': 
+            gPlaying = !gPlaying;
+            
+            // Sync audio playback with simulation state
+            if (gAudioLoaded && gAudioSyncMode) {
+                if (gPlaying) {
+                    ResumeAudio();
+                    std::cout << "Playing (audio + visuals)\n";
+                } else {
+                    PauseAudio();
+                    std::cout << "Paused (audio + visuals)\n";
+                }
+            } else {
+                std::cout << (gPlaying ? "Playing (visuals only)\n" 
+                                       : "Paused (visuals only)\n");
+            }
+            break;
+            
+        case '+': case '=': 
+            gDroneCount = std::min(3000, gDroneCount + 1); 
+            ResizeArrays(); 
+            break;
+            
+        case '-': case '_': 
+            gDroneCount = std::max(1, gDroneCount - 1); 
+            ResizeArrays(); 
+            break;
+            
         case '1': gForm = CIRCLE; break;
         case '2': gForm = LINE;   break;
         case '3': gForm = WAVE;   break;
         case '4': gForm = HEART;  break;
-        case 's': case 'S': gSpin = !gSpin; break;
-        case ',': gSpeed = clampf(gSpeed - 0.05f, 0.1f, 3.0f); break;
-        case '.': gSpeed = clampf(gSpeed + 0.05f, 0.1f, 3.0f); break;
+        
+        case 's': case 'S': 
+            gSpin = !gSpin; 
+            break;
+            
+        case ',': 
+            gSpeed = clampf(gSpeed - 0.05f, 0.1f, 3.0f); 
+            std::cout << "Speed: " << gSpeed << "x\n";
+            break;
+            
+        case '.': 
+            gSpeed = clampf(gSpeed + 0.05f, 0.1f, 3.0f); 
+            std::cout << "Speed: " << gSpeed << "x\n";
+            break;
+            
+        // 'E': loads emotional labels and starts music
         case 'e': case 'E': {
-            float t = gTime;  // use current clock
-            bool ok = ReloadAndApplyEmotions(t);
-            const char* msg = ok
-            ? "Emotions loaded from clap_weights.json and applied"
-            : "Emotion load failed";
-            gHudMsg = msg;
-            gHudUntil = t + 1.5f;
+            float t = gSimTime;  // Use current simulation time
+            
+            // Load emotion data
+            bool emotionsOk = ReloadAndApplyEmotions(t);
+            
+            if (emotionsOk) {
+                // Load audio file if not already loaded
+                if (!gAudioLoaded) {
+                    StartAudio("testSong.mp3");
+                }
+                
+                if (gAudioLoaded) {
+                    // Seek audio to current simulation time
+                    SeekAudioTo(t);
+                    
+                    // Start audio playback
+                    ma_sound_start(&gMusic);
+                    
+                    // Enable audio sync mode
+                    gAudioSyncMode = true;
+                    gPlaying = true;
+                    
+                    gHudMsg = "Emotions + Audio loaded and playing";
+                    std::cout << "\n=== AUDIO + EMOTIONS STARTED ===\n";
+                    std::cout << "Starting at t=" << t << "s\n";
+                    std::cout << "Audio duration: " << gAudioDuration << "s\n";
+                    std::cout << "Controls:\n";
+                    std::cout << "  Space = Pause/Resume\n";
+                    std::cout << "  R = Stop and reset\n";
+                    std::cout << "================================\n\n";
+                } else {
+                    gHudMsg = "Emotions loaded, Audio failed";
+                    std::cerr << "ERROR: Failed to load audio\n";
+                }
+            } else {
+                gHudMsg = "Emotion load failed";
+                std::cerr << "ERROR: Failed to load emotions\n";
+            }
+            
+            gHudUntil = gSimTime + 2.5f;
             glutPostRedisplay();
-        break;
-}
+            break;
+        }
+        
+        // NEW: 'R': stop and reset
+        case 'r': case 'R': {
+            if (gAudioLoaded) {
+                StopAudioAndReset();
+                gSimTime = 0.0f;
+                gPlaying = false;
+                
+                gHudMsg = "Audio stopped, simulation reset to t=0";
+                gHudUntil = 1.5f;
+                
+                std::cout << "=============\n\n";
+                std::cout << "Audio stopped\n";
+                std::cout << "Simulation time reset to 0\n";
+                std::cout << "Press 'e' to reload and start\n";
+                std::cout << "=============\n\n";
+                
+                glutPostRedisplay();
+            } else {
+                std::cout << "No audio loaded to reset\n";
+            }
+            break;
+        }
     }
 }
 
@@ -530,8 +710,8 @@ static void Motion(int x, int y){
 }
 
 int main(int argc, char** argv){
-    StartAudio();
-    std::this_thread::sleep_for(std::chrono::duration<float>(0.2));
+    // StartAudio();
+    // std::this_thread::sleep_for(std::chrono::duration<float>(0.2));
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
     glutInitWindowSize(gWinW, gWinH);
@@ -555,10 +735,26 @@ int main(int argc, char** argv){
     glutMouseFunc(Mouse);
     glutMotionFunc(Motion);
 
-    //StartAudio();
+    std::cout << "\n=======================================\n";
+    std::cout << "   DRONE SWARM VISUALIZER - AUDIO SYNC\n";
+    std::cout << "=======================================\n";
+    std::cout << "Controls:\n";
+    std::cout << "  E = Load emotions + start audio\n";
+    std::cout << "  Space = Pause/Resume\n";
+    std::cout << "  R = Stop and reset\n";
+    std::cout << "  B = Toggle boids\n";
+    std::cout << "  +/- = Change drone count\n";
+    std::cout << "  1-4 = Formation shapes\n";
+    std::cout << "=======================================\n\n";
 
     glutMainLoop();
 
-    ma_engine_uninit(&gEngine);
+    //clean up
+    if (gAudioLoaded) {
+        ma_sound_uninit(&gMusic);
+    }
+    if (gAudioInit) {
+        ma_engine_uninit(&gEngine);
+    }
     return 0;
 }
