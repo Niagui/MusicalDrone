@@ -42,8 +42,15 @@ struct BoidParams {
     float jitter;
 };
 
+struct Boundaries {
+    float xmin, xmax;
+    float ymin, ymax;
+    float zmin, zmax;
+};
+
 const std::vector<float>& GetLastWeights();
 bool LoadEmotionFile(const std::string& path);
+void LoadResetTimes(const std::string& filename);
 std::vector<float> GetEmotionWeights(float t);
 void ApplyEmotion(const std::vector<float>& w, BoidParams& P);
 void ApplyEmotionHard(const std::vector<float>& w, BoidParams& P);
@@ -57,7 +64,12 @@ void SetBoidParams(const BoidParams& p);
 void SetSimTime(float t);
 void ResetVelocities();
 void EnsureEmotionsLoaded();
+
+Boundaries GetBoxBounds();
+
 float GetAudioLength();
+void StartAudio(const std::string& filename);
+
 
 std::vector<Vec3>& GetBoidPositions();  //to draw in basicVisuals.cpp
 const BoidParams& GetBoidParams();

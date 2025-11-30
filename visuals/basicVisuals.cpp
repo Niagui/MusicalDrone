@@ -34,6 +34,13 @@
 #include <algorithm>
 #include <cstdio>
 #include <iostream>
+#include <filesystem>
+
+#include <thread>
+#include <chrono>
+//audio playback
+#define MINIAUDIO_IMPLEMENTATION
+#include "miniaudio.h"
 
 
 #ifndef M_PI
@@ -44,7 +51,7 @@
 // --- GLOBAL VARIABLES ---
 
 int   gWinW = 1200, gWinH = 800; //window size
-int   gDroneCount = 5;        // +/- to change
+int   gDroneCount = 15;        // +/- to change
 float gTime = 0.0f;             // seconds (advances when playing)
 static float gSimTime = 0.0f;               // simulation time in seconds
 static const float kFixedDt = 1.0f / 60.0f; // 60 FPS sim step
@@ -68,13 +75,48 @@ Form  gForm = CIRCLE;
 float gAltitude = 1.6f;   // Y height of all formations
 float gSpeed    = 1.0f;   // Global animation speed
 
-
 // Per-drone state: current positions and targets for formations
 std::vector<Vec3> gPos; //current drone position
 std::vector<Vec3> gSlots; //target position
 
 static inline float clampf(float x, float lo, float hi){ return x<lo?lo:(x>hi?hi:x); }
 static inline float Lerp(float a, float b, float t) { return a + (b-a)*t; }
+
+//music
+ma_engine gEngine;
+ma_sound  gMusic;
+bool gAudioInit = false;
+
+void StartAudio(const std::string &filename = "testSong.mp3")
+{
+    namespace fs = std::filesystem;
+
+    if (!gAudioInit) {
+        ma_result r = ma_engine_init(NULL, &gEngine);
+        if (r != MA_SUCCESS) {
+            std::cerr << "Failed to init audio engine, code = " << r << "\n";
+            return;
+        }
+        gAudioInit = true;
+    }
+    
+    fs::path cwd  = fs::current_path();
+    fs::path path = cwd.parent_path() / "audio" / filename;
+    std::string pathStr = path.string();
+
+    std::cout << "Audio path: " << pathStr << "\n";
+
+    ma_result r = ma_sound_init_from_file(&gEngine,
+                                          pathStr.c_str(),
+                                          0, nullptr, nullptr,
+                                          &gMusic);
+    if (r != MA_SUCCESS) {
+        std::cerr << "Failed to init sound from file, code = " << r << "\n";
+        return;
+    }
+
+    ma_sound_start(&gMusic);
+}
 
 
 // Formation examples (XZ plane)
@@ -120,6 +162,45 @@ static std::vector<Vec3> SampleHeart(int n, float scale, float phase){
         pts[i] = { (x/16.0f)*scale, 0.0f, (y/13.0f)*scale };
     }
     return pts;
+}
+
+
+static void DrawBoundsBox()
+{
+    Boundaries b = GetBoxBounds();  // from boids.cpp
+
+    float x0 = b.xmin, x1 = b.xmax;
+    float y0 = b.ymin, y1 = b.ymax;
+    float z0 = b.zmin, z1 = b.zmax;
+
+    glDisable(GL_LIGHTING);
+    glColor3f(0.9f, 0.3f, 0.3f); // reddish box
+
+    // --- bottom rectangle (at y0) ---
+    glBegin(GL_LINE_LOOP);
+        glVertex3f(x0, y0, z0);
+        glVertex3f(x1, y0, z0);
+        glVertex3f(x1, y0, z1);
+        glVertex3f(x0, y0, z1);
+    glEnd();
+
+    // --- top rectangle (at y1) ---
+    glBegin(GL_LINE_LOOP);
+        glVertex3f(x0, y1, z0);
+        glVertex3f(x1, y1, z0);
+        glVertex3f(x1, y1, z1);
+        glVertex3f(x0, y1, z1);
+    glEnd();
+
+    // --- vertical edges ---
+    glBegin(GL_LINES);
+        glVertex3f(x0, y0, z0); glVertex3f(x0, y1, z0);
+        glVertex3f(x1, y0, z0); glVertex3f(x1, y1, z0);
+        glVertex3f(x1, y0, z1); glVertex3f(x1, y1, z1);
+        glVertex3f(x0, y0, z1); glVertex3f(x0, y1, z1);
+    glEnd();
+
+    glEnable(GL_LIGHTING);
 }
 
 // Compute the target slots for current formation at time gTime
@@ -272,6 +353,9 @@ static void Display(){
     glEnd();
     glEnable(GL_LIGHTING);
 
+    //draw boundaries
+    DrawBoundsBox();
+
     // Choose positioning for either boids or example formations
     const std::vector<Vec3>& positions = gUseBoids ? GetBoidPositions() : gPos;
 
@@ -351,22 +435,36 @@ static void Display(){
 }
 
 static void Idle(){
+
+    static bool first = true;
+    static float lastWallTime = 0.0f;
+
+    float wallTime = 0.001f * glutGet(GLUT_ELAPSED_TIME);
+
+    if (first) {
+        lastWallTime = wallTime;
+        first = false;
+    }
+
+    // 2) Compute dt = elapsed real time
+    float dt = wallTime - lastWallTime;
+    lastWallTime = wallTime;
+
+    // Safety clamps for huge jumps (minimize instability)
+    if (dt < 0.0f) dt = 0.0f;
+    if (dt > 0.1f) dt = 0.1f;
+
+
     // 1) Advance simulation time if playing (no wall clock)
     if (gPlaying) {
-        gSimTime += kFixedDt * gSpeed;  // you can change gSpeed to scrub faster/slower
+        gSimTime += dt * gSpeed;  // you can change gSpeed to scrub faster/slower
     }
     SetSimTime(gSimTime);
     // 2) Update targets for this time
-    ResampleSlots(); // still uses gTime internally; we’ll align that below
+    //ResampleSlots(); // still uses gTime internally; we’ll align that below
 
     // 3) Advance positions
-    if (gUseBoids) {
-        // we’ll pass time into the boids system
-        
-        UpdateBoids(kFixedDt * gSpeed, gSlots);
-    } else {
-        UpdateFollowSlots(kFixedDt * gSpeed);
-    }
+    UpdateBoids(kFixedDt * gSpeed, gSlots);
 
     glutPostRedisplay();
 }
@@ -432,11 +530,14 @@ static void Motion(int x, int y){
 }
 
 int main(int argc, char** argv){
+    StartAudio();
+    std::this_thread::sleep_for(std::chrono::duration<float>(0.2));
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
     glutInitWindowSize(gWinW, gWinH);
     glutCreateWindow("Drone Swarm Visualizer — Legacy OpenGL");
-
+    
+    
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
@@ -445,6 +546,7 @@ int main(int argc, char** argv){
     ResizeArrays();         //allocate gPos/gSlots
     ResampleSlots();        //starting target positions
     InitBoids(gDroneCount); //initlialize boids
+    
 
     glutDisplayFunc(Display);
     glutIdleFunc(Idle);
@@ -453,6 +555,10 @@ int main(int argc, char** argv){
     glutMouseFunc(Mouse);
     glutMotionFunc(Motion);
 
+    //StartAudio();
+
     glutMainLoop();
+
+    ma_engine_uninit(&gEngine);
     return 0;
 }
