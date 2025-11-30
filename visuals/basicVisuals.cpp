@@ -537,7 +537,7 @@ static void Idle(){
 
     // 3) Advance positions - ONLY WHEN PLAYING
     if (gPlaying) {
-        UpdateBoids(kFixedDt * gSpeed, gSlots);
+        UpdateBoids(dt * gSpeed, gSlots);
     }
 
     glutPostRedisplay();
