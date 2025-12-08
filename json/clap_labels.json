@@ -9,23 +9,19 @@
     "surprise",
     "exciting",
     "anxious",
-    "scared"
+    "scared",
+    "whimsical"
   ],
 
   "characteristics": [
     "driving",
     "pulsing",
     "swelling",
-    "simple",
-    "complicated",
     "groovy",
     "sparse", 
     "dense",
-    "legato", 
-    "staccato", 
     "percussive", 
     "syncopated", 
-    "polyrhythmic",
     "atmospheric", 
     "airy", 
     "gritty", 

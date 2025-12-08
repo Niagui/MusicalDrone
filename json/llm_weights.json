@@ -1,0 +1,8110 @@
+{
+  "source_file": "clap_results.json",
+  "model": "gpt-4o-mini",
+  "generated_at": "2025-11-17T04:12:22Z",
+  "categories_processed": [
+    "moods",
+    "characteristics"
+  ],
+  "total_segments": 61,
+  "segments": [
+    {
+      "start": 1.6253968253968254,
+      "end": 4.806530612244898,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.32662031054496765
+          },
+          {
+            "label": "happy",
+            "score": 0.18214300274848938
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "complicated",
+            "score": 0.4264589548110962
+          },
+          {
+            "label": "polyrhythmic",
+            "score": 0.31373462080955505
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.327
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.332
+        },
+        {
+          "source": "happy",
+          "variant": "joyful",
+          "weight": 0.182
+        },
+        {
+          "source": "happy",
+          "variant": "cheerful",
+          "weight": 0.185
+        },
+        {
+          "source": "complicated",
+          "variant": "complex",
+          "weight": 0.426
+        },
+        {
+          "source": "complicated",
+          "variant": "intricate",
+          "weight": 0.421
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.314
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "cross-rhythmic",
+          "weight": 0.316
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.843
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.84
+        },
+        {
+          "source": "complicated",
+          "variant": "difficult",
+          "weight": 0.637
+        },
+        {
+          "source": "complicated",
+          "variant": "challenging",
+          "weight": 0.634
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated",
+          "weight": 0.149
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered rhythms",
+          "weight": 0.15
+        },
+        {
+          "source": "brave",
+          "variant": "heroic",
+          "weight": 0.696
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.698
+        },
+        {
+          "source": "complicated",
+          "variant": "convoluted",
+          "weight": 0.581
+        },
+        {
+          "source": "complicated",
+          "variant": "elaborate",
+          "weight": 0.579
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic complexity",
+          "weight": 0.144
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic diversity",
+          "weight": 0.145
+        },
+        {
+          "source": "brave",
+          "variant": "daring",
+          "weight": 0.678
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.68
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythms",
+          "weight": 0.741
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "varied rhythms",
+          "weight": 0.74
+        },
+        {
+          "source": "complicated",
+          "variant": "confusing",
+          "weight": 0.141
+        },
+        {
+          "source": "complicated",
+          "variant": "bewildering",
+          "weight": 0.14
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic interplay",
+          "weight": 0.619
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic fusion",
+          "weight": 0.62
+        },
+        {
+          "source": "complicated",
+          "variant": "layered",
+          "weight": 0.272
+        },
+        {
+          "source": "complicated",
+          "variant": "multi-faceted",
+          "weight": 0.27
+        },
+        {
+          "source": "brave",
+          "variant": "gallant",
+          "weight": 0.788
+        },
+        {
+          "source": "brave",
+          "variant": "stout-hearted",
+          "weight": 0.79
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex patterns",
+          "weight": 0.39
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic variety",
+          "weight": 0.392
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.143
+        },
+        {
+          "source": "brave",
+          "variant": "resolute",
+          "weight": 0.145
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic complexity",
+          "weight": 0.673
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic intricacy",
+          "weight": 0.675
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.138
+        },
+        {
+          "source": "brave",
+          "variant": "dauntless",
+          "weight": 0.14
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic interplay",
+          "weight": 0.679
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic layering",
+          "weight": 0.681
+        }
+      ]
+    },
+    {
+      "start": 4.806530612244898,
+      "end": 7.918004535147392,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.8430888652801514
+          },
+          {
+            "label": "anxious",
+            "score": 0.0585847832262516
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "complicated",
+            "score": 0.637336790561676
+          },
+          {
+            "label": "polyrhythmic",
+            "score": 0.1486285775899887
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.327
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.332
+        },
+        {
+          "source": "complicated",
+          "variant": "complex",
+          "weight": 0.426
+        },
+        {
+          "source": "complicated",
+          "variant": "intricate",
+          "weight": 0.421
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.314
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "cross-rhythmic",
+          "weight": 0.316
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.843
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.84
+        },
+        {
+          "source": "anxious",
+          "variant": "nervous",
+          "weight": 0.059
+        },
+        {
+          "source": "anxious",
+          "variant": "uneasy",
+          "weight": 0.061
+        },
+        {
+          "source": "complicated",
+          "variant": "difficult",
+          "weight": 0.637
+        },
+        {
+          "source": "complicated",
+          "variant": "challenging",
+          "weight": 0.634
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated",
+          "weight": 0.149
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered rhythms",
+          "weight": 0.15
+        },
+        {
+          "source": "brave",
+          "variant": "heroic",
+          "weight": 0.696
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.698
+        },
+        {
+          "source": "complicated",
+          "variant": "convoluted",
+          "weight": 0.581
+        },
+        {
+          "source": "complicated",
+          "variant": "elaborate",
+          "weight": 0.579
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic complexity",
+          "weight": 0.144
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic diversity",
+          "weight": 0.145
+        },
+        {
+          "source": "brave",
+          "variant": "daring",
+          "weight": 0.678
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.68
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythms",
+          "weight": 0.741
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "varied rhythms",
+          "weight": 0.74
+        },
+        {
+          "source": "complicated",
+          "variant": "confusing",
+          "weight": 0.141
+        },
+        {
+          "source": "complicated",
+          "variant": "bewildering",
+          "weight": 0.14
+        },
+        {
+          "source": "anxious",
+          "variant": "worried",
+          "weight": 0.473
+        },
+        {
+          "source": "anxious",
+          "variant": "apprehensive",
+          "weight": 0.475
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic interplay",
+          "weight": 0.619
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic fusion",
+          "weight": 0.62
+        },
+        {
+          "source": "complicated",
+          "variant": "layered",
+          "weight": 0.272
+        },
+        {
+          "source": "complicated",
+          "variant": "multi-faceted",
+          "weight": 0.27
+        },
+        {
+          "source": "brave",
+          "variant": "gallant",
+          "weight": 0.788
+        },
+        {
+          "source": "brave",
+          "variant": "stout-hearted",
+          "weight": 0.79
+        },
+        {
+          "source": "anxious",
+          "variant": "tense",
+          "weight": 0.104
+        },
+        {
+          "source": "anxious",
+          "variant": "jittery",
+          "weight": 0.106
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex patterns",
+          "weight": 0.39
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic variety",
+          "weight": 0.392
+        },
+        {
+          "source": "anxious",
+          "variant": "restless",
+          "weight": 0.599
+        },
+        {
+          "source": "anxious",
+          "variant": "fidgety",
+          "weight": 0.601
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.143
+        },
+        {
+          "source": "brave",
+          "variant": "resolute",
+          "weight": 0.145
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic complexity",
+          "weight": 0.673
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic intricacy",
+          "weight": 0.675
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.138
+        },
+        {
+          "source": "brave",
+          "variant": "dauntless",
+          "weight": 0.14
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic interplay",
+          "weight": 0.679
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic layering",
+          "weight": 0.681
+        }
+      ]
+    },
+    {
+      "start": 7.918004535147392,
+      "end": 11.029478458049887,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.6960286498069763
+          },
+          {
+            "label": "exciting",
+            "score": 0.15844114124774933
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "complicated",
+            "score": 0.5805955529212952
+          },
+          {
+            "label": "polyrhythmic",
+            "score": 0.14439533650875092
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.327
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.332
+        },
+        {
+          "source": "complicated",
+          "variant": "complex",
+          "weight": 0.426
+        },
+        {
+          "source": "complicated",
+          "variant": "intricate",
+          "weight": 0.421
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.314
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "cross-rhythmic",
+          "weight": 0.316
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.843
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.84
+        },
+        {
+          "source": "complicated",
+          "variant": "difficult",
+          "weight": 0.637
+        },
+        {
+          "source": "complicated",
+          "variant": "challenging",
+          "weight": 0.634
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated",
+          "weight": 0.149
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered rhythms",
+          "weight": 0.15
+        },
+        {
+          "source": "brave",
+          "variant": "heroic",
+          "weight": 0.696
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.698
+        },
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.158
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.16
+        },
+        {
+          "source": "complicated",
+          "variant": "convoluted",
+          "weight": 0.581
+        },
+        {
+          "source": "complicated",
+          "variant": "elaborate",
+          "weight": 0.579
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic complexity",
+          "weight": 0.144
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic diversity",
+          "weight": 0.145
+        },
+        {
+          "source": "brave",
+          "variant": "daring",
+          "weight": 0.678
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.68
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythms",
+          "weight": 0.741
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "varied rhythms",
+          "weight": 0.74
+        },
+        {
+          "source": "complicated",
+          "variant": "confusing",
+          "weight": 0.141
+        },
+        {
+          "source": "complicated",
+          "variant": "bewildering",
+          "weight": 0.14
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.414
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.412
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic interplay",
+          "weight": 0.619
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic fusion",
+          "weight": 0.62
+        },
+        {
+          "source": "complicated",
+          "variant": "layered",
+          "weight": 0.272
+        },
+        {
+          "source": "complicated",
+          "variant": "multi-faceted",
+          "weight": 0.27
+        },
+        {
+          "source": "brave",
+          "variant": "gallant",
+          "weight": 0.788
+        },
+        {
+          "source": "brave",
+          "variant": "stout-hearted",
+          "weight": 0.79
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex patterns",
+          "weight": 0.39
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic variety",
+          "weight": 0.392
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.143
+        },
+        {
+          "source": "brave",
+          "variant": "resolute",
+          "weight": 0.145
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic complexity",
+          "weight": 0.673
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic intricacy",
+          "weight": 0.675
+        },
+        {
+          "source": "exciting",
+          "variant": "invigorating",
+          "weight": 0.54
+        },
+        {
+          "source": "exciting",
+          "variant": "enlivening",
+          "weight": 0.542
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.138
+        },
+        {
+          "source": "brave",
+          "variant": "dauntless",
+          "weight": 0.14
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic interplay",
+          "weight": 0.679
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic layering",
+          "weight": 0.681
+        }
+      ]
+    },
+    {
+      "start": 11.029478458049887,
+      "end": 14.140952380952381,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.6781862378120422
+          },
+          {
+            "label": "grumpy",
+            "score": 0.1549462527036667
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.7410260438919067
+          },
+          {
+            "label": "complicated",
+            "score": 0.14147289097309113
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.327
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.332
+        },
+        {
+          "source": "complicated",
+          "variant": "complex",
+          "weight": 0.426
+        },
+        {
+          "source": "complicated",
+          "variant": "intricate",
+          "weight": 0.421
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.314
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "cross-rhythmic",
+          "weight": 0.316
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.843
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.84
+        },
+        {
+          "source": "complicated",
+          "variant": "difficult",
+          "weight": 0.637
+        },
+        {
+          "source": "complicated",
+          "variant": "challenging",
+          "weight": 0.634
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated",
+          "weight": 0.149
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered rhythms",
+          "weight": 0.15
+        },
+        {
+          "source": "brave",
+          "variant": "heroic",
+          "weight": 0.696
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.698
+        },
+        {
+          "source": "complicated",
+          "variant": "convoluted",
+          "weight": 0.581
+        },
+        {
+          "source": "complicated",
+          "variant": "elaborate",
+          "weight": 0.579
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic complexity",
+          "weight": 0.144
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic diversity",
+          "weight": 0.145
+        },
+        {
+          "source": "brave",
+          "variant": "daring",
+          "weight": 0.678
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.68
+        },
+        {
+          "source": "grumpy",
+          "variant": "irritable",
+          "weight": 0.155
+        },
+        {
+          "source": "grumpy",
+          "variant": "cranky",
+          "weight": 0.157
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythms",
+          "weight": 0.741
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "varied rhythms",
+          "weight": 0.74
+        },
+        {
+          "source": "complicated",
+          "variant": "confusing",
+          "weight": 0.141
+        },
+        {
+          "source": "complicated",
+          "variant": "bewildering",
+          "weight": 0.14
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic interplay",
+          "weight": 0.619
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic fusion",
+          "weight": 0.62
+        },
+        {
+          "source": "complicated",
+          "variant": "layered",
+          "weight": 0.272
+        },
+        {
+          "source": "complicated",
+          "variant": "multi-faceted",
+          "weight": 0.27
+        },
+        {
+          "source": "brave",
+          "variant": "gallant",
+          "weight": 0.788
+        },
+        {
+          "source": "brave",
+          "variant": "stout-hearted",
+          "weight": 0.79
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex patterns",
+          "weight": 0.39
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic variety",
+          "weight": 0.392
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.143
+        },
+        {
+          "source": "brave",
+          "variant": "resolute",
+          "weight": 0.145
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic complexity",
+          "weight": 0.673
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic intricacy",
+          "weight": 0.675
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.138
+        },
+        {
+          "source": "brave",
+          "variant": "dauntless",
+          "weight": 0.14
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic interplay",
+          "weight": 0.679
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic layering",
+          "weight": 0.681
+        }
+      ]
+    },
+    {
+      "start": 14.140952380952381,
+      "end": 17.252426303854875,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "anxious",
+            "score": 0.473193883895874
+          },
+          {
+            "label": "exciting",
+            "score": 0.41359034180641174
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.6193253397941589
+          },
+          {
+            "label": "complicated",
+            "score": 0.27159520983695984
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "complicated",
+          "variant": "complex",
+          "weight": 0.426
+        },
+        {
+          "source": "complicated",
+          "variant": "intricate",
+          "weight": 0.421
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.314
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "cross-rhythmic",
+          "weight": 0.316
+        },
+        {
+          "source": "anxious",
+          "variant": "nervous",
+          "weight": 0.059
+        },
+        {
+          "source": "anxious",
+          "variant": "uneasy",
+          "weight": 0.061
+        },
+        {
+          "source": "complicated",
+          "variant": "difficult",
+          "weight": 0.637
+        },
+        {
+          "source": "complicated",
+          "variant": "challenging",
+          "weight": 0.634
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated",
+          "weight": 0.149
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered rhythms",
+          "weight": 0.15
+        },
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.158
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.16
+        },
+        {
+          "source": "complicated",
+          "variant": "convoluted",
+          "weight": 0.581
+        },
+        {
+          "source": "complicated",
+          "variant": "elaborate",
+          "weight": 0.579
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic complexity",
+          "weight": 0.144
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic diversity",
+          "weight": 0.145
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythms",
+          "weight": 0.741
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "varied rhythms",
+          "weight": 0.74
+        },
+        {
+          "source": "complicated",
+          "variant": "confusing",
+          "weight": 0.141
+        },
+        {
+          "source": "complicated",
+          "variant": "bewildering",
+          "weight": 0.14
+        },
+        {
+          "source": "anxious",
+          "variant": "worried",
+          "weight": 0.473
+        },
+        {
+          "source": "anxious",
+          "variant": "apprehensive",
+          "weight": 0.475
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.414
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.412
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic interplay",
+          "weight": 0.619
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic fusion",
+          "weight": 0.62
+        },
+        {
+          "source": "complicated",
+          "variant": "layered",
+          "weight": 0.272
+        },
+        {
+          "source": "complicated",
+          "variant": "multi-faceted",
+          "weight": 0.27
+        },
+        {
+          "source": "anxious",
+          "variant": "tense",
+          "weight": 0.104
+        },
+        {
+          "source": "anxious",
+          "variant": "jittery",
+          "weight": 0.106
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex patterns",
+          "weight": 0.39
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic variety",
+          "weight": 0.392
+        },
+        {
+          "source": "anxious",
+          "variant": "restless",
+          "weight": 0.599
+        },
+        {
+          "source": "anxious",
+          "variant": "fidgety",
+          "weight": 0.601
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic complexity",
+          "weight": 0.673
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic intricacy",
+          "weight": 0.675
+        },
+        {
+          "source": "exciting",
+          "variant": "invigorating",
+          "weight": 0.54
+        },
+        {
+          "source": "exciting",
+          "variant": "enlivening",
+          "weight": 0.542
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic interplay",
+          "weight": 0.679
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic layering",
+          "weight": 0.681
+        }
+      ]
+    },
+    {
+      "start": 17.252426303854875,
+      "end": 20.36390022675737,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.7876747846603394
+          },
+          {
+            "label": "anxious",
+            "score": 0.10384468734264374
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "legato",
+            "score": 0.43270930647850037
+          },
+          {
+            "label": "polyrhythmic",
+            "score": 0.3902673125267029
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.327
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.332
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.314
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "cross-rhythmic",
+          "weight": 0.316
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.843
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.84
+        },
+        {
+          "source": "anxious",
+          "variant": "nervous",
+          "weight": 0.059
+        },
+        {
+          "source": "anxious",
+          "variant": "uneasy",
+          "weight": 0.061
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated",
+          "weight": 0.149
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered rhythms",
+          "weight": 0.15
+        },
+        {
+          "source": "brave",
+          "variant": "heroic",
+          "weight": 0.696
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.698
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic complexity",
+          "weight": 0.144
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic diversity",
+          "weight": 0.145
+        },
+        {
+          "source": "brave",
+          "variant": "daring",
+          "weight": 0.678
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.68
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythms",
+          "weight": 0.741
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "varied rhythms",
+          "weight": 0.74
+        },
+        {
+          "source": "anxious",
+          "variant": "worried",
+          "weight": 0.473
+        },
+        {
+          "source": "anxious",
+          "variant": "apprehensive",
+          "weight": 0.475
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic interplay",
+          "weight": 0.619
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic fusion",
+          "weight": 0.62
+        },
+        {
+          "source": "brave",
+          "variant": "gallant",
+          "weight": 0.788
+        },
+        {
+          "source": "brave",
+          "variant": "stout-hearted",
+          "weight": 0.79
+        },
+        {
+          "source": "anxious",
+          "variant": "tense",
+          "weight": 0.104
+        },
+        {
+          "source": "anxious",
+          "variant": "jittery",
+          "weight": 0.106
+        },
+        {
+          "source": "legato",
+          "variant": "smooth",
+          "weight": 0.433
+        },
+        {
+          "source": "legato",
+          "variant": "fluid",
+          "weight": 0.431
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex patterns",
+          "weight": 0.39
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic variety",
+          "weight": 0.392
+        },
+        {
+          "source": "anxious",
+          "variant": "restless",
+          "weight": 0.599
+        },
+        {
+          "source": "anxious",
+          "variant": "fidgety",
+          "weight": 0.601
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.143
+        },
+        {
+          "source": "brave",
+          "variant": "resolute",
+          "weight": 0.145
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic complexity",
+          "weight": 0.673
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic intricacy",
+          "weight": 0.675
+        },
+        {
+          "source": "legato",
+          "variant": "connected",
+          "weight": 0.141
+        },
+        {
+          "source": "legato",
+          "variant": "sustained",
+          "weight": 0.143
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.138
+        },
+        {
+          "source": "brave",
+          "variant": "dauntless",
+          "weight": 0.14
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic interplay",
+          "weight": 0.679
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic layering",
+          "weight": 0.681
+        }
+      ]
+    },
+    {
+      "start": 20.36390022675737,
+      "end": 23.49859410430839,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "anxious",
+            "score": 0.598690927028656
+          },
+          {
+            "label": "brave",
+            "score": 0.1434624195098877
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.6730288863182068
+          },
+          {
+            "label": "legato",
+            "score": 0.14099732041358948
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.327
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.332
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.314
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "cross-rhythmic",
+          "weight": 0.316
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.843
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.84
+        },
+        {
+          "source": "anxious",
+          "variant": "nervous",
+          "weight": 0.059
+        },
+        {
+          "source": "anxious",
+          "variant": "uneasy",
+          "weight": 0.061
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated",
+          "weight": 0.149
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered rhythms",
+          "weight": 0.15
+        },
+        {
+          "source": "brave",
+          "variant": "heroic",
+          "weight": 0.696
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.698
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic complexity",
+          "weight": 0.144
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic diversity",
+          "weight": 0.145
+        },
+        {
+          "source": "brave",
+          "variant": "daring",
+          "weight": 0.678
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.68
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythms",
+          "weight": 0.741
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "varied rhythms",
+          "weight": 0.74
+        },
+        {
+          "source": "anxious",
+          "variant": "worried",
+          "weight": 0.473
+        },
+        {
+          "source": "anxious",
+          "variant": "apprehensive",
+          "weight": 0.475
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic interplay",
+          "weight": 0.619
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic fusion",
+          "weight": 0.62
+        },
+        {
+          "source": "brave",
+          "variant": "gallant",
+          "weight": 0.788
+        },
+        {
+          "source": "brave",
+          "variant": "stout-hearted",
+          "weight": 0.79
+        },
+        {
+          "source": "anxious",
+          "variant": "tense",
+          "weight": 0.104
+        },
+        {
+          "source": "anxious",
+          "variant": "jittery",
+          "weight": 0.106
+        },
+        {
+          "source": "legato",
+          "variant": "smooth",
+          "weight": 0.433
+        },
+        {
+          "source": "legato",
+          "variant": "fluid",
+          "weight": 0.431
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex patterns",
+          "weight": 0.39
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic variety",
+          "weight": 0.392
+        },
+        {
+          "source": "anxious",
+          "variant": "restless",
+          "weight": 0.599
+        },
+        {
+          "source": "anxious",
+          "variant": "fidgety",
+          "weight": 0.601
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.143
+        },
+        {
+          "source": "brave",
+          "variant": "resolute",
+          "weight": 0.145
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic complexity",
+          "weight": 0.673
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic intricacy",
+          "weight": 0.675
+        },
+        {
+          "source": "legato",
+          "variant": "connected",
+          "weight": 0.141
+        },
+        {
+          "source": "legato",
+          "variant": "sustained",
+          "weight": 0.143
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.138
+        },
+        {
+          "source": "brave",
+          "variant": "dauntless",
+          "weight": 0.14
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic interplay",
+          "weight": 0.679
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic layering",
+          "weight": 0.681
+        }
+      ]
+    },
+    {
+      "start": 23.49859410430839,
+      "end": 26.610068027210886,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.5395739674568176
+          },
+          {
+            "label": "brave",
+            "score": 0.13804461061954498
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.6787740588188171
+          },
+          {
+            "label": "staccato",
+            "score": 0.1475996971130371
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.327
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.332
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.314
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "cross-rhythmic",
+          "weight": 0.316
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.843
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.84
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated",
+          "weight": 0.149
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered rhythms",
+          "weight": 0.15
+        },
+        {
+          "source": "brave",
+          "variant": "heroic",
+          "weight": 0.696
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.698
+        },
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.158
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.16
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic complexity",
+          "weight": 0.144
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic diversity",
+          "weight": 0.145
+        },
+        {
+          "source": "brave",
+          "variant": "daring",
+          "weight": 0.678
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.68
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythms",
+          "weight": 0.741
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "varied rhythms",
+          "weight": 0.74
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.414
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.412
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic interplay",
+          "weight": 0.619
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic fusion",
+          "weight": 0.62
+        },
+        {
+          "source": "brave",
+          "variant": "gallant",
+          "weight": 0.788
+        },
+        {
+          "source": "brave",
+          "variant": "stout-hearted",
+          "weight": 0.79
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex patterns",
+          "weight": 0.39
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic variety",
+          "weight": 0.392
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.143
+        },
+        {
+          "source": "brave",
+          "variant": "resolute",
+          "weight": 0.145
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic complexity",
+          "weight": 0.673
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic intricacy",
+          "weight": 0.675
+        },
+        {
+          "source": "exciting",
+          "variant": "invigorating",
+          "weight": 0.54
+        },
+        {
+          "source": "exciting",
+          "variant": "enlivening",
+          "weight": 0.542
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.138
+        },
+        {
+          "source": "brave",
+          "variant": "dauntless",
+          "weight": 0.14
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic interplay",
+          "weight": 0.679
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic layering",
+          "weight": 0.681
+        },
+        {
+          "source": "staccato",
+          "variant": "short and detached",
+          "weight": 0.148
+        },
+        {
+          "source": "staccato",
+          "variant": "abrupt",
+          "weight": 0.15
+        }
+      ]
+    },
+    {
+      "start": 26.610068027210886,
+      "end": 29.698321995464852,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "scared",
+            "score": 0.3421913683414459
+          },
+          {
+            "label": "anxious",
+            "score": 0.304697185754776
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.852799654006958
+          },
+          {
+            "label": "pulsing",
+            "score": 0.0419648215174675
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "scared",
+          "variant": "frightened",
+          "weight": 0.339
+        },
+        {
+          "source": "scared",
+          "variant": "terrified",
+          "weight": 0.345
+        },
+        {
+          "source": "anxious",
+          "variant": "nervous",
+          "weight": 0.302
+        },
+        {
+          "source": "anxious",
+          "variant": "uneasy",
+          "weight": 0.308
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.851
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythm",
+          "weight": 0.855
+        },
+        {
+          "source": "pulsing",
+          "variant": "throbbing",
+          "weight": 0.041
+        },
+        {
+          "source": "pulsing",
+          "variant": "beating",
+          "weight": 0.043
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic",
+          "weight": 0.918
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated rhythm",
+          "weight": 0.922
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered rhythms",
+          "weight": 0.577
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "interlocking rhythms",
+          "weight": 0.581
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "diverse rhythms",
+          "weight": 0.817
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "varied rhythms",
+          "weight": 0.821
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex patterns",
+          "weight": 0.879
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated patterns",
+          "weight": 0.881
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "interwoven rhythms",
+          "weight": 0.726
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "composite rhythms",
+          "weight": 0.73
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated",
+          "weight": 0.752
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered",
+          "weight": 0.756
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic complexity",
+          "weight": 0.659
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic diversity",
+          "weight": 0.663
+        }
+      ]
+    },
+    {
+      "start": 29.698321995464852,
+      "end": 32.833015873015874,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.6831560134887695
+          },
+          {
+            "label": "happy",
+            "score": 0.09189664572477341
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.9196575880050659
+          },
+          {
+            "label": "legato",
+            "score": 0.031014593318104744
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.851
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythm",
+          "weight": 0.855
+        },
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.681
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.685
+        },
+        {
+          "source": "happy",
+          "variant": "joyful",
+          "weight": 0.09
+        },
+        {
+          "source": "happy",
+          "variant": "cheerful",
+          "weight": 0.094
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic",
+          "weight": 0.918
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated rhythm",
+          "weight": 0.922
+        },
+        {
+          "source": "legato",
+          "variant": "smooth",
+          "weight": 0.03
+        },
+        {
+          "source": "legato",
+          "variant": "connected",
+          "weight": 0.032
+        },
+        {
+          "source": "exciting",
+          "variant": "invigorating",
+          "weight": 0.488
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.492
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered rhythms",
+          "weight": 0.577
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "interlocking rhythms",
+          "weight": 0.581
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.793
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.797
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "diverse rhythms",
+          "weight": 0.817
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "varied rhythms",
+          "weight": 0.821
+        },
+        {
+          "source": "legato",
+          "variant": "fluid",
+          "weight": 0.074
+        },
+        {
+          "source": "legato",
+          "variant": "legato style",
+          "weight": 0.076
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.065
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.069
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex patterns",
+          "weight": 0.879
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated patterns",
+          "weight": 0.881
+        },
+        {
+          "source": "exciting",
+          "variant": "energizing",
+          "weight": 0.226
+        },
+        {
+          "source": "exciting",
+          "variant": "rousing",
+          "weight": 0.23
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "interwoven rhythms",
+          "weight": 0.726
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "composite rhythms",
+          "weight": 0.73
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.266
+        },
+        {
+          "source": "exciting",
+          "variant": "enticing",
+          "weight": 0.27
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated",
+          "weight": 0.752
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered",
+          "weight": 0.756
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.697
+        },
+        {
+          "source": "exciting",
+          "variant": "sparkling",
+          "weight": 0.701
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic complexity",
+          "weight": 0.659
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic diversity",
+          "weight": 0.663
+        }
+      ]
+    },
+    {
+      "start": 32.833015873015874,
+      "end": 35.944489795918365,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.4898436665534973
+          },
+          {
+            "label": "brave",
+            "score": 0.43785861134529114
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.5789878964424133
+          },
+          {
+            "label": "syncopated",
+            "score": 0.2198932021856308
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.851
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythm",
+          "weight": 0.855
+        },
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.681
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.685
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic",
+          "weight": 0.918
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated rhythm",
+          "weight": 0.922
+        },
+        {
+          "source": "exciting",
+          "variant": "invigorating",
+          "weight": 0.488
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.492
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.436
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.882
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered rhythms",
+          "weight": 0.577
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "interlocking rhythms",
+          "weight": 0.581
+        },
+        {
+          "source": "syncopated",
+          "variant": "offbeat",
+          "weight": 0.218
+        },
+        {
+          "source": "syncopated",
+          "variant": "irregular",
+          "weight": 0.222
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.793
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.797
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.106
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.108
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "diverse rhythms",
+          "weight": 0.817
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "varied rhythms",
+          "weight": 0.821
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.877
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.881
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.065
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.069
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex patterns",
+          "weight": 0.879
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated patterns",
+          "weight": 0.881
+        },
+        {
+          "source": "brave",
+          "variant": "resolute",
+          "weight": 0.673
+        },
+        {
+          "source": "brave",
+          "variant": "determined",
+          "weight": 0.677
+        },
+        {
+          "source": "exciting",
+          "variant": "energizing",
+          "weight": 0.226
+        },
+        {
+          "source": "exciting",
+          "variant": "rousing",
+          "weight": 0.23
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "interwoven rhythms",
+          "weight": 0.726
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "composite rhythms",
+          "weight": 0.73
+        },
+        {
+          "source": "brave",
+          "variant": "heroic",
+          "weight": 0.519
+        },
+        {
+          "source": "brave",
+          "variant": "gallant",
+          "weight": 0.523
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.266
+        },
+        {
+          "source": "exciting",
+          "variant": "enticing",
+          "weight": 0.27
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated",
+          "weight": 0.752
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered",
+          "weight": 0.756
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.697
+        },
+        {
+          "source": "exciting",
+          "variant": "sparkling",
+          "weight": 0.701
+        },
+        {
+          "source": "brave",
+          "variant": "valorous",
+          "weight": 0.161
+        },
+        {
+          "source": "brave",
+          "variant": "daring",
+          "weight": 0.165
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic complexity",
+          "weight": 0.659
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic diversity",
+          "weight": 0.663
+        }
+      ]
+    },
+    {
+      "start": 35.944489795918365,
+      "end": 39.10240362811791,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.7954078912734985
+          },
+          {
+            "label": "brave",
+            "score": 0.10669262707233429
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.8190296292304993
+          },
+          {
+            "label": "legato",
+            "score": 0.07455074042081833
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.851
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythm",
+          "weight": 0.855
+        },
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.681
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.685
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic",
+          "weight": 0.918
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated rhythm",
+          "weight": 0.922
+        },
+        {
+          "source": "legato",
+          "variant": "smooth",
+          "weight": 0.03
+        },
+        {
+          "source": "legato",
+          "variant": "connected",
+          "weight": 0.032
+        },
+        {
+          "source": "exciting",
+          "variant": "invigorating",
+          "weight": 0.488
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.492
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.436
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.882
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered rhythms",
+          "weight": 0.577
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "interlocking rhythms",
+          "weight": 0.581
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.793
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.797
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.106
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.108
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "diverse rhythms",
+          "weight": 0.817
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "varied rhythms",
+          "weight": 0.821
+        },
+        {
+          "source": "legato",
+          "variant": "fluid",
+          "weight": 0.074
+        },
+        {
+          "source": "legato",
+          "variant": "legato style",
+          "weight": 0.076
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.877
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.881
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.065
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.069
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex patterns",
+          "weight": 0.879
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated patterns",
+          "weight": 0.881
+        },
+        {
+          "source": "brave",
+          "variant": "resolute",
+          "weight": 0.673
+        },
+        {
+          "source": "brave",
+          "variant": "determined",
+          "weight": 0.677
+        },
+        {
+          "source": "exciting",
+          "variant": "energizing",
+          "weight": 0.226
+        },
+        {
+          "source": "exciting",
+          "variant": "rousing",
+          "weight": 0.23
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "interwoven rhythms",
+          "weight": 0.726
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "composite rhythms",
+          "weight": 0.73
+        },
+        {
+          "source": "brave",
+          "variant": "heroic",
+          "weight": 0.519
+        },
+        {
+          "source": "brave",
+          "variant": "gallant",
+          "weight": 0.523
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.266
+        },
+        {
+          "source": "exciting",
+          "variant": "enticing",
+          "weight": 0.27
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated",
+          "weight": 0.752
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered",
+          "weight": 0.756
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.697
+        },
+        {
+          "source": "exciting",
+          "variant": "sparkling",
+          "weight": 0.701
+        },
+        {
+          "source": "brave",
+          "variant": "valorous",
+          "weight": 0.161
+        },
+        {
+          "source": "brave",
+          "variant": "daring",
+          "weight": 0.165
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic complexity",
+          "weight": 0.659
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic diversity",
+          "weight": 0.663
+        }
+      ]
+    },
+    {
+      "start": 39.10240362811791,
+      "end": 42.190657596371885,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.8794713616371155
+          },
+          {
+            "label": "exciting",
+            "score": 0.06731222569942474
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.8800579905509949
+          },
+          {
+            "label": "groovy",
+            "score": 0.0851510688662529
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.851
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythm",
+          "weight": 0.855
+        },
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.681
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.685
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic",
+          "weight": 0.918
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated rhythm",
+          "weight": 0.922
+        },
+        {
+          "source": "exciting",
+          "variant": "invigorating",
+          "weight": 0.488
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.492
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.436
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.882
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered rhythms",
+          "weight": 0.577
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "interlocking rhythms",
+          "weight": 0.581
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.793
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.797
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.106
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.108
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "diverse rhythms",
+          "weight": 0.817
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "varied rhythms",
+          "weight": 0.821
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.877
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.881
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.065
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.069
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex patterns",
+          "weight": 0.879
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated patterns",
+          "weight": 0.881
+        },
+        {
+          "source": "groovy",
+          "variant": "funky",
+          "weight": 0.084
+        },
+        {
+          "source": "groovy",
+          "variant": "rhythmic",
+          "weight": 0.086
+        },
+        {
+          "source": "brave",
+          "variant": "resolute",
+          "weight": 0.673
+        },
+        {
+          "source": "brave",
+          "variant": "determined",
+          "weight": 0.677
+        },
+        {
+          "source": "exciting",
+          "variant": "energizing",
+          "weight": 0.226
+        },
+        {
+          "source": "exciting",
+          "variant": "rousing",
+          "weight": 0.23
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "interwoven rhythms",
+          "weight": 0.726
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "composite rhythms",
+          "weight": 0.73
+        },
+        {
+          "source": "brave",
+          "variant": "heroic",
+          "weight": 0.519
+        },
+        {
+          "source": "brave",
+          "variant": "gallant",
+          "weight": 0.523
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.266
+        },
+        {
+          "source": "exciting",
+          "variant": "enticing",
+          "weight": 0.27
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated",
+          "weight": 0.752
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered",
+          "weight": 0.756
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.697
+        },
+        {
+          "source": "exciting",
+          "variant": "sparkling",
+          "weight": 0.701
+        },
+        {
+          "source": "brave",
+          "variant": "valorous",
+          "weight": 0.161
+        },
+        {
+          "source": "brave",
+          "variant": "daring",
+          "weight": 0.165
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic complexity",
+          "weight": 0.659
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic diversity",
+          "weight": 0.663
+        }
+      ]
+    },
+    {
+      "start": 42.190657596371885,
+      "end": 45.302131519274376,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.6747663617134094
+          },
+          {
+            "label": "exciting",
+            "score": 0.22823992371559143
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.7280506491661072
+          },
+          {
+            "label": "staccato",
+            "score": 0.2384006679058075
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.851
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythm",
+          "weight": 0.855
+        },
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.681
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.685
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic",
+          "weight": 0.918
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated rhythm",
+          "weight": 0.922
+        },
+        {
+          "source": "exciting",
+          "variant": "invigorating",
+          "weight": 0.488
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.492
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.436
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.882
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered rhythms",
+          "weight": 0.577
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "interlocking rhythms",
+          "weight": 0.581
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.793
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.797
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.106
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.108
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "diverse rhythms",
+          "weight": 0.817
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "varied rhythms",
+          "weight": 0.821
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.877
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.881
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.065
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.069
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex patterns",
+          "weight": 0.879
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated patterns",
+          "weight": 0.881
+        },
+        {
+          "source": "brave",
+          "variant": "resolute",
+          "weight": 0.673
+        },
+        {
+          "source": "brave",
+          "variant": "determined",
+          "weight": 0.677
+        },
+        {
+          "source": "exciting",
+          "variant": "energizing",
+          "weight": 0.226
+        },
+        {
+          "source": "exciting",
+          "variant": "rousing",
+          "weight": 0.23
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "interwoven rhythms",
+          "weight": 0.726
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "composite rhythms",
+          "weight": 0.73
+        },
+        {
+          "source": "staccato",
+          "variant": "short",
+          "weight": 0.236
+        },
+        {
+          "source": "staccato",
+          "variant": "abrupt",
+          "weight": 0.24
+        },
+        {
+          "source": "brave",
+          "variant": "heroic",
+          "weight": 0.519
+        },
+        {
+          "source": "brave",
+          "variant": "gallant",
+          "weight": 0.523
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.266
+        },
+        {
+          "source": "exciting",
+          "variant": "enticing",
+          "weight": 0.27
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated",
+          "weight": 0.752
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered",
+          "weight": 0.756
+        },
+        {
+          "source": "staccato",
+          "variant": "detached",
+          "weight": 0.101
+        },
+        {
+          "source": "staccato",
+          "variant": "choppy",
+          "weight": 0.105
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.697
+        },
+        {
+          "source": "exciting",
+          "variant": "sparkling",
+          "weight": 0.701
+        },
+        {
+          "source": "brave",
+          "variant": "valorous",
+          "weight": 0.161
+        },
+        {
+          "source": "brave",
+          "variant": "daring",
+          "weight": 0.165
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic complexity",
+          "weight": 0.659
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic diversity",
+          "weight": 0.663
+        },
+        {
+          "source": "staccato",
+          "variant": "sharp",
+          "weight": 0.197
+        },
+        {
+          "source": "staccato",
+          "variant": "punctuated",
+          "weight": 0.201
+        }
+      ]
+    },
+    {
+      "start": 45.302131519274376,
+      "end": 48.4368253968254,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.5211054682731628
+          },
+          {
+            "label": "exciting",
+            "score": 0.26842570304870605
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.7539963722229004
+          },
+          {
+            "label": "staccato",
+            "score": 0.10319455713033676
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.851
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythm",
+          "weight": 0.855
+        },
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.681
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.685
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic",
+          "weight": 0.918
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated rhythm",
+          "weight": 0.922
+        },
+        {
+          "source": "exciting",
+          "variant": "invigorating",
+          "weight": 0.488
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.492
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.436
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.882
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered rhythms",
+          "weight": 0.577
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "interlocking rhythms",
+          "weight": 0.581
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.793
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.797
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.106
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.108
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "diverse rhythms",
+          "weight": 0.817
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "varied rhythms",
+          "weight": 0.821
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.877
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.881
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.065
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.069
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex patterns",
+          "weight": 0.879
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated patterns",
+          "weight": 0.881
+        },
+        {
+          "source": "brave",
+          "variant": "resolute",
+          "weight": 0.673
+        },
+        {
+          "source": "brave",
+          "variant": "determined",
+          "weight": 0.677
+        },
+        {
+          "source": "exciting",
+          "variant": "energizing",
+          "weight": 0.226
+        },
+        {
+          "source": "exciting",
+          "variant": "rousing",
+          "weight": 0.23
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "interwoven rhythms",
+          "weight": 0.726
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "composite rhythms",
+          "weight": 0.73
+        },
+        {
+          "source": "staccato",
+          "variant": "short",
+          "weight": 0.236
+        },
+        {
+          "source": "staccato",
+          "variant": "abrupt",
+          "weight": 0.24
+        },
+        {
+          "source": "brave",
+          "variant": "heroic",
+          "weight": 0.519
+        },
+        {
+          "source": "brave",
+          "variant": "gallant",
+          "weight": 0.523
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.266
+        },
+        {
+          "source": "exciting",
+          "variant": "enticing",
+          "weight": 0.27
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated",
+          "weight": 0.752
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered",
+          "weight": 0.756
+        },
+        {
+          "source": "staccato",
+          "variant": "detached",
+          "weight": 0.101
+        },
+        {
+          "source": "staccato",
+          "variant": "choppy",
+          "weight": 0.105
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.697
+        },
+        {
+          "source": "exciting",
+          "variant": "sparkling",
+          "weight": 0.701
+        },
+        {
+          "source": "brave",
+          "variant": "valorous",
+          "weight": 0.161
+        },
+        {
+          "source": "brave",
+          "variant": "daring",
+          "weight": 0.165
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic complexity",
+          "weight": 0.659
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic diversity",
+          "weight": 0.663
+        },
+        {
+          "source": "staccato",
+          "variant": "sharp",
+          "weight": 0.197
+        },
+        {
+          "source": "staccato",
+          "variant": "punctuated",
+          "weight": 0.201
+        }
+      ]
+    },
+    {
+      "start": 48.4368253968254,
+      "end": 51.54829931972789,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.6994458436965942
+          },
+          {
+            "label": "brave",
+            "score": 0.16328300535678864
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.6605014801025391
+          },
+          {
+            "label": "staccato",
+            "score": 0.19942858815193176
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.851
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythm",
+          "weight": 0.855
+        },
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.681
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.685
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic",
+          "weight": 0.918
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated rhythm",
+          "weight": 0.922
+        },
+        {
+          "source": "exciting",
+          "variant": "invigorating",
+          "weight": 0.488
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.492
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.436
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.882
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered rhythms",
+          "weight": 0.577
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "interlocking rhythms",
+          "weight": 0.581
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.793
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.797
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.106
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.108
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "diverse rhythms",
+          "weight": 0.817
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "varied rhythms",
+          "weight": 0.821
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.877
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.881
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.065
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.069
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex patterns",
+          "weight": 0.879
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated patterns",
+          "weight": 0.881
+        },
+        {
+          "source": "brave",
+          "variant": "resolute",
+          "weight": 0.673
+        },
+        {
+          "source": "brave",
+          "variant": "determined",
+          "weight": 0.677
+        },
+        {
+          "source": "exciting",
+          "variant": "energizing",
+          "weight": 0.226
+        },
+        {
+          "source": "exciting",
+          "variant": "rousing",
+          "weight": 0.23
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "interwoven rhythms",
+          "weight": 0.726
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "composite rhythms",
+          "weight": 0.73
+        },
+        {
+          "source": "staccato",
+          "variant": "short",
+          "weight": 0.236
+        },
+        {
+          "source": "staccato",
+          "variant": "abrupt",
+          "weight": 0.24
+        },
+        {
+          "source": "brave",
+          "variant": "heroic",
+          "weight": 0.519
+        },
+        {
+          "source": "brave",
+          "variant": "gallant",
+          "weight": 0.523
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.266
+        },
+        {
+          "source": "exciting",
+          "variant": "enticing",
+          "weight": 0.27
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated",
+          "weight": 0.752
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered",
+          "weight": 0.756
+        },
+        {
+          "source": "staccato",
+          "variant": "detached",
+          "weight": 0.101
+        },
+        {
+          "source": "staccato",
+          "variant": "choppy",
+          "weight": 0.105
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.697
+        },
+        {
+          "source": "exciting",
+          "variant": "sparkling",
+          "weight": 0.701
+        },
+        {
+          "source": "brave",
+          "variant": "valorous",
+          "weight": 0.161
+        },
+        {
+          "source": "brave",
+          "variant": "daring",
+          "weight": 0.165
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic complexity",
+          "weight": 0.659
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic diversity",
+          "weight": 0.663
+        },
+        {
+          "source": "staccato",
+          "variant": "sharp",
+          "weight": 0.197
+        },
+        {
+          "source": "staccato",
+          "variant": "punctuated",
+          "weight": 0.201
+        }
+      ]
+    },
+    {
+      "start": 51.54829931972789,
+      "end": 54.63655328798186,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.4422432482242584
+          },
+          {
+            "label": "grumpy",
+            "score": 0.3949876129627228
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.9060471653938293
+          },
+          {
+            "label": "groovy",
+            "score": 0.03249259293079376
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.445
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.438
+        },
+        {
+          "source": "grumpy",
+          "variant": "irritable",
+          "weight": 0.392
+        },
+        {
+          "source": "grumpy",
+          "variant": "moody",
+          "weight": 0.398
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.908
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythm",
+          "weight": 0.903
+        },
+        {
+          "source": "groovy",
+          "variant": "funky",
+          "weight": 0.031
+        },
+        {
+          "source": "groovy",
+          "variant": "rhythmic",
+          "weight": 0.033
+        }
+      ]
+    },
+    {
+      "start": 54.63655328798186,
+      "end": 57.77124716553288,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.683264434337616
+          },
+          {
+            "label": "happy",
+            "score": 0.12315161526203156
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.5240224003791809
+          },
+          {
+            "label": "staccato",
+            "score": 0.21230123937129974
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.908
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythm",
+          "weight": 0.903
+        },
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.685
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.68
+        },
+        {
+          "source": "happy",
+          "variant": "joyful",
+          "weight": 0.125
+        },
+        {
+          "source": "happy",
+          "variant": "cheerful",
+          "weight": 0.121
+        },
+        {
+          "source": "staccato",
+          "variant": "short and detached",
+          "weight": 0.21
+        },
+        {
+          "source": "staccato",
+          "variant": "abrupt",
+          "weight": 0.213
+        }
+      ]
+    },
+    {
+      "start": 57.77124716553288,
+      "end": 60.9059410430839,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.6937530636787415
+          },
+          {
+            "label": "grumpy",
+            "score": 0.14999033510684967
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.9374739527702332
+          },
+          {
+            "label": "staccato",
+            "score": 0.05017263814806938
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.445
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.438
+        },
+        {
+          "source": "grumpy",
+          "variant": "irritable",
+          "weight": 0.392
+        },
+        {
+          "source": "grumpy",
+          "variant": "moody",
+          "weight": 0.398
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.908
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythm",
+          "weight": 0.903
+        },
+        {
+          "source": "staccato",
+          "variant": "short and detached",
+          "weight": 0.21
+        },
+        {
+          "source": "staccato",
+          "variant": "abrupt",
+          "weight": 0.213
+        }
+      ]
+    },
+    {
+      "start": 60.9059410430839,
+      "end": 64.01741496598639,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.6967313885688782
+          },
+          {
+            "label": "exciting",
+            "score": 0.13167151808738708
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.779007613658905
+          },
+          {
+            "label": "legato",
+            "score": 0.09690593928098679
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.445
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.438
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.908
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythm",
+          "weight": 0.903
+        },
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.685
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.68
+        },
+        {
+          "source": "legato",
+          "variant": "smooth",
+          "weight": 0.096
+        },
+        {
+          "source": "legato",
+          "variant": "connected",
+          "weight": 0.098
+        }
+      ]
+    },
+    {
+      "start": 64.01741496598639,
+      "end": 67.1288888888889,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.8172891139984131
+          },
+          {
+            "label": "sad",
+            "score": 0.07066308706998825
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.9300324320793152
+          },
+          {
+            "label": "legato",
+            "score": 0.0313720777630806
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.445
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.438
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.908
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythm",
+          "weight": 0.903
+        },
+        {
+          "source": "legato",
+          "variant": "smooth",
+          "weight": 0.096
+        },
+        {
+          "source": "legato",
+          "variant": "connected",
+          "weight": 0.098
+        },
+        {
+          "source": "sad",
+          "variant": "unhappy",
+          "weight": 0.07
+        },
+        {
+          "source": "sad",
+          "variant": "sorrowful",
+          "weight": 0.072
+        }
+      ]
+    },
+    {
+      "start": 67.1288888888889,
+      "end": 70.24036281179139,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.6552587747573853
+          },
+          {
+            "label": "happy",
+            "score": 0.12194821983575821
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.9807859063148499
+          },
+          {
+            "label": "complicated",
+            "score": 0.005061862524598837
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.445
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.438
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.908
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythm",
+          "weight": 0.903
+        },
+        {
+          "source": "happy",
+          "variant": "joyful",
+          "weight": 0.125
+        },
+        {
+          "source": "happy",
+          "variant": "cheerful",
+          "weight": 0.121
+        },
+        {
+          "source": "complicated",
+          "variant": "complex",
+          "weight": 0.006
+        },
+        {
+          "source": "complicated",
+          "variant": "intricate",
+          "weight": 0.005
+        }
+      ]
+    },
+    {
+      "start": 70.24036281179139,
+      "end": 73.35183673469388,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.9618272185325623
+          },
+          {
+            "label": "happy",
+            "score": 0.016264287754893303
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.8888769149780273
+          },
+          {
+            "label": "groovy",
+            "score": 0.09109523147344589
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.445
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.438
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.908
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythm",
+          "weight": 0.903
+        },
+        {
+          "source": "groovy",
+          "variant": "funky",
+          "weight": 0.031
+        },
+        {
+          "source": "groovy",
+          "variant": "rhythmic",
+          "weight": 0.033
+        },
+        {
+          "source": "happy",
+          "variant": "joyful",
+          "weight": 0.125
+        },
+        {
+          "source": "happy",
+          "variant": "cheerful",
+          "weight": 0.121
+        }
+      ]
+    },
+    {
+      "start": 73.35183673469388,
+      "end": 76.46331065759637,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.3238728940486908
+          },
+          {
+            "label": "happy",
+            "score": 0.25394928455352783
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.9131959676742554
+          },
+          {
+            "label": "syncopated",
+            "score": 0.044021859765052795
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.908
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythm",
+          "weight": 0.903
+        },
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.685
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.68
+        },
+        {
+          "source": "happy",
+          "variant": "joyful",
+          "weight": 0.125
+        },
+        {
+          "source": "happy",
+          "variant": "cheerful",
+          "weight": 0.121
+        },
+        {
+          "source": "syncopated",
+          "variant": "offbeat",
+          "weight": 0.045
+        },
+        {
+          "source": "syncopated",
+          "variant": "irregular",
+          "weight": 0.043
+        }
+      ]
+    },
+    {
+      "start": 76.46331065759637,
+      "end": 79.5980045351474,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.8708109259605408
+          },
+          {
+            "label": "happy",
+            "score": 0.06767193973064423
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.8835083842277527
+          },
+          {
+            "label": "groovy",
+            "score": 0.058961786329746246
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.874
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.868
+        },
+        {
+          "source": "happy",
+          "variant": "joyful",
+          "weight": 0.071
+        },
+        {
+          "source": "happy",
+          "variant": "cheerful",
+          "weight": 0.065
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.889
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythm",
+          "weight": 0.879
+        },
+        {
+          "source": "groovy",
+          "variant": "funky",
+          "weight": 0.06
+        },
+        {
+          "source": "groovy",
+          "variant": "rhythmic",
+          "weight": 0.058
+        }
+      ]
+    },
+    {
+      "start": 79.5980045351474,
+      "end": 82.70947845804989,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.5845146775245667
+          },
+          {
+            "label": "brave",
+            "score": 0.34779196977615356
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.9471167922019958
+          },
+          {
+            "label": "syncopated",
+            "score": 0.03785046935081482
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.874
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.868
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.889
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythm",
+          "weight": 0.879
+        },
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.59
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.578
+        },
+        {
+          "source": "syncopated",
+          "variant": "off-beat",
+          "weight": 0.039
+        },
+        {
+          "source": "syncopated",
+          "variant": "irregular",
+          "weight": 0.037
+        }
+      ]
+    },
+    {
+      "start": 82.70947845804989,
+      "end": 85.82095238095238,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.5165929198265076
+          },
+          {
+            "label": "exciting",
+            "score": 0.4061495065689087
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.9327576160430908
+          },
+          {
+            "label": "legato",
+            "score": 0.021637888625264168
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.874
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.868
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.889
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythm",
+          "weight": 0.879
+        },
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.59
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.578
+        },
+        {
+          "source": "legato",
+          "variant": "smooth",
+          "weight": 0.023
+        },
+        {
+          "source": "legato",
+          "variant": "connected",
+          "weight": 0.021
+        }
+      ]
+    },
+    {
+      "start": 85.82095238095238,
+      "end": 88.93242630385488,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.3960449695587158
+          },
+          {
+            "label": "brave",
+            "score": 0.24451836943626404
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.8605490326881409
+          },
+          {
+            "label": "syncopated",
+            "score": 0.0799994170665741
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.874
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.868
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.889
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythm",
+          "weight": 0.879
+        },
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.59
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.578
+        },
+        {
+          "source": "syncopated",
+          "variant": "off-beat",
+          "weight": 0.039
+        },
+        {
+          "source": "syncopated",
+          "variant": "irregular",
+          "weight": 0.037
+        }
+      ]
+    },
+    {
+      "start": 88.93242630385488,
+      "end": 92.04390022675737,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.694157063961029
+          },
+          {
+            "label": "exciting",
+            "score": 0.17406204342842102
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.7057037949562073
+          },
+          {
+            "label": "syncopated",
+            "score": 0.10415356606245041
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.874
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.868
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.889
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythm",
+          "weight": 0.879
+        },
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.59
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.578
+        },
+        {
+          "source": "syncopated",
+          "variant": "off-beat",
+          "weight": 0.039
+        },
+        {
+          "source": "syncopated",
+          "variant": "irregular",
+          "weight": 0.037
+        }
+      ]
+    },
+    {
+      "start": 92.04390022675737,
+      "end": 95.17859410430839,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.7710399627685547
+          },
+          {
+            "label": "exciting",
+            "score": 0.07214093208312988
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.9079225659370422
+          },
+          {
+            "label": "syncopated",
+            "score": 0.04625542834401131
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.874
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.868
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.889
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythm",
+          "weight": 0.879
+        },
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.59
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.578
+        },
+        {
+          "source": "syncopated",
+          "variant": "off-beat",
+          "weight": 0.039
+        },
+        {
+          "source": "syncopated",
+          "variant": "irregular",
+          "weight": 0.037
+        }
+      ]
+    },
+    {
+      "start": 95.17859410430839,
+      "end": 98.29006802721088,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.8378032445907593
+          },
+          {
+            "label": "grumpy",
+            "score": 0.046031806617975235
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.9004348516464233
+          },
+          {
+            "label": "legato",
+            "score": 0.04098111391067505
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.874
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.868
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.889
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythm",
+          "weight": 0.879
+        },
+        {
+          "source": "legato",
+          "variant": "smooth",
+          "weight": 0.023
+        },
+        {
+          "source": "legato",
+          "variant": "connected",
+          "weight": 0.021
+        },
+        {
+          "source": "grumpy",
+          "variant": "irritable",
+          "weight": 0.045
+        },
+        {
+          "source": "grumpy",
+          "variant": "moody",
+          "weight": 0.047
+        }
+      ]
+    },
+    {
+      "start": 98.29006802721088,
+      "end": 101.40154195011338,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.9842889904975891
+          },
+          {
+            "label": "exciting",
+            "score": 0.006799791473895311
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.9955989122390747
+          },
+          {
+            "label": "legato",
+            "score": 0.001192738302052021
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.874
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.868
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.889
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythm",
+          "weight": 0.879
+        },
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.59
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.578
+        },
+        {
+          "source": "legato",
+          "variant": "smooth",
+          "weight": 0.023
+        },
+        {
+          "source": "legato",
+          "variant": "connected",
+          "weight": 0.021
+        }
+      ]
+    },
+    {
+      "start": 101.40154195011338,
+      "end": 104.5362358276644,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.9180723428726196
+          },
+          {
+            "label": "anxious",
+            "score": 0.025316549465060234
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.9425373673439026
+          },
+          {
+            "label": "legato",
+            "score": 0.030713537707924843
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.917
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.912
+        },
+        {
+          "source": "anxious",
+          "variant": "nervous",
+          "weight": 0.024
+        },
+        {
+          "source": "anxious",
+          "variant": "uneasy",
+          "weight": 0.026
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.942
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythm",
+          "weight": 0.944
+        },
+        {
+          "source": "legato",
+          "variant": "smooth",
+          "weight": 0.03
+        },
+        {
+          "source": "legato",
+          "variant": "connected",
+          "weight": 0.032
+        }
+      ]
+    },
+    {
+      "start": 104.5362358276644,
+      "end": 107.64770975056689,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.9522839188575745
+          },
+          {
+            "label": "exciting",
+            "score": 0.012779549695551395
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.9536070227622986
+          },
+          {
+            "label": "complicated",
+            "score": 0.016376418992877007
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.917
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.912
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.942
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythm",
+          "weight": 0.944
+        },
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.449
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.451
+        },
+        {
+          "source": "complicated",
+          "variant": "complex",
+          "weight": 0.015
+        },
+        {
+          "source": "complicated",
+          "variant": "intricate",
+          "weight": 0.017
+        }
+      ]
+    },
+    {
+      "start": 107.64770975056689,
+      "end": 110.73596371882086,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.45035019516944885
+          },
+          {
+            "label": "grumpy",
+            "score": 0.234147846698761
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.8370506167411804
+          },
+          {
+            "label": "legato",
+            "score": 0.06466662138700485
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.942
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythm",
+          "weight": 0.944
+        },
+        {
+          "source": "legato",
+          "variant": "smooth",
+          "weight": 0.03
+        },
+        {
+          "source": "legato",
+          "variant": "connected",
+          "weight": 0.032
+        },
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.449
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.451
+        },
+        {
+          "source": "grumpy",
+          "variant": "irritable",
+          "weight": 0.233
+        },
+        {
+          "source": "grumpy",
+          "variant": "moody",
+          "weight": 0.235
+        }
+      ]
+    },
+    {
+      "start": 110.73596371882086,
+      "end": 113.87065759637188,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.9396985173225403
+          },
+          {
+            "label": "exciting",
+            "score": 0.027111351490020752
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.9329198002815247
+          },
+          {
+            "label": "complicated",
+            "score": 0.03630881384015083
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.917
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.912
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.942
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythm",
+          "weight": 0.944
+        },
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.449
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.451
+        },
+        {
+          "source": "complicated",
+          "variant": "complex",
+          "weight": 0.015
+        },
+        {
+          "source": "complicated",
+          "variant": "intricate",
+          "weight": 0.017
+        }
+      ]
+    },
+    {
+      "start": 113.87065759637188,
+      "end": 117.0053514739229,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.7582976222038269
+          },
+          {
+            "label": "grumpy",
+            "score": 0.09415868669748306
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.922500491142273
+          },
+          {
+            "label": "legato",
+            "score": 0.020382236689329147
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.917
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.912
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.942
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythm",
+          "weight": 0.944
+        },
+        {
+          "source": "legato",
+          "variant": "smooth",
+          "weight": 0.03
+        },
+        {
+          "source": "legato",
+          "variant": "connected",
+          "weight": 0.032
+        },
+        {
+          "source": "grumpy",
+          "variant": "irritable",
+          "weight": 0.233
+        },
+        {
+          "source": "grumpy",
+          "variant": "moody",
+          "weight": 0.235
+        }
+      ]
+    },
+    {
+      "start": 117.0053514739229,
+      "end": 120.16326530612245,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.9591176509857178
+          },
+          {
+            "label": "exciting",
+            "score": 0.035150881856679916
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.6498185992240906
+          },
+          {
+            "label": "complicated",
+            "score": 0.14988406002521515
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.917
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.912
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.942
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythm",
+          "weight": 0.944
+        },
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.449
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.451
+        },
+        {
+          "source": "complicated",
+          "variant": "complex",
+          "weight": 0.015
+        },
+        {
+          "source": "complicated",
+          "variant": "intricate",
+          "weight": 0.017
+        }
+      ]
+    },
+    {
+      "start": 120.16326530612245,
+      "end": 123.27473922902495,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.5071412324905396
+          },
+          {
+            "label": "anxious",
+            "score": 0.33654263615608215
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.8981553912162781
+          },
+          {
+            "label": "complicated",
+            "score": 0.0558648519217968
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.917
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.912
+        },
+        {
+          "source": "anxious",
+          "variant": "nervous",
+          "weight": 0.024
+        },
+        {
+          "source": "anxious",
+          "variant": "uneasy",
+          "weight": 0.026
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.942
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythm",
+          "weight": 0.944
+        },
+        {
+          "source": "complicated",
+          "variant": "complex",
+          "weight": 0.015
+        },
+        {
+          "source": "complicated",
+          "variant": "intricate",
+          "weight": 0.017
+        }
+      ]
+    },
+    {
+      "start": 123.27473922902495,
+      "end": 126.33977324263039,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.8944860100746155
+          },
+          {
+            "label": "anxious",
+            "score": 0.09288555383682251
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "legato",
+            "score": 0.764498233795166
+          },
+          {
+            "label": "polyrhythmic",
+            "score": 0.14557263255119324
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "anxious",
+          "variant": "nervous",
+          "weight": 0.024
+        },
+        {
+          "source": "anxious",
+          "variant": "uneasy",
+          "weight": 0.026
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.942
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythm",
+          "weight": 0.944
+        },
+        {
+          "source": "legato",
+          "variant": "smooth",
+          "weight": 0.03
+        },
+        {
+          "source": "legato",
+          "variant": "connected",
+          "weight": 0.032
+        },
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.449
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.451
+        }
+      ]
+    },
+    {
+      "start": 126.33977324263039,
+      "end": 129.42802721088435,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.7167128920555115
+          },
+          {
+            "label": "anxious",
+            "score": 0.10522384941577911
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "staccato",
+            "score": 0.36940452456474304
+          },
+          {
+            "label": "polyrhythmic",
+            "score": 0.21871282160282135
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.719
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.715
+        },
+        {
+          "source": "anxious",
+          "variant": "nervous",
+          "weight": 0.107
+        },
+        {
+          "source": "anxious",
+          "variant": "uneasy",
+          "weight": 0.103
+        },
+        {
+          "source": "staccato",
+          "variant": "abrupt",
+          "weight": 0.371
+        },
+        {
+          "source": "staccato",
+          "variant": "jerky",
+          "weight": 0.367
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.221
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered rhythms",
+          "weight": 0.218
+        }
+      ]
+    },
+    {
+      "start": 129.42802721088435,
+      "end": 132.53950113378684,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.4167986810207367
+          },
+          {
+            "label": "exciting",
+            "score": 0.3122115433216095
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.5466675162315369
+          },
+          {
+            "label": "groovy",
+            "score": 0.33684220910072327
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.719
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.715
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.221
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered rhythms",
+          "weight": 0.218
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.419
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.415
+        },
+        {
+          "source": "groovy",
+          "variant": "funky",
+          "weight": 0.339
+        },
+        {
+          "source": "groovy",
+          "variant": "rhythmic",
+          "weight": 0.335
+        }
+      ]
+    },
+    {
+      "start": 132.53950113378684,
+      "end": 135.67419501133787,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.38202932476997375
+          },
+          {
+            "label": "exciting",
+            "score": 0.335062175989151
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.6409374475479126
+          },
+          {
+            "label": "groovy",
+            "score": 0.2709066867828369
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.719
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.715
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.221
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered rhythms",
+          "weight": 0.218
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.419
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.415
+        },
+        {
+          "source": "groovy",
+          "variant": "funky",
+          "weight": 0.339
+        },
+        {
+          "source": "groovy",
+          "variant": "rhythmic",
+          "weight": 0.335
+        }
+      ]
+    },
+    {
+      "start": 135.67419501133787,
+      "end": 138.8088888888889,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.6236314177513123
+          },
+          {
+            "label": "brave",
+            "score": 0.19297729432582855
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.8142431378364563
+          },
+          {
+            "label": "syncopated",
+            "score": 0.06097675487399101
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.719
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.715
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.221
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered rhythms",
+          "weight": 0.218
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.419
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.415
+        },
+        {
+          "source": "syncopated",
+          "variant": "offbeat",
+          "weight": 0.062
+        },
+        {
+          "source": "syncopated",
+          "variant": "irregular",
+          "weight": 0.06
+        }
+      ]
+    },
+    {
+      "start": 138.8088888888889,
+      "end": 141.89714285714285,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.7619475722312927
+          },
+          {
+            "label": "happy",
+            "score": 0.10442240536212921
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "groovy",
+            "score": 0.3262658715248108
+          },
+          {
+            "label": "polyrhythmic",
+            "score": 0.21419517695903778
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.719
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.715
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.221
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered rhythms",
+          "weight": 0.218
+        },
+        {
+          "source": "groovy",
+          "variant": "funky",
+          "weight": 0.339
+        },
+        {
+          "source": "groovy",
+          "variant": "rhythmic",
+          "weight": 0.335
+        },
+        {
+          "source": "happy",
+          "variant": "joyful",
+          "weight": 0.105
+        },
+        {
+          "source": "happy",
+          "variant": "cheerful",
+          "weight": 0.103
+        }
+      ]
+    },
+    {
+      "start": 141.89714285714285,
+      "end": 145.00861678004534,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.4881623387336731
+          },
+          {
+            "label": "happy",
+            "score": 0.24116726219654083
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.8311081528663635
+          },
+          {
+            "label": "complicated",
+            "score": 0.07538431137800217
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.221
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered rhythms",
+          "weight": 0.218
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.419
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.415
+        },
+        {
+          "source": "happy",
+          "variant": "joyful",
+          "weight": 0.105
+        },
+        {
+          "source": "happy",
+          "variant": "cheerful",
+          "weight": 0.103
+        },
+        {
+          "source": "complicated",
+          "variant": "complex",
+          "weight": 0.077
+        },
+        {
+          "source": "complicated",
+          "variant": "intricate",
+          "weight": 0.073
+        }
+      ]
+    },
+    {
+      "start": 145.00861678004534,
+      "end": 148.14331065759637,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.5858781337738037
+          },
+          {
+            "label": "brave",
+            "score": 0.1693979799747467
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.6636151075363159
+          },
+          {
+            "label": "groovy",
+            "score": 0.1807187795639038
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.719
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.715
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.221
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered rhythms",
+          "weight": 0.218
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.419
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.415
+        },
+        {
+          "source": "groovy",
+          "variant": "funky",
+          "weight": 0.339
+        },
+        {
+          "source": "groovy",
+          "variant": "rhythmic",
+          "weight": 0.335
+        }
+      ]
+    },
+    {
+      "start": 148.14331065759637,
+      "end": 151.25478458049886,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.4527750015258789
+          },
+          {
+            "label": "brave",
+            "score": 0.41535696387290955
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.75913006067276
+          },
+          {
+            "label": "groovy",
+            "score": 0.1493595987558365
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.719
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.715
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.221
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered rhythms",
+          "weight": 0.218
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.419
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.415
+        },
+        {
+          "source": "groovy",
+          "variant": "funky",
+          "weight": 0.339
+        },
+        {
+          "source": "groovy",
+          "variant": "rhythmic",
+          "weight": 0.335
+        }
+      ]
+    },
+    {
+      "start": 151.25478458049886,
+      "end": 154.3894784580499,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.4980626404285431
+          },
+          {
+            "label": "brave",
+            "score": 0.29085418581962585
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.8824794888496399
+          },
+          {
+            "label": "groovy",
+            "score": 0.09876926988363266
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.498
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.505
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.291
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.284
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.882
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythm",
+          "weight": 0.877
+        },
+        {
+          "source": "groovy",
+          "variant": "funky",
+          "weight": 0.099
+        },
+        {
+          "source": "groovy",
+          "variant": "rhythmic",
+          "weight": 0.102
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.262
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.258
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated",
+          "weight": 0.828
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered rhythms",
+          "weight": 0.825
+        },
+        {
+          "source": "groovy",
+          "variant": "danceable",
+          "weight": 0.111
+        },
+        {
+          "source": "groovy",
+          "variant": "catchy",
+          "weight": 0.114
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.619
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.624
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic complexity",
+          "weight": 0.909
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "diverse rhythms",
+          "weight": 0.905
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-layered",
+          "weight": 0.887
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "varied rhythms",
+          "weight": 0.885
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.829
+        },
+        {
+          "source": "exciting",
+          "variant": "engaging",
+          "weight": 0.834
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.08
+        },
+        {
+          "source": "brave",
+          "variant": "daring",
+          "weight": 0.078
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated beats",
+          "weight": 0.77
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic diversity",
+          "weight": 0.772
+        },
+        {
+          "source": "brave",
+          "variant": "heroic",
+          "weight": 0.808
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.805
+        },
+        {
+          "source": "exciting",
+          "variant": "electric",
+          "weight": 0.105
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.107
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex patterns",
+          "weight": 0.819
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic interplay",
+          "weight": 0.816
+        },
+        {
+          "source": "brave",
+          "variant": "resolute",
+          "weight": 0.484
+        },
+        {
+          "source": "brave",
+          "variant": "steadfast",
+          "weight": 0.482
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic complexity",
+          "weight": 0.82
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.818
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.613
+        },
+        {
+          "source": "brave",
+          "variant": "gallant",
+          "weight": 0.61
+        },
+        {
+          "source": "exciting",
+          "variant": "invigorating",
+          "weight": 0.272
+        },
+        {
+          "source": "exciting",
+          "variant": "rousing",
+          "weight": 0.275
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered rhythms",
+          "weight": 0.576
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic variety",
+          "weight": 0.578
+        }
+      ]
+    },
+    {
+      "start": 154.3894784580499,
+      "end": 157.47773242630385,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.26233339309692383
+          },
+          {
+            "label": "happy",
+            "score": 0.2605959177017212
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.8280572295188904
+          },
+          {
+            "label": "groovy",
+            "score": 0.11053446680307388
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.291
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.284
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.882
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythm",
+          "weight": 0.877
+        },
+        {
+          "source": "groovy",
+          "variant": "funky",
+          "weight": 0.099
+        },
+        {
+          "source": "groovy",
+          "variant": "rhythmic",
+          "weight": 0.102
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.262
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.258
+        },
+        {
+          "source": "happy",
+          "variant": "joyful",
+          "weight": 0.261
+        },
+        {
+          "source": "happy",
+          "variant": "cheerful",
+          "weight": 0.263
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated",
+          "weight": 0.828
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered rhythms",
+          "weight": 0.825
+        },
+        {
+          "source": "groovy",
+          "variant": "danceable",
+          "weight": 0.111
+        },
+        {
+          "source": "groovy",
+          "variant": "catchy",
+          "weight": 0.114
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic complexity",
+          "weight": 0.909
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "diverse rhythms",
+          "weight": 0.905
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-layered",
+          "weight": 0.887
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "varied rhythms",
+          "weight": 0.885
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.08
+        },
+        {
+          "source": "brave",
+          "variant": "daring",
+          "weight": 0.078
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated beats",
+          "weight": 0.77
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic diversity",
+          "weight": 0.772
+        },
+        {
+          "source": "brave",
+          "variant": "heroic",
+          "weight": 0.808
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.805
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex patterns",
+          "weight": 0.819
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic interplay",
+          "weight": 0.816
+        },
+        {
+          "source": "brave",
+          "variant": "resolute",
+          "weight": 0.484
+        },
+        {
+          "source": "brave",
+          "variant": "steadfast",
+          "weight": 0.482
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic complexity",
+          "weight": 0.82
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.818
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.613
+        },
+        {
+          "source": "brave",
+          "variant": "gallant",
+          "weight": 0.61
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered rhythms",
+          "weight": 0.576
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic variety",
+          "weight": 0.578
+        }
+      ]
+    },
+    {
+      "start": 157.47773242630385,
+      "end": 160.6356462585034,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.6190038919448853
+          },
+          {
+            "label": "anxious",
+            "score": 0.23223696649074554
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.9090232849121094
+          },
+          {
+            "label": "complicated",
+            "score": 0.029726296663284302
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.498
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.505
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.882
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythm",
+          "weight": 0.877
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated",
+          "weight": 0.828
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered rhythms",
+          "weight": 0.825
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.619
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.624
+        },
+        {
+          "source": "anxious",
+          "variant": "nervous",
+          "weight": 0.232
+        },
+        {
+          "source": "anxious",
+          "variant": "uneasy",
+          "weight": 0.23
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic complexity",
+          "weight": 0.909
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "diverse rhythms",
+          "weight": 0.905
+        },
+        {
+          "source": "complicated",
+          "variant": "complex",
+          "weight": 0.03
+        },
+        {
+          "source": "complicated",
+          "variant": "intricate",
+          "weight": 0.032
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-layered",
+          "weight": 0.887
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "varied rhythms",
+          "weight": 0.885
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.829
+        },
+        {
+          "source": "exciting",
+          "variant": "engaging",
+          "weight": 0.834
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated beats",
+          "weight": 0.77
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic diversity",
+          "weight": 0.772
+        },
+        {
+          "source": "exciting",
+          "variant": "electric",
+          "weight": 0.105
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.107
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex patterns",
+          "weight": 0.819
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic interplay",
+          "weight": 0.816
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic complexity",
+          "weight": 0.82
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.818
+        },
+        {
+          "source": "exciting",
+          "variant": "invigorating",
+          "weight": 0.272
+        },
+        {
+          "source": "exciting",
+          "variant": "rousing",
+          "weight": 0.275
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered rhythms",
+          "weight": 0.576
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic variety",
+          "weight": 0.578
+        }
+      ]
+    },
+    {
+      "start": 160.6356462585034,
+      "end": 163.7471201814059,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.3873760998249054
+          },
+          {
+            "label": "anxious",
+            "score": 0.30291104316711426
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.8871068954467773
+          },
+          {
+            "label": "legato",
+            "score": 0.0808226615190506
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.291
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.284
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.882
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythm",
+          "weight": 0.877
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.262
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.258
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated",
+          "weight": 0.828
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered rhythms",
+          "weight": 0.825
+        },
+        {
+          "source": "anxious",
+          "variant": "nervous",
+          "weight": 0.232
+        },
+        {
+          "source": "anxious",
+          "variant": "uneasy",
+          "weight": 0.23
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic complexity",
+          "weight": 0.909
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "diverse rhythms",
+          "weight": 0.905
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-layered",
+          "weight": 0.887
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "varied rhythms",
+          "weight": 0.885
+        },
+        {
+          "source": "legato",
+          "variant": "smooth",
+          "weight": 0.081
+        },
+        {
+          "source": "legato",
+          "variant": "connected",
+          "weight": 0.083
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.08
+        },
+        {
+          "source": "brave",
+          "variant": "daring",
+          "weight": 0.078
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated beats",
+          "weight": 0.77
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic diversity",
+          "weight": 0.772
+        },
+        {
+          "source": "legato",
+          "variant": "fluid",
+          "weight": 0.122
+        },
+        {
+          "source": "legato",
+          "variant": "legato style",
+          "weight": 0.125
+        },
+        {
+          "source": "brave",
+          "variant": "heroic",
+          "weight": 0.808
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.805
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex patterns",
+          "weight": 0.819
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic interplay",
+          "weight": 0.816
+        },
+        {
+          "source": "brave",
+          "variant": "resolute",
+          "weight": 0.484
+        },
+        {
+          "source": "brave",
+          "variant": "steadfast",
+          "weight": 0.482
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic complexity",
+          "weight": 0.82
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.818
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.613
+        },
+        {
+          "source": "brave",
+          "variant": "gallant",
+          "weight": 0.61
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered rhythms",
+          "weight": 0.576
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic variety",
+          "weight": 0.578
+        }
+      ]
+    },
+    {
+      "start": 163.7471201814059,
+      "end": 166.8585941043084,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.828910231590271
+          },
+          {
+            "label": "brave",
+            "score": 0.080396868288517
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.7697054743766785
+          },
+          {
+            "label": "legato",
+            "score": 0.12154271453619003
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.498
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.505
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.291
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.284
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.882
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythm",
+          "weight": 0.877
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.262
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.258
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated",
+          "weight": 0.828
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered rhythms",
+          "weight": 0.825
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.619
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.624
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic complexity",
+          "weight": 0.909
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "diverse rhythms",
+          "weight": 0.905
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-layered",
+          "weight": 0.887
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "varied rhythms",
+          "weight": 0.885
+        },
+        {
+          "source": "legato",
+          "variant": "smooth",
+          "weight": 0.081
+        },
+        {
+          "source": "legato",
+          "variant": "connected",
+          "weight": 0.083
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.829
+        },
+        {
+          "source": "exciting",
+          "variant": "engaging",
+          "weight": 0.834
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.08
+        },
+        {
+          "source": "brave",
+          "variant": "daring",
+          "weight": 0.078
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated beats",
+          "weight": 0.77
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic diversity",
+          "weight": 0.772
+        },
+        {
+          "source": "legato",
+          "variant": "fluid",
+          "weight": 0.122
+        },
+        {
+          "source": "legato",
+          "variant": "legato style",
+          "weight": 0.125
+        },
+        {
+          "source": "brave",
+          "variant": "heroic",
+          "weight": 0.808
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.805
+        },
+        {
+          "source": "exciting",
+          "variant": "electric",
+          "weight": 0.105
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.107
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex patterns",
+          "weight": 0.819
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic interplay",
+          "weight": 0.816
+        },
+        {
+          "source": "brave",
+          "variant": "resolute",
+          "weight": 0.484
+        },
+        {
+          "source": "brave",
+          "variant": "steadfast",
+          "weight": 0.482
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic complexity",
+          "weight": 0.82
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.818
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.613
+        },
+        {
+          "source": "brave",
+          "variant": "gallant",
+          "weight": 0.61
+        },
+        {
+          "source": "exciting",
+          "variant": "invigorating",
+          "weight": 0.272
+        },
+        {
+          "source": "exciting",
+          "variant": "rousing",
+          "weight": 0.275
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered rhythms",
+          "weight": 0.576
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic variety",
+          "weight": 0.578
+        }
+      ]
+    },
+    {
+      "start": 166.8585941043084,
+      "end": 169.97006802721089,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.8079847693443298
+          },
+          {
+            "label": "exciting",
+            "score": 0.10515344142913818
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.818682074546814
+          },
+          {
+            "label": "staccato",
+            "score": 0.1301240473985672
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.498
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.505
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.291
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.284
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.882
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythm",
+          "weight": 0.877
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.262
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.258
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated",
+          "weight": 0.828
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered rhythms",
+          "weight": 0.825
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.619
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.624
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic complexity",
+          "weight": 0.909
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "diverse rhythms",
+          "weight": 0.905
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-layered",
+          "weight": 0.887
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "varied rhythms",
+          "weight": 0.885
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.829
+        },
+        {
+          "source": "exciting",
+          "variant": "engaging",
+          "weight": 0.834
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.08
+        },
+        {
+          "source": "brave",
+          "variant": "daring",
+          "weight": 0.078
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated beats",
+          "weight": 0.77
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic diversity",
+          "weight": 0.772
+        },
+        {
+          "source": "brave",
+          "variant": "heroic",
+          "weight": 0.808
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.805
+        },
+        {
+          "source": "exciting",
+          "variant": "electric",
+          "weight": 0.105
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.107
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex patterns",
+          "weight": 0.819
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic interplay",
+          "weight": 0.816
+        },
+        {
+          "source": "staccato",
+          "variant": "short and sharp",
+          "weight": 0.13
+        },
+        {
+          "source": "staccato",
+          "variant": "abrupt",
+          "weight": 0.128
+        },
+        {
+          "source": "brave",
+          "variant": "resolute",
+          "weight": 0.484
+        },
+        {
+          "source": "brave",
+          "variant": "steadfast",
+          "weight": 0.482
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic complexity",
+          "weight": 0.82
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.818
+        },
+        {
+          "source": "staccato",
+          "variant": "detached",
+          "weight": 0.105
+        },
+        {
+          "source": "staccato",
+          "variant": "punctuated",
+          "weight": 0.107
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.613
+        },
+        {
+          "source": "brave",
+          "variant": "gallant",
+          "weight": 0.61
+        },
+        {
+          "source": "exciting",
+          "variant": "invigorating",
+          "weight": 0.272
+        },
+        {
+          "source": "exciting",
+          "variant": "rousing",
+          "weight": 0.275
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered rhythms",
+          "weight": 0.576
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic variety",
+          "weight": 0.578
+        },
+        {
+          "source": "staccato",
+          "variant": "choppy",
+          "weight": 0.268
+        },
+        {
+          "source": "staccato",
+          "variant": "sharp",
+          "weight": 0.27
+        }
+      ]
+    },
+    {
+      "start": 169.97006802721089,
+      "end": 173.10476190476192,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.4838215410709381
+          },
+          {
+            "label": "grumpy",
+            "score": 0.14113639295101166
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.8196126818656921
+          },
+          {
+            "label": "staccato",
+            "score": 0.10534180700778961
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.291
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.284
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.882
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythm",
+          "weight": 0.877
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.262
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.258
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated",
+          "weight": 0.828
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered rhythms",
+          "weight": 0.825
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic complexity",
+          "weight": 0.909
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "diverse rhythms",
+          "weight": 0.905
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-layered",
+          "weight": 0.887
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "varied rhythms",
+          "weight": 0.885
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.08
+        },
+        {
+          "source": "brave",
+          "variant": "daring",
+          "weight": 0.078
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated beats",
+          "weight": 0.77
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic diversity",
+          "weight": 0.772
+        },
+        {
+          "source": "brave",
+          "variant": "heroic",
+          "weight": 0.808
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.805
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex patterns",
+          "weight": 0.819
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic interplay",
+          "weight": 0.816
+        },
+        {
+          "source": "staccato",
+          "variant": "short and sharp",
+          "weight": 0.13
+        },
+        {
+          "source": "staccato",
+          "variant": "abrupt",
+          "weight": 0.128
+        },
+        {
+          "source": "brave",
+          "variant": "resolute",
+          "weight": 0.484
+        },
+        {
+          "source": "brave",
+          "variant": "steadfast",
+          "weight": 0.482
+        },
+        {
+          "source": "grumpy",
+          "variant": "irritable",
+          "weight": 0.141
+        },
+        {
+          "source": "grumpy",
+          "variant": "cranky",
+          "weight": 0.143
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic complexity",
+          "weight": 0.82
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.818
+        },
+        {
+          "source": "staccato",
+          "variant": "detached",
+          "weight": 0.105
+        },
+        {
+          "source": "staccato",
+          "variant": "punctuated",
+          "weight": 0.107
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.613
+        },
+        {
+          "source": "brave",
+          "variant": "gallant",
+          "weight": 0.61
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered rhythms",
+          "weight": 0.576
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic variety",
+          "weight": 0.578
+        },
+        {
+          "source": "staccato",
+          "variant": "choppy",
+          "weight": 0.268
+        },
+        {
+          "source": "staccato",
+          "variant": "sharp",
+          "weight": 0.27
+        }
+      ]
+    },
+    {
+      "start": 173.10476190476192,
+      "end": 176.2162358276644,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.6125936508178711
+          },
+          {
+            "label": "exciting",
+            "score": 0.2718435227870941
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.5764044523239136
+          },
+          {
+            "label": "staccato",
+            "score": 0.2678743302822113
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.498
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.505
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.291
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.284
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.882
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythm",
+          "weight": 0.877
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.262
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.258
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated",
+          "weight": 0.828
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered rhythms",
+          "weight": 0.825
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.619
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.624
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic complexity",
+          "weight": 0.909
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "diverse rhythms",
+          "weight": 0.905
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-layered",
+          "weight": 0.887
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "varied rhythms",
+          "weight": 0.885
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.829
+        },
+        {
+          "source": "exciting",
+          "variant": "engaging",
+          "weight": 0.834
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.08
+        },
+        {
+          "source": "brave",
+          "variant": "daring",
+          "weight": 0.078
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "syncopated beats",
+          "weight": 0.77
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic diversity",
+          "weight": 0.772
+        },
+        {
+          "source": "brave",
+          "variant": "heroic",
+          "weight": 0.808
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.805
+        },
+        {
+          "source": "exciting",
+          "variant": "electric",
+          "weight": 0.105
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.107
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex patterns",
+          "weight": 0.819
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic interplay",
+          "weight": 0.816
+        },
+        {
+          "source": "staccato",
+          "variant": "short and sharp",
+          "weight": 0.13
+        },
+        {
+          "source": "staccato",
+          "variant": "abrupt",
+          "weight": 0.128
+        },
+        {
+          "source": "brave",
+          "variant": "resolute",
+          "weight": 0.484
+        },
+        {
+          "source": "brave",
+          "variant": "steadfast",
+          "weight": 0.482
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic complexity",
+          "weight": 0.82
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.818
+        },
+        {
+          "source": "staccato",
+          "variant": "detached",
+          "weight": 0.105
+        },
+        {
+          "source": "staccato",
+          "variant": "punctuated",
+          "weight": 0.107
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.613
+        },
+        {
+          "source": "brave",
+          "variant": "gallant",
+          "weight": 0.61
+        },
+        {
+          "source": "exciting",
+          "variant": "invigorating",
+          "weight": 0.272
+        },
+        {
+          "source": "exciting",
+          "variant": "rousing",
+          "weight": 0.275
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "layered rhythms",
+          "weight": 0.576
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "rhythmic variety",
+          "weight": 0.578
+        },
+        {
+          "source": "staccato",
+          "variant": "choppy",
+          "weight": 0.268
+        },
+        {
+          "source": "staccato",
+          "variant": "sharp",
+          "weight": 0.27
+        }
+      ]
+    },
+    {
+      "start": 176.2162358276644,
+      "end": 179.3277097505669,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.731219470500946
+          },
+          {
+            "label": "exciting",
+            "score": 0.18157680332660675
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.8335992693901062
+          },
+          {
+            "label": "groovy",
+            "score": 0.09112383425235748
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.731
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.735
+        },
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.182
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.185
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.834
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythm",
+          "weight": 0.836
+        },
+        {
+          "source": "groovy",
+          "variant": "funky",
+          "weight": 0.091
+        },
+        {
+          "source": "groovy",
+          "variant": "rhythmic",
+          "weight": 0.092
+        }
+      ]
+    },
+    {
+      "start": 179.3277097505669,
+      "end": 182.4391836734694,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.5083911418914795
+          },
+          {
+            "label": "happy",
+            "score": 0.24925141036510468
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.9112813472747803
+          },
+          {
+            "label": "staccato",
+            "score": 0.03902874514460564
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.731
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.735
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.834
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythm",
+          "weight": 0.836
+        },
+        {
+          "source": "happy",
+          "variant": "joyful",
+          "weight": 0.249
+        },
+        {
+          "source": "happy",
+          "variant": "cheerful",
+          "weight": 0.25
+        },
+        {
+          "source": "staccato",
+          "variant": "short and detached",
+          "weight": 0.039
+        },
+        {
+          "source": "staccato",
+          "variant": "abrupt",
+          "weight": 0.04
+        }
+      ]
+    },
+    {
+      "start": 182.4391836734694,
+      "end": 185.57387755102042,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.4860732853412628
+          },
+          {
+            "label": "brave",
+            "score": 0.21764783561229706
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.9350368976593018
+          },
+          {
+            "label": "staccato",
+            "score": 0.022516148164868355
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.731
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.735
+        },
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.182
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.185
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.834
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythm",
+          "weight": 0.836
+        },
+        {
+          "source": "staccato",
+          "variant": "short and detached",
+          "weight": 0.039
+        },
+        {
+          "source": "staccato",
+          "variant": "abrupt",
+          "weight": 0.04
+        }
+      ]
+    },
+    {
+      "start": 185.57387755102042,
+      "end": 188.6853514739229,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.4654169976711273
+          },
+          {
+            "label": "brave",
+            "score": 0.30963242053985596
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.5931681394577026
+          },
+          {
+            "label": "staccato",
+            "score": 0.20163868367671967
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.731
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.735
+        },
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.182
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.185
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.834
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythm",
+          "weight": 0.836
+        },
+        {
+          "source": "staccato",
+          "variant": "short and detached",
+          "weight": 0.039
+        },
+        {
+          "source": "staccato",
+          "variant": "abrupt",
+          "weight": 0.04
+        }
+      ]
+    },
+    {
+      "start": 188.6853514739229,
+      "end": 191.866485260771,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "anxious",
+            "score": 0.5687001943588257
+          },
+          {
+            "label": "brave",
+            "score": 0.19836567342281342
+          }
+        ],
+        "characteristics": [
+          {
+            "label": "polyrhythmic",
+            "score": 0.6518266201019287
+          },
+          {
+            "label": "complicated",
+            "score": 0.14970681071281433
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.731
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.735
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "multi-rhythmic",
+          "weight": 0.834
+        },
+        {
+          "source": "polyrhythmic",
+          "variant": "complex rhythm",
+          "weight": 0.836
+        },
+        {
+          "source": "anxious",
+          "variant": "nervous",
+          "weight": 0.569
+        },
+        {
+          "source": "anxious",
+          "variant": "uneasy",
+          "weight": 0.57
+        },
+        {
+          "source": "complicated",
+          "variant": "complex",
+          "weight": 0.15
+        },
+        {
+          "source": "complicated",
+          "variant": "intricate",
+          "weight": 0.151
+        }
+      ]
+    }
+  ]
+}

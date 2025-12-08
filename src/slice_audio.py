@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Tuple
 
 
+
 def parse_segments(json_file, level=12) -> Tuple:
     """select the level of detail we want from different levels of segmentations
 
@@ -15,12 +16,12 @@ def parse_segments(json_file, level=12) -> Tuple:
 
     Returns:
         timestamps: _description_
-        theme: 
+        theme:
     """
-    with open(json_file, 'r') as f:
+    with open(json_file, "r") as f:
         details = json.load(f)
 
-    return details[level-1][0], details[level-1][1]
+    return details[level - 1][0], details[level - 1][1]
 
 
 def slice_audio(time_stamps, audio_file, output_dir=None, sr=22050) -> None:
@@ -32,25 +33,25 @@ def slice_audio(time_stamps, audio_file, output_dir=None, sr=22050) -> None:
         output_dir (str, optional): directory to save the sliced audio files. If None, will create a directory. Defaults to None.
         sr (int, optional): sample rate. Defaults to 22050.
         beat_track (optional): the beat_time file that splits the music into beats
-        k (optional): 
+        k (optional):
     """
 
     y, sr = librosa.load(audio_file, sr=None)
 
     if output_dir is None:
-        audio_file = audio_file.split('/')[-1].split('.')[0]
+        audio_file = audio_file.split("/")[-1].split(".")[0]
         output_dir = f"segments/{audio_file}"
     Path(output_dir).mkdir(parents=True, exist_ok=True)
 
     for i, [start, end] in enumerate(time_stamps):
-        clip = y[int(start * sr) :int(end * sr)]
+        clip = y[int(start * sr) : int(end * sr)]
         sf.write(f"{output_dir}/{i:02d}_{start:.2f}-{end:.2f}.wav", clip, sr)
     return
 
 
-if __name__ == '__main__':
-    AUDIO = "testSong"  #match this with your segmentation file name
-    FILE_NAME = 'segmentation'
+if __name__ == "__main__":
+    AUDIO = "testSong"  # match this with your segmentation file name
+    FILE_NAME = "segmentation"
     # example usage
     timestamps, themes = parse_segments(f"json/{FILE_NAME}.json", level=12)
     print(timestamps)

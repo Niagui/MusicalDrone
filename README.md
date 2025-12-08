@@ -60,3 +60,13 @@ Clap has been half implemented. We just need to figure out what emotions do we w
 
 ```slice_audio.py``` will now slice a whole song into meaningful segments (verse, chorus, etc.)
 ```clap.ipynb``` will now generate ```clap_results.json```. These are the emotion of each meaningful segment of the music. You can find a list of emotion and genres we have currently in ```clap_labels.json```
+
+### Update 11/13/25
+
+You can now run a visualization demo by doing
+
+```
+chmod +x pipeline.sh
+./pipeline.sh
+
+```

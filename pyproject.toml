@@ -1,4 +1,43 @@
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+norecursedirs = ["external", ".*", "build", "dist", "venv", ".venv"]
+addopts = "-ra"
+
 [build-system]
 requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
+[project]
+name = "Musical_Drone"
+authors = [
+    {name = "Gordon Shum", email = "shumt@oregonstate.edu"}, 
+    {name = "Henry James", email = "jameshe@oregonstate.edu"},
+    {name = "Lydia Brown", email = "browlydi@oregonstate.edu"}
+]
+version = "0.1.0"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest"
+]
+
+[tool.ruff]
+exclude = [
+    ".git",
+    "__pycache__",
+    "build",
+    "dist",
+    "venv",
+    "external",
+    "notebook/*",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-dir]
+"" = "src"
