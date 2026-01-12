@@ -618,16 +618,14 @@ static void Keyboard(unsigned char key, int, int){
             std::cout << "Speed: " << gSpeed << "x\n";
             break;
             
-        // 'E': loads emotional labels and starts music
+        //'E': loads emotional labels and starts music
         case 'e': case 'E': {
             float t = gSimTime;  // Use current simulation time
             
             // Load emotion data
-            bool emotionsOk = ReloadAndApplyEmotions(t);
+            // bool emotionsOk = ReloadAndApplyEmotions(t);
             
-            if (emotionsOk) {
-                // Load audio file if not already loaded
-                if (!gAudioLoaded) {
+            if (!gAudioLoaded) {
                     StartAudio("testSong.mp3");
                 }
                 
@@ -653,10 +651,6 @@ static void Keyboard(unsigned char key, int, int){
                 } else {
                     gHudMsg = "Emotions loaded, Audio failed";
                     std::cerr << "ERROR: Failed to load audio\n";
-                }
-            } else {
-                gHudMsg = "Emotion load failed";
-                std::cerr << "ERROR: Failed to load emotions\n";
             }
             
             gHudUntil = gSimTime + 2.5f;

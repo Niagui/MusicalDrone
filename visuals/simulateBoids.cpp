@@ -1,13 +1,8 @@
-// simulate_boids.cpp  (no OpenGL)
-// g++ -std=c++17 simulate_boids.cpp boids.cpp -o simulate_boids
-
 #include "boids.h"
 #include <iostream>
 #include <vector>
 #include <cstdio>
 #include <cmath>
-
-// --- copy or include these from basicVisuals.cpp ---
 
 static std::vector<Vec3> SampleCircle(int n, float radius, float phase) {
     std::vector<Vec3> pts(n);
@@ -20,10 +15,10 @@ static std::vector<Vec3> SampleCircle(int n, float radius, float phase) {
 
 
 int main() {
-    const int   droneCount   = 6;
+    const int   droneCount   = 1;
     const float totalTime    = GetAudioLength();
     const float simDt        = 1.0f / 60.0f;
-    const float outputDt     = 0.2f;  // snapshot every 0.2 s
+    const float outputDt     = 0.2f;  // snapshot every 0.2 sec
 
     std::cerr << totalTime << std::endl;
 
@@ -33,18 +28,18 @@ int main() {
     float t        = 0.0f;
     float nextDump = 0.0f;
 
-    // CSV header (one line per drone per snapshot)
+    // csv header
     std::printf("t,drone,x,y,z,"
                 "r_sep,r_nei,k_sep,k_ali,k_coh,k_goal,"
                 "vmax,amax,altitude,jitter\n");
 
     while (t <= totalTime + 1e-6f) {
-        // Example: CIRCLE formation like your CIRCLE case
-        float phase = 0.25f * t; // same as CIRCLE spin in basicVisuals
-        std::vector<Vec3> slots = SampleCircle(droneCount, 3.0f, phase);
-        for (auto& s : slots) s.y = 0.0f;   // altitude handled by boids params
 
-        // advance emotions and boids
+        float phase = 0.25f * t; 
+        std::vector<Vec3> slots = SampleCircle(droneCount, 3.0f, phase);
+        for (auto& s : slots) s.y = 0.0f;  
+
+        // updates
         SetSimTime(t);
         UpdateBoids(simDt, slots);
 
