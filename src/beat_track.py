@@ -34,7 +34,7 @@ def group_beats(beat_times, k=8, save_to_json=False, destination=None) -> list:
 
     Args:
         beat_times (_type_): _description_
-        k (int, optional): _description_. Defaults to 4.
+        k (int, optional): _description_. Defaults to 8.
         save_to_json (bool, optional): _description_. Defaults to False.
 
     Returns:

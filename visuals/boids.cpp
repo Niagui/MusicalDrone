@@ -489,7 +489,7 @@ const std::vector<float>& GetLastWeights(){
     return last_weights;
 }
 
-//Integration station: advance positions and velocities by dt(seconds)
+//WARNING: this thing updates per frame not per segments
 void UpdateBoids(float dt, const std::vector<Vec3>& targets){
     EnsureEmotionsLoaded();
     EnsureSegmentsLoaded();
@@ -501,12 +501,12 @@ void UpdateBoids(float dt, const std::vector<Vec3>& targets){
 
         // trigger when current time crosses the reset timestamp
         if (gLastBoidsTime < resetT && t >= resetT) {
-            std::cerr << "Resetting BoidParams at t=" << resetT << "\n";
+            // std::cerr << "Resetting BoidParams at t=" << resetT << "\n";
             
-            // Reset parameters to neutral
-            std::cerr << "Before reset vmax=" << P.vmax << "\n";
+            // // Reset parameters to neutral
+            // std::cerr << "Before reset vmax=" << P.vmax << "\n";
             P = Neutral;
-            std::cerr << "After reset vmax=" << P.vmax << "\n";
+            // std::cerr << "After reset vmax=" << P.vmax << "\n";
 
             //Reset velocities so old emotion doesn't persist
             ResetVelocities();
@@ -567,7 +567,11 @@ void UpdateBoids(float dt, const std::vector<Vec3>& targets){
 
         //goal seeking towards formation position
         Vec3 fgoal = sub(targets[i], pi);
-        fgoal.y += (P.altitude - pi.y)*0.5f; //stablaizes altitude
+        float bob = std::sin(sim_time * (0.8f + 1.2f * P.jitter) + i * 0.37f)
+            * (0.4f * P.jitter);
+
+        float desiredAlt = P.altitude * (1.0f + 0.35f * P.jitter);
+        fgoal.y += (desiredAlt + bob - pi.y);
 
         //jitters to break perfect symmetry
         Vec3 fjit = { (float)(rand()/double(RAND_MAX)-0.5)*P.jitter,

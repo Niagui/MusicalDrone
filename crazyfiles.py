@@ -1,0 +1,114 @@
+import logging
+import time
+import csv
+from collections import defaultdict
+
+import cflib.crtp
+from cflib.crazyflie import Crazyflie
+from cflib.crazyflie.syncCrazyflie import SyncCrazyflie
+from cflib.crazyflie.swarm import CachedCfFactory
+from cflib.crazyflie.swarm import Swarm
+from cflib.utils import uri_helper
+
+PATH = "trajectories.csv"
+uri = uri_helper.uri_from_env(default='radio://0/80/2M/E7E7E7E7E7')
+
+
+def read_csv(path):
+    waypoint_map = defaultdict(list)
+
+    with open(path) as f:
+        reader = csv.reader(f)
+        for row in reader:
+            if not row:
+                continue
+            t, id, x, y, z = row
+            waypoint_map[int(id)].append((x,y,z,t))
+
+    # print(waypoint_map)
+    return waypoint_map
+
+
+def init_data(path):
+    """
+    make a data structure like:
+    seq_args = {
+        uris[0]: [sequence0],
+        uris[1]: [sequence1],
+        uris[2]: [sequence2],
+        uris[3]: [sequence3],
+    }
+    """
+    waypoints = read_csv(path)
+    seq = defaultdict(list)
+    for i, uri in enumerate(uris):
+        seq[uri] = waypoints[i]
+    return seq
+
+
+def activate_led_bit_mask(scf):
+    scf.cf.param.set_value('led.bitmask', 255)
+
+def deactivate_led_bit_mask(scf):
+    scf.cf.param.set_value('led.bitmask', 0)
+
+def light_check(scf):
+    activate_led_bit_mask(scf)
+    time.sleep(2)
+    deactivate_led_bit_mask(scf)
+
+
+def take_off(scf):
+    commander= scf.cf.high_level_commander
+
+    commander.takeoff(1.0, 2.0)
+    time.sleep(3)
+
+
+def land(scf):
+    commander= scf.cf.high_level_commander
+
+    commander.land(0.0, 2.0)
+    time.sleep(2)
+
+    commander.stop()
+
+
+def run_square_sequence(scf):
+    commander = scf.cf.high_level_commander
+
+    commander
+
+
+
+def run_sequence(scf: SyncCrazyflie, sequence):
+    cf = scf.cf
+
+    for arguments in sequence:
+        commander = scf.cf.high_level_commander
+
+        x, y, z = arguments[0], arguments[1], arguments[2]
+        duration = 0.2
+
+        print('Setting position {} to cf {}'.format((x, y, z), cf.link_uri))
+        commander.go_to(x, y, z, 0, duration, relative=True)
+        time.sleep(duration)
+
+uris = {
+    'radio://0/20/2M/E7E7E7E701',
+    # Add more URIs if you want more copters in the swarm
+    # URIs in a swarm using the same radio must also be on the same channel
+}
+
+
+
+if __name__ == '__main__':
+    seq_args = init_data(PATH)
+    cflib.crtp.init_drivers()
+    factory = CachedCfFactory(rw_cache='./cache')
+    with Swarm(uris, factory=factory) as swarm:
+        swarm.parallel_safe(light_check)
+        swarm.reset_estimators()
+        swarm.parallel_safe(take_off)
+        swarm.parallel_safe(run_sequence, args_dict=seq_args)
+        swarm.parallel_safe(land)
