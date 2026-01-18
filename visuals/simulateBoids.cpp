@@ -29,9 +29,9 @@ int main() {
     float nextDump = 0.0f;
 
     // csv header
-    std::printf("t,drone,x,y,z,"
-                "r_sep,r_nei,k_sep,k_ali,k_coh,k_goal,"
-                "vmax,amax,altitude,jitter\n");
+    // std::printf("t,drone,x,y,z,"
+    //             "r_sep,r_nei,k_sep,k_ali,k_coh,k_goal,"
+    //             "vmax,amax,altitude,jitter\n");
 
     while (t <= totalTime + 1e-6f) {
 
@@ -50,13 +50,18 @@ int main() {
 
             for (int i = 0; i < droneCount; ++i) {
                 const Vec3& p = pos[i];
+                // std::printf(
+                //     "%.3f,%d,%.4f,%.4f,%.4f,"
+                //     "%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,"
+                //     "%.3f,%.3f,%.3f,%.3f\n",
+                //     nextDump, i, p.x, p.y, p.z,
+                //     P.r_sep, P.r_nei, P.k_sep, P.k_ali, P.k_coh, P.k_goal,
+                //     P.vmax, P.amax, P.altitude, P.jitter
+                // );
+
                 std::printf(
-                    "%.3f,%d,%.4f,%.4f,%.4f,"
-                    "%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,"
-                    "%.3f,%.3f,%.3f,%.3f\n",
-                    nextDump, i, p.x, p.y, p.z,
-                    P.r_sep, P.r_nei, P.k_sep, P.k_ali, P.k_coh, P.k_goal,
-                    P.vmax, P.amax, P.altitude, P.jitter
+                    "%.3f,%d,%.4f,%.4f,%.4f\n",
+                    nextDump, i, p.x, p.y, p.z
                 );
             }
 
