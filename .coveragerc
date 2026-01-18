@@ -7,4 +7,6 @@ omit =
     */site-packages/*
     */external/*
     */build/*
+
+    */crazyfiles.py
 branch = True

@@ -1,10 +1,10 @@
-import logging
+# import logging
 import time
 import csv
 from collections import defaultdict
 
 import cflib.crtp
-from cflib.crazyflie import Crazyflie
+# from cflib.crazyflie import Crazyflie
 from cflib.crazyflie.syncCrazyflie import SyncCrazyflie
 from cflib.crazyflie.swarm import CachedCfFactory
 from cflib.crazyflie.swarm import Swarm
