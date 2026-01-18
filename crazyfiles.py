@@ -23,7 +23,7 @@ def read_csv(path):
             if not row:
                 continue
             t, id, x, y, z = row
-            waypoint_map[int(id)].append((x,y,z,t))
+            waypoint_map[int(id)].append((float(x),float(y),float(z),float(t)))
 
     # print(waypoint_map)
     return waypoint_map
@@ -42,7 +42,7 @@ def init_data(path):
     waypoints = read_csv(path)
     seq = defaultdict(list)
     for i, uri in enumerate(uris):
-        seq[uri] = waypoints[i]
+        seq[uri] = [waypoints[i]]
     return seq
 
 
@@ -91,7 +91,7 @@ def run_sequence(scf: SyncCrazyflie, sequence):
         duration = 0.2
 
         print('Setting position {} to cf {}'.format((x, y, z), cf.link_uri))
-        commander.go_to(x, y, z, 0, duration, relative=True)
+        commander.go_to(x, y, z, 0, duration, relative=False)
         time.sleep(duration)
 
 uris = {
