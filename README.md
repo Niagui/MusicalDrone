@@ -70,3 +70,9 @@ chmod +x pipeline.sh
 ./pipeline.sh
 
 ```
+
+### Trajectories
+
+The trajectories of the drone will be built using the following package.
+
+https://github.com/whoenig/uav_trajectories

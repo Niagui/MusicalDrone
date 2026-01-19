@@ -5,10 +5,15 @@ from collections import defaultdict
 
 import cflib.crtp
 # from cflib.crazyflie import Crazyflie
+from cflib.crazyflie.mem import MemoryElement
+from cflib.crazyflie.mem.trajectory_memory import Poly4D
 from cflib.crazyflie.syncCrazyflie import SyncCrazyflie
 from cflib.crazyflie.swarm import CachedCfFactory
 from cflib.crazyflie.swarm import Swarm
 from cflib.utils import uri_helper
+from cflib.crazyflie.log import LogConfig
+
+
 
 PATH = "trajectories.csv"
 uri = uri_helper.uri_from_env(default='radio://0/80/2M/E7E7E7E7E7')
@@ -46,6 +51,31 @@ def init_data(path):
     return seq
 
 
+
+def _stab_log_data(timestamp, data, logconf):
+    print('x: {}, y: {}, z: {}'.format(x = data['stateEstimate.x'],
+                                        y = data['stateEstimate.y'],
+                                        z = data['stateEstimate.z']))
+    
+def _log_error(logconf, msg):
+    print(f"[LOG ERROR] {logconf.name}: {msg}")
+
+
+def set_up_logging(scf: SyncCrazyflie, period_ms: int = 100):
+    _lg_stab = LogConfig(name='pos', period_in_ms=period_ms)
+    _lg_stab.add_variable('stateEstimate.x', 'float')
+    _lg_stab.add_variable('stateEstimate.y', 'float')
+    _lg_stab.add_variable('stateEstimate.z', 'float')
+
+    scf.cf.log.add_config(_lg_stab)
+    _lg_stab.data_received_cb.add_callback(_stab_log_data)
+    _lg_stab.error_cb.add_callback(_log_error)
+
+    scf._pos_logconf = _lg_stab
+    _lg_stab.start()
+
+
+
 def activate_led_bit_mask(scf):
     scf.cf.param.set_value('led.bitmask', 255)
 
@@ -74,12 +104,6 @@ def land(scf):
     commander.stop()
 
 
-def run_square_sequence(scf):
-    commander = scf.cf.high_level_commander
-
-    commander
-
-
 
 def run_sequence(scf: SyncCrazyflie, sequence):
     cf = scf.cf
@@ -94,6 +118,7 @@ def run_sequence(scf: SyncCrazyflie, sequence):
         commander.go_to(x, y, z, 0, duration, relative=False)
         time.sleep(duration)
 
+
 uris = {
     'radio://0/20/2M/E7E7E7E701',
     # Add more URIs if you want more copters in the swarm
@@ -101,12 +126,12 @@ uris = {
 }
 
 
-
 if __name__ == '__main__':
     seq_args = init_data(PATH)
     cflib.crtp.init_drivers()
     factory = CachedCfFactory(rw_cache='./cache')
     with Swarm(uris, factory=factory) as swarm:
+        swarm.parallel_safe(set_up_logging)
         swarm.parallel_safe(light_check)
         swarm.reset_estimators()
         swarm.parallel_safe(take_off)
