@@ -22,11 +22,23 @@ def read_csv(path):
         for row in reader:
             if not row:
                 continue
-            t, id, x, y, z = row
-            waypoint_map[int(id)].append((float(x),float(y),float(z),float(t)))
+            id, t, x, y, z = row
+            waypoint_map[int(id)].append((float(t), float(x),float(y),float(z), 0.))
+
+            for id in waypoint_map:
+                waypoint_map[id].sort(key=lambda p: p[0])
 
     # print(waypoint_map)
     return waypoint_map
+
+def write_timed_waypoints(id_, samples, out_path):
+    """
+    samples: list of (t, x, y, z, yaw)
+    """
+    with open(out_path, "w", newline="") as f:
+        w = csv.writer(f)
+        for t, x, y, z, yaw in samples:
+            w.writerow([f"{t:.3f}", x, y, z, yaw])
 
 
 def init_data(path):
@@ -41,8 +53,15 @@ def init_data(path):
     """
     waypoints = read_csv(path)
     seq = defaultdict(list)
+
+    #use goto
     for i, uri in enumerate(uris):
         seq[uri] = [waypoints[i]]
+
+    #use to generate trajectories
+    for id, waypoint in waypoints.items():
+        write_timed_waypoints(id, waypoint, f"tmp_{id}.csv")
+
     return seq
 
 
@@ -87,7 +106,7 @@ def run_sequence(scf: SyncCrazyflie, sequence):
     for arguments in sequence:
         commander = scf.cf.high_level_commander
 
-        x, y, z = arguments[0], arguments[1], arguments[2]
+        x, y, z = arguments[1], arguments[2], arguments[3]
         duration = 0.2
 
         print('Setting position {} to cf {}'.format((x, y, z), cf.link_uri))
@@ -104,11 +123,11 @@ uris = {
 
 if __name__ == '__main__':
     seq_args = init_data(PATH)
-    cflib.crtp.init_drivers()
-    factory = CachedCfFactory(rw_cache='./cache')
-    with Swarm(uris, factory=factory) as swarm:
-        swarm.parallel_safe(light_check)
-        swarm.reset_estimators()
-        swarm.parallel_safe(take_off)
-        swarm.parallel_safe(run_sequence, args_dict=seq_args)
-        swarm.parallel_safe(land)
+    # cflib.crtp.init_drivers()
+    # factory = CachedCfFactory(rw_cache='./cache')
+    # with Swarm(uris, factory=factory) as swarm:
+    #     swarm.parallel_safe(light_check)
+    #     swarm.reset_estimators()
+    #     swarm.parallel_safe(take_off)
+    #     swarm.parallel_safe(run_sequence, args_dict=seq_args)
+    #     swarm.parallel_safe(land)

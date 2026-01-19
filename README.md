@@ -70,3 +70,10 @@ chmod +x pipeline.sh
 ./pipeline.sh
 
 ```
+
+## Trajectories
+
+use https://github.com/whoenig/uav_trajectories to convert xyz positions to Poly4D trajectory csv
+
+build the repo following their instruction and in the build folder, run something like
+```python3 ../scripts/generate_trajectory.py ../../../tmp_0.csv ../../../traj1.csv```

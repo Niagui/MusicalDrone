@@ -60,8 +60,8 @@ int main() {
                 // );
 
                 std::printf(
-                    "%.3f,%d,%.4f,%.4f,%.4f\n",
-                    nextDump, i, p.x, p.y, p.z
+                    "%d,%.3f,%.4f,%.4f,%.4f\n",
+                    i, nextDump, p.x, p.y, p.z  //include yaw as 0
                 );
             }
 
