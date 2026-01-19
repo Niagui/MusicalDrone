@@ -1,0 +1,4 @@
+/home/niagui/programs/drone/external/uav_trajectories/build/CMakeFiles/mav_trajectory_generation.dir
+/home/niagui/programs/drone/external/uav_trajectories/build/CMakeFiles/genTrajectory.dir
+/home/niagui/programs/drone/external/uav_trajectories/build/CMakeFiles/edit_cache.dir
+/home/niagui/programs/drone/external/uav_trajectories/build/CMakeFiles/rebuild_cache.dir
