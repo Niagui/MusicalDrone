@@ -36,26 +36,28 @@ static std::vector<Vec3> position, velocity, acceleration;  //position, velocity
 
 
 //bound box
-static const float X_MIN = -5.0f;
-static const float X_MAX =  5.0f;
-static const float Z_MIN = -5.0f;
-static const float Z_MAX =  5.0f;
+static const float X_MIN = -1.2f;
+static const float X_MAX =  1.2f;
+static const float Z_MIN = -1.2f;
+static const float Z_MAX =  1.2f;
 static const float Y_MIN = 0.5f;
-static const float Y_MAX = 5.0f;
+static const float Y_MAX = 1.2f;
 
 
 //parameter bounds
-static const float R_SEP_MIN = 0.8f;    //collision prevention 
-static const float R_SEP_MAX = 2.2f; 
+static const float R_SEP_MIN = 1.0f;    //collision prevention 
+static const float R_SEP_MAX = 2.0f; 
 static const float R_NEI_MIN = 1.2f; 
 static const float R_NEI_MAX = 9.0f; 
-static const float K_SEP_MIN = 0.5f; 
+static const float K_SEP_MIN = 1.0f; 
 static const float K_SEP_MAX = 9.f; 
 
 //clock
 static float sim_time = 0.0f;
 static float gAppliedSegStart = -1.0f;
 static float gAppliedSegEnd   = -1.0f;
+static float gAudioEndTime = -1.0f;
+static bool frozen = false;
 //this is the time to mark the timeline inside the simulation
 void SetSimTime(float t){
     sim_time = t;
@@ -314,15 +316,40 @@ float GetAudioLength(){
 //neutral parameters. Start with this scheme every time we change the emotion
 static const BoidParams Neutral = 
 {        
-    /* r_sep */ 0.6f,  /* r_nei */ 2.5f,
-    /* k_sep */ 1.0f,  /* k_ali */ 1.0f,  /* k_coh */ 0.7f,  /* k_goal */ 1.1f,
-    /* vmax  */ 6.0f,  /* amax  */ 12.0f,
+    /* r_sep */ 0.5f,  /* r_nei */ 2.0f,
+    /* k_sep */ 1.0f,  /* k_ali */ 1.0f,  /* k_coh */ 1.0f,  /* k_goal */ 1.1f,
+    /* vmax  */ 4.0f,  /* amax  */ 10.0f,
     /* altitude */ 1.7f, /* jitter */ 0.25f
 };
 static BoidParams P = Neutral;
 
 
-// unused for now maybe useful later on
+static const ParamDelta ANCHORS[7] = 
+{   
+    //keep sum of each column close to 0 for best expresiveness
+    //r_sep   r_nei   k_sep   k_ali   k_coh   k_goal   vmax    amax   altitude  jitter
+    { +0.60f, -2.00f, +2.00f, -1.00f, -1.50f, +1.40f, +5.0f,  +8.0f,  +1.50f,  +0.40f }, // happy (fast, cohesive, lively)
+    { -0.70f, +3.00f, +3.00f, +1.00f, -0.50f, -1.00f, -4.5f,  -8.0f,  -0.80f,  -0.15f }, // sad (slow, heavy, low drive)
+    { +0.60f, -1.00f, -2.50f, -0.90f, -0.60f, -1.95f, -5.2f,  -9.0f,  -1.00f,  -0.20f }, // sleepy (very slow, minimal jitter)
+    { -0.50f, +2.00f, +2.00f, +1.40f, +0.80f, +1.50f, +5.5f,  +8.0f,  +1.20f,  -0.25f }, // brave (fast, decisive, strong goal)
+    { +0.55f, -2.20f, -4.00f, -0.20f, -1.35f, -0.45f, -5.0f,  +4.0f,  +0.20f,  +0.15f }, // grumpy (aggressive spacing, low cohesion)
+    { +0.80f, -2.80f, +5.00f, +0.30f, -0.55f, +0.80f, +4.0f,  +8.0f,  -0.60f,  +0.50f }, // scared (panic: fast + jitter + separation)
+    { -0.55f, +1.20f, -2.80f, +0.80f, +1.00f, -0.60f, -2.5f,  -4.0f,  -0.20f,  -0.05f }, // shy (small/slow, stays together, low goal)
+};
+
+
+
+static inline Vec3 BoxCenter()
+{
+    return Vec3{ 0.5f*(X_MIN+X_MAX), 0.5f*(Y_MIN+Y_MAX), 0.5f*(Z_MIN+Z_MAX) };
+}
+static inline float BoxHalfX() { return 0.5f*(X_MAX-X_MIN); }
+static inline float BoxHalfZ() { return 0.5f*(Z_MAX-Z_MIN); }
+static constexpr float OLD_HALF_X = 5.0f;
+static constexpr float OLD_HALF_Z = 5.0f;
+static inline float ScaleXZ() { return std::min(BoxHalfX()/OLD_HALF_X, BoxHalfZ()/OLD_HALF_Z); }
+
+
 
 
 Boundaries GetBoxBounds() 
@@ -330,22 +357,12 @@ Boundaries GetBoxBounds()
     return Boundaries{ X_MIN, X_MAX, Y_MIN, Y_MAX, Z_MIN, Z_MAX };
 }
 
-
-static const ParamDelta ANCHORS[7] = 
-{   
-    //r_sep   r_nei   k_sep   k_ali   k_coh   k_goal   vmax    amax   altitude  jitter
-    { +0.25f, +3.50f, +1.50f, +1.60f, +1.20f, +1.40f, +5.0f,  +8.0f,  +1.00f,  +0.55f }, // happy (fast, cohesive, lively)
-    { +0.70f, +1.00f, +3.00f, -0.80f, -0.50f, -0.85f, -4.5f,  -8.0f,  -0.80f,  -0.15f }, // sad (slow, heavy, low drive)
-    { +0.90f, +0.60f, +2.50f, -0.90f, -0.60f, -0.95f, -5.2f,  -9.0f,  -1.00f,  -0.20f }, // sleepy (very slow, minimal jitter)
-    { +0.30f, +2.00f, +2.00f, +1.40f, +0.80f, +1.50f, +5.5f,  +8.0f,  +1.20f,  +0.25f }, // brave (fast, decisive, strong goal)
-    { +0.95f, +2.20f, +4.00f, -0.20f, -0.65f, -0.45f, -5.0f,  +4.0f,  +0.10f,  +0.15f }, // grumpy (aggressive spacing, low cohesion)
-    { +1.10f, +2.80f, +5.00f, +0.30f, -0.55f, +0.80f, +4.0f,  +8.0f,  -0.60f,  +0.60f }, // scared (panic: fast + jitter + separation)
-    { +0.55f, +1.20f, +2.80f, +0.80f, +1.00f, -0.60f, -2.5f,  -4.0f,  -0.20f,  -0.05f }, // shy (small/slow, stays together, low goal)
-};
+// Box scaling (volume-based)
+static constexpr float DEFAULT_BOX_VOLUME = 10.0f * 10.0f * 1.0f;
 
 
-
-static inline void clampToBox(Vec3& p) {
+static inline void clampToBox(Vec3& p) 
+{
     p.x = clampf(p.x, X_MIN, X_MAX);
     p.y = clampf(p.y, Y_MIN, Y_MAX);
     p.z = clampf(p.z, Z_MIN, Z_MAX);
@@ -381,7 +398,7 @@ static inline void applyBoxConstraint(Vec3& p, Vec3& v) {
 }
 
 //   Compute a single target boid parameters with precomputed weights
-BoidParams ApplyEmotionHard(const std::vector<float>& w)
+BoidParams ApplyEmotionHard(const std::vector<float>& w, float scale = 1)
 {
     BoidParams target = Neutral;
 
@@ -416,17 +433,29 @@ BoidParams ApplyEmotionHard(const std::vector<float>& w)
         target.jitter   += wi * A.jitter;
     }
 
-    target.r_sep    = clampf(target.r_sep,    R_SEP_MIN,  R_SEP_MAX);
+    //scale by box
+    target.r_sep    *= scale;
+    target.r_nei    *= scale;
+    target.vmax     *= scale;
+    target.amax     *= scale;
+    target.altitude *= scale; 
+
+    // target.k_ali *= scale;
+    // target.k_coh*= scale;
+    // target.k_sep*= scale;
+    // target.k_goal*= scale;
+
+    target.r_sep    = clampf(target.r_sep,    R_SEP_MIN * scale,  R_SEP_MAX* scale);
     target.k_sep    = clampf(target.k_sep,    K_SEP_MIN,  K_SEP_MAX);
     target.k_ali    = clampf(target.k_ali,    0.00f,  3.0f);
     target.k_coh    = clampf(target.k_coh,    0.00f,  3.0f);
     target.k_goal   = clampf(target.k_goal,   0.20f,  3.0f);
-    target.vmax     = clampf(target.vmax,     0.50f, 10.0f);
-    target.amax     = clampf(target.amax,     1.00f, 20.0f);
-    target.altitude = clampf(target.altitude, 0.50f, 10.0f);
+    target.vmax     = clampf(target.vmax,     0.50f* scale, 10.0f* scale);
+    target.amax     = clampf(target.amax,     1.00f* scale, 20.0f* scale);
+    target.altitude = clampf(target.altitude, 0.50f* scale, 5.0f* scale);
     target.jitter   = clampf(target.jitter,   0.00f,  1.0f);
 
-    target.r_nei    = std::max(target.r_nei, target.r_sep + 0.05f);
+    target.r_nei    = std::max(target.r_nei, target.r_sep + 0.05f* scale);
 
     return target;
 }
@@ -463,8 +492,16 @@ void InitBoids(int count){
     position.resize(count);
     velocity.resize(count);
     acceleration.resize(count);
+
+    const float droneR = 0.092f;
+    const float minDist = 2.5f * droneR; // 10–20% safety margin
+    const float y0 = clampf(P.altitude, Y_MIN, Y_MAX);
+
+    float totalLen = (count - 1) * minDist;
+    float startX = -0.5f * totalLen;
+
     for(int i=0;i<count;i++){
-        position[i] = { (float)i*0.1f, P.altitude, 0.0f };
+        position[i] = { startX + i * minDist, y0, 0.0f };
         velocity[i] = { 0.0f, 0.0f, 0.0f };
         acceleration[i] = { 0.0f, 0.0f, 0.0f };
     }
@@ -494,6 +531,32 @@ void UpdateBoids(float dt, const std::vector<Vec3>& targets){
     EnsureEmotionsLoaded();
     EnsureSegmentsLoaded();
     float t = sim_time;
+    const float sXZ = ScaleXZ();
+
+    // set audio end time once
+    if (gAudioEndTime < 0.0f) {
+        gAudioEndTime = clap_weights.back().value("end", 0.0f);
+    }
+    bool songEnded = (gAudioEndTime > 0.0f && t >= gAudioEndTime);
+
+    if (songEnded) {
+        if (!frozen) {
+            // one-time freeze action
+            for (size_t i = 0; i < velocity.size(); ++i) {
+                velocity[i] = {0,0,0};
+                acceleration[i] = {0,0,0};
+                // optional: lock them to current altitude target
+                position[i].y = clampf(position[i].y, Y_MIN, Y_MAX);
+            }
+
+            // optional: set params to something stable for HUD
+            P = Neutral;
+            P.jitter = 0.0f;
+
+            frozen = true;
+        }
+        return; // stop updating positions entirely
+    }
 
 
     if (gNextResetIndex < (int)gResetTimes.size()) {
@@ -524,8 +587,22 @@ void UpdateBoids(float dt, const std::vector<Vec3>& targets){
         auto weights = GetEmotionWeights(t);
         last_weights = weights;
         
-        P = ApplyEmotionHard(weights);
+        
+        P = ApplyEmotionHard(weights, sXZ);
     }
+
+    const Vec3 c = BoxCenter();
+    auto ScaleTargetXZ = [&](Vec3 t){
+        Vec3 d = sub(t, c);
+        d.x *= sXZ;
+        d.z *= sXZ;
+        d.y = 0.0f; // keep goal horizontal; altitude handled separately
+        return add(c, d);
+    };
+
+
+
+
 
     int n = position.size();
     if ((int)targets.size() != n) return;
@@ -566,7 +643,9 @@ void UpdateBoids(float dt, const std::vector<Vec3>& targets){
         }
 
         //goal seeking towards formation position
-        Vec3 fgoal = sub(targets[i], pi);
+        Vec3 ti = ScaleTargetXZ(targets[i]);
+
+        Vec3 fgoal = sub(ti, pi);
         float bob = std::sin(sim_time * (0.8f + 1.2f * P.jitter) + i * 0.37f)
             * (0.4f * P.jitter);
 
@@ -576,7 +655,7 @@ void UpdateBoids(float dt, const std::vector<Vec3>& targets){
         //jitters to break perfect symmetry
         Vec3 fjit = { (float)(rand()/double(RAND_MAX)-0.5)*P.jitter,
                       (float)(rand()/double(RAND_MAX)-0.5)*0.3f*P.jitter,
-                      (float)(rand()/double(RAND_MAX)-0.5)*P.jitter };
+                      (float)(rand()/double(RAND_MAX)-0.5)*P.jitter};
 
         
         //Weighted sum of directions and jitters, all normalized
@@ -593,8 +672,9 @@ void UpdateBoids(float dt, const std::vector<Vec3>& targets){
         pi  = add(pi, mul(vi, dt));
         
         //bound to a rectangular box
+
+        // applyBoxConstraint(pi, vi);
         clampToBox(pi);
-        //applyBoxConstraint(pi, vi);
 
         velocity[i] = vi;
         position[i] = pi;

@@ -53,7 +53,7 @@ bool LoadEmotionFile(const std::string& path);
 bool LoadResetTimes(const std::string& filename);
 std::vector<float> GetEmotionWeights(float t);
 void ApplyEmotion(const std::vector<float>& w, BoidParams& P);
-BoidParams ApplyEmotionHard(const std::vector<float>& w);
+BoidParams ApplyEmotionHard(const std::vector<float>& w, float scale);
 bool ReloadAndApplyEmotions(float t);
 
 // External functions

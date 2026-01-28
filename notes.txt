@@ -1,0 +1,2 @@
+battery ~3min cont flight might die before song finish
+

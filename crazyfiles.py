@@ -1,6 +1,7 @@
 # import logging
 import time
 import csv
+import numpy as np
 from collections import defaultdict
 
 import cflib.crtp
@@ -8,6 +9,8 @@ import cflib.crtp
 from cflib.crazyflie.syncCrazyflie import SyncCrazyflie
 from cflib.crazyflie.swarm import CachedCfFactory
 from cflib.crazyflie.swarm import Swarm
+
+from cflib.positioning.position_hl_commander import PositionHlCommander
 from cflib.utils import uri_helper
 
 PATH = "trajectories.csv"
@@ -22,7 +25,7 @@ def read_csv(path):
         for row in reader:
             if not row:
                 continue
-            id, t, x, y, z = row
+            id, t, x, z, y = row
             waypoint_map[int(id)].append((float(t), float(x),float(y),float(z), 0.))
 
             for id in waypoint_map:
@@ -31,6 +34,7 @@ def read_csv(path):
     # print(waypoint_map)
     return waypoint_map
 
+
 def write_timed_waypoints(id_, samples, out_path):
     """
     samples: list of (t, x, y, z, yaw)
@@ -38,7 +42,7 @@ def write_timed_waypoints(id_, samples, out_path):
     with open(out_path, "w", newline="") as f:
         w = csv.writer(f)
         for t, x, y, z, yaw in samples:
-            w.writerow([f"{t:.3f}", x, y, z, yaw])
+            w.writerow([f"{t:.4f}", f"{x:.2f}", f"{y:.2f}", f"{z:.2f}", yaw])
 
 
 def init_data(path):
@@ -56,25 +60,25 @@ def init_data(path):
 
     #use goto
     for i, uri in enumerate(uris):
-        seq[uri] = [waypoints[i]]
+        seq[uri] = [waypoints[i][:50]]
 
     #use to generate trajectories
     for id, waypoint in waypoints.items():
         write_timed_waypoints(id, waypoint, f"tmp_{id}.csv")
-
+    # print(seq["radio://0/20/2M/E7E7E7E701"])
     return seq
 
 
-def activate_led_bit_mask(scf):
-    scf.cf.param.set_value('led.bitmask', 255)
+# def activate_led_bit_mask(scf):
+#     scf.cf.param.set_value('led.bitmask', 255)
 
-def deactivate_led_bit_mask(scf):
-    scf.cf.param.set_value('led.bitmask', 0)
+# def deactivate_led_bit_mask(scf):
+#     scf.cf.param.set_value('led.bitmask', 0)
 
-def light_check(scf):
-    activate_led_bit_mask(scf)
-    time.sleep(2)
-    deactivate_led_bit_mask(scf)
+# def light_check(scf):
+#     activate_led_bit_mask(scf)
+#     time.sleep(2)
+#     deactivate_led_bit_mask(scf)
 
 
 def take_off(scf):
@@ -93,12 +97,6 @@ def land(scf):
     commander.stop()
 
 
-def run_square_sequence(scf):
-    commander = scf.cf.high_level_commander
-
-    commander
-
-
 
 def run_sequence(scf: SyncCrazyflie, sequence):
     cf = scf.cf
@@ -106,6 +104,7 @@ def run_sequence(scf: SyncCrazyflie, sequence):
     for arguments in sequence:
         commander = scf.cf.high_level_commander
 
+        #add np.clip
         x, y, z = arguments[1], arguments[2], arguments[3]
         duration = 0.2
 
@@ -123,11 +122,19 @@ uris = {
 
 if __name__ == '__main__':
     seq_args = init_data(PATH)
-    # cflib.crtp.init_drivers()
-    # factory = CachedCfFactory(rw_cache='./cache')
-    # with Swarm(uris, factory=factory) as swarm:
-    #     swarm.parallel_safe(light_check)
-    #     swarm.reset_estimators()
-    #     swarm.parallel_safe(take_off)
-    #     swarm.parallel_safe(run_sequence, args_dict=seq_args)
-    #     swarm.parallel_safe(land)
+    cflib.crtp.init_drivers()
+    factory = CachedCfFactory(rw_cache='./cache')
+    with Swarm(uris, factory=factory) as swarm:
+        
+    # wrapper
+    # add acceleration bound
+        try:
+            # swarm.parallel_safe(light_check)
+            swarm.reset_estimators()
+            swarm.parallel_safe(take_off)
+            swarm.parallel_safe(run_sequence, args_dict=seq_args)
+            swarm.parallel_safe(land)
+
+        except(ValueError, KeyboardInterrupt, IndexError):
+            print("error: try landing")
+            swarm.parallel_safe(land)

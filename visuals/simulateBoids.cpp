@@ -33,7 +33,8 @@ int main() {
     //             "r_sep,r_nei,k_sep,k_ali,k_coh,k_goal,"
     //             "vmax,amax,altitude,jitter\n");
 
-    while (t <= totalTime + 1e-6f) {
+    //give 2 seconds to settle
+    while (t <= totalTime + 5) {
 
         float phase = 0.25f * t; 
         std::vector<Vec3> slots = SampleCircle(droneCount, 3.0f, phase);
@@ -61,13 +62,12 @@ int main() {
 
                 std::printf(
                     "%d,%.3f,%.4f,%.4f,%.4f\n",
-                    i, nextDump, p.x, p.y, p.z  //include yaw as 0
+                    i, nextDump, p.x, p.y, p.z  //include yaw as 0 and normalize time
                 );
             }
-
             nextDump += outputDt;
         }
-
+        
         t += simDt;
     }
 

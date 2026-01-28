@@ -49,9 +49,10 @@
 
 
 // --- GLOBAL VARIABLES ---
+const float DRONE_RADIUS = 0.092; 
 
 int   gWinW = 1200, gWinH = 800; //window size
-int   gDroneCount = 15;        // +/- to change
+int   gDroneCount = 6;        // +/- to change
 float gTime = 0.0f;             // seconds (advances when playing)
 static float gSimTime = 0.0f;               // simulation time in seconds
 static const float kFixedDt = 1.0f / 60.0f; // 60 FPS sim step
@@ -89,6 +90,12 @@ bool gAudioInit = false;
 static bool gAudioLoaded = false;      // Track if sound file is loaded
 static bool gAudioSyncMode = false;    // When true, sync visuals to audio
 static float gAudioDuration = 0.0f;    // Total audio length in seconds
+
+
+//collision prints
+static int   gFrameIndex = 0;
+static float gLastCollisionPrintTime = -1e9f;
+
 
 //music helper functions
 void StartAudio(const std::string &filename = "testSong.mp3")
@@ -339,7 +346,55 @@ static void UpdateFollowSlots(float dt) {
     }
 }
 
+// collision check: if collide then print smth
+static void CheckCollisions(const std::vector<Vec3>& pos, float nowSimTime)
+{
+    const float r = DRONE_RADIUS + 0.004;
+    const float touch2 = (2.0f * r) * (2.0f * r);
+
+    const int n = (int)pos.size();
+    if (n < 2) return;
+
+    //check every 5 frames
+    if ((gFrameIndex % 5) != 0) return;
+
+    const float printCooldown = 0.20f; //0.2 sec
+    if (nowSimTime - gLastCollisionPrintTime < printCooldown) return;
+
+    // For big swarms, don't do full O(n^2) every time.
+    // Use a stride to reduce checks
+    const int stride = std::max(1, n / 200);
+
+    int printed = 0;
+    const int maxPrintPerCall = 5;
+
+    for (int i = 0; i < n && printed < maxPrintPerCall; ++i) {
+        const Vec3& a = pos[i];
+
+        // sample some j's instead of all and find euclidean distance between drones
+        for (int j = i + 1; j < n && printed < maxPrintPerCall; j += stride) {
+            const Vec3& b = pos[j];
+            float dx = a.x - b.x;
+            float dy = a.y - b.y;
+            float dz = a.z - b.z;
+            float d2 = dx*dx + dy*dy + dz*dz;
+
+            //if inner distance < 2r they collided
+            if (d2 <= touch2) {
+                std::cout << "[COLLISION] t=" << nowSimTime
+                          << " drone " << i << " & drone " << j
+                          << " dist=" << std::sqrt(d2) << "\n";
+                ++printed;
+                gLastCollisionPrintTime = nowSimTime;
+            }
+        }
+    }
+}
+
+
+//-------------------------------------------------------------------
 //data
+//-------------------------------------------------------------------
 
 auto& labels = GetEmotionLabels();
 
@@ -356,7 +411,7 @@ static void ApplyCamera(){
 
 // Draw a drone (cone)
 static void DrawDrone(){
-    glutSolidCone(0.06, 0.15, 10, 1);
+    glutSolidCone(DRONE_RADIUS, 0.022, 6, 1);       //92mm * 92mm* 22mm
 }
 
 static void DrawBitmapString(float x, float y, void* font, const char* s) {
@@ -539,6 +594,10 @@ static void Idle(){
     if (gPlaying) {
         UpdateBoids(dt * gSpeed, gSlots);
     }
+    gFrameIndex++;
+    const std::vector<Vec3>& positions = gUseBoids ? GetBoidPositions() : gPos;
+    CheckCollisions(positions, gSimTime);
+
 
     glutPostRedisplay();
 }
