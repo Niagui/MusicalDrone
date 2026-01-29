@@ -19,16 +19,23 @@ uris = {
 
 def read_csv(path):
     waypoint_map = defaultdict(list)
+
     with open(path) as f:
         reader = csv.reader(f)
         for row in reader:
             if not row:
                 continue
-            id, t, x, y, z = row  
-            waypoint_map[int(id)].append((float(t), float(x), float(y), float(z), 0.0))
-    
-    for id in waypoint_map:
-        waypoint_map[id].sort(key=lambda p: p[0])
+            id, t, x, y, z = row
+            waypoint_map[int(id)].append((float(t), 
+                                          np.clip(float(x), -1.1, 1.1),
+                                          np.clip(float(y), -1.8, 1.8),
+                                          np.clip(float(z), 0.1, 1.2),
+                                        0.))
+
+            for id in waypoint_map:
+                waypoint_map[id].sort(key=lambda p: p[0])
+
+    # print(waypoint_map)
     return waypoint_map
 
 
