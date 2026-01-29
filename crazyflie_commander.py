@@ -43,7 +43,7 @@ def init_data(path):
     waypoints = read_csv(path)
     seq = {}
     for i, uri in enumerate(sorted(uris)):
-        seq[uri] = waypoints.get(i, [])
+        seq[uri] = waypoints.get(i, [])[:50]
     return seq
 
 
@@ -68,36 +68,18 @@ def land(scf):
         pc.land(velocity=DEFAULT_VELOCITY)
         time.sleep(2.0)
 
-
-def calculate_velocity(distance, max_vel=0.5):
-    if distance < 0.2:
-        return max(0.1, distance / 0.4)
-    elif distance < 1.0:
-        return max_vel * 0.6
-    return max_vel
-
-
 def run_sequence(scf: SyncCrazyflie, sequence):
     if not sequence:
         return
 
     with PositionHlCommander(scf, default_height=TAKEOFF_HEIGHT,
                              default_velocity=DEFAULT_VELOCITY) as pc:
-        prev_x, prev_y, prev_z = 0.0, 0.0, TAKEOFF_HEIGHT
-        start_time = time.time()
-        
         for target_time, x, y, z, yaw in sequence:
-            distance = np.sqrt((x - prev_x)**2 + (y - prev_y)**2 + (z - prev_z)**2)
-            velocity = calculate_velocity(distance, DEFAULT_VELOCITY)
+            duration = 0.2  # Fixed duration per waypoint
             
-            elapsed = time.time() - start_time
-            wait_time = target_time - elapsed
-            if wait_time > 0:
-                time.sleep(wait_time)
-            
-            pc.go_to(x, y, z, velocity=velocity)
-            prev_x, prev_y, prev_z = x, y, z
-            time.sleep(0.05)
+            print('Setting position {} to cf {}'.format((x, y, z), scf.cf.link_uri))
+            pc.go_to(x, y, z, velocity=DEFAULT_VELOCITY)
+            time.sleep(duration)
 
 
 def emergency_land(scf):
