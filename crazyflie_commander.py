@@ -13,7 +13,7 @@ TAKEOFF_HEIGHT = 1.0
 DEFAULT_VELOCITY = 0.5
 
 uris = {
-    'radio://0/20/2M/E7E7E7E701',
+    'radio://0/80/2M/E7E7E7E701',
 }
 
 
@@ -99,9 +99,9 @@ if __name__ == '__main__':
     
     with Swarm(uris, factory=factory) as swarm:
         try:
-            swarm.parallel_safe(configure_lighthouse)
+            #swarm.parallel_safe(configure_lighthouse)
             swarm.reset_estimators()
-            time.sleep(2)
+            #time.sleep(2)
             swarm.parallel_safe(take_off)
             swarm.parallel_safe(run_sequence, args_dict=seq_args)
             swarm.parallel_safe(land)

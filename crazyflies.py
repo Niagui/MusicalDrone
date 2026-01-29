@@ -14,8 +14,6 @@ from cflib.positioning.position_hl_commander import PositionHlCommander
 from cflib.utils import uri_helper
 
 PATH = "trajectories.csv"
-uri = uri_helper.uri_from_env(default='radio://0/80/2M/E7E7E7E7E7')
-
 
 uris = {
     'radio://0/20/2M/E7E7E7E701',
@@ -71,7 +69,7 @@ def init_data(path):
 
     #use goto
     for i, uri in enumerate(uris):
-        seq[uri] = [waypoints[i][:50]]
+        seq[uri] = [waypoints[i][:300]]
 
     #use to generate trajectories
     for id, waypoint in waypoints.items():
