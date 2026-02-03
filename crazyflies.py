@@ -14,7 +14,12 @@ from cflib.positioning.position_hl_commander import PositionHlCommander
 from cflib.utils import uri_helper
 
 PATH = "trajectories.csv"
-uri = uri_helper.uri_from_env(default='radio://0/80/2M/E7E7E7E7E7')
+
+uris = {
+    'radio://0/20/2M/E7E7E7E701',
+    # Add more URIs if you want more copters in the swarm
+    # URIs in a swarm using the same radio must also be on the same channel
+}
 
 
 def read_csv(path):
@@ -25,8 +30,12 @@ def read_csv(path):
         for row in reader:
             if not row:
                 continue
-            id, t, x, z, y = row
-            waypoint_map[int(id)].append((float(t), float(x),float(y),float(z), 0.))
+            id, t, x, y, z = row
+            waypoint_map[int(id)].append((float(t), 
+                                          np.clip(float(x), -1.1, 1.1),
+                                          np.clip(float(y), -1.8, 1.8),
+                                          np.clip(float(z), 0.1, 1.2),
+                                        0.))
 
             for id in waypoint_map:
                 waypoint_map[id].sort(key=lambda p: p[0])
@@ -60,7 +69,7 @@ def init_data(path):
 
     #use goto
     for i, uri in enumerate(uris):
-        seq[uri] = [waypoints[i][:50]]
+        seq[uri] = [waypoints[i][:300]]
 
     #use to generate trajectories
     for id, waypoint in waypoints.items():
@@ -112,11 +121,6 @@ def run_sequence(scf: SyncCrazyflie, sequence):
         commander.go_to(x, y, z, 0, duration, relative=False)
         time.sleep(duration)
 
-uris = {
-    'radio://0/20/2M/E7E7E7E701',
-    # Add more URIs if you want more copters in the swarm
-    # URIs in a swarm using the same radio must also be on the same channel
-}
 
 
 

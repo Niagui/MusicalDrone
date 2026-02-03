@@ -13,22 +13,29 @@ TAKEOFF_HEIGHT = 1.0
 DEFAULT_VELOCITY = 0.5
 
 uris = {
-    'radio://0/20/2M/E7E7E7E701',
+    'radio://0/80/2M/E7E7E7E701',
 }
 
 
 def read_csv(path):
     waypoint_map = defaultdict(list)
+
     with open(path) as f:
         reader = csv.reader(f)
         for row in reader:
             if not row:
                 continue
-            id, t, x, y, z = row  
-            waypoint_map[int(id)].append((float(t), float(x), float(y), float(z), 0.0))
-    
-    for id in waypoint_map:
-        waypoint_map[id].sort(key=lambda p: p[0])
+            id, t, x, y, z = row
+            waypoint_map[int(id)].append((float(t), 
+                                          np.clip(float(x), -1.1, 1.1),
+                                          np.clip(float(y), -1.8, 1.8),
+                                          np.clip(float(z), 0.1, 1.2),
+                                        0.))
+
+            for id in waypoint_map:
+                waypoint_map[id].sort(key=lambda p: p[0])
+
+    # print(waypoint_map)
     return waypoint_map
 
 
@@ -61,36 +68,18 @@ def land(scf):
         pc.land(velocity=DEFAULT_VELOCITY)
         time.sleep(2.0)
 
-
-def calculate_velocity(distance, max_vel=0.5):
-    if distance < 0.2:
-        return max(0.1, distance / 0.4)
-    elif distance < 1.0:
-        return max_vel * 0.6
-    return max_vel
-
-
 def run_sequence(scf: SyncCrazyflie, sequence):
     if not sequence:
         return
 
     with PositionHlCommander(scf, default_height=TAKEOFF_HEIGHT,
                              default_velocity=DEFAULT_VELOCITY) as pc:
-        prev_x, prev_y, prev_z = 0.0, 0.0, TAKEOFF_HEIGHT
-        start_time = time.time()
-        
         for target_time, x, y, z, yaw in sequence:
-            distance = np.sqrt((x - prev_x)**2 + (y - prev_y)**2 + (z - prev_z)**2)
-            velocity = calculate_velocity(distance, DEFAULT_VELOCITY)
+            duration = 0.2  # Fixed duration per waypoint
             
-            elapsed = time.time() - start_time
-            wait_time = target_time - elapsed
-            if wait_time > 0:
-                time.sleep(wait_time)
-            
-            pc.go_to(x, y, z, velocity=velocity)
-            prev_x, prev_y, prev_z = x, y, z
-            time.sleep(0.05)
+            print('Setting position {} to cf {}'.format((x, y, z), scf.cf.link_uri))
+            pc.go_to(x, y, z, velocity=DEFAULT_VELOCITY)
+            time.sleep(duration)
 
 
 def emergency_land(scf):
@@ -110,9 +99,9 @@ if __name__ == '__main__':
     
     with Swarm(uris, factory=factory) as swarm:
         try:
-            swarm.parallel_safe(configure_lighthouse)
+            #swarm.parallel_safe(configure_lighthouse)
             swarm.reset_estimators()
-            time.sleep(2)
+            #time.sleep(2)
             swarm.parallel_safe(take_off)
             swarm.parallel_safe(run_sequence, args_dict=seq_args)
             swarm.parallel_safe(land)

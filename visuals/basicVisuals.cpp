@@ -52,7 +52,7 @@
 const float DRONE_RADIUS = 0.092; 
 
 int   gWinW = 1200, gWinH = 800; //window size
-int   gDroneCount = 6;        // +/- to change
+int   gDroneCount = 1;        // +/- to change
 float gTime = 0.0f;             // seconds (advances when playing)
 static float gSimTime = 0.0f;               // simulation time in seconds
 static const float kFixedDt = 1.0f / 60.0f; // 60 FPS sim step
