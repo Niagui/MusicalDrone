@@ -12,9 +12,12 @@ PATH = "trajectories.csv"
 TAKEOFF_HEIGHT = 1.0
 DEFAULT_VELOCITY = 0.5
 
-uris = {
+uris = [
     'radio://0/80/2M/E7E7E7E701',
-}
+]
+
+# Global dict to store PositionHlCommander objects for each drone
+commanders = {}
 
 
 def read_csv(path):
@@ -50,6 +53,17 @@ def init_data(path):
     return seq
 
 
+def make_commander(scf):
+    """Create and store PositionHlCommander for this drone."""
+    commander = PositionHlCommander(
+        scf, 
+        default_velocity=DEFAULT_VELOCITY, 
+        controller=PositionHlCommander.CONTROLLER_PID
+    )
+    commanders[scf.cf.link_uri] = commander
+    print(f'Commander created for {scf.cf.link_uri}')
+
+
 def configure_lighthouse(scf):
     cf = scf.cf
     cf.param.set_value('deck.bcLighthouse4', '1')
@@ -59,35 +73,35 @@ def configure_lighthouse(scf):
 
 
 def take_off(scf):
-    with PositionHlCommander(scf, default_height=TAKEOFF_HEIGHT, 
-                             default_velocity=DEFAULT_VELOCITY) as pc:
-        pc.take_off(height=TAKEOFF_HEIGHT, velocity=DEFAULT_VELOCITY)
-        time.sleep(2.0)
+    """Take off using the stored PositionHlCommander."""
+    commander = commanders[scf.cf.link_uri]
+    commander.take_off(height=TAKEOFF_HEIGHT, velocity=DEFAULT_VELOCITY)
+    time.sleep(2.0)
 
 
 def land(scf):
-    with PositionHlCommander(scf, default_height=TAKEOFF_HEIGHT,
-                             default_velocity=DEFAULT_VELOCITY) as pc:
-        pc.land(velocity=DEFAULT_VELOCITY)
-        time.sleep(2.0)
+    """Land using the stored PositionHlCommander."""
+    commander = commanders[scf.cf.link_uri]
+    commander.land(velocity=DEFAULT_VELOCITY)
+    time.sleep(2.0)
 
 
 def run_sequence(scf: SyncCrazyflie, sequence):
-    """Execute waypoint sequence on a drone.
+    """Execute waypoint sequence using stored PositionHlCommander.
     
     Each waypoint is (target_time, x, y, z).
     """
     if not sequence:
         return
 
-    with PositionHlCommander(scf, default_height=TAKEOFF_HEIGHT,
-                             default_velocity=DEFAULT_VELOCITY) as pc:
-        for target_time, x, y, z in sequence:
-            duration = 0.2  # Fixed duration per waypoint
-            
-            print('Setting position {} to cf {}'.format((x, y, z), scf.cf.link_uri))
-            pc.go_to(x, y, z, velocity=DEFAULT_VELOCITY)
-            time.sleep(duration)
+    commander = commanders[scf.cf.link_uri]
+    for target_time, x, y, z in sequence:
+        duration = 0.2  # Fixed duration per waypoint
+        
+        print('Setting position {} to cf {}'.format((x, y, z), scf.cf.link_uri))
+        # PositionHlCommander.go_to(x, y, z, velocity)
+        commander.go_to(x, y, z, velocity=DEFAULT_VELOCITY)
+        time.sleep(duration)
 
 
 def emergency_land(scf):
@@ -109,7 +123,11 @@ if __name__ == '__main__':
         try:
             #swarm.parallel_safe(configure_lighthouse)
             swarm.reset_estimators()
-            #time.sleep(2)
+            time.sleep(2)
+            
+            # Create and store commanders for all drones
+            swarm.parallel_safe(make_commander)
+            
             swarm.parallel_safe(take_off)
             swarm.parallel_safe(run_sequence, args_dict=seq_args)
             swarm.parallel_safe(land)
