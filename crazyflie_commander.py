@@ -36,7 +36,7 @@ def init_data(path):
     waypoints = read_csv(path)
     seq = {}
     for i, uri in enumerate(sorted(uris)):
-        seq[uri] = waypoints.get(i, [])
+        seq[uri] = waypoints[i][:50]
     return seq
 
 
