@@ -18,6 +18,7 @@ uris = {
 
 
 def read_csv(path):
+    """Read waypoints from CSV file with format: id, t, x, y, z"""
     waypoint_map = defaultdict(list)
 
     with open(path) as f:
@@ -26,14 +27,16 @@ def read_csv(path):
             if not row:
                 continue
             id, t, x, y, z = row
-            waypoint_map[int(id)].append((float(t), 
-                                          np.clip(float(x), -1.1, 1.1),
-                                          np.clip(float(y), -1.8, 1.8),
-                                          np.clip(float(z), 0.1, 1.2),
-                                        0.))
-
-            for id in waypoint_map:
-                waypoint_map[id].sort(key=lambda p: p[0])
+            waypoint_map[int(id)].append((
+                float(t), 
+                np.clip(float(x), -1.1, 1.1),
+                np.clip(float(y), -1.8, 1.8),
+                np.clip(float(z), 0.1, 1.2)
+            ))
+    
+    # Sort waypoints by timestamp for each drone
+    for id in waypoint_map:
+        waypoint_map[id].sort(key=lambda p: p[0])
 
     # print(waypoint_map)
     return waypoint_map
@@ -68,13 +71,18 @@ def land(scf):
         pc.land(velocity=DEFAULT_VELOCITY)
         time.sleep(2.0)
 
+
 def run_sequence(scf: SyncCrazyflie, sequence):
+    """Execute waypoint sequence on a drone.
+    
+    Each waypoint is (target_time, x, y, z).
+    """
     if not sequence:
         return
 
     with PositionHlCommander(scf, default_height=TAKEOFF_HEIGHT,
                              default_velocity=DEFAULT_VELOCITY) as pc:
-        for target_time, x, y, z, yaw in sequence:
+        for target_time, x, y, z in sequence:
             duration = 0.2  # Fixed duration per waypoint
             
             print('Setting position {} to cf {}'.format((x, y, z), scf.cf.link_uri))
