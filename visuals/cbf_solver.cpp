@@ -13,5 +13,5 @@ int main() {
     printf("OSQP successfully imported!\n");
     printf("Default rho: %f\n", settings.rho);
 
-    return;
+    return 0;
 }

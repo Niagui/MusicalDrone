@@ -6,7 +6,7 @@ else
 LDFLAGS = -lGL -lGLU -lglut	# Linux
 endif
 
-OSQP_FLAGS = -Iosqp/include -Losqp/lib -losqp -lm
+OSQP_FLAGS = -Iosqp/osqp/include/public -Losqp/osqp/build/out -losqp -lm 
 
 basicVisuals:
 	$(CXX) -std=c++17 cbf_solver.cpp basicVisuals.cpp boids.cpp $(LDFLAGS) $(OSQP_FLAGS) -o drones
