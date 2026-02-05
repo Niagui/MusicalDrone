@@ -90,5 +90,3 @@ mkdir -p build && cd build
 cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DOSQP_BUILD_TESTS=OFF
 cmake --build . -j
 ```
-Then make a copy of the osqp_configure.h file here: https://github.com/Gepetto/quadruped-reactive-walking/blob/main/include/osqp_folder/include/osqp_configure.h
-and add it to visuals/osqp/osqp/include/public

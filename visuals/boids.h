@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
+#include "cbf_solver.h"
 
 bool ReloadAndApplyEmotions(float t);
 
