@@ -691,6 +691,8 @@ void UpdateBoids(float dt, const std::vector<Vec3>& targets){
 
         //caps on acceleration, speed and position
         acc = clampLen(acc, P.amax);
+
+        //TODO
         vi  = clampLen(add(vi, mul(acc, dt)), P.vmax);
         pi  = add(pi, mul(vi, dt));
         
@@ -699,7 +701,7 @@ void UpdateBoids(float dt, const std::vector<Vec3>& targets){
         // applyBoxConstraint(pi, vi);
         clampToBox(pi);
 
-        velocity[i] = vi;
+        velocity[i] = vi;   //TODO
         position[i] = pi;
     }
 }
