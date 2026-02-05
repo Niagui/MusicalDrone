@@ -6,8 +6,10 @@ else
 LDFLAGS = -lGL -lGLU -lglut	# Linux
 endif
 
+OSQP_FLAGS = -Iosqp/include -Losqp/lib -losqp
+
 basicVisuals:
-	$(CXX) -std=c++17 basicVisuals.cpp boids.cpp $(LDFLAGS) -o drones
+	$(CXX) -std=c++17 basicVisuals.cpp boids.cpp $(LDFLAGS) $(OSQP_FLAGS) -o drones
 
 trajectories:
 	$(CXX) -std=c++17 simulateBoids.cpp boids.cpp $(LDFLAGS) -o traj

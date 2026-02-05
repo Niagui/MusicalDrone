@@ -20,6 +20,7 @@
 #include <string>
 #include <iostream>
 #include <filesystem>
+#include <osqp.h>
 
 //json
 using json = nlohmann::json;
@@ -78,6 +79,7 @@ static inline Vec3 sub(Vec3 a, Vec3 b){ return {a.x-b.x,a.y-b.y,a.z-b.z}; }
 static inline Vec3 mul(Vec3 a, float s){ return {a.x*s,a.y*s,a.z*s}; }
 static inline float dot(Vec3 a, Vec3 b){ return a.x*b.x+a.y*b.y+a.z*b.z; }
 static inline float len(Vec3 a){ return std::sqrt(dot(a,a)); }
+static inline Vec3 pow(Vec3 a, float p){return {std::pow(a.x, p), std::pow(a.y, p), std::pow(a.z, p)};}
 // normalization - returns (0, 0, 0) if vector is small
 static inline Vec3 norm(Vec3 a){ float L=len(a); return L>1e-6f? mul(a,1.0f/L):Vec3{0,0,0}; }
 // clamps vector mag to Lmax to maintain direction
@@ -467,7 +469,6 @@ const BoidParams& GetBoidParams(){
     return P;
 }
 
-
 static BoidParams LerpParams(const BoidParams& a, const BoidParams& b, float t)
 {
     BoidParams o = a;
@@ -486,6 +487,28 @@ static BoidParams LerpParams(const BoidParams& a, const BoidParams& b, float t)
     return o;
 }
 
+
+
+/***********
+ * cbf
+ **************/
+
+static inline float cbf_constraint(Vec3 pos, Vec3 vel, Vec3 center, float r=0.5, float alpha=1.0)
+{
+    Vec3 d = sub(pos, center);
+    float h = dot(d, d) - r * r;
+    float hdot = 2.0f * dot(d, vel); 
+    return hdot + alpha*h;
+}
+
+
+
+
+
+
+/****************
+ * boids
+ **************/
 
 // allocate seeds
 void InitBoids(int count){
