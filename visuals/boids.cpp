@@ -22,6 +22,7 @@
 #include <filesystem>
 #include <osqp.h>
 
+
 //json
 using json = nlohmann::json;
 static json clap_weights;                //holds loaded json array
@@ -501,8 +502,16 @@ static inline float cbf_constraint(Vec3 pos, Vec3 vel, Vec3 center, float r=0.5,
     return hdot + alpha*h;
 }
 
+static CBFManager cbf_manager;
+static bool cbf_enabled = true;
 
+void EnableCBF(bool enable) {
+    cbf_enabled = enable;
+}
 
+void SetCBFConfig(const CBFConfig& config) {
+    cbf_manager.SetConfig(config);
+}
 
 
 
@@ -515,6 +524,8 @@ void InitBoids(int count){
     position.resize(count);
     velocity.resize(count);
     acceleration.resize(count);
+
+    cbf_manager.Init(count);
 
     const float droneR = 0.092f;
     const float minDist = 2.5f * droneR; // 10–20% safety margin
@@ -536,6 +547,7 @@ void ResizeBoids(int count){
     position.resize(count);
     velocity.resize(count);
     acceleration.resize(count);
+    cbf_manager.Resize(count);
 }
 
 //zeroes all velocities when switching out from boids
@@ -689,19 +701,26 @@ void UpdateBoids(float dt, const std::vector<Vec3>& targets){
         acc = add(acc, mul(norm(fgoal), P.k_goal));
         acc = add(acc, fjit);
 
-        //caps on acceleration, speed and position
+        //caps on acceleration, speed and 
         acc = clampLen(acc, P.amax);
 
         //TODO
-        vi  = clampLen(add(vi, mul(acc, dt)), P.vmax);
+        Vec3 v_nom  = clampLen(add(vi, mul(acc, dt)), P.vmax);
+        
+        if (cbf_enabled) {
+            vi = cbf_manager.Solve(i, v_nom, position, velocity, P.vmax, P.amax, dt);
+        } else {
+            vi = v_nom;
+        }
+
         pi  = add(pi, mul(vi, dt));
         
         //bound to a rectangular box
+        if(!cbf_enabled){
+            clampToBox(pi);
+        }
 
-        // applyBoxConstraint(pi, vi);
-        clampToBox(pi);
-
-        velocity[i] = vi;   //TODO
+        velocity[i] = vi;
         position[i] = pi;
     }
 }

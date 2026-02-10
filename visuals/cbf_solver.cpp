@@ -2,6 +2,7 @@
 #include <cmath>
 #include <algorithm>
 #include <iostream>
+#include <limits>
 
 // Math helpers
 static inline Vec3 sub(Vec3 a, Vec3 b) { return {a.x-b.x, a.y-b.y, a.z-b.z}; }
@@ -21,11 +22,7 @@ static inline Vec3 clampLen(Vec3 v, float maxLen) {
 // ============================================================================
 
 CBFSolver::CBFSolver() {
-    A_data_.reserve(100);
-    A_indices_.reserve(100);
-    l_.reserve(30);
-    u_.reserve(30);
-    q_.resize(3);
+    q_.resize(3, 0.0);
 }
 
 CBFSolver::~CBFSolver() {
@@ -64,19 +61,14 @@ int CBFSolver::BuildConstraints(
     l_.clear();
     u_.clear();
     
-    Vec3 pi = pos[agent_idx];
+    Vec3 p = pos[agent_idx];
     int row = 0;
     
-    // CBF constraints: drone-drone collision avoidance
-    // h = ||pi - pj||^2 - r^2
-    // hdot = 2*(pi - pj)^T * (vi - vj)
-    // Constraint: hdot + alpha*h >= 0
-    //   => 2*(pi - pj)^T * vi >= -alpha*h + 2*(pi - pj)^T * vj
-    
+    // Drone-drone CBF constraints
     for (size_t j = 0; j < pos.size(); j++) {
         if ((int)j == agent_idx) continue;
         
-        Vec3 d = sub(pi, pos[j]);
+        Vec3 d = sub(p, pos[j]);
         float dist2 = dot(d, d);
         
         if (dist2 >= cfg.neighbor_range * cfg.neighbor_range) continue;
@@ -84,7 +76,7 @@ int CBFSolver::BuildConstraints(
         float h = dist2 - cfg.safety_radius * cfg.safety_radius;
         Vec3 grad = mul(d, 2.0f);
         
-        // Row: [2*dx, 2*dy, 2*dz] * v >= rhs
+        // Add constraint row
         A_data_.push_back(grad.x);
         A_data_.push_back(grad.y);
         A_data_.push_back(grad.z);
@@ -98,85 +90,114 @@ int CBFSolver::BuildConstraints(
         row++;
     }
     
-    // Velocity magnitude limit: -v_max <= v[i] <= v_max
-    for (int i = 0; i < 3; i++) {
+    // Velocity limits
+    for (int col = 0; col < 3; col++) {
         A_data_.push_back(1.0f);
-        A_indices_.push_back(row * 3 + i);
+        A_indices_.push_back(row * 3 + col);
         l_.push_back(-v_max);
         u_.push_back(v_max);
         row++;
     }
     
-    // Acceleration limit: |v - v_curr| <= a_max * dt
+    // Acceleration limits
     float a_lim = a_max * dt;
     float v_arr[3] = {v_curr.x, v_curr.y, v_curr.z};
-    for (int i = 0; i < 3; i++) {
+    for (int col = 0; col < 3; col++) {
         A_data_.push_back(1.0f);
-        A_indices_.push_back(row * 3 + i);
-        l_.push_back(v_arr[i] - a_lim);
-        u_.push_back(v_arr[i] + a_lim);
+        A_indices_.push_back(row * 3 + col);
+        l_.push_back(v_arr[col] - a_lim);
+        u_.push_back(v_arr[col] + a_lim);
         row++;
     }
     
-    return row; // total constraints
+    return row;
 }
 
-void CBFSolver::SetupSolver(int n_constraints) {
+void CBFSolver::InitSolver(int n_constraints) {
     Cleanup();
     
-    // P = 2*I (for objective ||v - v_nom||^2)
-    OSQPFloat P_data[3] = {2.0, 2.0, 2.0};
-    OSQPInt P_indices[3] = {0, 1, 2};
-    OSQPInt P_indptr[4] = {0, 1, 2, 3};
+    if (n_constraints == 0 || A_data_.empty()) {
+        std::cerr << "[CBF] No constraints to solve\n";
+        return;
+    }
     
-    OSQPCscMatrix* P = (OSQPCscMatrix*)malloc(sizeof(OSQPCscMatrix));
-    P->m = 3;
-    P->n = 3;
-    P->p = P_indptr;
-    P->i = P_indices;
-    P->x = P_data;
-    P->nzmax = 3;
-    P->nz = -1;
+    // P matrix (constant diagonal for quadratic cost)
+    OSQPFloat P_x[3] = {2.0, 2.0, 2.0};
+    OSQPInt P_i[3] = {0, 1, 2};
+    OSQPInt P_p[4] = {0, 1, 2, 3};
     
-    // A matrix (constraints)
-    std::vector<OSQPInt> A_indptr(4, 0);
+    OSQPCscMatrix P_matrix;
+    P_matrix.m = 3;
+    P_matrix.n = 3;
+    P_matrix.nzmax = 3;
+    P_matrix.nz = -1;
+    P_matrix.p = P_p;
+    P_matrix.i = P_i;
+    P_matrix.x = P_x;
+    
+    // Convert to column-sparse format
+    std::vector<OSQPInt> col_counts(3, 0);
     for (size_t k = 0; k < A_indices_.size(); k++) {
         int col = A_indices_[k] % 3;
-        A_indptr[col + 1]++;
-    }
-    for (int i = 1; i < 4; i++) {
-        A_indptr[i] += A_indptr[i-1];
+        col_counts[col]++;
     }
     
-    OSQPCscMatrix* A = (OSQPCscMatrix*)malloc(sizeof(OSQPCscMatrix));
-    A->m = n_constraints;
-    A->n = 3;
-    A->p = A_indptr.data();
-    A->i = A_indices_.data();
-    A->x = A_data_.data();
-    A->nzmax = A_data_.size();
-    A->nz = -1;
+    std::vector<OSQPInt> A_p(4);
+    A_p[0] = 0;
+    for (int i = 0; i < 3; i++) {
+        A_p[i+1] = A_p[i] + col_counts[i];
+    }
+    
+    std::vector<OSQPInt> A_p_csc_;
+    std::vector<OSQPInt> A_i_csc_;
+    std::vector<OSQPFloat> A_x_csc_;
+
+    
+    A_p_csc_.assign(4, 0);
+    A_x_csc_.assign(A_data_.size(), 0);
+    A_i_csc_.assign(A_indices_.size(), 0);
+
+    // build A_p_csc_ from col_counts...
+    A_p_csc_[0] = 0;
+    for (int c = 0; c < 3; c++) A_p_csc_[c+1] = A_p_csc_[c] + col_counts[c];
+
+    // fill using your loop (just swap names)
+    std::vector<OSQPInt> positions(3, 0);
+    for (size_t k = 0; k < A_indices_.size(); k++) {
+        int idx = A_indices_[k];
+        int row = idx / 3;
+        int col = idx % 3;
+        int pos = A_p_csc_[col] + positions[col]++;
+        A_x_csc_[pos] = A_data_[k];
+        A_i_csc_[pos] = row;
+    }
+    
+    OSQPCscMatrix A_matrix;
+    A_matrix.m = n_constraints;
+    A_matrix.n = 3;
+    A_matrix.nzmax = A_data_.size();
+    A_matrix.nz = -1;
+    A_matrix.p = A_p_csc_.data();
+    A_matrix.i = A_i_csc_.data();
+    A_matrix.x = A_x_csc_.data();
     
     // Settings
     settings_ = (OSQPSettings*)malloc(sizeof(OSQPSettings));
     osqp_set_default_settings(settings_);
-    settings_->verbose = 0;
+    settings_->verbose = config_.verbose ? 1 : 0;
     settings_->warm_starting = 1;
-    settings_->polish = 1;
-    settings_->max_iter = 2000;
+    // settings_->polishing = 1;
+    settings_->max_iter = 4000;
     settings_->eps_abs = 1e-3;
     settings_->eps_rel = 1e-3;
     
     // Setup
-    OSQPInt status = osqp_setup(&solver_, P, q_.data(), A,
-                                l_.data(), u_.data(),
-                                n_constraints, 3, settings_);
+    OSQPInt exitflag = osqp_setup(&solver_, &P_matrix, q_.data(), &A_matrix,
+                                  l_.data(), u_.data(),
+                                  n_constraints, 3, settings_);
     
-    free(P);
-    free(A);
-    
-    if (status != 0) {
-        std::cerr << "[CBF] Setup failed\n";
+    if (exitflag != 0) {
+        std::cerr << "[CBF] Setup failed: " << exitflag << "\n";
         initialized_ = false;
         return;
     }
@@ -196,12 +217,15 @@ Vec3 CBFSolver::Solve(
     float dt,
     const CBFConfig& config)
 {
+    config_ = config;  // Store config for InitSolver
+    
     // Build constraints
     int n_con = BuildConstraints(agent_idx, v_curr, positions, velocities,
                                  v_max, a_max, dt, config);
     
-    // Early exit if no neighbors
-    int n_cbf = n_con - 6; // subtract vel/accel constraints
+    int n_cbf = n_con - 6;  // Subtract vel + accel constraints
+    
+    // Early exit
     if (n_cbf == 0) {
         Vec3 v = clampLen(v_nom, v_max);
         float a_lim = a_max * dt;
@@ -211,33 +235,58 @@ Vec3 CBFSolver::Solve(
         return v;
     }
     
-    // Update objective: min ||v - v_nom||^2
-    q_[0] = -2.0f * v_nom.x;
-    q_[1] = -2.0f * v_nom.y;
-    q_[2] = -2.0f * v_nom.z;
+    // Update objective
+    q_[0] = -2.0 * v_nom.x;
+    q_[1] = -2.0 * v_nom.y;
+    q_[2] = -2.0 * v_nom.z;
     
-    // Reinit if constraint count changed significantly
+    // Reinit if needed
     if (!initialized_ || std::abs(n_con - last_n_constraints_) > 2) {
-        SetupSolver(n_con);
-        if (!initialized_) return v_nom;
+        InitSolver(n_con);
+        if (!initialized_) {
+            return clampLen(v_nom, v_max);
+        }
     } else {
-        // Just update data (fast path)
         osqp_update_data_vec(solver_, q_.data(), l_.data(), u_.data());
+        InitSolver(n_con); //might be optimizable 
     }
     
     // Solve
     osqp_solve(solver_);
     
-    // Extract solution
-    if (solver_->solution && solver_->solution->x) {
-        return {
-            (float)solver_->solution->x[0],
-            (float)solver_->solution->x[1],
-            (float)solver_->solution->x[2]
-        };
+    if (!solver_ || !solver_->info) {
+        return clampLen(v_nom, v_max);
+    }
+
+    const int st = solver_->info->status_val;
+
+    // Accept only solved / solved inaccurate
+    if (st != OSQP_SOLVED && st != OSQP_SOLVED_INACCURATE) {
+        // IMPORTANT: don't touch solver_->solution->x here
+        // Optional debug:
+        if (config_.verbose) {
+            //std::cerr << "[CBF] OSQP status: " << solver_->info->status << "\n";
+        }
+        return clampLen(v_nom, v_max);
+    }
+
+    if (!solver_->solution || !solver_->solution->x) {
+        return clampLen(v_nom, v_max);
+    }
+
+    Vec3 v_safe = {
+        (float)solver_->solution->x[0],
+        (float)solver_->solution->x[1],
+        (float)solver_->solution->x[2]
+    };
+    
+    float mag = len(v_safe);
+    if (mag > 10.0f * v_max || std::isnan(mag) || std::isinf(mag)) {
+        std::cerr << "[CBF] Invalid solution magnitude: " << mag << "\n";
+        return clampLen(v_nom, v_max);
     }
     
-    return v_nom; // fallback
+    return v_safe;
 }
 
 // ============================================================================

@@ -3,12 +3,14 @@
 #include <string>
 #include "cbf_solver.h"
 
+
+
 bool ReloadAndApplyEmotions(float t);
 
 // basic vector struct for positions/velocities
-struct Vec3 {
-    float x, y, z;
-};
+// struct Vec3 {
+//     float x, y, z;
+// };
 
 // Parameters for tuning behavior (emotion can override)
 struct BoidParams {
@@ -77,3 +79,7 @@ std::vector<Vec3>& GetBoidPositions();  //to draw in basicVisuals.cpp
 const BoidParams& GetBoidParams();
 const std::vector<std::string>& GetEmotionLabels();
 
+
+//cbf
+void EnableCBF(bool enable);
+void SetCBFConfig(const CBFConfig& config);

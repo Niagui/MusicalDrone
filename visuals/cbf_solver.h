@@ -9,9 +9,9 @@ struct Vec3 {
 };
 
 struct CBFConfig {
-    float safety_radius = 0.35f;  // meters
+    float safety_radius = 0.2f;  // meters
     float alpha = 1.0f;            // CBF aggressiveness parameter
-    float neighbor_range = 1.0f;   // only consider neighbors within this range
+    float neighbor_range = 9.0f;   // only consider neighbors within this range
     
     // Solver settings
     int max_iter = 2000;
@@ -23,9 +23,9 @@ struct CBFConfig {
     int constraint_change_threshold = 2;
 };
 
+
 class CBFSolver
 {
-
     public:
         CBFSolver();
         ~CBFSolver();
@@ -49,7 +49,7 @@ class CBFSolver
                             const std::vector<Vec3>& vel,
                             float v_max, float a_max, float dt,
                             const CBFConfig& cfg);
-        void SetupSolver(int n_constraints);
+        void InitSolver(int n_constraints);
         
         // OSQP structures
         OSQPSolver* solver_ = nullptr;
@@ -62,6 +62,7 @@ class CBFSolver
         std::vector<OSQPFloat> u_;
         std::vector<OSQPFloat> q_;
         
+        CBFConfig config_;
         int last_n_constraints_ = 0;
         bool initialized_ = false;
 };
