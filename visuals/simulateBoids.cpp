@@ -15,7 +15,7 @@ static std::vector<Vec3> SampleCircle(int n, float radius, float phase) {
 
 
 int main() {
-    const int   droneCount   = 1;
+    const int   droneCount   = 2;
     const float totalTime    = GetAudioLength();
     const float simDt        = 1.0f / 60.0f;
     const float outputDt     = 0.2f;  // snapshot every 0.2 sec
