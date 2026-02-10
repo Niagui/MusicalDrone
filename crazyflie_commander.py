@@ -54,11 +54,14 @@ def init_data(path):
 
     for i, uri in enumerate(sorted(uris)):
         if i in waypoints:
-            seq[uri] = waypoints[i][:50]
-            print(f"Assigned {len(seq[uri])} waypoints to {uri} (drone ID {i})")
+            # Wrap in outer list: parallel_safe expands args_dict values with *args,
+            # so [sequence] unpacks to fly_sequence(scf, sequence) as intended.
+            # Without the outer list, the 50 waypoint tuples would unpack to 50 args.
+            seq[uri] = [waypoints[i][:50]]
+            print(f"Assigned {len(seq[uri][0])} waypoints to {uri} (drone ID {i})")
         else:
             print(f"WARNING: No waypoints found for drone ID {i} (URI: {uri})")
-            seq[uri] = []
+            seq[uri] = [[]]
 
     return seq
 
