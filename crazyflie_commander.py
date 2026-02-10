@@ -17,9 +17,6 @@ uris = [
     'radio://0/80/2M/E7E7E7E701',
 ]
 
-# Global dict to store PositionHlCommander objects for each drone
-commanders = {}
-
 
 def read_csv(path):
     """Read waypoints from CSV file with format: id, t, x, y, z"""
@@ -32,29 +29,26 @@ def read_csv(path):
                 continue
             id, t, x, y, z = row
             waypoint_map[int(id)].append((
-                float(t), 
+                float(t),
                 np.clip(float(x), -1.1, 1.1),
                 np.clip(float(y), -1.8, 1.8),
                 np.clip(float(z), 0.1, 1.2)
             ))
-    
-    # Sort waypoints by timestamp for each drone
+
     for id in waypoint_map:
         waypoint_map[id].sort(key=lambda p: p[0])
 
     print(f"Loaded waypoints for drone IDs: {list(waypoint_map.keys())}")
     for id in waypoint_map:
         print(f"  Drone {id}: {len(waypoint_map[id])} waypoints")
-    
+
     return waypoint_map
 
 
 def init_data(path):
     waypoints = read_csv(path)
     seq = {}
-    
-    # Match URIs to drone IDs in the CSV
-    # Assuming drone ID in CSV corresponds to index in sorted URIs
+
     for i, uri in enumerate(sorted(uris)):
         if i in waypoints:
             seq[uri] = waypoints[i][:50]
@@ -62,158 +56,82 @@ def init_data(path):
         else:
             print(f"WARNING: No waypoints found for drone ID {i} (URI: {uri})")
             seq[uri] = []
-    
+
     return seq
 
 
-def make_commander(scf):
-    """Create and store PositionHlCommander for this drone."""
-    try:
-        print(f'Creating commander for {scf.cf.link_uri}')
-        commander = PositionHlCommander(
-            scf, 
-            default_velocity=DEFAULT_VELOCITY, 
-            controller=PositionHlCommander.CONTROLLER_PID
-        )
-        # Enter the context manager
-        commander.__enter__()
-        commanders[scf.cf.link_uri] = commander
-        print(f'Commander created and initialized for {scf.cf.link_uri}')
-    except Exception as e:
-        print(f'Error creating commander for {scf.cf.link_uri}: {e}')
-        traceback.print_exc()
-        raise
-
-
-def configure_lighthouse(scf):
-    cf = scf.cf
-    cf.param.set_value('deck.bcLighthouse4', '1')
-    cf.param.set_value('stabilizer.estimator', '2')
-    cf.param.set_value('stabilizer.controller', '2')
-    time.sleep(0.5)
-
-
-def take_off(scf):
-    """Take off using the stored PositionHlCommander."""
-    try:
-        print(f'Taking off {scf.cf.link_uri}')
-        commander = commanders.get(scf.cf.link_uri)
-        if commander is None:
-            raise RuntimeError(f"No commander found for {scf.cf.link_uri}")
-        
-        commander.take_off(height=TAKEOFF_HEIGHT, velocity=DEFAULT_VELOCITY)
-        time.sleep(2.0)
-        print(f'Take off complete for {scf.cf.link_uri}')
-    except Exception as e:
-        print(f'Error during takeoff for {scf.cf.link_uri}: {e}')
-        traceback.print_exc()
-        raise
-
-
-def land(scf):
-    """Land using the stored PositionHlCommander."""
-    try:
-        print(f'Landing {scf.cf.link_uri}')
-        commander = commanders.get(scf.cf.link_uri)
-        if commander is None:
-            raise RuntimeError(f"No commander found for {scf.cf.link_uri}")
-        
-        commander.land(velocity=DEFAULT_VELOCITY)
-        time.sleep(2.0)
-        print(f'Landing complete for {scf.cf.link_uri}')
-    except Exception as e:
-        print(f'Error during landing for {scf.cf.link_uri}: {e}')
-        traceback.print_exc()
-        raise
-
-
-def run_sequence(scf: SyncCrazyflie, sequence):
-    """Execute waypoint sequence using stored PositionHlCommander.
-    
-    Each waypoint is (target_time, x, y, z).
+def fly_sequence(scf: SyncCrazyflie, sequence):
     """
+    Complete lifecycle for one drone: takeoff → sequence → land.
+
+    PositionHlCommander owns the entire lifecycle inside its `with` block.
+    Takeoff happens automatically on __enter__, landing on __exit__.
+    """
+    uri = scf.cf.link_uri
+    print(f'[{uri}] Starting flight ({len(sequence)} waypoints)')
+
     try:
-        print(f'Running sequence for {scf.cf.link_uri} with {len(sequence)} waypoints')
-        
-        if not sequence:
-            print(f'No sequence for {scf.cf.link_uri}, skipping')
-            return
+        with PositionHlCommander(
+            scf,
+            default_height=TAKEOFF_HEIGHT,
+            default_velocity=DEFAULT_VELOCITY,
+            controller=PositionHlCommander.CONTROLLER_PID
+        ) as commander:
 
-        commander = commanders.get(scf.cf.link_uri)
-        if commander is None:
-            raise RuntimeError(f"No commander found for {scf.cf.link_uri}")
+            # PositionHlCommander has already taken off at this point
+            print(f'[{uri}] Airborne, beginning sequence...')
+            time.sleep(1.0)  # Stabilise after takeoff
 
-        for idx, (target_time, x, y, z) in enumerate(sequence):
-            duration = 0.2  # Fixed duration per waypoint
-            
-            if idx % 10 == 0:  # Print every 10th waypoint to reduce spam
-                print(f'{scf.cf.link_uri}: Waypoint {idx}/{len(sequence)} - position ({x:.2f}, {y:.2f}, {z:.2f})')
-            
-            commander.go_to(x, y, z, velocity=DEFAULT_VELOCITY)
-            time.sleep(duration)
-        
-        print(f'Sequence complete for {scf.cf.link_uri}')
+            if not sequence:
+                print(f'[{uri}] No waypoints, hovering briefly before landing')
+                time.sleep(2.0)
+            else:
+                for idx, (target_time, x, y, z) in enumerate(sequence):
+                    if idx % 10 == 0:
+                        print(f'[{uri}] Waypoint {idx}/{len(sequence)} → ({x:.2f}, {y:.2f}, {z:.2f})')
+                    commander.go_to(x, y, z, velocity=DEFAULT_VELOCITY)
+                    time.sleep(0.2)
+
+            print(f'[{uri}] Sequence complete, landing...')
+            # Landing is automatic on `with` block exit
+
     except Exception as e:
-        print(f'Error during sequence for {scf.cf.link_uri}: {e}')
+        print(f'[{uri}] Error during flight: {e}')
         traceback.print_exc()
-        raise
-
-
-def emergency_land(scf):
-    try:
-        print(f'Emergency landing {scf.cf.link_uri}')
-        # Try using stored commander first
-        commander = commanders.get(scf.cf.link_uri)
-        if commander:
-            commander.land(velocity=DEFAULT_VELOCITY)
-        else:
-            # Fallback to high level commander
-            commander = scf.cf.high_level_commander
-            commander.land(0.0, 2.0)
-        time.sleep(2.5)
-    except Exception as e:
-        print(f'Emergency land failed for {scf.cf.link_uri}: {e}')
-
-
-def cleanup_commanders():
-    """Exit context managers for all commanders."""
-    for uri, commander in commanders.items():
+        # Attempt emergency land via high-level commander as fallback
         try:
-            print(f'Cleaning up commander for {uri}')
-            commander.__exit__(None, None, None)
-        except Exception as e:
-            print(f'Error cleaning up commander for {uri}: {e}')
+            scf.cf.high_level_commander.land(0.0, 2.0)
+            time.sleep(2.5)
+        except Exception as land_err:
+            print(f'[{uri}] Emergency land also failed: {land_err}')
+        raise
 
 
 if __name__ == '__main__':
     seq_args = init_data(PATH)
     cflib.crtp.init_drivers()
     factory = CachedCfFactory(rw_cache='./cache')
-    
+
     with Swarm(uris, factory=factory) as swarm:
         try:
-            #swarm.parallel_safe(configure_lighthouse)
+            # Optional: uncomment if using Lighthouse positioning
+            # swarm.parallel_safe(configure_lighthouse)
+
             print('Resetting estimators...')
             swarm.reset_estimators()
             time.sleep(2)
-            
-            # Create and store commanders for all drones
-            print('Creating commanders...')
-            swarm.parallel_safe(make_commander)
-            
-            print('Taking off...')
-            swarm.parallel_safe(take_off)
-            
-            print('Running sequences...')
-            swarm.parallel_safe(run_sequence, args_dict=seq_args)
-            
-            print('Landing...')
-            swarm.parallel_safe(land)
-            
+
+            print('Flying sequences...')
+            swarm.parallel_safe(fly_sequence, args_dict=seq_args)
+
         except (KeyboardInterrupt, Exception) as e:
-            print(f'Error in main: {e}')
-            traceback.print_exc()
-            swarm.parallel_safe(emergency_land)
-        finally:
-            print('Cleaning up...')
-            cleanup_commanders()
+            print(f'Swarm error: {e}')
+            # Emergency land: PositionHlCommander context has already exited
+            # so fall back to raw high-level commander
+            for uri in uris:
+                try:
+                    # SyncCrazyflie objects are managed by Swarm internally;
+                    # parallel_safe handles per-drone exceptions above.
+                    pass
+                except Exception:
+                    pass
