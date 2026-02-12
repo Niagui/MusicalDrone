@@ -9,7 +9,7 @@ struct Vec3 {
 };
 
 struct CBFConfig {
-    float safety_radius = 0.2f;  // meters
+    float safety_radius = 0.4f;  // meters
     float alpha = 1.0f;            // CBF aggressiveness parameter
     float neighbor_range = 9.0f;   // only consider neighbors within this range
     
@@ -17,7 +17,7 @@ struct CBFConfig {
     int max_iter = 2000;
     float eps_abs = 1e-3f;
     float eps_rel = 1e-3f;
-    bool verbose = true;
+    bool verbose = false;
     
     // Reinitialization threshold
     int constraint_change_threshold = 2;
