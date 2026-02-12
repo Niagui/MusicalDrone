@@ -3,13 +3,17 @@ import csv
 import numpy as np
 from collections import defaultdict
 import traceback
+import threading
 
 import cflib.crtp
 from cflib.crazyflie.syncCrazyflie import SyncCrazyflie
 from cflib.crazyflie.swarm import CachedCfFactory, Swarm
 from cflib.positioning.position_hl_commander import PositionHlCommander
 
+import pygame
+
 PATH = "trajectories.csv"
+AUDIO_PATH = "audio/testSong.mp3"
 TAKEOFF_HEIGHT = 1.0
 DEFAULT_VELOCITY = 0.5
 
@@ -17,8 +21,29 @@ uris = [
     'radio://0/80/2M/E7E7E7E701',
 ]
 
-# Global dict to store PositionHlCommander instances (no context manager)
 commanders = {}
+audio_started = threading.Event()  # Synchronization flag
+
+
+def play_audio(audio_file):
+    """Play audio file in a separate thread"""
+    try:
+        pygame.mixer.init()
+        pygame.mixer.music.load(audio_file)
+        
+        # Wait for signal to start
+        audio_started.wait()
+        
+        print(f'[AUDIO] Starting playback: {audio_file}')
+        pygame.mixer.music.play()
+        
+        # Keep thread alive while music plays
+        while pygame.mixer.music.get_busy():
+            time.sleep(0.1)
+        print('[AUDIO] Playback finished')
+        
+    except Exception as e:
+        print(f'[AUDIO] Error: {e}')
 
 
 def read_csv(path):
@@ -51,11 +76,9 @@ def read_csv(path):
 def init_data(path):
     waypoints = read_csv(path)
     seq = {}
+
     for i, uri in enumerate(sorted(uris)):
-        if i in waypoints.keys():
-            # Wrap in outer list: parallel_safe expands args_dict values with *args,
-            # so [sequence] unpacks to fly_sequence(scf, sequence) as intended.
-            # Without the outer list, the 50 waypoint tuples would unpack to 50 args.
+        if i in waypoints:
             seq[uri] = [waypoints[i][:50]]
             print(f"Assigned {len(seq[uri][0])} waypoints to {uri} (drone ID {i})")
         else:
@@ -66,13 +89,7 @@ def init_data(path):
 
 
 def make_commander(scf):
-    """
-    Instantiate a PositionHlCommander and store it — does NOT take off.
-
-    We deliberately avoid __enter__ because it auto-calls take_off().
-    Calling the constructor directly only sets up params and activates the
-    controller; the drone stays on the ground until fly_sequence() is called.
-    """
+    """Instantiate a PositionHlCommander and store it — does NOT take off."""
     uri = scf.cf.link_uri
     commander = PositionHlCommander(
         scf,
@@ -85,7 +102,7 @@ def make_commander(scf):
 
 
 def fly_sequence(scf: SyncCrazyflie, sequence):
-    """Take off, execute waypoint sequence, then land. Each waypoint: (target_time, x, y, z)."""
+    """Take off, execute waypoint sequence, then land."""
     uri = scf.cf.link_uri
     commander = commanders.get(uri)
     if commander is None:
@@ -93,8 +110,13 @@ def fly_sequence(scf: SyncCrazyflie, sequence):
 
     print(f'[{uri}] Taking off...')
     commander.take_off(height=TAKEOFF_HEIGHT, velocity=DEFAULT_VELOCITY)
-    time.sleep(1.0)  # Stabilise after ascent
+    time.sleep(1.0)
     print(f'[{uri}] Airborne')
+
+    # Signal audio to start (only first drone triggers it)
+    if uri == sorted(uris)[0]:
+        print(f'[{uri}] Triggering audio playback')
+        audio_started.set()
 
     if not sequence:
         print(f'[{uri}] No waypoints — hovering briefly')
@@ -104,7 +126,6 @@ def fly_sequence(scf: SyncCrazyflie, sequence):
         for idx, (target_time, x, y, z) in enumerate(sequence):
             if idx % 10 == 0:
                 print(f'[{uri}] Waypoint {idx}/{len(sequence)} → ({x:.2f}, {y:.2f}, {z:.2f})')
-            # go_to internally sleeps for the travel duration, no extra sleep needed.
             commander.go_to(x, y, z, velocity=DEFAULT_VELOCITY)
         print(f'[{uri}] Sequence complete')
 
@@ -133,11 +154,15 @@ if __name__ == '__main__':
     cflib.crtp.init_drivers()
     factory = CachedCfFactory(rw_cache='./cache')
 
+<<<<<<< HEAD
+=======
+    # Start audio thread
+    audio_thread = threading.Thread(target=play_audio, args=(AUDIO_PATH,), daemon=True)
+    audio_thread.start()
+
+>>>>>>> b139aabd685e42f58bdf23fd5c88c3567facc0c5
     with Swarm(uris, factory=factory) as swarm:
         try:
-            # Optional: uncomment for Lighthouse deck
-            # swarm.parallel_safe(configure_lighthouse)
-
             print('Resetting estimators...')
             swarm.reset_estimators()
             time.sleep(2)
@@ -147,8 +172,12 @@ if __name__ == '__main__':
 
             print('Flying sequences...')
             swarm.parallel_safe(fly_sequence, args_dict=seq_args)
+            
+            # Wait for audio to finish (optional)
+            audio_thread.join(timeout=300)  # 5 min max
 
         except (KeyboardInterrupt, Exception) as e:
             print(f'Swarm error: {e}')
             traceback.print_exc()
             swarm.parallel_safe(emergency_land)
+            pygame.mixer.music.stop()  # Stop audio on error
