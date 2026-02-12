@@ -156,7 +156,6 @@ if __name__ == '__main__':
 
     # Start audio thread
     audio_thread = threading.Thread(target=play_audio, args=(AUDIO_PATH,), daemon=True)
-    audio_thread.start()
 
     with Swarm(uris, factory=factory) as swarm:
         try:
@@ -167,6 +166,7 @@ if __name__ == '__main__':
             print('Creating commanders...')
             swarm.parallel_safe(make_commander)
 
+            audio_thread.start()
             print('Flying sequences...')
             swarm.parallel_safe(fly_sequence, args_dict=seq_args)
             
