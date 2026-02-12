@@ -132,7 +132,7 @@ if __name__ == '__main__':
     seq_args = init_data(PATH)
     cflib.crtp.init_drivers()
     factory = CachedCfFactory(rw_cache='./cache')
-    print(seq_args)
+
     with Swarm(uris, factory=factory) as swarm:
         try:
             # Optional: uncomment for Lighthouse deck
