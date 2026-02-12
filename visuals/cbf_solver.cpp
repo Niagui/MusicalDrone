@@ -4,7 +4,7 @@
 #include <iostream>
 #include <limits>
 
-// Math helpers
+// Math
 static inline Vec3 sub(Vec3 a, Vec3 b) { return {a.x-b.x, a.y-b.y, a.z-b.z}; }
 static inline Vec3 mul(Vec3 a, float s) { return {a.x*s, a.y*s, a.z*s}; }
 static inline float dot(Vec3 a, Vec3 b) { return a.x*b.x + a.y*b.y + a.z*b.z; }
@@ -66,15 +66,15 @@ int CBFSolver::BuildConstraints(
     
     // Drone-drone CBF constraints
     for (size_t j = 0; j < pos.size(); j++) {
-        if ((int)j == agent_idx) continue;
+        if ((int)j == agent_idx) continue;  //skip cur drone
         
         Vec3 d = sub(p, pos[j]);
-        float dist2 = dot(d, d);
+        float dist2 = dot(d, d);    //find drone 2 drone dist
         
-        if (dist2 >= cfg.neighbor_range * cfg.neighbor_range) continue;
+        if (dist2 >= cfg.neighbor_range * cfg.neighbor_range) continue;     //don't care if not in detection range
         
         float h = dist2 - cfg.safety_radius * cfg.safety_radius;
-        Vec3 grad = mul(d, 2.0f);
+        Vec3 grad = mul(d, 2.0f);   //gradient
         
         // Add constraint row
         A_data_.push_back(grad.x);
@@ -126,6 +126,12 @@ void CBFSolver::InitSolver(int n_constraints) {
     OSQPInt P_i[3] = {0, 1, 2};
     OSQPInt P_p[4] = {0, 1, 2, 3};
     
+    /*
+    P= [2, 0, 0
+        0, 2, 0
+        0, 0, 2]
+    */
+
     OSQPCscMatrix P_matrix;
     P_matrix.m = 3;
     P_matrix.n = 3;

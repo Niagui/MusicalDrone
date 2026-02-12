@@ -17,7 +17,7 @@ struct CBFConfig {
     int max_iter = 2000;
     float eps_abs = 1e-3f;
     float eps_rel = 1e-3f;
-    bool verbose = false;
+    bool verbose = true;
     
     // Reinitialization threshold
     int constraint_change_threshold = 2;
