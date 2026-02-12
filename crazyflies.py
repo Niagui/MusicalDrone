@@ -16,7 +16,8 @@ from cflib.utils import uri_helper
 PATH = "trajectories.csv"
 
 uris = {
-    'radio://0/20/2M/E7E7E7E701',
+    'radio://0/20/2M/E7E7E7E702',
+    'radio://0/20/2M/E7E7E7E703'
     # Add more URIs if you want more copters in the swarm
     # URIs in a swarm using the same radio must also be on the same channel
 }
@@ -74,6 +75,7 @@ def init_data(path):
     #use to generate trajectories
     for id, waypoint in waypoints.items():
         write_timed_waypoints(id, waypoint, f"tmp_{id}.csv")
+        print()
     # print(seq["radio://0/20/2M/E7E7E7E701"])
     return seq
 

@@ -51,9 +51,8 @@ def read_csv(path):
 def init_data(path):
     waypoints = read_csv(path)
     seq = {}
-
     for i, uri in enumerate(sorted(uris)):
-        if i in waypoints:
+        if i in waypoints.keys():
             # Wrap in outer list: parallel_safe expands args_dict values with *args,
             # so [sequence] unpacks to fly_sequence(scf, sequence) as intended.
             # Without the outer list, the 50 waypoint tuples would unpack to 50 args.
@@ -133,7 +132,7 @@ if __name__ == '__main__':
     seq_args = init_data(PATH)
     cflib.crtp.init_drivers()
     factory = CachedCfFactory(rw_cache='./cache')
-
+    print(seq_args)
     with Swarm(uris, factory=factory) as swarm:
         try:
             # Optional: uncomment for Lighthouse deck
