@@ -154,9 +154,12 @@ if __name__ == '__main__':
     cflib.crtp.init_drivers()
     factory = CachedCfFactory(rw_cache='./cache')
 
+<<<<<<< HEAD
+=======
     # Start audio thread
     audio_thread = threading.Thread(target=play_audio, args=(AUDIO_PATH,), daemon=True)
 
+>>>>>>> b139aabd685e42f58bdf23fd5c88c3567facc0c5
     with Swarm(uris, factory=factory) as swarm:
         try:
             print('Resetting estimators...')
