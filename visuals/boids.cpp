@@ -21,7 +21,7 @@
 #include <iostream>
 #include <filesystem>
 #include <osqp.h>
-
+#include "config.h" 
 
 //json
 using json = nlohmann::json;

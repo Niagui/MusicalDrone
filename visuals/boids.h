@@ -2,8 +2,7 @@
 #include <vector>
 #include <string>
 #include "cbf_solver.h"
-
-
+#include "config.h"
 
 bool ReloadAndApplyEmotions(float t);
 

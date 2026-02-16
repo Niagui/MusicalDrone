@@ -42,17 +42,19 @@
 #define MINIAUDIO_IMPLEMENTATION
 #include "miniaudio.h"
 
+#include "config.h" 
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
 
+Config cfg;
 
 // --- GLOBAL VARIABLES ---
 const float DRONE_RADIUS = 0.092; 
 
 int   gWinW = 1200, gWinH = 800; //window size
-int   gDroneCount = 5;        // +/- to change
+int   gDroneCount = cfg.drone_config.num_drones;        // +/- to change
 float gTime = 0.0f;             // seconds (advances when playing)
 static float gSimTime = 0.0f;               // simulation time in seconds
 static const float kFixedDt = 1.0f / 60.0f; // 60 FPS sim step
@@ -70,8 +72,8 @@ float gCamR     = 12.0f;  // radius
 int   gLastX=0, gLastY=0; bool gDragging=false;
 
 // Formation 
-enum Form { CIRCLE=1, LINE, WAVE, HEART };
-Form  gForm = CIRCLE;
+enum Form { CIRCLE=1, LINE=2, WAVE, HEART };
+Form  gForm = LINE;
 
 float gAltitude = 1.6f;   // Y height of all formations
 float gSpeed    = 1.0f;   // Global animation speed
@@ -211,11 +213,26 @@ static std::vector<Vec3> SampleCircle(int n, float radius, float phase) {
 }
 
 // returns N points on a center horizontal line
-static std::vector<Vec3> SampleLine(int n, float length){
-    std::vector<Vec3> pts(n);
-    for(int i=0;i<n;i++){
-        float x = ((i/(float)(n-1)) - 0.5f) * length;
-        pts[i] = { x, 0.0f, 0.0f };
+static std::vector<Vec3> SampleLine(int n)
+{
+    float init_dist = cfg.drone_config.init_dist;
+
+    std::vector<Vec3> pts;
+    pts.reserve(n);
+
+    if (n <= 0) return pts;
+
+    if (n == 1) {
+        pts.push_back({0.0f, 0.0f, 0.0f});
+        return pts;
+    }
+
+    float span = init_dist * (n - 1);
+    float z0   = -0.5f * span;
+
+    for (int i = 0; i < n; i++) {
+        float z = z0 + i * init_dist;
+        pts.push_back({0.0f, 0.0f, z});
     }
     return pts;
 }
@@ -286,12 +303,7 @@ static void DrawBoundsBox()
 // Compute the target slots for current formation at time gTime
 static void ResampleSlots(){
     float t = gTime;
-    switch(gForm){
-        case CIRCLE: gSlots = SampleCircle(gDroneCount, 3.0f, gSpin? 0.25f*t : 0.0f); break;
-        case LINE:   gSlots = SampleLine  (gDroneCount, 10.0f);                         break;
-        case WAVE:   gSlots = SampleWave  (gDroneCount, 10.0f, 1.3f, 1.4f*t);           break;
-        case HEART:  gSlots = SampleHeart (gDroneCount, 1.9f,  gSpin? 0.15f*t : 0.0f);  break;
-    }
+    gSlots = SampleLine(gDroneCount);
 }
 
 // Resize/initialize arrays and seed positions
@@ -301,7 +313,7 @@ static void ResizeArrays(){
     gPos.resize  (gDroneCount);
     ResizeBoids(gDroneCount);
     // Place initial positions on a small disc around origin at altitude
-    auto init = SampleCircle(gDroneCount, 1.2f, 0.0f);
+    auto init = SampleLine(gDroneCount);
     for(int i=0;i<gDroneCount;i++){
         gPos[i] = { init[i].x, gAltitude, init[i].z };
     }
@@ -648,34 +660,34 @@ static void Keyboard(unsigned char key, int, int){
             }
             break;
             
-        case '+': case '=': 
-            gDroneCount = std::min(3000, gDroneCount + 1); 
-            ResizeArrays(); 
-            break;
+        // case '+': case '=': 
+        //     gDroneCount = std::min(3000, gDroneCount + 1); 
+        //     ResizeArrays(); 
+        //     break;
             
-        case '-': case '_': 
-            gDroneCount = std::max(1, gDroneCount - 1); 
-            ResizeArrays(); 
-            break;
+        // case '-': case '_': 
+        //     gDroneCount = std::max(1, gDroneCount - 1); 
+        //     ResizeArrays(); 
+        //     break;
             
-        case '1': gForm = CIRCLE; break;
-        case '2': gForm = LINE;   break;
-        case '3': gForm = WAVE;   break;
-        case '4': gForm = HEART;  break;
+        // case '1': gForm = CIRCLE; break;
+        // case '2': gForm = LINE;   break;
+        // case '3': gForm = WAVE;   break;
+        // case '4': gForm = HEART;  break;
         
-        case 's': case 'S': 
-            gSpin = !gSpin; 
-            break;
+        // case 's': case 'S': 
+        //     gSpin = !gSpin; 
+        //     break;
             
-        case ',': 
-            gSpeed = clampf(gSpeed - 0.05f, 0.1f, 3.0f); 
-            std::cout << "Speed: " << gSpeed << "x\n";
-            break;
+        // case ',': 
+        //     gSpeed = clampf(gSpeed - 0.05f, 0.1f, 3.0f); 
+        //     std::cout << "Speed: " << gSpeed << "x\n";
+        //     break;
             
-        case '.': 
-            gSpeed = clampf(gSpeed + 0.05f, 0.1f, 3.0f); 
-            std::cout << "Speed: " << gSpeed << "x\n";
-            break;
+        // case '.': 
+        //     gSpeed = clampf(gSpeed + 0.05f, 0.1f, 3.0f); 
+        //     std::cout << "Speed: " << gSpeed << "x\n";
+        //     break;
             
         //'E': loads emotional labels and starts music
         case 'e': case 'E': {
@@ -763,6 +775,7 @@ static void Motion(int x, int y){
 }
 
 int main(int argc, char** argv){
+    int gDroneCount = cfg.drone_config.num_drones;
     // StartAudio();
     // std::this_thread::sleep_for(std::chrono::duration<float>(0.2));
     glutInit(&argc, argv);

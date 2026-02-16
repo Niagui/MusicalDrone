@@ -1,23 +1,28 @@
 #ifndef CBF_SOLVER_H
 #define CBF_SOLVER_H
+#pragma once
 
 #include <vector>
 #include <osqp.h>
+#include "config.h"
+
+extern Config cfg;
 
 struct Vec3 {
     float x, y, z;
 };
 
-struct CBFConfig {
-    float safety_radius = 0.4f;  // meters
-    float alpha = 1.0f;            // CBF aggressiveness parameter
-    float neighbor_range = 9.0f;   // only consider neighbors within this range
+struct CBFConfig 
+{
+    float safety_radius = cfg.cbf_config.safety_radius;  // meters
+    float alpha = cfg.cbf_config.alpha;            // CBF aggressiveness parameter
+    float neighbor_range = cfg.cbf_config.neighbor_range;   // only consider neighbors within this range
     
     // Solver settings
     int max_iter = 2000;
     float eps_abs = 1e-3f;
     float eps_rel = 1e-3f;
-    bool verbose = false;
+    bool verbose = cfg.cbf_config.verbose;
     
     // Reinitialization threshold
     int constraint_change_threshold = 2;

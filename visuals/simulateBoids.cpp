@@ -3,6 +3,7 @@
 #include <vector>
 #include <cstdio>
 #include <cmath>
+#include "config.h" 
 
 static std::vector<Vec3> SampleCircle(int n, float radius, float phase) {
     std::vector<Vec3> pts(n);
@@ -13,9 +14,32 @@ static std::vector<Vec3> SampleCircle(int n, float radius, float phase) {
     return pts;
 }
 
+static std::vector<Vec3> SampleLine(int n)
+{
+    float init_dist = cfg.drone_config.init_dist;
+
+    std::vector<Vec3> pts;
+    pts.reserve(n);
+
+    if (n <= 0) return pts;
+
+    if (n == 1) {
+        pts.push_back({0.0f, 0.0f, 0.0f});
+        return pts;
+    }
+
+    float span = init_dist * (n - 1);
+    float z0   = -0.5f * span;
+
+    for (int i = 0; i < n; i++) {
+        float z = z0 + i * init_dist;
+        pts.push_back({0.0f, 0.0f, z});
+    }
+    return pts;
+}
 
 int main() {
-    const int   droneCount   = 2;
+    const int   droneCount   = cfg.drone_config.num_drones;
     const float totalTime    = GetAudioLength();
     const float simDt        = 1.0f / 60.0f;
     const float outputDt     = 0.2f;  // snapshot every 0.2 sec
@@ -37,7 +61,7 @@ int main() {
     while (t <= totalTime + 5) {
 
         float phase = 0.25f * t; 
-        std::vector<Vec3> slots = SampleCircle(droneCount, 3.0f, phase);
+        std::vector<Vec3> slots = SampleLine(droneCount);
         for (auto& s : slots) s.y = 0.0f;  
 
         // updates
