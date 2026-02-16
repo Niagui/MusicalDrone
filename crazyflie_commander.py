@@ -157,7 +157,7 @@ if __name__ == '__main__':
     # Start audio thread
     audio_thread = threading.Thread(target=play_audio, args=(AUDIO_PATH,), daemon=True)
     audio_thread.start()
-
+    
     with Swarm(uris, factory=factory) as swarm:
         try:
             print('Resetting estimators...')
