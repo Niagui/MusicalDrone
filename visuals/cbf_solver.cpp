@@ -45,9 +45,9 @@ static inline Vec3 push_inward(Vec3 p, Vec3 v,
                               float dt,
                               Vec3 v_curr)
 {
-    // Tunables (start with these)
-    const float margin = 0.5f;   // how early to start pushing (your units)
-    const float k_push = 2.0f;   // how hard to push when outside
+    // Tunables 
+    const float margin = 0.1f;   // how early to start pushing 
+    const float k_push = 1.25f;   // how hard to push when outside
 
     // Push inward per-axis
     v.x = push_in_1d(p.x, v.x, cfg.x_min, cfg.x_max, k_push, margin);

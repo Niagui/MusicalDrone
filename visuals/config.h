@@ -23,7 +23,7 @@ struct CBF_config
     float safety_radius = 0.4;
     float neighbor_range = 10.0;
     float alpha = 1.0;
-    bool verbose = false;
+    bool verbose = true;
 };
 
 struct Config
