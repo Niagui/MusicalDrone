@@ -556,6 +556,8 @@ void ResetVelocities(){
 }
 
 std::vector<Vec3>& GetBoidPositions(){ return position; }
+std::vector<Vec3>& GetBoidVelocities(){ return velocity; }
+std::vector<Vec3>& GetBoidAcclerations(){ return acceleration; }
 
 const std::vector<float>& GetLastWeights(){
     return last_weights;
@@ -703,6 +705,7 @@ void UpdateBoids(float dt, const std::vector<Vec3>& targets){
 
         //caps on acceleration, speed and 
         acc = clampLen(acc, P.amax);
+        acceleration[i] = acc;
 
         //TODO
         Vec3 v_nom  = clampLen(add(vi, mul(acc, dt)), P.vmax);

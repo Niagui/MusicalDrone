@@ -4,7 +4,7 @@
 
 struct Drone_config
 {
-    int num_drones = 10;
+    int num_drones = 2;
     float init_dist = 1;
 };
 
@@ -20,7 +20,7 @@ struct CBF_config
     float safety_radius = 0.4;
     float neighbor_range = 10.0;
     float alpha = 1.0;
-    bool verbose = true;
+    bool verbose = false;
 };
 
 struct Config
