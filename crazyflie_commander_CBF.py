@@ -294,6 +294,9 @@ def fly_sequence(scf: SyncCrazyflie, sequence):
     print(f'[{uri}] Landing...')
     commander.land(velocity=DEFAULT_VELOCITY)
     print(f'[{uri}] Landed')
+    pygame.mixer.music.fadeout(20)
+    pygame.mixer.music.stop()
+
 
 
 def emergency_land(scf):
@@ -342,7 +345,7 @@ if __name__ == '__main__':
             print('Flying sequences...')
             swarm.parallel_safe(fly_sequence, args_dict=seq_args)
 
-            audio_thread.join(timeout=300)
+            audio_thread.join(timeout=250)
 
         except (KeyboardInterrupt, Exception) as e:
             print(f'Swarm error: {e}')
