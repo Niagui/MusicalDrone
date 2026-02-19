@@ -17,11 +17,19 @@ struct CBFConfig
     float safety_radius = cfg.cbf_config.safety_radius;  // meters
     float alpha = cfg.cbf_config.alpha;            // CBF aggressiveness parameter
     float neighbor_range = cfg.cbf_config.neighbor_range;   // only consider neighbors within this range
+
+    float x_min = cfg.bound_config.x_min;
+    float x_max = cfg.bound_config.x_max;
+    float y_min = cfg.bound_config.y_min;
+    float y_max = cfg.bound_config.y_max;
+    float z_min = cfg.bound_config.z_min;
+    float z_max = cfg.bound_config.z_max;
     
     // Solver settings
     int max_iter = 2000;
     float eps_abs = 1e-3f;
     float eps_rel = 1e-3f;
+    float recovery_speed = 0.5f;
     bool verbose = cfg.cbf_config.verbose;
     
     // Reinitialization threshold
@@ -55,12 +63,17 @@ class CBFSolver
                             float v_max, float a_max, float dt,
                             const CBFConfig& cfg);
         void InitSolver(int n_constraints);
+        void BuildCSC(int n_constraints);
         
         // OSQP structures
         OSQPSolver* solver_ = nullptr;
         OSQPSettings* settings_ = nullptr;
         
         // Constraint matrices (reused across solves)
+        std::vector<OSQPFloat> A_x_csc_;   // non-zero values  (CSC)
+        std::vector<OSQPInt>   A_i_csc_;   // row indices      (CSC)
+        std::vector<OSQPInt>   A_p_csc_;
+
         std::vector<OSQPFloat> A_data_;
         std::vector<OSQPInt> A_indices_;
         std::vector<OSQPFloat> l_;

@@ -1,4 +1,5 @@
 #include "cbf_solver.h"
+#include <stdlib.h>
 #include <cmath>
 #include <algorithm>
 #include <iostream>
@@ -16,6 +17,52 @@ static inline float clamp(float x, float lo, float hi) {
 static inline Vec3 clampLen(Vec3 v, float maxLen) {
     float L = len(v);
     return (L > maxLen) ? mul(v, maxLen/L) : v;
+}
+
+static inline float push_in_1d(float p, float v,
+                              float minb, float maxb,
+                              float k_push,
+                              float margin)
+{
+    // Start pushing slightly before the wall if margin > 0
+    if (p < minb + margin) {
+        // Need positive velocity to re-enter
+        float v_in = k_push * (minb + margin - p);
+        return std::max(v, v_in);
+    }
+    if (p > maxb - margin) {
+        // Need negative velocity to re-enter
+        float v_in = -k_push * (p - (maxb - margin));
+        return std::min(v, v_in);
+    }
+    return v;
+}
+
+static inline Vec3 push_inward(Vec3 p, Vec3 v,
+                              const CBFConfig& cfg,
+                              float v_max,
+                              float a_max,
+                              float dt,
+                              Vec3 v_curr)
+{
+    // Tunables (start with these)
+    const float margin = 0.5f;   // how early to start pushing (your units)
+    const float k_push = 2.0f;   // how hard to push when outside
+
+    // Push inward per-axis
+    v.x = push_in_1d(p.x, v.x, cfg.x_min, cfg.x_max, k_push, margin);
+    v.y = push_in_1d(p.y, v.y, cfg.y_min, cfg.y_max, k_push, margin);
+    v.z = push_in_1d(p.z, v.z, cfg.z_min, cfg.z_max, k_push, margin);
+
+    // Respect accel limits
+    float a_lim = a_max * dt;
+    v.x = clamp(v.x, v_curr.x - a_lim, v_curr.x + a_lim);
+    v.y = clamp(v.y, v_curr.y - a_lim, v_curr.y + a_lim);
+    v.z = clamp(v.z, v_curr.z - a_lim, v_curr.z + a_lim);
+
+    // Respect speed cap
+    v = clampLen(v, v_max);
+    return v;
 }
 
 // ============================================================================
@@ -67,17 +114,17 @@ int CBFSolver::BuildConstraints(
     
     // Drone-drone CBF constraints
     for (size_t j = 0; j < pos.size(); j++) {
-        if ((int)j == agent_idx) continue;  //skip cur drone
+        if ((int)j == agent_idx) continue;
         
         Vec3 d = sub(p, pos[j]);
-        float dist2 = dot(d, d);    //find drone 2 drone dist
+        float dist2 = dot(d, d);
         
-        if (dist2 >= cfg.neighbor_range * cfg.neighbor_range) continue;     //don't care if not in detection range
+        if (dist2 >= cfg.neighbor_range * cfg.neighbor_range) continue;
         
         float h = dist2 - cfg.safety_radius * cfg.safety_radius;
-        Vec3 grad = mul(d, 2.0f);   //gradient
+        float h_clamped = std::max(h, 0.0f);  // clamp so violated state can't flip constraint
+        Vec3 grad = mul(d, 2.0f);
         
-        // Add constraint row
         A_data_.push_back(grad.x);
         A_data_.push_back(grad.y);
         A_data_.push_back(grad.z);
@@ -85,7 +132,7 @@ int CBFSolver::BuildConstraints(
         A_indices_.push_back(row * 3 + 1);
         A_indices_.push_back(row * 3 + 2);
         
-        float rhs = -cfg.alpha * h + 2.0f * dot(d, vel[j]);
+        float rhs = -cfg.alpha * h_clamped + 2.0f * dot(d, vel[j]);  // use h_clamped
         l_.push_back(rhs);
         u_.push_back(OSQP_INFTY);
         row++;
@@ -108,6 +155,33 @@ int CBFSolver::BuildConstraints(
         A_indices_.push_back(row * 3 + col);
         l_.push_back(v_arr[col] - a_lim);
         u_.push_back(v_arr[col] + a_lim);
+        row++;
+    }
+
+    //TODO buggy boundary constraints
+    const float px[3] = {p.x, p.y, p.z};
+    const float min_b[3] = {cfg.x_min, cfg.y_min, cfg.z_min};
+    const float max_b[3] = {cfg.x_max, cfg.y_max, cfg.z_max};
+
+    float alpha_floor = cfg.alpha * 3;  // e.g. scale = 3.0
+
+    // Inside the boundary loop, replace the lower-wall z constraint:
+    for (int col = 0; col < 3; col++) {
+        float alpha_wall = cfg.alpha;
+        if (col == 2) alpha_wall *= 3;  // z floor needs stronger push
+
+        // Lower wall
+        A_data_.push_back(1.0f);
+        A_indices_.push_back(row * 3 + col);
+        l_.push_back(-alpha_wall * (px[col] - min_b[col]));
+        u_.push_back(OSQP_INFTY);
+        row++;
+
+        // Upper wall
+        A_data_.push_back(-1.0f);
+        A_indices_.push_back(row * 3 + col);
+        l_.push_back(-alpha_wall * (max_b[col] - px[col]));
+        u_.push_back(OSQP_INFTY);
         row++;
     }
     
@@ -168,7 +242,6 @@ void CBFSolver::InitSolver(int n_constraints) {
     A_p_csc_[0] = 0;
     for (int c = 0; c < 3; c++) A_p_csc_[c+1] = A_p_csc_[c] + col_counts[c];
 
-    // fill using your loop (just swap names)
     std::vector<OSQPInt> positions(3, 0);
     for (size_t k = 0; k < A_indices_.size(); k++) {
         int idx = A_indices_[k];
@@ -213,6 +286,29 @@ void CBFSolver::InitSolver(int n_constraints) {
     last_n_constraints_ = n_constraints;
 }
 
+void CBFSolver::BuildCSC(int n_constraints) {
+    std::vector<OSQPInt> col_counts(3, 0);
+    for (size_t k = 0; k < A_indices_.size(); k++) {
+        col_counts[A_indices_[k] % 3]++;
+    }
+
+    A_p_csc_.resize(4);
+    A_p_csc_[0] = 0;
+    for (int c = 0; c < 3; c++) A_p_csc_[c+1] = A_p_csc_[c] + col_counts[c];
+
+    A_x_csc_.assign(A_data_.size(), 0.0);
+    A_i_csc_.assign(A_data_.size(), 0);
+
+    std::vector<OSQPInt> positions(3, 0);
+    for (size_t k = 0; k < A_indices_.size(); k++) {
+        int row = A_indices_[k] / 3;
+        int col = A_indices_[k] % 3;
+        int pos = A_p_csc_[col] + positions[col]++;
+        A_x_csc_[pos] = A_data_[k];
+        A_i_csc_[pos] = row;
+    }
+}
+
 Vec3 CBFSolver::Solve(
     int agent_idx,
     Vec3 v_nom,
@@ -227,18 +323,16 @@ Vec3 CBFSolver::Solve(
     config_ = config;  // Store config for InitSolver
     
     // Build constraints
-    int n_con = BuildConstraints(agent_idx, v_curr, positions, velocities,
-                                 v_max, a_max, dt, config);
+    int n_con = BuildConstraints(agent_idx, v_curr, positions, velocities, v_max, a_max, dt, config);
+
+    BuildCSC(n_con);
     
-    int n_cbf = n_con - 6;  // Subtract vel + accel constraints
+    int n_cbf = n_con - 6 - 6;  // Subtract vel + accel constraints
     
     // Early exit
     if (n_cbf == 0) {
         Vec3 v = clampLen(v_nom, v_max);
-        float a_lim = a_max * dt;
-        v.x = clamp(v.x, v_curr.x - a_lim, v_curr.x + a_lim);
-        v.y = clamp(v.y, v_curr.y - a_lim, v_curr.y + a_lim);
-        v.z = clamp(v.z, v_curr.z - a_lim, v_curr.z + a_lim);
+        v = push_inward(positions[agent_idx], v, config, v_max, a_max, dt, v_curr);
         return v;
     }
     
@@ -255,14 +349,18 @@ Vec3 CBFSolver::Solve(
         }
     } else {
         osqp_update_data_vec(solver_, q_.data(), l_.data(), u_.data());
-        InitSolver(n_con); //might be optimizable 
+        osqp_update_data_mat(solver_,
+                     nullptr, nullptr, 0,
+                     A_x_csc_.data(), nullptr, (OSQPInt)A_x_csc_.size());
+        //InitSolver(n_con); //might be optimizable 
     }
     
     // Solve
     osqp_solve(solver_);
     
     if (!solver_ || !solver_->info) {
-        return clampLen(v_nom, v_max);
+        Vec3 v = clampLen(v_nom, v_max);
+        return push_inward(positions[agent_idx], v, config, v_max, a_max, dt, v_curr);
     }
 
     const int st = solver_->info->status_val;
@@ -271,14 +369,13 @@ Vec3 CBFSolver::Solve(
     if (st != OSQP_SOLVED && st != OSQP_SOLVED_INACCURATE) {
         // IMPORTANT: don't touch solver_->solution->x here
         // Optional debug:
-        if (config_.verbose) {
-            //std::cerr << "[CBF] OSQP status: " << solver_->info->status << "\n";
-        }
-        return clampLen(v_nom, v_max);
+        Vec3 v = clampLen(v_nom, v_max);
+        return push_inward(positions[agent_idx], v, config, v_max, a_max, dt, v_curr);
     }
 
     if (!solver_->solution || !solver_->solution->x) {
-        return clampLen(v_nom, v_max);
+        Vec3 v = clampLen(v_nom, v_max);
+        return push_inward(positions[agent_idx], v, config, v_max, a_max, dt, v_curr);
     }
 
     Vec3 v_safe = {
@@ -293,6 +390,19 @@ Vec3 CBFSolver::Solve(
         return clampLen(v_nom, v_max);
     }
     
+    for (size_t j = 0; j < positions.size(); j++) {
+        if ((int)j == agent_idx) continue;
+        Vec3 d = sub(positions[agent_idx], positions[j]);
+        float dist = len(d);
+        if (dist < config.safety_radius * 0.9f && dist > 1e-4f) {
+            Vec3 away = mul(d, 1.0f / dist);
+            float v_out = std::max(dot(v_safe, away), config.recovery_speed);
+            v_safe.x += away.x * v_out;
+            v_safe.y += away.y * v_out;
+            v_safe.z += away.z * v_out;
+            v_safe = clampLen(v_safe, v_max);
+        }
+    }
     return v_safe;
 }
 
