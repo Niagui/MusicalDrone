@@ -75,6 +75,9 @@ void StartAudio(const std::string& filename);
 
 
 std::vector<Vec3>& GetBoidPositions();  //to draw in basicVisuals.cpp
+std::vector<Vec3>& GetBoidVelocities();
+std::vector<Vec3>& GetBoidAcclerations();
+
 const BoidParams& GetBoidParams();
 const std::vector<std::string>& GetEmotionLabels();
 

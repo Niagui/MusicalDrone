@@ -190,7 +190,7 @@ def read_csv(path):
         for row in reader:
             if not row:
                 continue
-            id, t, x, y, z = row
+            id, t, x, y, z, vx, vy, vz, ax, ay, az = row
             waypoint_map[int(id)].append((
                 float(t),
                 np.clip(float(x), -1.1, 1.1),

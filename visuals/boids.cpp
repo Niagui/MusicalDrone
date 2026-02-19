@@ -321,7 +321,7 @@ static const BoidParams Neutral =
 {        
     /* r_sep */ 0.5f,  /* r_nei */ 2.0f,
     /* k_sep */ 1.0f,  /* k_ali */ 1.0f,  /* k_coh */ 1.0f,  /* k_goal */ 1.1f,
-    /* vmax  */ 4.0f,  /* amax  */ 10.0f,
+    /* vmax  */ 3.0f,  /* amax  */ 10.0f,
     /* altitude */ 1.7f, /* jitter */ 0.25f
 };
 static BoidParams P = Neutral;
@@ -331,12 +331,12 @@ static const ParamDelta ANCHORS[7] =
 {   
     //keep sum of each column close to 0 for best expresiveness
     //r_sep   r_nei   k_sep   k_ali   k_coh   k_goal   vmax    amax   altitude  jitter
-    { +0.60f, -2.00f, +2.00f, -1.00f, -1.50f, +1.40f, +5.0f,  +8.0f,  +1.50f,  +0.40f }, // happy (fast, cohesive, lively)
-    { -0.70f, +3.00f, +3.00f, +1.00f, -0.50f, -1.00f, -4.5f,  -8.0f,  -0.80f,  -0.15f }, // sad (slow, heavy, low drive)
+    { +0.60f, -2.00f, +2.00f, -1.00f, -1.50f, +1.40f, +3.0f,  +8.0f,  +1.50f,  +0.40f }, // happy (fast, cohesive, lively)
+    { -0.70f, +3.00f, +3.00f, +1.00f, -0.50f, -1.00f, -2.5f,  -8.0f,  -0.80f,  -0.15f }, // sad (slow, heavy, low drive)
     { +0.60f, -1.00f, -2.50f, -0.90f, -0.60f, -1.95f, -5.2f,  -9.0f,  -1.00f,  -0.20f }, // sleepy (very slow, minimal jitter)
-    { -0.50f, +2.00f, +2.00f, +1.40f, +0.80f, +1.50f, +5.5f,  +8.0f,  +1.20f,  -0.25f }, // brave (fast, decisive, strong goal)
-    { +0.55f, -2.20f, -4.00f, -0.20f, -1.35f, -0.45f, -5.0f,  +4.0f,  +0.20f,  +0.15f }, // grumpy (aggressive spacing, low cohesion)
-    { +0.80f, -2.80f, +5.00f, +0.30f, -0.55f, +0.80f, +4.0f,  +8.0f,  -0.60f,  +0.50f }, // scared (panic: fast + jitter + separation)
+    { -0.50f, +2.00f, +2.00f, +1.40f, +0.80f, +1.50f, +4.0f,  +8.0f,  +1.20f,  -0.25f }, // brave (fast, decisive, strong goal)
+    { +0.55f, -2.20f, -4.00f, -0.20f, -1.35f, -0.45f, -3.0f,  +4.0f,  +0.20f,  +0.15f }, // grumpy (aggressive spacing, low cohesion)
+    { +0.80f, -2.80f, +5.00f, +0.30f, -0.55f, +0.80f, +3.5f,  +8.0f,  -0.60f,  +0.50f }, // scared (panic: fast + jitter + separation)
     { -0.55f, +1.20f, -2.80f, +0.80f, +1.00f, -0.60f, -2.5f,  -4.0f,  -0.20f,  -0.05f }, // shy (small/slow, stays together, low goal)
 };
 
@@ -556,6 +556,8 @@ void ResetVelocities(){
 }
 
 std::vector<Vec3>& GetBoidPositions(){ return position; }
+std::vector<Vec3>& GetBoidVelocities(){ return velocity; }
+std::vector<Vec3>& GetBoidAcclerations(){ return acceleration; }
 
 const std::vector<float>& GetLastWeights(){
     return last_weights;
@@ -703,6 +705,7 @@ void UpdateBoids(float dt, const std::vector<Vec3>& targets){
 
         //caps on acceleration, speed and 
         acc = clampLen(acc, P.amax);
+        acceleration[i] = acc;
 
         //TODO
         Vec3 v_nom  = clampLen(add(vi, mul(acc, dt)), P.vmax);
