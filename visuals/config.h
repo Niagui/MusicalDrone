@@ -4,7 +4,7 @@
 
 struct Drone_config
 {
-    int num_drones = 4;
+    int num_drones = 1;
     float init_dist = 0.45;
 };
 
