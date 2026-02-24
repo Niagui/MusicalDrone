@@ -111,19 +111,24 @@ int CBFSolver::BuildConstraints(
     
     Vec3 p = pos[agent_idx];
     int row = 0;
+    float a_lim = a_max * dt;
     
-    // Drone-drone CBF constraints
     for (size_t j = 0; j < pos.size(); j++) {
         if ((int)j == agent_idx) continue;
         
         Vec3 d = sub(p, pos[j]);
         float dist2 = dot(d, d);
-        
         if (dist2 >= cfg.neighbor_range * cfg.neighbor_range) continue;
         
         float h = dist2 - cfg.safety_radius * cfg.safety_radius;
-        float h_clamped = std::max(h, 0.0f);  // clamp so violated state can't flip constraint
-        Vec3 grad = mul(d, 2.0f);
+        
+        // Skip if safe and already diverging — constraint not needed,
+        // and including it risks infeasibility for no benefit
+        Vec3 v_rel = sub(vel[agent_idx], vel[j]);
+        float h_dot = 2.0f * dot(d, v_rel);
+        if (h > 0.0f && h_dot >= 0.0f) continue;
+
+        Vec3 grad = mul(d, 2.0f);  // gradient of h w.r.t. v_i
         
         A_data_.push_back(grad.x);
         A_data_.push_back(grad.y);
@@ -132,10 +137,73 @@ int CBFSolver::BuildConstraints(
         A_indices_.push_back(row * 3 + 1);
         A_indices_.push_back(row * 3 + 2);
         
-        float rhs = -cfg.alpha * h_clamped + 2.0f * dot(d, vel[j]);  // use h_clamped
+        // j moving away relaxes constraint — don't let it tighten it
+        float j_contrib = std::min(2.0f * dot(d, vel[j]), 0.0f);
+        float rhs = -cfg.alpha * h + j_contrib;
+
+        // KEY FIX: clamp rhs so it never exceeds what acceleration limits allow.
+        // The maximum dot(grad, v) achievable is |grad| * v_max (by Cauchy-Schwarz).
+        // If rhs exceeds this, the constraint is physically impossible to satisfy.
+        float grad_norm = 2.0f * std::sqrt(dist2);  // |grad| = 2*dist
+        float max_achievable = grad_norm * v_max;
+        rhs = std::min(rhs, max_achievable * 0.95f);  // 5% margin
+
+        // Also clamp against accel limit: max dot(grad/|grad|, v) reachable in one step
+        // is roughly current outward speed + a_lim
+        float v_outward_curr = dot(grad, Vec3{v_curr.x, v_curr.y, v_curr.z}) / (grad_norm + 1e-6f);
+        float max_accel_achievable = (v_outward_curr + a_lim) * grad_norm;
+        rhs = std::min(rhs, max_accel_achievable * 0.95f);
+
         l_.push_back(rhs);
         u_.push_back(OSQP_INFTY);
         row++;
+
+
+        //keep them separated horizontally
+        const float r_xy = cfg.safety_radius * 1.1f;
+        const float dx = d.x;
+        const float dy = d.y;
+        const float dist2_xy = dx*dx + dy*dy;
+
+        // Use an XY-specific neighbor gate so stacked drones get caught
+        const float neigh2_xy = cfg.neighbor_range * cfg.neighbor_range;
+        if (dist2_xy < neigh2_xy) {
+
+            float h_xy = dist2_xy - r_xy * r_xy;
+
+            // hdot_xy = 2*[dx,dy]·(v_i - v_j)_xy
+            float dvx = vel[agent_idx].x - vel[j].x;
+            float dvy = vel[agent_idx].y - vel[j].y;
+            float hdot_xy = 2.0f * (dx*dvx + dy*dvy);
+
+            // same skip logic: safe and separating -> ignore
+            if (!(h_xy > 0.0f && hdot_xy >= 0.0f)) {
+
+                // grad wrt v_i is [2dx, 2dy, 0] (don't store z since it's 0)
+                A_data_.push_back(2.0f * dx);
+                A_data_.push_back(2.0f * dy);
+                A_indices_.push_back(row * 3 + 0);
+                A_indices_.push_back(row * 3 + 1);
+
+                // j_contrib in XY only
+                float j_contrib_xy = std::min(2.0f * (dx*vel[j].x + dy*vel[j].y), 0.0f);
+                float rhs_xy = -cfg.alpha * h_xy + j_contrib_xy;
+
+                // Clamp feasibility like your 3D version
+                float gradn_xy = 2.0f * std::sqrt(std::max(dist2_xy, 1e-8f));
+                float max_xy = gradn_xy * v_max;
+                rhs_xy = std::min(rhs_xy, max_xy * 0.95f);
+
+                float v_out_xy_curr =
+                    ( (2.0f*dx)*v_curr.x + (2.0f*dy)*v_curr.y ) / (gradn_xy + 1e-6f);
+                float max_accel_xy = (v_out_xy_curr + a_lim) * gradn_xy;
+                rhs_xy = std::min(rhs_xy, max_accel_xy * 0.95f);
+
+                l_.push_back(rhs_xy);
+                u_.push_back(OSQP_INFTY);
+                row++;
+            }
+        }
     }
     
     // Velocity limits
@@ -148,7 +216,6 @@ int CBFSolver::BuildConstraints(
     }
     
     // Acceleration limits
-    float a_lim = a_max * dt;
     float v_arr[3] = {v_curr.x, v_curr.y, v_curr.z};
     for (int col = 0; col < 3; col++) {
         A_data_.push_back(1.0f);
@@ -158,29 +225,30 @@ int CBFSolver::BuildConstraints(
         row++;
     }
 
-    //TODO buggy boundary constraints
     const float px[3] = {p.x, p.y, p.z};
     const float min_b[3] = {cfg.x_min, cfg.y_min, cfg.z_min};
     const float max_b[3] = {cfg.x_max, cfg.y_max, cfg.z_max};
 
-    float alpha_floor = cfg.alpha * 3;  // e.g. scale = 3.0
-
-    // Inside the boundary loop, replace the lower-wall z constraint:
     for (int col = 0; col < 3; col++) {
-        float alpha_wall = cfg.alpha;
-        if (col == 2) alpha_wall *= 3;  // z floor needs stronger push
+        float alpha_wall = (col == 2) ? cfg.alpha * 3.0f : cfg.alpha;
 
-        // Lower wall
+        // Clamp wall constraints the same way — they can also conflict with accel limits
+        float rhs_lo = -alpha_wall * (px[col] - min_b[col]);
+        float rhs_hi = -alpha_wall * (max_b[col] - px[col]);
+
+        // Never demand more than accel limits can deliver
+        rhs_lo = std::min(rhs_lo,  v_arr[col] + a_lim);
+        rhs_hi = std::min(rhs_hi, -v_arr[col] + a_lim);  // upper wall uses -v
+
         A_data_.push_back(1.0f);
         A_indices_.push_back(row * 3 + col);
-        l_.push_back(-alpha_wall * (px[col] - min_b[col]));
+        l_.push_back(rhs_lo);
         u_.push_back(OSQP_INFTY);
         row++;
 
-        // Upper wall
         A_data_.push_back(-1.0f);
         A_indices_.push_back(row * 3 + col);
-        l_.push_back(-alpha_wall * (max_b[col] - px[col]));
+        l_.push_back(rhs_hi);
         u_.push_back(OSQP_INFTY);
         row++;
     }
@@ -327,10 +395,10 @@ Vec3 CBFSolver::Solve(
 
     BuildCSC(n_con);
     
-    int n_cbf = n_con - 6 - 6;  // Subtract vel + accel constraints
+    int n_cbf = n_con - 3 - 3 - 6;  // Subtract vel + accel constraints
     
     // Early exit
-    if (n_cbf == 0) {
+    if (n_cbf <= 0) {
         Vec3 v = clampLen(v_nom, v_max);
         v = push_inward(positions[agent_idx], v, config, v_max, a_max, dt, v_curr);
         return v;
@@ -342,7 +410,7 @@ Vec3 CBFSolver::Solve(
     q_[2] = -2.0 * v_nom.z;
     
     // Reinit if needed
-    if (!initialized_ || std::abs(n_con - last_n_constraints_) > 2) {
+    if (!initialized_ || n_con != last_n_constraints_) {
         InitSolver(n_con);
         if (!initialized_) {
             return clampLen(v_nom, v_max);
@@ -365,13 +433,29 @@ Vec3 CBFSolver::Solve(
 
     const int st = solver_->info->status_val;
 
-    // Accept only solved / solved inaccurate
+    // // Accept only solved / solved inaccurate
+    // if (st != OSQP_SOLVED && st != OSQP_SOLVED_INACCURATE) {
+    //     // IMPORTANT: don't touch solver_->solution->x here
+    //     // Optional debug:
+    //     Vec3 v = clampLen(v_nom, v_max);
+    //     return push_inward(positions[agent_idx], v, config, v_max, a_max, dt, v_curr);
+    // }
+
     if (st != OSQP_SOLVED && st != OSQP_SOLVED_INACCURATE) {
-        // IMPORTANT: don't touch solver_->solution->x here
-        // Optional debug:
-        Vec3 v = clampLen(v_nom, v_max);
-        return push_inward(positions[agent_idx], v, config, v_max, a_max, dt, v_curr);
+    // Don't just return v_nom — actively push away from nearest neighbor
+    Vec3 v_emergency = {0, 0, 0};
+    float closest = std::numeric_limits<float>::max();
+    for (size_t j = 0; j < positions.size(); j++) {
+        if ((int)j == agent_idx) continue;
+        Vec3 d = sub(positions[agent_idx], positions[j]);
+        float dist = len(d);
+        if (dist < closest && dist > 1e-4f) {
+            closest = dist;
+            v_emergency = mul(d, config.recovery_speed / dist);
+        }
     }
+    return clampLen(v_emergency, v_max);
+}
 
     if (!solver_->solution || !solver_->solution->x) {
         Vec3 v = clampLen(v_nom, v_max);

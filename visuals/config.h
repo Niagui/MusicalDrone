@@ -21,8 +21,8 @@ struct Bound_config
 struct CBF_config
 {
     float safety_radius = 0.3;
-    float neighbor_range = 2.0;
-    float alpha = 1.0;
+    float neighbor_range = 0.6;
+    float alpha = 0.7;
     bool verbose = true;
 };
 

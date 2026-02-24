@@ -361,8 +361,8 @@ static void UpdateFollowSlots(float dt) {
 // collision check: if collide then print smth
 static void CheckCollisions(const std::vector<Vec3>& pos, float nowSimTime)
 {
-    const float r = DRONE_RADIUS + 0.004;
-    const float touch2 = (2.0f * r) * (2.0f * r);
+    const float r = DRONE_RADIUS;
+    const float touch2 = 2*r * 2* r + 0.05;
 
     const int n = (int)pos.size();
     if (n < 2) return;
