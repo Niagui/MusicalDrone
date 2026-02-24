@@ -38,12 +38,12 @@ static std::vector<Vec3> position, velocity, acceleration;  //position, velocity
 
 
 //bound box
-static const float X_MIN = -1.2f;
-static const float X_MAX =  1.2f;
-static const float Z_MIN = -1.2f;
-static const float Z_MAX =  1.2f;
-static const float Y_MIN = 0.5f;
-static const float Y_MAX = 1.2f;
+static const float X_MIN = cfg.bound_config.x_min;
+static const float X_MAX =  cfg.bound_config.x_max;
+static const float Z_MIN = cfg.bound_config.z_min;  
+static const float Z_MAX =  cfg.bound_config.z_max;
+static const float Y_MIN = cfg.bound_config.y_min;
+static const float Y_MAX = cfg.bound_config.y_max;
 
 
 //parameter bounds
@@ -333,7 +333,7 @@ static const ParamDelta ANCHORS[7] =
     //r_sep   r_nei   k_sep   k_ali   k_coh   k_goal   vmax    amax   altitude  jitter
     { +0.60f, -2.00f, +2.00f, -1.00f, -1.50f, +1.40f, +3.0f,  +8.0f,  +1.50f,  +0.40f }, // happy (fast, cohesive, lively)
     { -0.70f, +3.00f, +3.00f, +1.00f, -0.50f, -1.00f, -2.5f,  -8.0f,  -0.80f,  -0.15f }, // sad (slow, heavy, low drive)
-    { +0.60f, -1.00f, -2.50f, -0.90f, -0.60f, -1.95f, -5.2f,  -9.0f,  -1.00f,  -0.20f }, // sleepy (very slow, minimal jitter)
+    { +0.60f, -1.00f, -2.50f, -0.90f, -0.60f, -1.95f, -3.5f,  -8.0f,  -1.00f,  -0.20f }, // sleepy (very slow, minimal jitter)
     { -0.50f, +2.00f, +2.00f, +1.40f, +0.80f, +1.50f, +4.0f,  +8.0f,  +1.20f,  -0.25f }, // brave (fast, decisive, strong goal)
     { +0.55f, -2.20f, -4.00f, -0.20f, -1.35f, -0.45f, -3.0f,  +4.0f,  +0.20f,  +0.15f }, // grumpy (aggressive spacing, low cohesion)
     { +0.80f, -2.80f, +5.00f, +0.30f, -0.55f, +0.80f, +3.5f,  +8.0f,  -0.60f,  +0.50f }, // scared (panic: fast + jitter + separation)
@@ -347,10 +347,10 @@ static inline Vec3 BoxCenter()
     return Vec3{ 0.5f*(X_MIN+X_MAX), 0.5f*(Y_MIN+Y_MAX), 0.5f*(Z_MIN+Z_MAX) };
 }
 static inline float BoxHalfX() { return 0.5f*(X_MAX-X_MIN); }
-static inline float BoxHalfZ() { return 0.5f*(Z_MAX-Z_MIN); }
+static inline float BoxHalfY() { return 0.5f*(Y_MAX-Y_MIN); } 
 static constexpr float OLD_HALF_X = 5.0f;
-static constexpr float OLD_HALF_Z = 5.0f;
-static inline float ScaleXZ() { return std::min(BoxHalfX()/OLD_HALF_X, BoxHalfZ()/OLD_HALF_Z); }
+static constexpr float OLD_HALF_Y = 5.0f;
+static inline float ScaleXY() { return std::min(BoxHalfX()/OLD_HALF_X, BoxHalfY()/OLD_HALF_Y); }
 
 
 
@@ -529,13 +529,13 @@ void InitBoids(int count){
 
     const float droneR = 0.092f;
     const float minDist = 2.5f * droneR; // 10–20% safety margin
-    const float y0 = clampf(P.altitude, Y_MIN, Y_MAX);
+    const float z0 = clampf(P.altitude, Z_MIN, Z_MAX);  // Z is vertical
 
     float totalLen = (count - 1) * minDist;
     float startX = -0.5f * totalLen;
 
     for(int i=0;i<count;i++){
-        position[i] = { startX + i * minDist, y0, 0.0f };
+        position[i] = { startX + i * minDist, 0.0f, z0 }; // line on horizontal plane, fixed altitude in Z
         velocity[i] = { 0.0f, 0.0f, 0.0f };
         acceleration[i] = { 0.0f, 0.0f, 0.0f };
     }
@@ -568,7 +568,7 @@ void UpdateBoids(float dt, const std::vector<Vec3>& targets){
     EnsureEmotionsLoaded();
     EnsureSegmentsLoaded();
     float t = sim_time;
-    const float sXZ = ScaleXZ();
+    const float sXY = ScaleXY();
 
     // set audio end time once
     if (gAudioEndTime < 0.0f) {
@@ -583,7 +583,7 @@ void UpdateBoids(float dt, const std::vector<Vec3>& targets){
                 velocity[i] = {0,0,0};
                 acceleration[i] = {0,0,0};
                 // optional: lock them to current altitude target
-                position[i].y = clampf(position[i].y, Y_MIN, Y_MAX);
+                position[i].z = clampf(position[i].z, Z_MIN, Z_MAX);
             }
 
             // optional: set params to something stable for HUD
@@ -625,18 +625,17 @@ void UpdateBoids(float dt, const std::vector<Vec3>& targets){
         last_weights = weights;
         
         
-        P = ApplyEmotionHard(weights, sXZ);
+        P = ApplyEmotionHard(weights, sXY);
     }
 
     const Vec3 c = BoxCenter();
-    auto ScaleTargetXZ = [&](Vec3 t){
+    auto ScaleTargetXY = [&](Vec3 t){
         Vec3 d = sub(t, c);
-        d.x *= sXZ;
-        d.z *= sXZ;
-        d.y = 0.0f; // keep goal horizontal; altitude handled separately
+        d.x *= sXY;
+        d.y *= sXY;
+        d.z = 0.0f; // keep goal horizontal; altitude handled separately in Z
         return add(c, d);
     };
-
 
 
 
@@ -680,19 +679,18 @@ void UpdateBoids(float dt, const std::vector<Vec3>& targets){
         }
 
         //goal seeking towards formation position
-        Vec3 ti = ScaleTargetXZ(targets[i]);
+        Vec3 ti = ScaleTargetXY(targets[i]);
 
         Vec3 fgoal = sub(ti, pi);
-        float bob = std::sin(sim_time * (0.8f + 1.2f * P.jitter) + i * 0.37f)
-            * (0.4f * P.jitter);
+        float bob = std::sin(sim_time * (0.8f + 1.2f * P.jitter) + i * 0.37f) * (0.4f * P.jitter);
 
         float desiredAlt = P.altitude * (1.0f + 0.35f * P.jitter);
-        fgoal.y += (desiredAlt + bob - pi.y);
+        fgoal.z += (desiredAlt + bob - pi.z);   // Z is vertical
 
         //jitters to break perfect symmetry
-        Vec3 fjit = { (float)(rand()/double(RAND_MAX)-0.5)*P.jitter,
-                      (float)(rand()/double(RAND_MAX)-0.5)*0.3f*P.jitter,
-                      (float)(rand()/double(RAND_MAX)-0.5)*P.jitter};
+        Vec3 fjit = {   (float)(rand()/double(RAND_MAX)-0.5)*P.jitter,
+                        (float)(rand()/double(RAND_MAX)-0.5)*P.jitter,
+                        (float)(rand()/double(RAND_MAX)-0.5)*0.3f*P.jitter }; // smaller vertical jitter on Z
 
         
         //Weighted sum of directions and jitters, all normalized

@@ -195,7 +195,7 @@ def read_csv(path):
                 float(t),
                 np.clip(float(x), -1.1, 1.1),
                 np.clip(float(y), -1.8, 1.8),
-                np.clip(float(z), 0.1, 1.2)
+                np.clip(float(z), 0.5, 1.2)
             ))
 
     for id in waypoint_map:

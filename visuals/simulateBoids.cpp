@@ -31,11 +31,11 @@ static std::vector<Vec3> SampleLine(int n)
     }
 
     float span = init_dist * (n - 1);
-    float z0   = -0.5f * span;
+    float y0   = -0.5f * span;
 
     for (int i = 0; i < n; i++) {
-        float z = z0 + i * init_dist;
-        pts.push_back({0.0f, 0.0f, z});
+        float y = y0 + i * init_dist;
+        pts.push_back({0.0f, y, 0.0f});
     }
     return pts;
 }
@@ -64,7 +64,7 @@ int main() {
 
         float phase = 0.25f * t; 
         std::vector<Vec3> slots = SampleLine(droneCount);
-        for (auto& s : slots) s.y = 0.0f;  
+        for (auto& s : slots) s.z = 0.0f;  
 
         // updates
         SetSimTime(t);
