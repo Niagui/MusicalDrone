@@ -5,6 +5,8 @@
 #include <cmath>
 #include "config.h" 
 
+Config cfg;
+
 static std::vector<Vec3> SampleCircle(int n, float radius, float phase) {
     std::vector<Vec3> pts(n);
     for (int i = 0; i < n; ++i) {
@@ -29,11 +31,11 @@ static std::vector<Vec3> SampleLine(int n)
     }
 
     float span = init_dist * (n - 1);
-    float z0   = -0.5f * span;
+    float y0   = -0.5f * span;
 
     for (int i = 0; i < n; i++) {
-        float z = z0 + i * init_dist;
-        pts.push_back({0.0f, 0.0f, z});
+        float y = y0 + i * init_dist;
+        pts.push_back({0.0f, y, 0.0f});
     }
     return pts;
 }
@@ -62,7 +64,7 @@ int main() {
 
         float phase = 0.25f * t; 
         std::vector<Vec3> slots = SampleLine(droneCount);
-        for (auto& s : slots) s.y = 0.0f;  
+        for (auto& s : slots) s.z = 0.0f;  
 
         // updates
         SetSimTime(t);
@@ -72,9 +74,13 @@ int main() {
         if (t + 0.5f * simDt >= nextDump) {
             const BoidParams& P          = GetBoidParams();
             const std::vector<Vec3>& pos = GetBoidPositions();
+            const std::vector<Vec3>& vel = GetBoidVelocities();
+            const std::vector<Vec3>& acc = GetBoidAcclerations();
 
             for (int i = 0; i < droneCount; ++i) {
                 const Vec3& p = pos[i];
+                const Vec3& v = vel[i];
+                const Vec3& a = acc[i];
                 // std::printf(
                 //     "%.3f,%d,%.4f,%.4f,%.4f,"
                 //     "%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,"
@@ -85,8 +91,9 @@ int main() {
                 // );
 
                 std::printf(
-                    "%d,%.3f,%.4f,%.4f,%.4f\n",
-                    i, nextDump, p.x, p.y, p.z  //include yaw as 0 and normalize time
+                    "%d,%.3f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f\n",
+                    i, nextDump, p.x, p.y, p.z,
+                    v.x, v.y, v.z, a.x, a.y, a.z  //include yaw as 0 and normalize time
                 );
             }
             nextDump += outputDt;

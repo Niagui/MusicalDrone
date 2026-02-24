@@ -10,19 +10,48 @@ from cflib.crazyflie.syncCrazyflie import SyncCrazyflie
 from cflib.crazyflie.swarm import CachedCfFactory, Swarm
 from cflib.positioning.position_hl_commander import PositionHlCommander
 
+from cflib.crazyflie.log import LogConfig
 import pygame
 
 PATH = "trajectories.csv"
 AUDIO_PATH = "audio/testSong.mp3"
 TAKEOFF_HEIGHT = 1.0
 DEFAULT_VELOCITY = 0.5
-
-uris = [
+URIS = [
     'radio://0/80/2M/E7E7E7E701',
 ]
+NUM_DRONE = len(URIS)
 
 commanders = {}
 audio_started = threading.Event()  # Synchronization flag
+
+
+## keep track of current velocity for cbf solving 
+state_estimate = []
+
+def log_callback(uri, data):
+    uri_idx = URIS.index(uri)
+    state_estimate[uri_idx][0] = data['stateEstimate.x']
+    state_estimate[uri_idx][1] = data['stateEstimate.y']
+    state_estimate[uri_idx][2] = data['stateEstimate.z']
+    state_estimate[uri_idx][3] = data['stateEstimate.vx']
+    state_estimate[uri_idx][4] = data['stateEstimate.vy']
+    state_estimate[uri_idx][5] = data['stateEstimate.vz']
+
+
+def setup_logging(scf):
+    uri = scf.cf.link_uri
+    logconf = LogConfig(name='state', period_in_ms=10)
+    logconf.add_variable('stateEstimate.x', 'FP16')
+    logconf.add_variable('stateEstimate.y', 'FP16')
+    logconf.add_variable('stateEstimate.z', 'FP16')
+    logconf.add_variable('stateEstimate.vx', 'FP16')
+    logconf.add_variable('stateEstimate.vy', 'FP16')
+    logconf.add_variable('stateEstimate.vz', 'FP16')
+    
+    scf.cf.log.add_config(logconf)
+    logconf.data_received_cb.add_callback(lambda t, d, l: log_callback(uri, d))
+    logconf.start()
 
 
 def play_audio(audio_file):
@@ -46,40 +75,54 @@ def play_audio(audio_file):
         print(f'[AUDIO] Error: {e}')
 
 
+
+
 def read_csv(path):
     """Read waypoints from CSV file with format: id, t, x, y, z"""
-    waypoint_map = defaultdict(list)
+    states = defaultdict(list)
 
     with open(path) as f:
         reader = csv.reader(f)
         for row in reader:
             if not row:
                 continue
-            id, t, x, y, z = row
-            waypoint_map[int(id)].append((
-                float(t),
-                np.clip(float(x), -1.1, 1.1),
-                np.clip(float(y), -1.8, 1.8),
-                np.clip(float(z), 0.1, 1.2)
+            id, t, x, y, z, vx, vy, vz, ax, ay, az = row
+            x = np.clip(float(x), -1.1, 1.1)
+            y = np.clip(float(y), -1.8, 1.8)
+            z = np.clip(float(z), 0.1, 1.2)
+
+            states[int(id)].append((
+                float(t), 
+                x, y, z, float(vx), float(vy), float(vz)
             ))
 
-    for id in waypoint_map:
-        waypoint_map[id].sort(key=lambda p: p[0])
+    for id in states:
+        states[id].sort(key=lambda p: p[0])
 
-    print(f"Loaded waypoints for drone IDs: {list(waypoint_map.keys())}")
-    for id in waypoint_map:
-        print(f"  Drone {id}: {len(waypoint_map[id])} waypoints")
+    print(f"Loaded waypoints for drone IDs: {list(states.keys())}")
+    for id in states:
+        print(f"  Drone {id}: {len(states[id])} waypoints")
 
-    return waypoint_map
+    return states
 
-
+    
 def init_data(path):
-    waypoints = read_csv(path)
-    seq = {}
+    global state_estimate
+    states = read_csv(path)
+    state_estimate = []     #reset state estimate
 
-    for i, uri in enumerate(sorted(uris)):
-        if i in waypoints:
-            seq[uri] = [waypoints[i][:50]]
+    # init states
+    for i in range(NUM_DRONE):
+        t, x, y, z, vx, vy, vz = states[i][0]
+        state_estimate.append([x, y, z, 0, 0, 0])
+
+    # TODO build reference traj
+
+    seq = {}
+    for i, uri in enumerate(sorted(URIS)):
+        if i in states:
+            waypoints = [(t, x, y, z) for (t, x, y, z, vx, vy, vz) in states[i][:50]]
+            seq[uri] = [waypoints]
             print(f"Assigned {len(seq[uri][0])} waypoints to {uri} (drone ID {i})")
         else:
             print(f"WARNING: No waypoints found for drone ID {i} (URI: {uri})")
@@ -114,7 +157,7 @@ def fly_sequence(scf: SyncCrazyflie, sequence):
     print(f'[{uri}] Airborne')
 
     # Signal audio to start (only first drone triggers it)
-    if uri == sorted(uris)[0]:
+    if uri == sorted(URIS)[0]:
         print(f'[{uri}] Triggering audio playback')
         audio_started.set()
 
@@ -127,6 +170,7 @@ def fly_sequence(scf: SyncCrazyflie, sequence):
             if idx % 10 == 0:
                 print(f'[{uri}] Waypoint {idx}/{len(sequence)} → ({x:.2f}, {y:.2f}, {z:.2f})')
             commander.go_to(x, y, z, velocity=DEFAULT_VELOCITY)
+            time.sleep(0.2)                 # move every 0.2 seconds
         print(f'[{uri}] Sequence complete')
 
     print(f'[{uri}] Landing...')
@@ -158,7 +202,7 @@ if __name__ == '__main__':
     audio_thread = threading.Thread(target=play_audio, args=(AUDIO_PATH,), daemon=True)
     audio_thread.start()
     
-    with Swarm(uris, factory=factory) as swarm:
+    with Swarm(URIS, factory=factory) as swarm:
         try:
             print('Resetting estimators...')
             swarm.reset_estimators()

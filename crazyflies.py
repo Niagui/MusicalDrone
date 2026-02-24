@@ -12,6 +12,7 @@ from cflib.crazyflie.swarm import Swarm
 
 from cflib.positioning.position_hl_commander import PositionHlCommander
 from cflib.utils import uri_helper
+from cflib.crazyflie.log import LogConfig
 
 PATH = "trajectories.csv"
 
@@ -31,7 +32,7 @@ def read_csv(path):
         for row in reader:
             if not row:
                 continue
-            id, t, x, y, z = row
+            id, t, x, y, z, vx, vy, vz, ax, ay, az = row
             waypoint_map[int(id)].append((float(t), 
                                           np.clip(float(x), -1.1, 1.1),
                                           np.clip(float(y), -1.8, 1.8),

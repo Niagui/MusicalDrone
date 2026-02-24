@@ -290,12 +290,12 @@ def read_csv(path):
         for row in reader:
             if not row:
                 continue
-            id_, t, x, y, z = row
-            waypoint_map[int(id_)].append((
+            id, t, x, y, z, vx, vy, vz, ax, ay, az = row
+            waypoint_map[int(id)].append((
                 float(t),
                 np.clip(float(x), -1.1, 1.1),
                 np.clip(float(y), -1.8, 1.8),
-                np.clip(float(z), 0.1,  1.2),
+                np.clip(float(z), 0.1, 1.2)
             ))
 
     for id_ in waypoint_map:
@@ -411,6 +411,9 @@ def fly_sequence(scf: SyncCrazyflie, sequence):
     print(f'[{uri}] Landing...')
     commander.land(velocity=DEFAULT_VELOCITY)
     print(f'[{uri}] Landed')
+    pygame.mixer.music.fadeout(20)
+    pygame.mixer.music.stop()
+
 
 
 def emergency_land(scf: SyncCrazyflie):
@@ -476,7 +479,7 @@ if __name__ == '__main__':
             print('Flying sequences...')
             swarm.parallel_safe(fly_sequence, args_dict=seq_args)
 
-            audio_thread.join(timeout=300)
+            audio_thread.join(timeout=250)
 
         except (KeyboardInterrupt, Exception) as e:
             if isinstance(e, KeyboardInterrupt):

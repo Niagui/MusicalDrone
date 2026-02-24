@@ -207,7 +207,7 @@ static std::vector<Vec3> SampleCircle(int n, float radius, float phase) {
     std::vector<Vec3> pts(n);
     for(int i=0;i<n;i++){
         float a = (i/(float)n)*2.0f*M_PI + phase;
-        pts[i] = { radius*std::cos(a), 0.0f, radius*std::sin(a) };
+        pts[i] = { radius*std::cos(a), radius*std::sin(a), 0.0f};
     }
     return pts;
 }
@@ -228,35 +228,35 @@ static std::vector<Vec3> SampleLine(int n)
     }
 
     float span = init_dist * (n - 1);
-    float z0   = -0.5f * span;
+    float y0   = -0.5f * span;
 
     for (int i = 0; i < n; i++) {
-        float z = z0 + i * init_dist;
-        pts.push_back({0.0f, 0.0f, z});
+        float y = y0 + i * init_dist;
+        pts.push_back({0.0f, y, 0.0f});
     }
     return pts;
 }
 
-// returns N points of wave across X, amp set on Z
+// returns N points of wave across X, amp set on Y
 static std::vector<Vec3> SampleWave(int n, float width, float amp, float phase){
     std::vector<Vec3> pts(n);
     for(int i=0;i<n;i++){
         float u = (i/(float)(n-1));
         float x = (u - 0.5f) * width;
-        float z = std::sin(u*2.0f*M_PI + phase) * amp;
-        pts[i] = { x, 0.0f, z };
+        float y = std::sin(u*2.0f*M_PI + phase) * amp;
+        pts[i] = { x, y, 0.0f };
     }
     return pts;
 }
 
-// returns N points on heart curve on XZ
+// returns N points on heart curve on XY
 static std::vector<Vec3> SampleHeart(int n, float scale, float phase){
     std::vector<Vec3> pts(n);
     for(int i=0;i<n;i++){
         float t = (i/(float)n)*2.0f*M_PI + phase;
         float x = 16*std::pow(std::sin(t),3);
         float y = 13*std::cos(t) - 5*std::cos(2*t) - 2*std::cos(3*t) - std::cos(4*t);
-        pts[i] = { (x/16.0f)*scale, 0.0f, (y/13.0f)*scale };
+        pts[i] = { (x/16.0f)*scale, (y/13.0f)*scale, 0.0f };
     }
     return pts;
 }
@@ -273,28 +273,28 @@ static void DrawBoundsBox()
     glDisable(GL_LIGHTING);
     glColor3f(0.9f, 0.3f, 0.3f); // reddish box
 
-    // --- bottom rectangle (at y0) ---
+    // --- bottom rectangle (z = z0) ---
     glBegin(GL_LINE_LOOP);
         glVertex3f(x0, y0, z0);
         glVertex3f(x1, y0, z0);
-        glVertex3f(x1, y0, z1);
-        glVertex3f(x0, y0, z1);
+        glVertex3f(x1, y1, z0);
+        glVertex3f(x0, y1, z0);
     glEnd();
 
-    // --- top rectangle (at y1) ---
+    // --- top rectangle (z = z1) ---
     glBegin(GL_LINE_LOOP);
-        glVertex3f(x0, y1, z0);
-        glVertex3f(x1, y1, z0);
+        glVertex3f(x0, y0, z1);
+        glVertex3f(x1, y0, z1);
         glVertex3f(x1, y1, z1);
         glVertex3f(x0, y1, z1);
     glEnd();
 
-    // --- vertical edges ---
+    // --- vertical edges (vary z, keep x/y fixed) ---
     glBegin(GL_LINES);
-        glVertex3f(x0, y0, z0); glVertex3f(x0, y1, z0);
-        glVertex3f(x1, y0, z0); glVertex3f(x1, y1, z0);
-        glVertex3f(x1, y0, z1); glVertex3f(x1, y1, z1);
-        glVertex3f(x0, y0, z1); glVertex3f(x0, y1, z1);
+        glVertex3f(x0, y0, z0); glVertex3f(x0, y0, z1);
+        glVertex3f(x1, y0, z0); glVertex3f(x1, y0, z1);
+        glVertex3f(x1, y1, z0); glVertex3f(x1, y1, z1);
+        glVertex3f(x0, y1, z0); glVertex3f(x0, y1, z1);
     glEnd();
 
     glEnable(GL_LIGHTING);
@@ -315,7 +315,7 @@ static void ResizeArrays(){
     // Place initial positions on a small disc around origin at altitude
     auto init = SampleLine(gDroneCount);
     for(int i=0;i<gDroneCount;i++){
-        gPos[i] = { init[i].x, gAltitude, init[i].z };
+        gPos[i] = { init[i].x, init[i].y, gAltitude };
     }
 }
 
@@ -327,7 +327,7 @@ static void UpdateFollowSlots(float dt) {
     int stride = std::max(1, gDroneCount/250);
 
     for (int i=0; i<gDroneCount; i++) {
-        Vec3 target = { gSlots[i].x, gAltitude, gSlots[i].z };
+        Vec3 target = { gSlots[i].x, gSlots[i].y, gAltitude};
         Vec3 p = gPos[i];
 
         //move toward target (clamped)
@@ -418,7 +418,7 @@ static void ApplyCamera(){
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt(ex,ey,ez,  0,1.5,0,  0,1,0);
+    gluLookAt(ex,ey,ez,  0,0,1.5,  0,0,1);
 }
 
 // Draw a drone (cone)
@@ -487,8 +487,8 @@ static void Display(){
     glColor3f(0.20f,0.20f,0.23f);
     glBegin(GL_LINES);
     for(int i=-10;i<=10;i++){
-        glVertex3f((float)i, 0.0f, -10.0f); glVertex3f((float)i, 0.0f, 10.0f);
-        glVertex3f(-10.0f, 0.0f, (float)i); glVertex3f(10.0f, 0.0f, (float)i);
+        glVertex3f((float)i, -10.0f, 0.0f); glVertex3f((float)i,  10.0f, 0.0f);
+        glVertex3f(-10.0f, (float)i, 0.0f); glVertex3f( 10.0f, (float)i, 0.0f); 
     }
     glEnd();
     glEnable(GL_LIGHTING);
@@ -504,7 +504,7 @@ static void Display(){
         const Vec3 &p = positions[i];
         glPushMatrix();
             glTranslatef(p.x, p.y, p.z);
-            glRotatef(-90.0f, 1,0,0); // drone cone points up
+            // glRotatef(-90.0f, 1,0,0); // drone cone points up
             float u = i/(float)gDroneCount;
             glColor3f(0.7f, 0.85f*u, 1.0f - 0.6f*u);
             DrawDrone();
@@ -775,7 +775,7 @@ static void Motion(int x, int y){
 }
 
 int main(int argc, char** argv){
-    int gDroneCount = cfg.drone_config.num_drones;
+    gDroneCount = cfg.drone_config.num_drones;
     // StartAudio();
     // std::this_thread::sleep_for(std::chrono::duration<float>(0.2));
     glutInit(&argc, argv);
