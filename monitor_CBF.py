@@ -141,12 +141,14 @@ class CBFSafetyFilter:
         is dimensionally correct.
     """
 
-    def __init__(self, uris: list[str], d_safe: float = 0.5,
-                 gamma: float = 1.0, dt: float = 0.5):
-        self.d_safe = d_safe
-        self.gamma  = gamma
-        self.dt     = dt
-        self.uris   = list(uris)
+    def __init__(self, uris: list[str], d_safe: float = 0.4,
+                 gamma: float = 2.0, dt: float = 0.5,
+                 z_floor: float = 0.3):
+        self.d_safe  = d_safe
+        self.gamma   = gamma
+        self.dt      = dt
+        self.z_floor = z_floor   # metres — safe position output never goes below this
+        self.uris    = list(uris)
 
         self._lock = threading.Lock()
 
@@ -222,6 +224,17 @@ class CBFSafetyFilter:
 
             self._velocities[uri] = v_safe.copy()
             p_safe = p_i + v_safe * self.dt
+
+            # ---- Floor clamp -------------------------------------------------
+            # The 3-D repulsion vector can push z downward when another drone
+            # is above this one.  Enforce a hard minimum altitude so the drone
+            # is never commanded into the ground.
+            if p_safe[2] < self.z_floor:
+                print(f'[CBF] {uri} z-floor clamp: {p_safe[2]:.3f}m → {self.z_floor}m')
+                p_safe[2] = self.z_floor
+                # Back-propagate so stored velocity stays consistent.
+                self._velocities[uri][2] = (self.z_floor - p_i[2]) / self.dt
+            # ------------------------------------------------------------------
 
             # Compute timings inside the lock so both values are always
             # defined together before record_cbf is called.
@@ -489,8 +502,8 @@ if __name__ == '__main__':
     monitor = CBFMonitor(window=100)
     print('[MONITOR] Initialised')
 
-    cbf_filter = CBFSafetyFilter(uris, d_safe=0.5, gamma=1.0, dt=0.5)
-    print(f'[CBF] Initialised | d_safe={cbf_filter.d_safe}m  γ={cbf_filter.gamma}')
+    cbf_filter = CBFSafetyFilter(uris, d_safe=0.5, gamma=2.0, dt=0.5, z_floor=0.3)
+    print(f'[CBF] Initialised | d_safe={cbf_filter.d_safe}m  γ={cbf_filter.gamma}  z_floor={cbf_filter.z_floor}m')
 
     audio_thread = threading.Thread(
         target=play_audio, args=(AUDIO_PATH,), daemon=True
