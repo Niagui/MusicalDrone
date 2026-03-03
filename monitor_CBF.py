@@ -32,6 +32,11 @@ audio_started = threading.Event()
 
 stop_event = threading.Event()
 
+# Barrier used so every drone enters its waypoint loop at the same instant.
+# Reset in __main__ once the number of drones is known.
+_takeoff_barrier: threading.Barrier | None = None
+_sequence_start_time: float = 0.0  # perf_counter timestamp at barrier release
+
 
 # ---------------------------------------------------------------------------
 # CBF Performance Monitor
@@ -401,8 +406,25 @@ def fly_sequence(scf: SyncCrazyflie, sequence):
     if cbf_filter is not None and uri not in loggers:
         cbf_filter.update_position(uri, np.array([0.0, 0.0, TAKEOFF_HEIGHT]))
 
-    print(f'[{uri}] Airborne')
+    print(f'[{uri}] Airborne — waiting at barrier')
 
+    # ------------------------------------------------------------------
+    # Synchronisation barrier: every drone waits here until ALL drones
+    # are airborne, then they all start counting time from the same t=0.
+    # The first thread through records the shared start time.
+    # ------------------------------------------------------------------
+    global _sequence_start_time
+    if _takeoff_barrier is not None:
+        try:
+            idx_at_barrier = _takeoff_barrier.wait(timeout=15.0)
+            if idx_at_barrier == 0:                   # first thread through
+                _sequence_start_time = time.perf_counter()
+        except threading.BrokenBarrierError:
+            print(f'[{uri}] Barrier broken — aborting')
+            return
+
+    # Only the first (alphabetically) drone triggers audio so that it
+    # starts in sync with the sequence.
     if uri == sorted(uris)[0]:
         print(f'[{uri}] Triggering audio playback')
         audio_started.set()
@@ -417,6 +439,20 @@ def fly_sequence(scf: SyncCrazyflie, sequence):
             if stop_event.is_set():
                 print(f'[{uri}] Stop event — aborting sequence at wp {idx}')
                 break
+
+            # ---- Wait until this waypoint's scheduled time ----------------
+            # target_time is in seconds relative to sequence start (t=0).
+            # Sleep until that wall-clock moment so all drones stay in step.
+            now = time.perf_counter()
+            scheduled_at = _sequence_start_time + target_time
+            sleep_s = scheduled_at - now
+            if sleep_s > 0:
+                if stop_event.wait(timeout=sleep_s):   # wakes early on stop
+                    print(f'[{uri}] Stop event during wait — aborting at wp {idx}')
+                    break
+            elif sleep_s < -0.1:
+                print(f'[{uri}] wp {idx} late by {-sleep_s*1000:.1f} ms')
+            # ---------------------------------------------------------------
 
             # ---- CBF safety filter ----------------------------------------
             if cbf_filter is not None:
@@ -504,6 +540,9 @@ if __name__ == '__main__':
 
     cbf_filter = CBFSafetyFilter(uris, d_safe=0.5, gamma=2.0, dt=0.5, z_floor=0.3)
     print(f'[CBF] Initialised | d_safe={cbf_filter.d_safe}m  γ={cbf_filter.gamma}  z_floor={cbf_filter.z_floor}m')
+
+    _takeoff_barrier = threading.Barrier(len(uris))
+    print(f'[SYNC] Takeoff barrier initialised for {len(uris)} drones')
 
     audio_thread = threading.Thread(
         target=play_audio, args=(AUDIO_PATH,), daemon=True
