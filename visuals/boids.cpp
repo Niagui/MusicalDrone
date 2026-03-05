@@ -458,7 +458,9 @@ BoidParams ApplyEmotionHard(const std::vector<float>& w, float scale = 1)
     target.altitude = clampf(target.altitude, 0.50f* scale, 5.0f* scale);
     target.jitter   = clampf(target.jitter,   0.00f,  1.0f);
 
-    target.r_nei    = std::max(target.r_nei, target.r_sep + 0.05f* scale);
+    // Keep boid separation behavior consistent with CBF safety.
+    target.r_sep = std::max(target.r_sep, cfg.cbf_config.safety_radius * 1.10f);
+    target.r_nei = std::max(target.r_nei, target.r_sep + 0.05f);
 
     return target;
 }
@@ -528,7 +530,8 @@ void InitBoids(int count){
     cbf_manager.Init(count);
 
     const float droneR = 0.092f;
-    const float minDist = 2.5f * droneR; // 10–20% safety margin
+    const float cbfSafeDist = cfg.cbf_config.safety_radius * 1.05f;
+    const float minDist = std::max(2.5f * droneR, cbfSafeDist);
     const float z0 = clampf(P.altitude, Z_MIN, Z_MAX);  // Z is vertical
 
     float totalLen = (count - 1) * minDist;
@@ -629,10 +632,11 @@ void UpdateBoids(float dt, const std::vector<Vec3>& targets){
     }
 
     const Vec3 c = BoxCenter();
+    const float targetXYScale = std::max(sXY, 1.0f);
     auto ScaleTargetXY = [&](Vec3 t){
         Vec3 d = sub(t, c);
-        d.x *= sXY;
-        d.y *= sXY;
+        d.x *= targetXYScale;
+        d.y *= targetXYScale;
         d.z = 0.0f; // keep goal horizontal; altitude handled separately in Z
         return add(c, d);
     };

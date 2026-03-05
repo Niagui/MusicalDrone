@@ -7,6 +7,11 @@
 
 
 // Math
+static constexpr int kVelVars = 3;
+static constexpr int kDecisionVars = 4;  // [vx, vy, vz, slack]
+static constexpr int kSlackCol = 3;
+static constexpr float kOverlapEps = 1e-4f;
+
 static inline Vec3 sub(Vec3 a, Vec3 b) { return {a.x-b.x, a.y-b.y, a.z-b.z}; }
 static inline Vec3 mul(Vec3 a, float s) { return {a.x*s, a.y*s, a.z*s}; }
 static inline float dot(Vec3 a, Vec3 b) { return a.x*b.x + a.y*b.y + a.z*b.z; }
@@ -17,6 +22,13 @@ static inline float clamp(float x, float lo, float hi) {
 static inline Vec3 clampLen(Vec3 v, float maxLen) {
     float L = len(v);
     return (L > maxLen) ? mul(v, maxLen/L) : v;
+}
+static inline Vec3 deterministic_xy_away(int agent_idx, int other_idx) {
+    unsigned int h =
+        (unsigned int)(agent_idx * 73856093u) ^
+        (unsigned int)(other_idx * 19349663u);
+    float angle = (float)(h % 1024u) * (6.28318530718f / 1024.0f);
+    return {std::cos(angle), std::sin(angle), 0.0f};
 }
 
 static inline float push_in_1d(float p, float v,
@@ -70,7 +82,7 @@ static inline Vec3 push_inward(Vec3 p, Vec3 v,
 // ============================================================================
 
 CBFSolver::CBFSolver() {
-    q_.resize(3, 0.0);
+    q_.resize(kDecisionVars, 0.0);
 }
 
 CBFSolver::~CBFSolver() {
@@ -92,6 +104,9 @@ void CBFSolver::Cleanup() {
 void CBFSolver::Reset() {
     Cleanup();
     last_n_constraints_ = 0;
+    last_A_nnz_ = 0;
+    last_A_p_csc_.clear();
+    last_A_i_csc_.clear();
 }
 
 int CBFSolver::BuildConstraints(
@@ -133,9 +148,11 @@ int CBFSolver::BuildConstraints(
         A_data_.push_back(grad.x);
         A_data_.push_back(grad.y);
         A_data_.push_back(grad.z);
-        A_indices_.push_back(row * 3 + 0);
-        A_indices_.push_back(row * 3 + 1);
-        A_indices_.push_back(row * 3 + 2);
+        A_data_.push_back(1.0f);  // Relaxation slack.
+        A_indices_.push_back(row * kDecisionVars + 0);
+        A_indices_.push_back(row * kDecisionVars + 1);
+        A_indices_.push_back(row * kDecisionVars + 2);
+        A_indices_.push_back(row * kDecisionVars + kSlackCol);
         
         // j moving away relaxes constraint — don't let it tighten it
         float j_contrib = std::min(2.0f * dot(d, vel[j]), 0.0f);
@@ -168,6 +185,9 @@ int CBFSolver::BuildConstraints(
         // Use an XY-specific neighbor gate so stacked drones get caught
         const float neigh2_xy = cfg.neighbor_range * cfg.neighbor_range;
         if (dist2_xy < neigh2_xy) {
+            if (dist2_xy <= kOverlapEps * kOverlapEps) {
+                continue;
+            }
 
             float h_xy = dist2_xy - r_xy * r_xy;
 
@@ -182,15 +202,17 @@ int CBFSolver::BuildConstraints(
                 // grad wrt v_i is [2dx, 2dy, 0] (don't store z since it's 0)
                 A_data_.push_back(2.0f * dx);
                 A_data_.push_back(2.0f * dy);
-                A_indices_.push_back(row * 3 + 0);
-                A_indices_.push_back(row * 3 + 1);
+                A_data_.push_back(1.0f);  // Relaxation slack.
+                A_indices_.push_back(row * kDecisionVars + 0);
+                A_indices_.push_back(row * kDecisionVars + 1);
+                A_indices_.push_back(row * kDecisionVars + kSlackCol);
 
                 // j_contrib in XY only
                 float j_contrib_xy = std::min(2.0f * (dx*vel[j].x + dy*vel[j].y), 0.0f);
                 float rhs_xy = -cfg.alpha * h_xy + j_contrib_xy;
 
                 // Clamp feasibility like your 3D version
-                float gradn_xy = 2.0f * std::sqrt(std::max(dist2_xy, 1e-8f));
+                float gradn_xy = 2.0f * std::sqrt(dist2_xy);
                 float max_xy = gradn_xy * v_max;
                 rhs_xy = std::min(rhs_xy, max_xy * 0.95f);
 
@@ -207,29 +229,29 @@ int CBFSolver::BuildConstraints(
     }
     
     // Velocity limits
-    for (int col = 0; col < 3; col++) {
+    for (int col = 0; col < kVelVars; col++) {
         A_data_.push_back(1.0f);
-        A_indices_.push_back(row * 3 + col);
+        A_indices_.push_back(row * kDecisionVars + col);
         l_.push_back(-v_max);
         u_.push_back(v_max);
         row++;
     }
     
     // Acceleration limits
-    float v_arr[3] = {v_curr.x, v_curr.y, v_curr.z};
-    for (int col = 0; col < 3; col++) {
+    float v_arr[kVelVars] = {v_curr.x, v_curr.y, v_curr.z};
+    for (int col = 0; col < kVelVars; col++) {
         A_data_.push_back(1.0f);
-        A_indices_.push_back(row * 3 + col);
+        A_indices_.push_back(row * kDecisionVars + col);
         l_.push_back(v_arr[col] - a_lim);
         u_.push_back(v_arr[col] + a_lim);
         row++;
     }
 
-    const float px[3] = {p.x, p.y, p.z};
-    const float min_b[3] = {cfg.x_min, cfg.y_min, cfg.z_min};
-    const float max_b[3] = {cfg.x_max, cfg.y_max, cfg.z_max};
+    const float px[kVelVars] = {p.x, p.y, p.z};
+    const float min_b[kVelVars] = {cfg.x_min, cfg.y_min, cfg.z_min};
+    const float max_b[kVelVars] = {cfg.x_max, cfg.y_max, cfg.z_max};
 
-    for (int col = 0; col < 3; col++) {
+    for (int col = 0; col < kVelVars; col++) {
         float alpha_wall = (col == 2) ? cfg.alpha * 3.0f : cfg.alpha;
 
         // Clamp wall constraints the same way — they can also conflict with accel limits
@@ -241,17 +263,28 @@ int CBFSolver::BuildConstraints(
         rhs_hi = std::min(rhs_hi, -v_arr[col] + a_lim);  // upper wall uses -v
 
         A_data_.push_back(1.0f);
-        A_indices_.push_back(row * 3 + col);
+        A_data_.push_back(1.0f);  // Relaxation slack.
+        A_indices_.push_back(row * kDecisionVars + col);
+        A_indices_.push_back(row * kDecisionVars + kSlackCol);
         l_.push_back(rhs_lo);
         u_.push_back(OSQP_INFTY);
         row++;
 
         A_data_.push_back(-1.0f);
-        A_indices_.push_back(row * 3 + col);
+        A_data_.push_back(1.0f);  // Relaxation slack.
+        A_indices_.push_back(row * kDecisionVars + col);
+        A_indices_.push_back(row * kDecisionVars + kSlackCol);
         l_.push_back(rhs_hi);
         u_.push_back(OSQP_INFTY);
         row++;
     }
+
+    // Keep slack bounded so violations remain limited.
+    A_data_.push_back(1.0f);
+    A_indices_.push_back(row * kDecisionVars + kSlackCol);
+    l_.push_back(0.0f);
+    u_.push_back(cfg.slack_max);
+    row++;
     
     return row;
 }
@@ -259,15 +292,15 @@ int CBFSolver::BuildConstraints(
 void CBFSolver::InitSolver(int n_constraints) {
     Cleanup();
     
-    if (n_constraints == 0 || A_data_.empty()) {
+    if (n_constraints == 0 || A_data_.empty() || A_x_csc_.empty()) {
         std::cerr << "[CBF] No constraints to solve\n";
         return;
     }
     
-    // P matrix (constant diagonal for quadratic cost)
-    OSQPFloat P_x[3] = {2.0, 2.0, 2.0};
-    OSQPInt P_i[3] = {0, 1, 2};
-    OSQPInt P_p[4] = {0, 1, 2, 3};
+    // P matrix (diagonal quadratic cost for velocity + slack penalty).
+    OSQPFloat P_x[4] = {2.0, 2.0, 2.0, 2.0 * config_.slack_weight};
+    OSQPInt P_i[4] = {0, 1, 2, 3};
+    OSQPInt P_p[5] = {0, 1, 2, 3, 4};
     
     /*
     P= [2, 0, 0
@@ -276,54 +309,18 @@ void CBFSolver::InitSolver(int n_constraints) {
     */
 
     OSQPCscMatrix P_matrix;
-    P_matrix.m = 3;
-    P_matrix.n = 3;
-    P_matrix.nzmax = 3;
+    P_matrix.m = kDecisionVars;
+    P_matrix.n = kDecisionVars;
+    P_matrix.nzmax = kDecisionVars;
     P_matrix.nz = -1;
     P_matrix.p = P_p;
     P_matrix.i = P_i;
     P_matrix.x = P_x;
     
-    // Convert to column-sparse format
-    std::vector<OSQPInt> col_counts(3, 0);
-    for (size_t k = 0; k < A_indices_.size(); k++) {
-        int col = A_indices_[k] % 3;
-        col_counts[col]++;
-    }
-    
-    std::vector<OSQPInt> A_p(4);
-    A_p[0] = 0;
-    for (int i = 0; i < 3; i++) {
-        A_p[i+1] = A_p[i] + col_counts[i];
-    }
-    
-    std::vector<OSQPInt> A_p_csc_;
-    std::vector<OSQPInt> A_i_csc_;
-    std::vector<OSQPFloat> A_x_csc_;
-
-    
-    A_p_csc_.assign(4, 0);
-    A_x_csc_.assign(A_data_.size(), 0);
-    A_i_csc_.assign(A_indices_.size(), 0);
-
-    // build A_p_csc_ from col_counts...
-    A_p_csc_[0] = 0;
-    for (int c = 0; c < 3; c++) A_p_csc_[c+1] = A_p_csc_[c] + col_counts[c];
-
-    std::vector<OSQPInt> positions(3, 0);
-    for (size_t k = 0; k < A_indices_.size(); k++) {
-        int idx = A_indices_[k];
-        int row = idx / 3;
-        int col = idx % 3;
-        int pos = A_p_csc_[col] + positions[col]++;
-        A_x_csc_[pos] = A_data_[k];
-        A_i_csc_[pos] = row;
-    }
-    
     OSQPCscMatrix A_matrix;
     A_matrix.m = n_constraints;
-    A_matrix.n = 3;
-    A_matrix.nzmax = A_data_.size();
+    A_matrix.n = kDecisionVars;
+    A_matrix.nzmax = (OSQPInt)A_x_csc_.size();
     A_matrix.nz = -1;
     A_matrix.p = A_p_csc_.data();
     A_matrix.i = A_i_csc_.data();
@@ -342,7 +339,7 @@ void CBFSolver::InitSolver(int n_constraints) {
     // Setup
     OSQPInt exitflag = osqp_setup(&solver_, &P_matrix, q_.data(), &A_matrix,
                                   l_.data(), u_.data(),
-                                  n_constraints, 3, settings_);
+                                  n_constraints, kDecisionVars, settings_);
     
     if (exitflag != 0) {
         std::cerr << "[CBF] Setup failed: " << exitflag << "\n";
@@ -352,25 +349,30 @@ void CBFSolver::InitSolver(int n_constraints) {
     
     initialized_ = true;
     last_n_constraints_ = n_constraints;
+    last_A_nnz_ = A_x_csc_.size();
+    last_A_p_csc_ = A_p_csc_;
+    last_A_i_csc_ = A_i_csc_;
 }
 
 void CBFSolver::BuildCSC(int n_constraints) {
-    std::vector<OSQPInt> col_counts(3, 0);
+    std::vector<OSQPInt> col_counts(kDecisionVars, 0);
     for (size_t k = 0; k < A_indices_.size(); k++) {
-        col_counts[A_indices_[k] % 3]++;
+        col_counts[A_indices_[k] % kDecisionVars]++;
     }
 
-    A_p_csc_.resize(4);
+    A_p_csc_.resize(kDecisionVars + 1);
     A_p_csc_[0] = 0;
-    for (int c = 0; c < 3; c++) A_p_csc_[c+1] = A_p_csc_[c] + col_counts[c];
+    for (int c = 0; c < kDecisionVars; c++) {
+        A_p_csc_[c+1] = A_p_csc_[c] + col_counts[c];
+    }
 
     A_x_csc_.assign(A_data_.size(), 0.0);
     A_i_csc_.assign(A_data_.size(), 0);
 
-    std::vector<OSQPInt> positions(3, 0);
+    std::vector<OSQPInt> positions(kDecisionVars, 0);
     for (size_t k = 0; k < A_indices_.size(); k++) {
-        int row = A_indices_[k] / 3;
-        int col = A_indices_[k] % 3;
+        int row = A_indices_[k] / kDecisionVars;
+        int col = A_indices_[k] % kDecisionVars;
         int pos = A_p_csc_[col] + positions[col]++;
         A_x_csc_[pos] = A_data_[k];
         A_i_csc_[pos] = row;
@@ -395,7 +397,7 @@ Vec3 CBFSolver::Solve(
 
     BuildCSC(n_con);
     
-    int n_cbf = n_con - 3 - 3 - 6;  // Subtract vel + accel constraints
+    int n_cbf = n_con - kVelVars - kVelVars - 2 * kVelVars - 1;  // vel + accel + wall + slack-box
     
     // Early exit
     if (n_cbf <= 0) {
@@ -408,9 +410,14 @@ Vec3 CBFSolver::Solve(
     q_[0] = -2.0 * v_nom.x;
     q_[1] = -2.0 * v_nom.y;
     q_[2] = -2.0 * v_nom.z;
+    q_[3] = 0.0;
     
     // Reinit if needed
-    if (!initialized_ || n_con != last_n_constraints_) {
+    bool structure_changed = (A_x_csc_.size() != last_A_nnz_) ||
+                             (A_p_csc_ != last_A_p_csc_) ||
+                             (A_i_csc_ != last_A_i_csc_);
+
+    if (!initialized_ || n_con != last_n_constraints_ || structure_changed) {
         InitSolver(n_con);
         if (!initialized_) {
             return clampLen(v_nom, v_max);
@@ -442,20 +449,34 @@ Vec3 CBFSolver::Solve(
     // }
 
     if (st != OSQP_SOLVED && st != OSQP_SOLVED_INACCURATE) {
-    // Don't just return v_nom — actively push away from nearest neighbor
-    Vec3 v_emergency = {0, 0, 0};
-    float closest = std::numeric_limits<float>::max();
-    for (size_t j = 0; j < positions.size(); j++) {
-        if ((int)j == agent_idx) continue;
-        Vec3 d = sub(positions[agent_idx], positions[j]);
-        float dist = len(d);
-        if (dist < closest && dist > 1e-4f) {
-            closest = dist;
-            v_emergency = mul(d, config.recovery_speed / dist);
+        // Don't just return v_nom — actively push away from nearest neighbor.
+        Vec3 v_emergency = {0, 0, 0};
+        float closest = std::numeric_limits<float>::max();
+        int overlap_neighbor = -1;
+        for (size_t j = 0; j < positions.size(); j++) {
+            if ((int)j == agent_idx) continue;
+            Vec3 d = sub(positions[agent_idx], positions[j]);
+            float dist = len(d);
+            float dist2_xy = d.x * d.x + d.y * d.y;
+            if (dist < closest && dist > kOverlapEps) {
+                closest = dist;
+                if (dist2_xy <= kOverlapEps * kOverlapEps) {
+                    Vec3 away_xy = deterministic_xy_away(agent_idx, (int)j);
+                    v_emergency = mul(away_xy, config.recovery_speed);
+                } else {
+                    v_emergency = mul(d, config.recovery_speed / dist);
+                }
+            }
+            if (dist <= kOverlapEps && overlap_neighbor < 0) {
+                overlap_neighbor = (int)j;
+            }
         }
+        if (closest == std::numeric_limits<float>::max() && overlap_neighbor >= 0) {
+            Vec3 away = deterministic_xy_away(agent_idx, overlap_neighbor);
+            v_emergency = mul(away, config.recovery_speed);
+        }
+        return clampLen(v_emergency, v_max);
     }
-    return clampLen(v_emergency, v_max);
-}
 
     if (!solver_->solution || !solver_->solution->x) {
         Vec3 v = clampLen(v_nom, v_max);
@@ -478,8 +499,11 @@ Vec3 CBFSolver::Solve(
         if ((int)j == agent_idx) continue;
         Vec3 d = sub(positions[agent_idx], positions[j]);
         float dist = len(d);
-        if (dist < config.safety_radius * 0.9f && dist > 1e-4f) {
-            Vec3 away = mul(d, 1.0f / dist);
+        if (dist < config.safety_radius * 0.9f) {
+            float dist2_xy = d.x * d.x + d.y * d.y;
+            Vec3 away = (dist2_xy > kOverlapEps * kOverlapEps && dist > kOverlapEps)
+                ? mul(d, 1.0f / dist)
+                : deterministic_xy_away(agent_idx, (int)j);
             float v_out = std::max(dot(v_safe, away), config.recovery_speed);
             v_safe.x += away.x * v_out;
             v_safe.y += away.y * v_out;

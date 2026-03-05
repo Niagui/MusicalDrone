@@ -3,6 +3,7 @@
 #pragma once
 
 #include <vector>
+#include <cstddef>
 #include <osqp.h>
 #include "config.h"
 
@@ -30,6 +31,8 @@ struct CBFConfig
     float eps_abs = 1e-3f;
     float eps_rel = 1e-3f;
     float recovery_speed = 0.5f;
+    float slack_weight = 50.0f;
+    float slack_max = 2.0f;
     bool verbose = cfg.cbf_config.verbose;
     
     // Reinitialization threshold
@@ -82,6 +85,9 @@ class CBFSolver
         
         CBFConfig config_;
         int last_n_constraints_ = 0;
+        size_t last_A_nnz_ = 0;
+        std::vector<OSQPInt> last_A_p_csc_;
+        std::vector<OSQPInt> last_A_i_csc_;
         bool initialized_ = false;
 };
 
