@@ -23,6 +23,10 @@ struct CBF_config
     float safety_radius = 0.3;
     float neighbor_range = 0.6;
     float alpha = 0.7;
+    // Higher weight penalizes slack harder (stronger boundary/collision enforcement).
+    float slack_weight = 40.0;
+    // Lower max slack allows less constraint violation (more damping near boundaries).
+    float slack_max = 1.0;
     bool verbose = false;
 };
 

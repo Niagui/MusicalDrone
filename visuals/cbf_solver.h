@@ -31,8 +31,8 @@ struct CBFConfig
     float eps_abs = 1e-3f;
     float eps_rel = 1e-3f;
     float recovery_speed = 0.5f;
-    float slack_weight = 50.0f;
-    float slack_max = 2.0f;
+    float slack_weight = cfg.cbf_config.slack_weight;
+    float slack_max = cfg.cbf_config.slack_max;
     bool verbose = cfg.cbf_config.verbose;
     
     // Reinitialization threshold
