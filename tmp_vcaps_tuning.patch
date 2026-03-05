@@ -1,0 +1,23 @@
+--- a/visuals/config.h
++++ b/visuals/config.h
+@@ -8,6 +8,9 @@
+     float init_dist = 0.45;
+     // 0.0 = ignore box size for motion, 1.0 = full box-size scaling.
+     float box_motion_scale_strength = 1.0;
++    // Segment-level hard caps for boid dynamics.
++    float vmax_cap = 2.5;
++    float amax_cap = 8.0;
+ };
+ 
+ struct Bound_config
+--- a/visuals/boids.cpp
++++ b/visuals/boids.cpp
+@@ -486,6 +486,8 @@
+     target.amax     = clampf(target.amax,     1.00f * dyn_scale, 20.0f * dyn_scale);
+     target.altitude = clampf(target.altitude, 0.50f * alt_scale, 5.0f * alt_scale);
+     target.jitter   = clampf(target.jitter,   0.00f,  1.0f);
++    target.vmax     = std::min(target.vmax, std::max(cfg.drone_config.vmax_cap, 0.2f));
++    target.amax     = std::min(target.amax, std::max(cfg.drone_config.amax_cap, 0.5f));
+ 
+     // Keep boid separation behavior consistent with CBF safety.
+     target.r_sep = std::max(target.r_sep, cfg.cbf_config.safety_radius * 1.10f);

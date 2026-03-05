@@ -352,7 +352,9 @@ static constexpr float OLD_HALF_X = 5.0f;
 static constexpr float OLD_HALF_Y = 5.0f;
 static inline float ScaleXY() { return std::min(BoxHalfX()/OLD_HALF_X, BoxHalfY()/OLD_HALF_Y); }
 static inline float DynamicsScaleFromBox(float sxy) {
-    return clampf(0.70f + 0.30f * sxy, 0.70f, 1.0f);
+    float strength = clampf(cfg.drone_config.box_motion_scale_strength, 0.0f, 1.0f);
+    float dyn = (1.0f - strength) + strength * sxy;
+    return clampf(dyn, 0.50f, 1.0f);
 }
 static inline float FitTargetsToBoxScale(const std::vector<Vec3>& targets, Vec3 center, float margin_xy) {
     if (targets.empty()) return 1.0f;
@@ -484,6 +486,8 @@ BoidParams ApplyEmotionHard(const std::vector<float>& w, float scale = 1)
     target.amax     = clampf(target.amax,     1.00f * dyn_scale, 20.0f * dyn_scale);
     target.altitude = clampf(target.altitude, 0.50f * alt_scale, 5.0f * alt_scale);
     target.jitter   = clampf(target.jitter,   0.00f,  1.0f);
+    target.vmax     = std::min(target.vmax, std::max(cfg.drone_config.vmax_cap, 0.2f));
+    target.amax     = std::min(target.amax, std::max(cfg.drone_config.amax_cap, 0.5f));
 
     // Keep boid separation behavior consistent with CBF safety.
     target.r_sep = std::max(target.r_sep, cfg.cbf_config.safety_radius * 1.10f);

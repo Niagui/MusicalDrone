@@ -6,6 +6,11 @@ struct Drone_config
 {
     int num_drones = 5;
     float init_dist = 0.45;
+    // 0.0 = ignore box size for motion, 1.0 = full box-size scaling.
+    float box_motion_scale_strength = 1.0;
+    // Segment-level hard caps for boid dynamics.
+    float vmax_cap = 2.5;
+    float amax_cap = 8.0;
 };
 
 struct Bound_config
