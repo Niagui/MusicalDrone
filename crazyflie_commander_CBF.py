@@ -313,7 +313,7 @@ def init_data(path):
     seq = {}
     for i, uri in enumerate(sorted(uris)):
         if i in waypoints:
-            seq[uri] = [waypoints[i][:50]]
+            seq[uri] = [waypoints[i][:150]]
             print(f"Assigned {len(seq[uri][0])} waypoints to {uri} (drone ID {i})")
         else:
             print(f"WARNING: No waypoints found for drone ID {i} (URI: {uri})")
