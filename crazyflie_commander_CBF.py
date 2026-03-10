@@ -17,6 +17,7 @@ PATH = "trajectories.csv"
 AUDIO_PATH = "audio/testSong.mp3"
 TAKEOFF_HEIGHT = 1.0
 DEFAULT_VELOCITY = 0.5
+NUM_WAYPOINTS = 50
 
 uris = [
     'radio://0/80/2M/E7E7E7E701',
@@ -313,7 +314,7 @@ def init_data(path):
     seq = {}
     for i, uri in enumerate(sorted(uris)):
         if i in waypoints:
-            seq[uri] = [waypoints[i][:150]]
+            seq[uri] = [waypoints[i][:NUM_WAYPOINTS]]
             print(f"Assigned {len(seq[uri][0])} waypoints to {uri} (drone ID {i})")
         else:
             print(f"WARNING: No waypoints found for drone ID {i} (URI: {uri})")
