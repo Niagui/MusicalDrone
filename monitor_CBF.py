@@ -34,8 +34,15 @@ stop_event = threading.Event()
 
 # Barrier used so every drone enters its waypoint loop at the same instant.
 # Reset in __main__ once the number of drones is known.
+# The barrier's action= callback fires after all threads arrive but before any
+# thread is released, so _sequence_start_time is always written before it is read.
 _takeoff_barrier: threading.Barrier | None = None
 _sequence_start_time: float = 0.0  # perf_counter timestamp at barrier release
+
+def _record_sequence_start() -> None:
+    """Barrier action — called exactly once, atomically, before threads resume."""
+    global _sequence_start_time
+    _sequence_start_time = time.perf_counter()
 
 
 # ---------------------------------------------------------------------------
@@ -362,8 +369,12 @@ def init_data(path):
     seq = {}
     for i, uri in enumerate(sorted(uris)):
         if i in waypoints:
-            seq[uri] = [waypoints[i][:50]]
-            print(f"Assigned {len(seq[uri][0])} waypoints to {uri} (drone ID {i})")
+            slice_ = waypoints[i][150:200]
+            if slice_:
+                t0 = slice_[0][0]  # time of first waypoint in slice
+                # shift all times so the slice starts at t=0
+                slice_ = [(t - t0, x, y, z) for (t, x, y, z) in slice_]
+            seq[uri] = [slice_]
         else:
             print(f"WARNING: No waypoints found for drone ID {i} (URI: {uri})")
             seq[uri] = [[]]
@@ -416,9 +427,7 @@ def fly_sequence(scf: SyncCrazyflie, sequence):
     global _sequence_start_time
     if _takeoff_barrier is not None:
         try:
-            idx_at_barrier = _takeoff_barrier.wait(timeout=15.0)
-            if idx_at_barrier == 0:                   # first thread through
-                _sequence_start_time = time.perf_counter()
+            _takeoff_barrier.wait(timeout=15.0)
         except threading.BrokenBarrierError:
             print(f'[{uri}] Barrier broken — aborting')
             return
@@ -475,13 +484,35 @@ def fly_sequence(scf: SyncCrazyflie, sequence):
                 print(f'[{uri}] wp {idx}/{len(sequence)} → '
                       f'({x_safe:.2f}, {y_safe:.2f}, {z_safe:.2f})')
 
-            # Time the actual go_to duration and record slip against expected dt.
+            # ---- Non-blocking go_to with explicit duration --------------------
+            # PositionHlCommander.go_to() computes travel time from velocity
+            # and then *sleeps* for that duration, which blocks this thread and
+            # causes per-drone skew that compounds over a long sequence.
+            #
+            # Instead, use the low-level high_level_commander directly — it
+            # sends the setpoint packet and returns immediately.  The drone
+            # executes the trajectory in firmware; the outer absolute-time
+            # sleep above is already handling the inter-waypoint pacing on the
+            # Python side.
+            #
+            # duration_s: how long the drone should take to reach this target.
+            # Set it to the gap until the *next* waypoint so the firmware
+            # trajectory matches the schedule.  For the final waypoint use
+            # cbf_filter.dt (or 0.5 s) as a sensible hover duration.
+            if idx + 1 < len(sequence):
+                duration_s = sequence[idx + 1][0] - target_time
+            else:
+                duration_s = cbf_filter.dt if cbf_filter else 0.5
+            duration_s = max(0.1, duration_s)   # never send a zero-duration cmd
+
             t_wp_start = time.perf_counter()
-            commander.go_to(x_safe, y_safe, z_safe, velocity=DEFAULT_VELOCITY)
-            actual_dt = time.perf_counter() - t_wp_start
+            scf.cf.high_level_commander.go_to(
+                x_safe, y_safe, z_safe, 0.0, duration_s
+            )
+            actual_dt = time.perf_counter() - t_wp_start   # should be ~packet RTT
             if monitor is not None:
                 monitor.record_waypoint_slip(
-                    uri, actual_dt, cbf_filter.dt if cbf_filter else 0.5
+                    uri, actual_dt, duration_s
                 )
 
             # Periodic report every 20 waypoints
@@ -541,7 +572,7 @@ if __name__ == '__main__':
     cbf_filter = CBFSafetyFilter(uris, d_safe=0.5, gamma=2.0, dt=0.5, z_floor=0.3)
     print(f'[CBF] Initialised | d_safe={cbf_filter.d_safe}m  γ={cbf_filter.gamma}  z_floor={cbf_filter.z_floor}m')
 
-    _takeoff_barrier = threading.Barrier(len(uris))
+    _takeoff_barrier = threading.Barrier(len(uris), action=_record_sequence_start)
     print(f'[SYNC] Takeoff barrier initialised for {len(uris)} drones')
 
     audio_thread = threading.Thread(
