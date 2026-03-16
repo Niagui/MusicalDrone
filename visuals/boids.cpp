@@ -20,48 +20,83 @@
 #include <string>
 #include <iostream>
 #include <filesystem>
+#include <osqp.h>
+#include "config.h" 
+
+//json
+using json = nlohmann::json;
+static json clap_weights;                //holds loaded json array
+static bool clap_weights_loaded = false; //only load once
+
+//loading
+static std::vector<std::string> emotion_labels;
+static bool emo_labels_loaded = false;
+static std::vector<float> last_weights;
+
+//basic physics
+static std::vector<Vec3> position, velocity, acceleration;  //position, velocity, acceleration
 
 
-static std::vector<Vec3> gPos, gVel, gAcc;
-static std::vector<float> gLastWeights;
-static std::vector<std::string> EMO_LABELS;
-static bool gLabelsLoaded = false;
+//bound box
+static const float X_MIN = cfg.bound_config.x_min;
+static const float X_MAX =  cfg.bound_config.x_max;
+static const float Z_MIN = cfg.bound_config.z_min;  
+static const float Z_MAX =  cfg.bound_config.z_max;
+static const float Y_MIN = cfg.bound_config.y_min;
+static const float Y_MAX = cfg.bound_config.y_max;
 
-static inline float clampf(float x, float lo, float hi) {
-    return std::max(lo, std::min(hi, x));
-}
 
-static float gTime = 0.0f;
+//parameter bounds
+static const float R_SEP_MIN = 1.0f;    //collision prevention 
+static const float R_SEP_MAX = 2.0f; 
+static const float R_NEI_MIN = 1.2f; 
+static const float R_NEI_MAX = 9.0f; 
+static const float K_SEP_MIN = 1.0f; 
+static const float K_SEP_MAX = 9.f; 
 
+//clock
+static float sim_time = 0.0f;
+static float gAppliedSegStart = -1.0f;
+static float gAppliedSegEnd   = -1.0f;
+static float gAudioEndTime = -1.0f;
+static bool frozen = false;
+//this is the time to mark the timeline inside the simulation
 void SetSimTime(float t){
-    gTime = t;
+    sim_time = t;
 }
-
-static const BoidParams Neutral = {        //original neutral parameters
-    /* r_sep */ 0.6f,  /* r_nei */ 2.5f,
-    /* k_sep */ 1.0f,  /* k_ali */ 1.0f,  /* k_coh */ 0.7f,  /* k_goal */ 1.1f,
-    /* vmax  */ 6.0f,  /* amax  */ 12.0f,
-    /* altitude */ 1.7f, /* jitter */ 0.25f
-};
-static BoidParams P = Neutral;
 
 //resetting
 std::vector<float> gResetTimes;
 static int   gNextResetIndex = 0;
-static bool  gResetTimesInit = false;
 static float gLastBoidsTime  = 0.0f;
 bool gSegmentsLoaded = false;
 
 
-struct StyleParams {
-    float spin_rate;        // yaw rotation around goal
-    float bob_amp;          // vertical bobbing amplitude
-    float bob_freq;         // vertical bobbing frequency
-    float pause_prob;       // chance to briefly freeze / hesitate
-    float turn_sharpness;   // extra curvature in paths
+// math helper functions
+//choke in range lo to hi
+static inline float clampf(float x, float lo, float hi) {return std::max(lo, std::min(hi, x));} 
+static inline Vec3 add(Vec3 a, Vec3 b){ return {a.x+b.x,a.y+b.y,a.z+b.z}; }
+static inline Vec3 sub(Vec3 a, Vec3 b){ return {a.x-b.x,a.y-b.y,a.z-b.z}; }
+static inline Vec3 mul(Vec3 a, float s){ return {a.x*s,a.y*s,a.z*s}; }
+static inline float dot(Vec3 a, Vec3 b){ return a.x*b.x+a.y*b.y+a.z*b.z; }
+static inline float len(Vec3 a){ return std::sqrt(dot(a,a)); }
+static inline Vec3 pow(Vec3 a, float p){return {std::pow(a.x, p), std::pow(a.y, p), std::pow(a.z, p)};}
+// normalization - returns (0, 0, 0) if vector is small
+static inline Vec3 norm(Vec3 a){ float L=len(a); return L>1e-6f? mul(a,1.0f/L):Vec3{0,0,0}; }
+// clamps vector mag to Lmax to maintain direction
+static inline Vec3 clampLen(Vec3 v, float Lmax){ float L=len(v); return (L>Lmax)? mul(v,Lmax/L): v; }
+
+
+
+struct EmotionSegment {
+    float start = 0.0f;
+    float end = 0.0f;
+    std::vector<float> weights;
+    bool valid = false;
 };
 
-struct ParamDelta {     //For easier batch update
+struct ParamDelta 
+{   //For easier batch update
     float r_sep    = 0.0f;
     float r_nei    = 0.0f;
     float k_sep    = 0.0f;
@@ -75,124 +110,285 @@ struct ParamDelta {     //For easier batch update
 };
 
 
-//bound
-static const float X_MIN = -5.0f;
-static const float X_MAX =  5.0f;
-static const float Z_MIN = -5.0f;
-static const float Z_MAX =  5.0f;
-static const float Y_MIN = 0.5f;
-static const float Y_MAX = 5.0f;
+// struct StyleParams {
+//     float spin_rate;        // yaw rotation around goal
+//     float bob_amp;          // vertical bobbing amplitude
+//     float bob_freq;         // vertical bobbing frequency
+//     float pause_prob;       // chance to briefly freeze / hesitate
+//     float turn_sharpness;   // extra curvature in paths
+// };
 
-Boundaries GetBoxBounds() {
+
+
+//--------------------------------------------------------------------------------------------------------//
+//--------------------------------------------------------------------------------------------------------//
+
+// Loading helpers
+
+bool LoadEmotionLabels(const std::string& path) {
+    std::ifstream f(path);
+    if (!f) return false;
+
+    json J;
+    f >> J;
+
+    if (!J.is_array()) return false;
+
+    emotion_labels.clear();
+    for (auto& item : J) {
+        if (item.is_string()) {
+            emotion_labels.push_back(item.get<std::string>());
+        }
+    }
+
+    std::cerr << "Loaded labels (" << emotion_labels.size() << "): ";
+    for (auto& s : emotion_labels) std::cerr << s << " ";
+    std::cerr << "\n";
+
+    return true;
+}
+
+const std::vector<std::string>& GetEmotionLabels(){
+    return emotion_labels;
+}
+
+static EmotionSegment GetEmotionSegment(float t)
+{
+    EmotionSegment seg;
+    if(!clap_weights.is_array() || clap_weights.empty()) return seg;
+
+       for (auto& it : clap_weights){
+        float s = it.value("start", 0.0f);
+        float e = it.value("end", 0.0f);
+        if (t >= s && t < e) {
+            seg.start = s;
+            seg.end   = e;
+            if (it.contains("weights")) seg.weights = it["weights"].get<std::vector<float>>();
+            seg.valid = true;
+            return seg;
+        }
+    }
+
+    // hold last segment after audio ends
+    auto& last = clap_weights.back();
+    seg.start = last.value("start", 0.0f);
+    seg.end   = last.value("end", seg.start + 1.0f);
+    if(last.contains("weights")) seg.weights = last["weights"].get<std::vector<float>>();
+    seg.valid = true;
+    return seg;
+}
+
+std::vector<float> GetEmotionWeights(float t)
+{
+    EmotionSegment seg = GetEmotionSegment(t);
+    return seg.valid ? seg.weights : std::vector<float>{};
+}
+
+bool LoadEmotionFile(const std::string& path){
+    std::ifstream f(path);
+    if (!f) return false;
+    json J; f >> J;
+    if (!J.is_array()) return false;
+    clap_weights = std::move(J);
+    return true;
+}
+
+static std::filesystem::path find_json_file(const std::string &filename) {
+    namespace fs = std::filesystem;
+    fs::path cwd = fs::current_path();
+
+    // look from these folder:
+    std::vector<fs::path> candidates = {
+        cwd / "json" / filename,
+        cwd.parent_path() / "json" / filename,
+    };
+
+    for (const auto &p : candidates) {
+        std::cerr << "[DEBUG] trying: " << p.string() << "\n";
+
+        if (fs::exists(p)) {
+            return p;
+        }
+    }
+
+    return {};  // empty path = not found
+}
+
+bool LoadResetTimes(const std::string& filename = "sections.json")
+{
+    auto segmentPath = find_json_file(filename).string();
+    gResetTimes.clear();
+    gNextResetIndex = 0;
+
+    std::ifstream in(segmentPath);
+    if (!in) {
+        std::cerr << "Failed to open reset-times JSON: " << segmentPath << "\n";
+        return false;
+    }
+
+    json j;
+    in >> j;
+
+    for (const auto& seg : j) {
+        if (seg.is_array() && seg.size() >= 2) {
+            float endTime = seg[1].get<float>();
+            gResetTimes.push_back(endTime);
+        }
+    }
+
+    std::cerr << "Loaded " << gResetTimes.size()
+              << " reset times from " << filename << "\n";
+    return true;
+}
+
+void EnsureEmotionsLoaded() 
+{
+    if (!clap_weights_loaded){
+        auto clap_path = find_json_file("clap_weights.json");
+        bool ok = LoadEmotionFile(clap_path.string());
+
+        if (clap_path.empty()) {
+            std::cerr << "ERROR: Could not find clap_weights.json\n";
+            clap_weights_loaded = false;
+            return;
+        }
+
+        if (!ok) {
+            std::cerr << "ERROR: Could not load clap weights file\n"
+                      << clap_path.string() << "\n";  
+        } else {
+            std::cerr << "Loaded JSON successfully. #Segments = " 
+                    << clap_weights.size() << "\n";
+        }
+        clap_weights_loaded = ok;
+    }
+
+    if (!emo_labels_loaded) {
+        auto anchor_path = find_json_file("anchor_labels.json");
+        bool ok = LoadEmotionLabels(anchor_path.string());
+
+        if (anchor_path.empty()) {
+            std::cerr << "ERROR: Could not find anchor_labels.json\n";
+            clap_weights_loaded = false;
+            return;
+        }
+
+        if (!ok) {
+            std::cerr << "ERROR: Could not load anchor_labels.json\n";
+        } else {
+            std::cerr << "Loaded JSON successfully." << "\n";
+        }
+        emo_labels_loaded = ok;
+    }
+}
+
+void EnsureSegmentsLoaded()
+{
+    if (!gSegmentsLoaded)
+    {
+        bool ok = LoadResetTimes();
+
+        if(!ok){
+            std::cerr << "Could not load segments\n";
+        }else{
+            std::cerr << "Loaded segments successfully." << "\n";
+            gSegmentsLoaded = true;
+        }
+    }
+    return;
+}
+
+
+
+float GetAudioLength(){
+    EnsureEmotionsLoaded();
+    if(!clap_weights.is_array() || clap_weights.empty()) {
+        std::cerr << "[DEBUG] clap_weights is empty or not an array\n";
+        return 0.0f;
+    }
+
+    const auto& last = clap_weights.back();
+    return last.value("end", 0.0f);
+}
+
+
+//--------------------------------------------------------------------------------------------------------//
+//--------------------------------------------------------------------------------------------------------//
+
+
+//neutral parameters. Start with this scheme every time we change the emotion
+static const BoidParams Neutral = 
+{        
+    /* r_sep */ 0.5f,  /* r_nei */ 2.0f,
+    /* k_sep */ 1.0f,  /* k_ali */ 1.0f,  /* k_coh */ 1.0f,  /* k_goal */ 1.1f,
+    /* vmax  */ 3.0f,  /* amax  */ 10.0f,
+    /* altitude */ 1.7f, /* jitter */ 0.25f
+};
+static BoidParams P = Neutral;
+
+
+static const ParamDelta ANCHORS[7] = 
+{   
+    //keep sum of each column close to 0 for best expresiveness
+    //r_sep   r_nei   k_sep   k_ali   k_coh   k_goal   vmax    amax   altitude  jitter
+    { +0.60f, -2.00f, +2.00f, -1.00f, -1.50f, +1.40f, +3.0f,  +8.0f,  +1.50f,  +0.40f }, // happy (fast, cohesive, lively)
+    { -0.70f, +3.00f, +3.00f, +1.00f, -0.50f, -1.00f, -2.5f,  -8.0f,  -0.80f,  -0.15f }, // sad (slow, heavy, low drive)
+    { +0.60f, -1.00f, -2.50f, -0.90f, -0.60f, -1.95f, -3.5f,  -8.0f,  -1.00f,  -0.20f }, // sleepy (very slow, minimal jitter)
+    { -0.50f, +2.00f, +2.00f, +1.40f, +0.80f, +1.50f, +4.0f,  +8.0f,  +1.20f,  -0.25f }, // brave (fast, decisive, strong goal)
+    { +0.55f, -2.20f, -4.00f, -0.20f, -1.35f, -0.45f, -3.0f,  +4.0f,  +0.20f,  +0.15f }, // grumpy (aggressive spacing, low cohesion)
+    { +0.80f, -2.80f, +5.00f, +0.30f, -0.55f, +0.80f, +3.5f,  +8.0f,  -0.60f,  +0.50f }, // scared (panic: fast + jitter + separation)
+    { -0.55f, +1.20f, -2.80f, +0.80f, +1.00f, -0.60f, -2.5f,  -4.0f,  -0.20f,  -0.05f }, // shy (small/slow, stays together, low goal)
+};
+
+
+
+static inline Vec3 BoxCenter()
+{
+    return Vec3{ 0.5f*(X_MIN+X_MAX), 0.5f*(Y_MIN+Y_MAX), 0.5f*(Z_MIN+Z_MAX) };
+}
+static inline float BoxHalfX() { return 0.5f*(X_MAX-X_MIN); }
+static inline float BoxHalfY() { return 0.5f*(Y_MAX-Y_MIN); } 
+static constexpr float OLD_HALF_X = 5.0f;
+static constexpr float OLD_HALF_Y = 5.0f;
+static inline float ScaleXY() { return std::min(BoxHalfX()/OLD_HALF_X, BoxHalfY()/OLD_HALF_Y); }
+static inline float DynamicsScaleFromBox(float sxy) {
+    float strength = clampf(cfg.drone_config.box_motion_scale_strength, 0.0f, 1.0f);
+    float dyn = (1.0f - strength) + strength * sxy;
+    return clampf(dyn, 0.50f, 1.0f);
+}
+static inline float FitTargetsToBoxScale(const std::vector<Vec3>& targets, Vec3 center, float margin_xy) {
+    if (targets.empty()) return 1.0f;
+
+    float max_dx = 1e-4f;
+    float max_dy = 1e-4f;
+    for (const Vec3& t : targets) {
+        Vec3 d = sub(t, center);
+        max_dx = std::max(max_dx, std::abs(d.x));
+        max_dy = std::max(max_dy, std::abs(d.y));
+    }
+
+    float avail_half_x = std::max(0.05f, BoxHalfX() - margin_xy);
+    float avail_half_y = std::max(0.05f, BoxHalfY() - margin_xy);
+    float sx = avail_half_x / max_dx;
+    float sy = avail_half_y / max_dy;
+    float fit = std::min(1.0f, std::min(sx, sy));
+    return clampf(fit, 0.20f, 1.0f);
+}
+
+
+
+
+Boundaries GetBoxBounds() 
+{
     return Boundaries{ X_MIN, X_MAX, Y_MIN, Y_MAX, Z_MIN, Z_MAX };
 }
 
-static const ParamDelta ANCHORS[7] = {
-    {
-        /* r_sep   */ -0.15f,   // likes being close
-        /* r_nei   */ +0.20f,   // sees neighbors a bit further out
-        /* k_sep   */ -0.30f,   // less "get away from me"
-        /* k_ali   */ +0.40f,   // strongly aligns with the group
-        /* k_coh   */ +0.30f,   // wants to flock
-        /* k_goal  */ +0.30f,   // reacts quickly to goals/targets
-        /* vmax    */ +2.0f,    // faster than neutral (hero: 7.7 mph vs others)
-        /* amax    */ +4.0f,    // snappier acceleration
-        /* altitude*/ +0.70f,   // flies higher
-        /* jitter  */ +0.15f    // playful / excited
-    },
+// Box scaling (volume-based)
+static constexpr float DEFAULT_BOX_VOLUME = 10.0f * 10.0f * 1.0f;
 
-    /* 1: sad (Exhausted Drone) */
-    {
-        /* r_sep   */  0.00f,   // not especially pushy
-        /* r_nei   */ -0.40f,   // pays attention to a smaller neighborhood
-        /* k_sep   */ -0.20f,   // doesn't strongly avoid others
-        /* k_ali   */ -0.40f,   // poor alignment, kind of drifts
-        /* k_coh   */ -0.10f,   // mild cohesion, it's just "there"
-        /* k_goal  */ -0.45f,   // slow to respond to commands
-        /* vmax    */ -3.0f,    // much slower (dragging)
-        /* amax    */ -7.0f,    // weak acceleration
-        /* altitude*/ -0.70f,   // stays low
-        /* jitter  */ +0.10f    // slight wobble / tired shakiness
-    },
 
-    /* 2: sleepy (Exhausted Drone variant) */
-    {
-        /* r_sep   */  0.00f,
-        /* r_nei   */ -0.40f,
-        /* k_sep   */ -0.25f,   // even less separation, kind of "slumps" into group
-        /* k_ali   */ -0.45f,
-        /* k_coh   */ -0.05f,
-        /* k_goal  */ -0.55f,   // even slower to act than "sad"
-        /* vmax    */ -3.5f,    // really slow
-        /* amax    */ -8.0f,    // sluggish
-        /* altitude*/ -0.80f,   // very low
-        /* jitter  */ +0.05f    // more "heavy" than wobbly
-    },
-
-    /* 3: brave (Adventurer Hero) */
-    {
-        /* r_sep   */ -0.10f,   // still comfortable close
-        /* r_nei   */ +0.20f,
-        /* k_sep   */ -0.20f,
-        /* k_ali   */ +0.35f,
-        /* k_coh   */ +0.25f,
-        /* k_goal  */ +0.35f,   // very direct in executing commands
-        /* vmax    */ +2.2f,    // slightly faster than "happy"
-        /* amax    */ +4.5f,
-        /* altitude*/ +0.70f,
-        /* jitter  */ +0.10f    // brave more than "giggly"
-    },
-
-    /* 4: grumpy (Anti-Social Drone) */
-    {
-        /* r_sep   */ +0.35f,   // keeps its distance
-        /* r_nei   */ -0.50f,   // narrow social radius
-        /* k_sep   */ +0.40f,   // strong "get away from me"
-        /* k_ali   */ -0.30f,   // doesn't like aligning
-        /* k_coh   */ -0.35f,   // low cohesion, hangs back
-        /* k_goal  */ -0.30f,   // reluctant to follow commands
-        /* vmax    */ -1.0f,    // a bit slower
-        /* amax    */ -3.0f,    // drags into motion
-        /* altitude*/  0.00f,   // middle altitude
-        /* jitter  */ +0.10f    // a little twitchy / begrudging
-    },
-
-    /* 5: scared (Sneaky Spy Drone) */
-    {
-        /* r_sep   */ +0.50f,   // stays far from others
-        /* r_nei   */  0.00f,   // normal neighbor radius
-        /* k_sep   */ +0.60f,   // strong avoidance
-        /* k_ali   */ +0.10f,   // slightly aligns when fleeing
-        /* k_coh   */ -0.20f,   // doesn't like the group
-        /* k_goal  */ -0.35f,   // hesitant to go directly to goal
-        /* vmax    */ +0.5f,    // quick but not the fastest
-        /* amax    */ +2.0f,    // sharp jerks / nervous moves
-        /* altitude*/ -0.60f,   // low altitude
-        /* jitter  */ +0.30f    // very jittery -> "looking around"
-    },
-
-    /* 6: shy (Anti-Social-ish but less harsh) */
-    {
-        /* r_sep   */ +0.25f,   // keeps a bit of distance
-        /* r_nei   */ -0.30f,
-        /* k_sep   */ +0.25f,
-        /* k_ali   */ -0.20f,
-        /* k_coh   */ -0.20f,
-        /* k_goal  */ -0.20f,   // needs coaxing
-        /* vmax    */ -0.8f,    // slightly slower
-        /* amax    */ -2.5f,
-        /* altitude*/ -0.10f,   // slightly lower than neutral
-        /* jitter  */ +0.15f    // anxious
-    }
-};
-
-// --- JSON / Emotion Labeleling --- //
-
-using json = nlohmann::json;
-static json EMO;                //holds loaded json array
-static bool gEmoLoaded = false; //only load once
-
-static inline void clampToBox(Vec3& p) {
+static inline void clampToBox(Vec3& p) 
+{
     p.x = clampf(p.x, X_MIN, X_MAX);
     p.y = clampf(p.y, Y_MIN, Y_MAX);
     p.z = clampf(p.z, Z_MIN, Z_MAX);
@@ -227,267 +423,79 @@ static inline void applyBoxConstraint(Vec3& p, Vec3& v) {
     }
 }
 
-
-bool LoadEmotionLabels(const std::string& path) {
-    std::ifstream f(path);
-    if (!f) return false;
-
-    json J;
-    f >> J;
-
-    if (!J.is_array()) return false;
-
-    EMO_LABELS.clear();
-    for (auto& item : J) {
-        if (item.is_string()) {
-            EMO_LABELS.push_back(item.get<std::string>());
-        }
-    }
-
-    std::cerr << "Loaded labels (" << EMO_LABELS.size() << "): ";
-    for (auto& s : EMO_LABELS) std::cerr << s << " ";
-    std::cerr << "\n";
-
-    return true;
-}
-
-const std::vector<std::string>& GetEmotionLabels(){
-    return EMO_LABELS;
-}
-
-std::vector<float> GetEmotionWeights(float t){
-    if(!EMO.is_array() || EMO.empty()) return {};
-    for (auto& seg :EMO){
-        float s = seg.value("start", 0.0f);
-        float e = seg.value("end", 0.0f);
-        if (t >= s && t < e) {
-            if (seg.contains("weights")) return seg["weights"].get<std::vector<float>>();
-            return {};
-        }
-    }
-    //hold last emotion once its over
-    auto& last = EMO.back();
-    if(last.contains("weights")) return last["weights"].get<std::vector<float>>();
-    return{};
-}
-
-
-static inline float clamp01(float x){ return x < 0.f ? 0.f : (x > 1.f ? 1.f : x); }
-static inline float map01(float x, float a, float b){ x = clamp01(x); return a + (b - a) * x; }
-
-
-void ApplyEmotion(const std::vector<float>& w, BoidParams& P) {
-    float e = 0.0f;
-    if (!w.empty() && std::isfinite(w[0])) e = w[0];
-
-    // Keep in reasonable range
-    e = clampf(e, -1.0f, 1.0f);
-
-    float new_vmax = 6.0f + 3.0f * e;                 // faster with higher e
-    float new_ksep = 1.0f + 1.5f * std::max(0.0f, e); // stronger separation when e>0
-
-    // clamps so swarm stays cohesive
-    P.vmax = clampf(new_vmax, 0.5f, 12.0f);
-    P.k_sep = clampf(new_ksep, 0.1f, 2.5f);
-}
-
-void ApplyEmotionHard(const std::vector<float>& w, BoidParams& P)
+//   Compute a single target boid parameters with precomputed weights
+BoidParams ApplyEmotionHard(const std::vector<float>& w, float scale = 1)
 {
-    if (w.empty()) return;
+    BoidParams target = Neutral;
 
-    // Accumulate weighted deltas
-    ParamDelta D{};
-    for (int i = 0; i < 7; ++i) {
-        const ParamDelta& A = ANCHORS[i];
-        D.r_sep    += w[i] * A.r_sep;
-        D.r_nei    += w[i] * A.r_nei;
-        D.k_sep    += w[i] * A.k_sep;
-        D.k_ali    += w[i] * A.k_ali;
-        D.k_coh    += w[i] * A.k_coh;
-        D.k_goal   += w[i] * A.k_goal;
-        D.vmax     += w[i] * A.vmax;
-        D.amax     += w[i] * A.amax;
-        D.altitude += w[i] * A.altitude;
-        D.jitter   += w[i] * A.jitter;
-    }
+    if (w.empty()) 
+        return target;  //early exist if no weights
 
-    // Apply exact preset deltas on current P (no lerp)
-    P.r_sep    = clampf(P.r_sep    + D.r_sep,    0.10f,  5.0f);
-    P.r_nei    = clampf(P.r_nei    + D.r_nei,    0.50f, 10.0f);
-    P.k_sep    = clampf(P.k_sep    + D.k_sep,    0.10f,  2.5f);
-    P.k_ali    = clampf(P.k_ali    + D.k_ali,    0.00f,  3.0f);
-    P.k_coh    = clampf(P.k_coh    + D.k_coh,    0.00f,  3.0f);
-    P.k_goal   = clampf(P.k_goal   + D.k_goal,   0.20f,  3.0f);
-    P.vmax     = clampf(P.vmax     + D.vmax,     0.50f, 12.0f);
-    P.amax     = clampf(P.amax     + D.amax,     1.00f, 20.0f);
-    P.altitude = clampf(P.altitude + D.altitude, 0.50f, 10.0f);
-    P.jitter   = clampf(P.jitter   + D.jitter,   0.00f,  1.0f);
-}
+    float wsum = 0.0f;
 
-bool LoadResetTimes(const std::string& filename = "sections.json")
-{
-    namespace fs = std::filesystem;
-    fs::path cwd = fs::current_path();
-    fs::path path = cwd.parent_path() / "json" / filename;
-    std::string pathStr = path.string();
-
-    gResetTimes.clear();
-    gNextResetIndex = 0;
-
-    std::ifstream in(pathStr);
-    if (!in) {
-        std::cerr << "Failed to open reset-times JSON: " << pathStr << "\n";
-        return false;
-    }
-
-    json j;
-    in >> j;
-
-    for (const auto& seg : j) {
-        if (seg.is_array() && seg.size() >= 2) {
-            float endTime = seg[1].get<float>();
-            gResetTimes.push_back(endTime);
-        }
-    }
-
-    std::cerr << "Loaded " << gResetTimes.size()
-              << " reset times from " << filename << "\n";
-    return true;
-}
-
-bool LoadEmotionFile(const std::string& path){
-    std::ifstream f(path);
-    if (!f) return false;
-    json J; f >> J;
-    if (!J.is_array()) return false;
-    EMO = std::move(J);
-    return true;
-}
-
-static std::filesystem::path find_json_file(const std::string &filename) {
-    namespace fs = std::filesystem;
-    fs::path cwd = fs::current_path();
-
-    // look from these folder:
-    std::vector<fs::path> candidates = {
-        cwd / "json" / filename,
-        cwd.parent_path() / "json" / filename,
-    };
-
-    for (const auto &p : candidates) {
-        std::cerr << "[DEBUG] trying: " << p.string() << "\n";
-
-        if (fs::exists(p)) {
-            return p;
-        }
-    }
-
-    return {};  // empty path = not found
-}
-
-void EnsureEmotionsLoaded() 
-{
-    if (!gEmoLoaded){
-        auto clap_path = find_json_file("clap_weights.json");
-        bool ok = LoadEmotionFile(clap_path.string());
-
-        if (clap_path.empty()) {
-            std::cerr << "ERROR: Could not find clap_weights.json\n";
-            gEmoLoaded = false;
-            return;
-        }
-
-        if (!ok) {
-            std::cerr << "ERROR: Could not load clap weights file\n"
-                      << clap_path.string() << "\n";  
-        } else {
-            std::cerr << "Loaded JSON successfully. #Segments = " 
-                    << EMO.size() << "\n";
-        }
-        gEmoLoaded = ok;
-    }
-
-    if (!gLabelsLoaded) {
-        auto anchor_path = find_json_file("anchor_labels.json");
-        bool ok = LoadEmotionLabels(anchor_path.string());
-
-        if (anchor_path.empty()) {
-            std::cerr << "ERROR: Could not find anchor_labels.json\n";
-            gEmoLoaded = false;
-            return;
-        }
-
-        if (!ok) {
-            std::cerr << "ERROR: Could not load anchor_labels.json\n";
-        } else {
-            std::cerr << "Loaded JSON successfully." << "\n";
-        }
-        gLabelsLoaded = ok;
-    }
-}
-
-void EnsureSegmentsLoaded()
-{
-    if (!gSegmentsLoaded)
+    for (float x : w)
     {
-        bool ok = LoadResetTimes();
+        wsum += std::abs(x);
+    } 
+        
+    if (wsum < 1e-6f) 
+        return target;
 
-        if(!ok){
-            std::cerr << "Could not load segments\n";
-        }else{
-            std::cerr << "Loaded segments successfully." << "\n";
-            gSegmentsLoaded = true;
-        }
-    }
-    return;
-}
+    float inv = 1.0f / wsum;
 
-bool ReloadAndApplyEmotions(float t) {
-    // // try local path first, then /mnt/data as fallback
-    // bool ok = LoadEmotionFile("clap_weights.json");
-    // if (!ok) ok = LoadEmotionFile("/mnt/data/clap_weights.json");
-    // if (!ok) return false;
+    for (int i = 0; i < 7; ++i) {
+        float wi = w[i] * inv;      //ensure obvious change
+        const ParamDelta& A = ANCHORS[i];
 
-    // auto w = GetEmotionWeights(t);
-    // if (w.empty()) return false;
-
-    // // mutate current params
-    // BoidParams& Pmut = const_cast<BoidParams&>(GetBoidParams());
-    // ApplyEmotionHard(w, P);
-    return true;
-}
-
-
-float GetAudioLength(){
-    EnsureEmotionsLoaded();
-    if(!EMO.is_array() || EMO.empty()) {
-        std::cerr << "[DEBUG] EMO is empty or not an array\n";
-        return 0.0f;
+        target.r_nei    += wi * A.r_nei;
+        target.k_sep    += wi * A.k_sep;
+        target.r_sep    += wi * A.r_sep;
+        target.k_ali    += wi * A.k_ali;
+        target.k_coh    += wi * A.k_coh;
+        target.k_goal   += wi * A.k_goal;
+        target.vmax     += wi * A.vmax;
+        target.amax     += wi * A.amax;
+        target.altitude += wi * A.altitude;
+        target.jitter   += wi * A.jitter;
     }
 
-    const auto& last = EMO.back();
-    return last.value("end", 0.0f);
+    // Decoupled scaling policy:
+    // - social radii shrink mildly with box
+    // - dynamics keep a higher floor so motion stays lively
+    float social_scale = clampf(0.90f + 0.10f * scale, 0.90f, 1.0f);
+    float dyn_scale = scale;
+    float alt_scale = clampf(0.85f + 0.15f * scale, 0.85f, 1.0f);
+
+    target.r_sep    *= social_scale;
+    target.r_nei    *= social_scale;
+    target.vmax     *= dyn_scale;
+    target.amax     *= dyn_scale;
+    target.altitude *= alt_scale;
+
+    // target.k_ali *= scale;
+    // target.k_coh*= scale;
+    // target.k_sep*= scale;
+    // target.k_goal*= scale;
+
+    target.r_sep    = clampf(target.r_sep,    R_SEP_MIN * social_scale,  R_SEP_MAX * social_scale);
+    target.k_sep    = clampf(target.k_sep,    K_SEP_MIN,  K_SEP_MAX);
+    target.k_ali    = clampf(target.k_ali,    0.00f,  3.0f);
+    target.k_coh    = clampf(target.k_coh,    0.00f,  3.0f);
+    target.k_goal   = clampf(target.k_goal,   0.20f,  3.0f);
+    target.vmax     = clampf(target.vmax,     0.50f * dyn_scale, 10.0f * dyn_scale);
+    target.amax     = clampf(target.amax,     1.00f * dyn_scale, 20.0f * dyn_scale);
+    target.altitude = clampf(target.altitude, 0.50f * alt_scale, 5.0f * alt_scale);
+    target.jitter   = clampf(target.jitter,   0.00f,  1.0f);
+    target.vmax     = std::min(target.vmax, std::max(cfg.drone_config.vmax_cap, 0.2f));
+    target.amax     = std::min(target.amax, std::max(cfg.drone_config.amax_cap, 0.5f));
+
+    // Keep boid separation behavior consistent with CBF safety.
+    target.r_sep = std::max(target.r_sep, cfg.cbf_config.safety_radius * 1.10f);
+    target.r_nei = std::max(target.r_nei, target.r_sep + 0.05f);
+
+    return target;
 }
 
-// static BoidParams PFrom = P, PTo = P;
-// static float gTransLeft = 0.0f, gTransTotal = 0.0f;
-// static std::string gEmotion = "neutral";
-
-// static inline float lerp(float a, float b, float t){ return a + (b - a) * t; }
-// static inline BoidParams lerpParams(const BoidParams& A, const BoidParams& B, float t){
-//     BoidParams R = A;
-//     R.r_sep   = lerp(A.r_sep,   B.r_sep,   t);
-//     R.r_nei   = lerp(A.r_nei,   B.r_nei,   t);
-//     R.k_sep   = lerp(A.k_sep,   B.k_sep,   t);
-//     R.k_ali   = lerp(A.k_ali,   B.k_ali,   t);
-//     R.k_coh   = lerp(A.k_coh,   B.k_coh,   t);
-//     R.k_goal  = lerp(A.k_goal,  B.k_goal,  t);
-//     R.vmax    = lerp(A.vmax,    B.vmax,    t);
-//     R.amax    = lerp(A.amax,    B.amax,    t);
-//     R.altitude= lerp(A.altitude,B.altitude,t);
-//     R.jitter  = lerp(A.jitter,  B.jitter,  t);
-//     return R;
-// }
 
 
 // current params for HUD/debug
@@ -495,60 +503,132 @@ const BoidParams& GetBoidParams(){
     return P;
 }
 
+static BoidParams LerpParams(const BoidParams& a, const BoidParams& b, float t)
+{
+    BoidParams o = a;
+    auto lp = [&](float& x, float xa, float xb){ x = xa + (xb - xa) * t; };
+
+    lp(o.r_sep,    a.r_sep,    b.r_sep);
+    lp(o.r_nei,    a.r_nei,    b.r_nei);
+    lp(o.k_sep,    a.k_sep,    b.k_sep);
+    lp(o.k_ali,    a.k_ali,    b.k_ali);
+    lp(o.k_coh,    a.k_coh,    b.k_coh);
+    lp(o.k_goal,   a.k_goal,   b.k_goal);
+    lp(o.vmax,     a.vmax,     b.vmax);
+    lp(o.amax,     a.amax,     b.amax);
+    lp(o.altitude, a.altitude, b.altitude);
+    lp(o.jitter,   a.jitter,   b.jitter);
+    return o;
+}
 
 
-// math help
-static inline Vec3 add(Vec3 a, Vec3 b){ return {a.x+b.x,a.y+b.y,a.z+b.z}; }
-static inline Vec3 sub(Vec3 a, Vec3 b){ return {a.x-b.x,a.y-b.y,a.z-b.z}; }
-static inline Vec3 mul(Vec3 a, float s){ return {a.x*s,a.y*s,a.z*s}; }
-static inline float dot(Vec3 a, Vec3 b){ return a.x*b.x+a.y*b.y+a.z*b.z; }
-static inline float len(Vec3 a){ return std::sqrt(dot(a,a)); }
-// normalization - returns (0, 0, 0) if vector is small
-static inline Vec3 norm(Vec3 a){ float L=len(a); return L>1e-6f? mul(a,1.0f/L):Vec3{0,0,0}; }
-// clamps vector mag to Lmax to maintain direction
-static inline Vec3 clampLen(Vec3 v, float Lmax){ float L=len(v); return (L>Lmax)? mul(v,Lmax/L): v; }
 
+/***********
+ * cbf
+ **************/
+
+static inline float cbf_constraint(Vec3 pos, Vec3 vel, Vec3 center, float r=0.5, float alpha=1.0)
+{
+    Vec3 d = sub(pos, center);
+    float h = dot(d, d) - r * r;
+    float hdot = 2.0f * dot(d, vel); 
+    return hdot + alpha*h;
+}
+
+static CBFManager cbf_manager;
+static bool cbf_enabled = true;
+
+void EnableCBF(bool enable) {
+    cbf_enabled = enable;
+}
+
+void SetCBFConfig(const CBFConfig& config) {
+    cbf_manager.SetConfig(config);
+}
+
+
+
+/****************
+ * boids
+ **************/
 
 // allocate seeds
 void InitBoids(int count){
-    gPos.resize(count);
-    gVel.resize(count);
-    gAcc.resize(count);
+    position.resize(count);
+    velocity.resize(count);
+    acceleration.resize(count);
+
+    cbf_manager.Init(count);
+
+    const float droneR = 0.092f;
+    const float cbfSafeDist = cfg.cbf_config.safety_radius * 1.05f;
+    const float minDist = std::max(2.5f * droneR, cbfSafeDist);
+    const float z0 = clampf(P.altitude, Z_MIN, Z_MAX);  // Z is vertical
+
+    float totalLen = (count - 1) * minDist;
+    float startX = -0.5f * totalLen;
+
     for(int i=0;i<count;i++){
-        gPos[i] = { (float)i*0.1f, P.altitude, 0.0f };
-        gVel[i] = { 0.0f, 0.0f, 0.0f };
-        gAcc[i] = { 0.0f, 0.0f, 0.0f };
+        position[i] = { startX + i * minDist, 0.0f, z0 }; // line on horizontal plane, fixed altitude in Z
+        velocity[i] = { 0.0f, 0.0f, 0.0f };
+        acceleration[i] = { 0.0f, 0.0f, 0.0f };
     }
 }
 
 //resize buffers to a new count
 //old contents are maintained by std::vector::resize
 void ResizeBoids(int count){
-    gPos.resize(count);
-    gVel.resize(count);
-    gAcc.resize(count);
+    position.resize(count);
+    velocity.resize(count);
+    acceleration.resize(count);
+    cbf_manager.Resize(count);
 }
-
-//replace all params at once
-void SetBoidParams(const BoidParams& p){ P = p; }
-
 
 //zeroes all velocities when switching out from boids
 void ResetVelocities(){
-    for(auto &v : gVel) v = {0,0,0};
+    for(auto &v : velocity) v = {0,0,0};
 }
 
-std::vector<Vec3>& GetBoidPositions(){ return gPos; }
+std::vector<Vec3>& GetBoidPositions(){ return position; }
+std::vector<Vec3>& GetBoidVelocities(){ return velocity; }
+std::vector<Vec3>& GetBoidAcclerations(){ return acceleration; }
 
 const std::vector<float>& GetLastWeights(){
-    return gLastWeights;
+    return last_weights;
 }
 
-//Integration station: advance positions and velocities by dt(seconds)
+//WARNING: this thing updates per frame not per segments
 void UpdateBoids(float dt, const std::vector<Vec3>& targets){
     EnsureEmotionsLoaded();
     EnsureSegmentsLoaded();
-    float t = gTime;
+    float t = sim_time;
+    const float sXY = ScaleXY();
+    const float dynScale = DynamicsScaleFromBox(sXY);
+
+    // set audio end time once
+    if (gAudioEndTime < 0.0f) {
+        gAudioEndTime = clap_weights.back().value("end", 0.0f);
+    }
+    bool songEnded = (gAudioEndTime > 0.0f && t >= gAudioEndTime);
+
+    if (songEnded) {
+        if (!frozen) {
+            // one-time freeze action
+            for (size_t i = 0; i < velocity.size(); ++i) {
+                velocity[i] = {0,0,0};
+                acceleration[i] = {0,0,0};
+                // optional: lock them to current altitude target
+                position[i].z = clampf(position[i].z, Z_MIN, Z_MAX);
+            }
+
+            // optional: set params to something stable for HUD
+            P = Neutral;
+            P.jitter = 0.0f;
+
+            frozen = true;
+        }
+        return; // stop updating positions entirely
+    }
 
 
     if (gNextResetIndex < (int)gResetTimes.size()) {
@@ -556,12 +636,12 @@ void UpdateBoids(float dt, const std::vector<Vec3>& targets){
 
         // trigger when current time crosses the reset timestamp
         if (gLastBoidsTime < resetT && t >= resetT) {
-            std::cerr << "Resetting BoidParams at t=" << resetT << "\n";
+            // std::cerr << "Resetting BoidParams at t=" << resetT << "\n";
             
-            // Reset parameters to neutral
-            std::cerr << "Before reset vmax=" << P.vmax << "\n";
+            // // Reset parameters to neutral
+            // std::cerr << "Before reset vmax=" << P.vmax << "\n";
             P = Neutral;
-            std::cerr << "After reset vmax=" << P.vmax << "\n";
+            // std::cerr << "After reset vmax=" << P.vmax << "\n";
 
             //Reset velocities so old emotion doesn't persist
             ResetVelocities();
@@ -570,19 +650,53 @@ void UpdateBoids(float dt, const std::vector<Vec3>& targets){
     }
     gLastBoidsTime = t;
 
-    auto w = GetEmotionWeights(t);
-    gLastWeights = w; 
-    ApplyEmotionHard(w,P);
+    //update emotion once a every some time
+    auto seg = GetEmotionSegment(t);
+    if (seg.valid && (seg.start != gAppliedSegStart || seg.end != gAppliedSegEnd)) {
+        gAppliedSegStart = seg.start;
+        gAppliedSegEnd   = seg.end;
 
+        auto weights = GetEmotionWeights(t);
+        last_weights = weights;
+        
+        
+        P = ApplyEmotionHard(weights, dynScale);
+    }
 
-    int n = gPos.size();
+    int n = position.size();
     if ((int)targets.size() != n) return;
+
+    const Vec3 c = BoxCenter();
+    const float margin_xy = std::max(0.10f, cfg.cbf_config.safety_radius * 0.5f);
+    const float targetXYScale = FitTargetsToBoxScale(targets, c, margin_xy);
+    auto ScaleTargetXY = [&](Vec3 t){
+        Vec3 d = sub(t, c);
+        d.x *= targetXYScale;
+        d.y *= targetXYScale;
+        d.z = 0.0f; // keep goal horizontal; altitude handled separately in Z
+        return add(c, d);
+    };
+    
+    float desired_spacing = std::max(cfg.cbf_config.safety_radius * 1.10f, P.r_sep * 0.60f);
+    float avail_half_x = std::max(0.10f, BoxHalfX() - margin_xy);
+    float avail_half_y = std::max(0.10f, BoxHalfY() - margin_xy);
+    float avail_area = (2.0f * avail_half_x) * (2.0f * avail_half_y);
+    float needed_area = (float)n * 0.866f * desired_spacing * desired_spacing;
+    float crowd_ratio = needed_area / std::max(avail_area, 1e-3f);
+    float goal_crowd_scale = clampf(1.0f / std::sqrt(std::max(1.0f, crowd_ratio)), 0.35f, 1.0f);
+    float sep_crowd_boost = clampf(1.0f + 0.35f * std::max(0.0f, crowd_ratio - 1.0f), 1.0f, 1.8f);
+    const float motion_gain = 1.0f;
+    const float vmax_eff = P.vmax * motion_gain;
+    const float amax_eff = P.amax * motion_gain;
+    const float alt_lo = Z_MIN + 0.08f;
+    const float alt_hi = Z_MAX - 0.08f;
+
     //for large swarms, reduces pair checks to ~N*(N/stride)
     int stride = std::max(1, n/250);
 
     for(int i=0;i<n;i++){
-        Vec3 pi = gPos[i];
-        Vec3 vi = gVel[i];
+        Vec3 pi = position[i];
+        Vec3 vi = velocity[i];
 
         //collects for three classic boids params
         Vec3 fsep{0,0,0}, sumPos{0,0,0}, sumVel{0,0,0};
@@ -590,14 +704,14 @@ void UpdateBoids(float dt, const std::vector<Vec3>& targets){
 
         //seperation: pushes away if drones within r_sep
         for(int j=(i+1)%stride;j<n;j+=stride){
-            Vec3 d = sub(gPos[j], pi);
+            Vec3 d = sub(position[j], pi);
             float d2 = dot(d,d);
             if(d2 < P.r_sep*P.r_sep && d2>1e-6f)
                 fsep = add(fsep, mul(d, -1.0f/std::sqrt(d2)));
             //alignment/cohesion collects within r_nei
             if(d2 < P.r_nei*P.r_nei){
-                sumPos = add(sumPos, gPos[j]);
-                sumVel = add(sumVel, gVel[j]);
+                sumPos = add(sumPos, position[j]);
+                sumVel = add(sumVel, velocity[j]);
                 nAliCoh++;
             }
         }
@@ -614,33 +728,50 @@ void UpdateBoids(float dt, const std::vector<Vec3>& targets){
         }
 
         //goal seeking towards formation position
-        Vec3 fgoal = sub(targets[i], pi);
-        fgoal.y += (P.altitude - pi.y)*0.5f; //stablaizes altitude
+        Vec3 ti = ScaleTargetXY(targets[i]);
+
+        Vec3 fgoal = sub(ti, pi);
+        float bob = std::sin(sim_time * (0.8f + 1.2f * P.jitter) + i * 0.37f) * (0.4f * P.jitter);
+
+        float desiredAlt = P.altitude * (1.0f + 0.35f * P.jitter);
+        float altTarget = clampf(desiredAlt + bob, alt_lo, alt_hi);
+        fgoal.z += (altTarget - pi.z);   // Z is vertical
 
         //jitters to break perfect symmetry
-        Vec3 fjit = { (float)(rand()/double(RAND_MAX)-0.5)*P.jitter,
-                      (float)(rand()/double(RAND_MAX)-0.5)*0.3f*P.jitter,
-                      (float)(rand()/double(RAND_MAX)-0.5)*P.jitter };
+        Vec3 fjit = {   (float)(rand()/double(RAND_MAX)-0.5)*P.jitter,
+                        (float)(rand()/double(RAND_MAX)-0.5)*P.jitter,
+                        (float)(rand()/double(RAND_MAX)-0.5)*0.3f*P.jitter }; // smaller vertical jitter on Z
 
         
         //Weighted sum of directions and jitters, all normalized
         Vec3 acc{0,0,0};
-        acc = add(acc, mul(norm(fsep), P.k_sep));
+        acc = add(acc, mul(norm(fsep), P.k_sep * sep_crowd_boost));
         acc = add(acc, mul(norm(fali), P.k_ali));
         acc = add(acc, mul(norm(fcoh), P.k_coh));
-        acc = add(acc, mul(norm(fgoal), P.k_goal));
+        acc = add(acc, mul(norm(fgoal), P.k_goal * goal_crowd_scale));
         acc = add(acc, fjit);
 
-        //caps on acceleration, speed and position
-        acc = clampLen(acc, P.amax);
-        vi  = clampLen(add(vi, mul(acc, dt)), P.vmax);
+        //caps on acceleration, speed and 
+        acc = clampLen(acc, amax_eff);
+        acceleration[i] = acc;
+
+        //TODO
+        Vec3 v_nom  = clampLen(add(vi, mul(acc, dt)), vmax_eff);
+        
+        if (cbf_enabled) {
+            vi = cbf_manager.Solve(i, v_nom, position, velocity, vmax_eff, amax_eff, dt);
+        } else {
+            vi = v_nom;
+        }
+
         pi  = add(pi, mul(vi, dt));
         
         //bound to a rectangular box
-        clampToBox(pi);
-        //applyBoxConstraint(pi, vi);
+        if(!cbf_enabled){
+            clampToBox(pi);
+        }
 
-        gVel[i] = vi;
-        gPos[i] = pi;
+        velocity[i] = vi;
+        position[i] = pi;
     }
 }

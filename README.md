@@ -70,3 +70,23 @@ chmod +x pipeline.sh
 ./pipeline.sh
 
 ```
+
+## Trajectories
+
+use https://github.com/whoenig/uav_trajectories to convert xyz positions to Poly4D trajectory csv
+
+build the repo following their instruction and in the build folder, run something like
+```python3 ../scripts/generate_trajectory.py ../../../tmp_0.csv ../../../traj1.csv```
+
+
+## How to build osqp
+
+```
+cd visuals
+cd osqp
+git clone --recurse-submodules https://github.com/osqp/osqp.git
+mkdir -p build && cd build
+
+cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DOSQP_BUILD_TESTS=OFF
+cmake --build . -j
+```

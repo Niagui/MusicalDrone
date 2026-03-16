@@ -1,4 +1,5 @@
 import json
+import argparse
 import numpy as np
 import beat_track as bt
 import clap as cp
@@ -6,17 +7,44 @@ import utils
 import logger_config as logger
 from pathlib import Path
 
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+AUDIO = PROJECT_ROOT / "audio" / "testSong.mp3"
+
+def resolve_audio_path(audio_arg: str) -> Path:
+    audio_folder = PROJECT_ROOT / "audio"
+
+    # First: treat it as a direct path
+    candidate = Path(audio_arg)
+    if candidate.is_file():
+        return candidate.resolve()
+
+    # Second: treat it as a filename inside audio/
+    candidate_in_audio = audio_folder / audio_arg
+    if candidate_in_audio.is_file():
+        return candidate_in_audio.resolve()
+
+    raise FileNotFoundError(
+        f"Could not find audio file '{audio_arg}'. "
+        f"Tried '{candidate}' and '{candidate_in_audio}'."
+    )
 
 def main():
-    PROJECT_ROOT = Path(__file__).resolve().parents[1]
-    AUDIO = PROJECT_ROOT / "audio" / "testSong.mp3"
 
-    beat_times, _ = bt.beat_track(AUDIO)
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--audio",
+        default="testSong.mp3",
+        help="Audio file path, or filename inside the audio/ folder",
+    )
+    args = parser.parse_args()
+    audio = resolve_audio_path(args.audio)
+
+    beat_times, _ = bt.beat_track(audio)
     bt.group_beats(beat_times, save_to_json=True)
     utils.check_environment()
     clap = cp.Clap()
     clap.retrieve_info()
-    result = clap.analyze_audio(AUDIO)
+    result = clap.analyze_audio(audio)
 
     logger.log_debug("reading from llm variations")
     with open("json/llm_weights.json", "r") as f:

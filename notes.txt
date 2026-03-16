@@ -1,0 +1,3 @@
+battery ~3min cont flight might die before song finish
+
+get old traj file b66a2da

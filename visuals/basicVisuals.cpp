@@ -42,16 +42,19 @@
 #define MINIAUDIO_IMPLEMENTATION
 #include "miniaudio.h"
 
+#include "config.h" 
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
 
+Config cfg;
 
 // --- GLOBAL VARIABLES ---
+const float DRONE_RADIUS = 0.092; 
 
 int   gWinW = 1200, gWinH = 800; //window size
-int   gDroneCount = 15;        // +/- to change
+int   gDroneCount = cfg.drone_config.num_drones;        // +/- to change
 float gTime = 0.0f;             // seconds (advances when playing)
 static float gSimTime = 0.0f;               // simulation time in seconds
 static const float kFixedDt = 1.0f / 60.0f; // 60 FPS sim step
@@ -69,8 +72,8 @@ float gCamR     = 12.0f;  // radius
 int   gLastX=0, gLastY=0; bool gDragging=false;
 
 // Formation 
-enum Form { CIRCLE=1, LINE, WAVE, HEART };
-Form  gForm = CIRCLE;
+enum Form { CIRCLE=1, LINE=2, WAVE, HEART };
+Form  gForm = LINE;
 
 float gAltitude = 1.6f;   // Y height of all formations
 float gSpeed    = 1.0f;   // Global animation speed
@@ -89,6 +92,12 @@ bool gAudioInit = false;
 static bool gAudioLoaded = false;      // Track if sound file is loaded
 static bool gAudioSyncMode = false;    // When true, sync visuals to audio
 static float gAudioDuration = 0.0f;    // Total audio length in seconds
+
+
+//collision prints
+static int   gFrameIndex = 0;
+static float gLastCollisionPrintTime = -1e9f;
+
 
 //music helper functions
 void StartAudio(const std::string &filename = "testSong.mp3")
@@ -198,41 +207,56 @@ static std::vector<Vec3> SampleCircle(int n, float radius, float phase) {
     std::vector<Vec3> pts(n);
     for(int i=0;i<n;i++){
         float a = (i/(float)n)*2.0f*M_PI + phase;
-        pts[i] = { radius*std::cos(a), 0.0f, radius*std::sin(a) };
+        pts[i] = { radius*std::cos(a), radius*std::sin(a), 0.0f};
     }
     return pts;
 }
 
 // returns N points on a center horizontal line
-static std::vector<Vec3> SampleLine(int n, float length){
-    std::vector<Vec3> pts(n);
-    for(int i=0;i<n;i++){
-        float x = ((i/(float)(n-1)) - 0.5f) * length;
-        pts[i] = { x, 0.0f, 0.0f };
+static std::vector<Vec3> SampleLine(int n)
+{
+    float init_dist = cfg.drone_config.init_dist;
+
+    std::vector<Vec3> pts;
+    pts.reserve(n);
+
+    if (n <= 0) return pts;
+
+    if (n == 1) {
+        pts.push_back({0.0f, 0.0f, 0.0f});
+        return pts;
+    }
+
+    float span = init_dist * (n - 1);
+    float y0   = -0.5f * span;
+
+    for (int i = 0; i < n; i++) {
+        float y = y0 + i * init_dist;
+        pts.push_back({0.0f, y, 0.0f});
     }
     return pts;
 }
 
-// returns N points of wave across X, amp set on Z
+// returns N points of wave across X, amp set on Y
 static std::vector<Vec3> SampleWave(int n, float width, float amp, float phase){
     std::vector<Vec3> pts(n);
     for(int i=0;i<n;i++){
         float u = (i/(float)(n-1));
         float x = (u - 0.5f) * width;
-        float z = std::sin(u*2.0f*M_PI + phase) * amp;
-        pts[i] = { x, 0.0f, z };
+        float y = std::sin(u*2.0f*M_PI + phase) * amp;
+        pts[i] = { x, y, 0.0f };
     }
     return pts;
 }
 
-// returns N points on heart curve on XZ
+// returns N points on heart curve on XY
 static std::vector<Vec3> SampleHeart(int n, float scale, float phase){
     std::vector<Vec3> pts(n);
     for(int i=0;i<n;i++){
         float t = (i/(float)n)*2.0f*M_PI + phase;
         float x = 16*std::pow(std::sin(t),3);
         float y = 13*std::cos(t) - 5*std::cos(2*t) - 2*std::cos(3*t) - std::cos(4*t);
-        pts[i] = { (x/16.0f)*scale, 0.0f, (y/13.0f)*scale };
+        pts[i] = { (x/16.0f)*scale, (y/13.0f)*scale, 0.0f };
     }
     return pts;
 }
@@ -249,28 +273,28 @@ static void DrawBoundsBox()
     glDisable(GL_LIGHTING);
     glColor3f(0.9f, 0.3f, 0.3f); // reddish box
 
-    // --- bottom rectangle (at y0) ---
+    // --- bottom rectangle (z = z0) ---
     glBegin(GL_LINE_LOOP);
         glVertex3f(x0, y0, z0);
         glVertex3f(x1, y0, z0);
-        glVertex3f(x1, y0, z1);
-        glVertex3f(x0, y0, z1);
+        glVertex3f(x1, y1, z0);
+        glVertex3f(x0, y1, z0);
     glEnd();
 
-    // --- top rectangle (at y1) ---
+    // --- top rectangle (z = z1) ---
     glBegin(GL_LINE_LOOP);
-        glVertex3f(x0, y1, z0);
-        glVertex3f(x1, y1, z0);
+        glVertex3f(x0, y0, z1);
+        glVertex3f(x1, y0, z1);
         glVertex3f(x1, y1, z1);
         glVertex3f(x0, y1, z1);
     glEnd();
 
-    // --- vertical edges ---
+    // --- vertical edges (vary z, keep x/y fixed) ---
     glBegin(GL_LINES);
-        glVertex3f(x0, y0, z0); glVertex3f(x0, y1, z0);
-        glVertex3f(x1, y0, z0); glVertex3f(x1, y1, z0);
-        glVertex3f(x1, y0, z1); glVertex3f(x1, y1, z1);
-        glVertex3f(x0, y0, z1); glVertex3f(x0, y1, z1);
+        glVertex3f(x0, y0, z0); glVertex3f(x0, y0, z1);
+        glVertex3f(x1, y0, z0); glVertex3f(x1, y0, z1);
+        glVertex3f(x1, y1, z0); glVertex3f(x1, y1, z1);
+        glVertex3f(x0, y1, z0); glVertex3f(x0, y1, z1);
     glEnd();
 
     glEnable(GL_LIGHTING);
@@ -279,12 +303,7 @@ static void DrawBoundsBox()
 // Compute the target slots for current formation at time gTime
 static void ResampleSlots(){
     float t = gTime;
-    switch(gForm){
-        case CIRCLE: gSlots = SampleCircle(gDroneCount, 3.0f, gSpin? 0.25f*t : 0.0f); break;
-        case LINE:   gSlots = SampleLine  (gDroneCount, 10.0f);                         break;
-        case WAVE:   gSlots = SampleWave  (gDroneCount, 10.0f, 1.3f, 1.4f*t);           break;
-        case HEART:  gSlots = SampleHeart (gDroneCount, 1.9f,  gSpin? 0.15f*t : 0.0f);  break;
-    }
+    gSlots = SampleLine(gDroneCount);
 }
 
 // Resize/initialize arrays and seed positions
@@ -294,9 +313,9 @@ static void ResizeArrays(){
     gPos.resize  (gDroneCount);
     ResizeBoids(gDroneCount);
     // Place initial positions on a small disc around origin at altitude
-    auto init = SampleCircle(gDroneCount, 1.2f, 0.0f);
+    auto init = SampleLine(gDroneCount);
     for(int i=0;i<gDroneCount;i++){
-        gPos[i] = { init[i].x, gAltitude, init[i].z };
+        gPos[i] = { init[i].x, init[i].y, gAltitude };
     }
 }
 
@@ -308,7 +327,7 @@ static void UpdateFollowSlots(float dt) {
     int stride = std::max(1, gDroneCount/250);
 
     for (int i=0; i<gDroneCount; i++) {
-        Vec3 target = { gSlots[i].x, gAltitude, gSlots[i].z };
+        Vec3 target = { gSlots[i].x, gSlots[i].y, gAltitude};
         Vec3 p = gPos[i];
 
         //move toward target (clamped)
@@ -339,7 +358,55 @@ static void UpdateFollowSlots(float dt) {
     }
 }
 
+// collision check: if collide then print smth
+static void CheckCollisions(const std::vector<Vec3>& pos, float nowSimTime)
+{
+    const float r = DRONE_RADIUS;
+    const float touch2 = 2*r * 2* r + 0.05;
+
+    const int n = (int)pos.size();
+    if (n < 2) return;
+
+    //check every 5 frames
+    if ((gFrameIndex % 5) != 0) return;
+
+    const float printCooldown = 0.20f; //0.2 sec
+    if (nowSimTime - gLastCollisionPrintTime < printCooldown) return;
+
+    // For big swarms, don't do full O(n^2) every time.
+    // Use a stride to reduce checks
+    const int stride = std::max(1, n / 200);
+
+    int printed = 0;
+    const int maxPrintPerCall = 5;
+
+    for (int i = 0; i < n && printed < maxPrintPerCall; ++i) {
+        const Vec3& a = pos[i];
+
+        // sample some j's instead of all and find euclidean distance between drones
+        for (int j = i + 1; j < n && printed < maxPrintPerCall; j += stride) {
+            const Vec3& b = pos[j];
+            float dx = a.x - b.x;
+            float dy = a.y - b.y;
+            float dz = a.z - b.z;
+            float d2 = dx*dx + dy*dy + dz*dz;
+
+            //if inner distance < 2r they collided
+            if (d2 <= touch2) {
+                std::cout << "[COLLISION] t=" << nowSimTime
+                          << " drone " << i << " & drone " << j
+                          << " dist=" << std::sqrt(d2) << "\n";
+                ++printed;
+                gLastCollisionPrintTime = nowSimTime;
+            }
+        }
+    }
+}
+
+
+//-------------------------------------------------------------------
 //data
+//-------------------------------------------------------------------
 
 auto& labels = GetEmotionLabels();
 
@@ -351,12 +418,12 @@ static void ApplyCamera(){
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt(ex,ey,ez,  0,1.5,0,  0,1,0);
+    gluLookAt(ex,ey,ez,  0,0,1.5,  0,0,1);
 }
 
 // Draw a drone (cone)
 static void DrawDrone(){
-    glutSolidCone(0.06, 0.15, 10, 1);
+    glutSolidCone(DRONE_RADIUS, 0.022, 6, 1);       //92mm * 92mm* 22mm
 }
 
 static void DrawBitmapString(float x, float y, void* font, const char* s) {
@@ -420,8 +487,8 @@ static void Display(){
     glColor3f(0.20f,0.20f,0.23f);
     glBegin(GL_LINES);
     for(int i=-10;i<=10;i++){
-        glVertex3f((float)i, 0.0f, -10.0f); glVertex3f((float)i, 0.0f, 10.0f);
-        glVertex3f(-10.0f, 0.0f, (float)i); glVertex3f(10.0f, 0.0f, (float)i);
+        glVertex3f((float)i, -10.0f, 0.0f); glVertex3f((float)i,  10.0f, 0.0f);
+        glVertex3f(-10.0f, (float)i, 0.0f); glVertex3f( 10.0f, (float)i, 0.0f); 
     }
     glEnd();
     glEnable(GL_LIGHTING);
@@ -437,7 +504,7 @@ static void Display(){
         const Vec3 &p = positions[i];
         glPushMatrix();
             glTranslatef(p.x, p.y, p.z);
-            glRotatef(-90.0f, 1,0,0); // drone cone points up
+            // glRotatef(-90.0f, 1,0,0); // drone cone points up
             float u = i/(float)gDroneCount;
             glColor3f(0.7f, 0.85f*u, 1.0f - 0.6f*u);
             DrawDrone();
@@ -539,6 +606,10 @@ static void Idle(){
     if (gPlaying) {
         UpdateBoids(dt * gSpeed, gSlots);
     }
+    gFrameIndex++;
+    const std::vector<Vec3>& positions = gUseBoids ? GetBoidPositions() : gPos;
+    CheckCollisions(positions, gSimTime);
+
 
     glutPostRedisplay();
 }
@@ -589,45 +660,43 @@ static void Keyboard(unsigned char key, int, int){
             }
             break;
             
-        case '+': case '=': 
-            gDroneCount = std::min(3000, gDroneCount + 1); 
-            ResizeArrays(); 
-            break;
+        // case '+': case '=': 
+        //     gDroneCount = std::min(3000, gDroneCount + 1); 
+        //     ResizeArrays(); 
+        //     break;
             
-        case '-': case '_': 
-            gDroneCount = std::max(1, gDroneCount - 1); 
-            ResizeArrays(); 
-            break;
+        // case '-': case '_': 
+        //     gDroneCount = std::max(1, gDroneCount - 1); 
+        //     ResizeArrays(); 
+        //     break;
             
-        case '1': gForm = CIRCLE; break;
-        case '2': gForm = LINE;   break;
-        case '3': gForm = WAVE;   break;
-        case '4': gForm = HEART;  break;
+        // case '1': gForm = CIRCLE; break;
+        // case '2': gForm = LINE;   break;
+        // case '3': gForm = WAVE;   break;
+        // case '4': gForm = HEART;  break;
         
-        case 's': case 'S': 
-            gSpin = !gSpin; 
-            break;
+        // case 's': case 'S': 
+        //     gSpin = !gSpin; 
+        //     break;
             
-        case ',': 
-            gSpeed = clampf(gSpeed - 0.05f, 0.1f, 3.0f); 
-            std::cout << "Speed: " << gSpeed << "x\n";
-            break;
+        // case ',': 
+        //     gSpeed = clampf(gSpeed - 0.05f, 0.1f, 3.0f); 
+        //     std::cout << "Speed: " << gSpeed << "x\n";
+        //     break;
             
-        case '.': 
-            gSpeed = clampf(gSpeed + 0.05f, 0.1f, 3.0f); 
-            std::cout << "Speed: " << gSpeed << "x\n";
-            break;
+        // case '.': 
+        //     gSpeed = clampf(gSpeed + 0.05f, 0.1f, 3.0f); 
+        //     std::cout << "Speed: " << gSpeed << "x\n";
+        //     break;
             
-        // 'E': loads emotional labels and starts music
+        //'E': loads emotional labels and starts music
         case 'e': case 'E': {
             float t = gSimTime;  // Use current simulation time
             
             // Load emotion data
-            bool emotionsOk = ReloadAndApplyEmotions(t);
+            // bool emotionsOk = ReloadAndApplyEmotions(t);
             
-            if (emotionsOk) {
-                // Load audio file if not already loaded
-                if (!gAudioLoaded) {
+            if (!gAudioLoaded) {
                     StartAudio("testSong.mp3");
                 }
                 
@@ -653,10 +722,6 @@ static void Keyboard(unsigned char key, int, int){
                 } else {
                     gHudMsg = "Emotions loaded, Audio failed";
                     std::cerr << "ERROR: Failed to load audio\n";
-                }
-            } else {
-                gHudMsg = "Emotion load failed";
-                std::cerr << "ERROR: Failed to load emotions\n";
             }
             
             gHudUntil = gSimTime + 2.5f;
@@ -710,6 +775,7 @@ static void Motion(int x, int y){
 }
 
 int main(int argc, char** argv){
+    gDroneCount = cfg.drone_config.num_drones;
     // StartAudio();
     // std::this_thread::sleep_for(std::chrono::duration<float>(0.2));
     glutInit(&argc, argv);
