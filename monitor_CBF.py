@@ -17,7 +17,7 @@ from cflib.positioning.position_hl_commander import PositionHlCommander
 import pygame
 
 PATH = "trajectories.csv"
-AUDIO_PATH = "audio/testSong.mp3"
+AUDIO_PATH = "audio/oldTownRoad.mp3"
 TAKEOFF_HEIGHT = 1.0
 DEFAULT_VELOCITY = 0.5
 
