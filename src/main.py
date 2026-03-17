@@ -8,7 +8,7 @@ import logger_config as logger
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-AUDIO = PROJECT_ROOT / "audio" / "testSong.mp3"
+AUDIO = PROJECT_ROOT / "audio" / "oldTownRoad.mp3"
 
 def resolve_audio_path(audio_arg: str) -> Path:
     audio_folder = PROJECT_ROOT / "audio"

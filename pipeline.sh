@@ -33,5 +33,5 @@ python3 src/main.py --audio "$AUDIO_INPUT"    # writes data/output.json
 echo "[2/3] Compiling Waypoint Planner Program..."
 make trajectories -C visuals
 
-echo "[3/3] Running Waypoint Plannern Program..."
+echo "[3/3] Running Waypoint Planner Program..."
 ./visuals/traj > "$OUTPUT_CSV"
