@@ -29,6 +29,7 @@ uris = [
 commanders = {}
 loggers = {}
 audio_started = threading.Event()
+AUDIO_LEAD_S = 3.0
 
 stop_event = threading.Event()
 
@@ -39,11 +40,9 @@ stop_event = threading.Event()
 _takeoff_barrier: threading.Barrier | None = None
 _sequence_start_time: float = 0.0  # perf_counter timestamp at barrier release
 
-def _record_sequence_start() -> None:
-    """Barrier action — called exactly once, atomically, before threads resume."""
+def _record_sequence_start():
     global _sequence_start_time
-    _sequence_start_time = time.perf_counter()
-
+    _sequence_start_time = time.perf_counter() + AUDIO_LEAD_S
 
 # ---------------------------------------------------------------------------
 # CBF Performance Monitor
@@ -398,13 +397,6 @@ def make_commander(scf: SyncCrazyflie):
 
 
 def fly_sequence(scf: SyncCrazyflie, sequence):
-    """
-    Take off, execute CBF-filtered waypoint sequence, then land.
-
-    Checks stop_event between every waypoint so that a Ctrl+C in the main
-    thread can signal all fly_sequence threads to abort cleanly before
-    emergency_land is called.
-    """
     uri       = scf.cf.link_uri
     commander = commanders.get(uri)
     if commander is None:
@@ -417,26 +409,21 @@ def fly_sequence(scf: SyncCrazyflie, sequence):
     if cbf_filter is not None and uri not in loggers:
         cbf_filter.update_position(uri, np.array([0.0, 0.0, TAKEOFF_HEIGHT]))
 
+    # Trigger audio before the barrier so music plays during the lead window
+    if uri == sorted(uris)[0]:
+        print(f'[{uri}] Triggering audio playback ({AUDIO_LEAD_S}s lead)')
+        audio_started.set()
+
     print(f'[{uri}] Airborne — waiting at barrier')
 
-    # ------------------------------------------------------------------
-    # Synchronisation barrier: every drone waits here until ALL drones
-    # are airborne, then they all start counting time from the same t=0.
-    # The first thread through records the shared start time.
-    # ------------------------------------------------------------------
     global _sequence_start_time
     if _takeoff_barrier is not None:
         try:
             _takeoff_barrier.wait(timeout=15.0)
+            # _sequence_start_time set atomically by barrier action=_record_sequence_start
         except threading.BrokenBarrierError:
             print(f'[{uri}] Barrier broken — aborting')
             return
-
-    # Only the first (alphabetically) drone triggers audio so that it
-    # starts in sync with the sequence.
-    if uri == sorted(uris)[0]:
-        print(f'[{uri}] Triggering audio playback')
-        audio_started.set()
 
     if not sequence:
         print(f'[{uri}] No waypoints — hovering briefly')
