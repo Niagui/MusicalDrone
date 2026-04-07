@@ -1,0 +1,81 @@
+[
+  {
+    "start": 0.0,
+    "end": 4.0,
+    "feature": {
+      "moods": [
+        { "label": "sad", "score": 0.62 },
+        { "label": "atmospheric", "score": 0.21 },
+        { "label": "exciting", "score": 0.17 }
+      ],
+      "characteristics": [
+        { "label": "sparse", "score": 0.58 },
+        { "label": "airy", "score": 0.19 }
+      ],
+      "valence": [
+        { "label": "low valence", "score": 0.73 },
+        { "label": "moderate valence", "score": 0.20 }
+      ],
+      "arousal": [
+        { "label": "low arousal", "score": 0.61 },
+        { "label": "moderate arousal", "score": 0.26 }
+      ],
+      "tension": [
+        { "label": "moderate tension", "score": 0.54 },
+        { "label": "high tension", "score": 0.28 }
+      ]
+    }
+  },
+  {
+    "start": 4.0,
+    "end": 8.0,
+    "feature": {
+      "moods": [
+        { "label": "brave", "score": 0.49 },
+        { "label": "exciting", "score": 0.33 }
+      ],
+      "characteristics": [
+        { "label": "dense", "score": 0.47 },
+        { "label": "groovy", "score": 0.28 }
+      ],
+      "valence": [
+        { "label": "high valence", "score": 0.68 },
+        { "label": "moderate valence", "score": 0.22 }
+      ],
+      "arousal": [
+        { "label": "high arousal", "score": 0.64 },
+        { "label": "moderate arousal", "score": 0.21 }
+      ],
+      "tension": [
+        { "label": "high tension", "score": 0.57 },
+        { "label": "moderate tension", "score": 0.31 }
+      ]
+    }
+  },
+  {
+    "start": 8.0,
+    "end": 12.0,
+    "feature": {
+      "moods": [
+        { "label": "happy", "score": 0.52 },
+        { "label": "exciting", "score": 0.29 }
+      ],
+      "characteristics": [
+        { "label": "bright", "score": 0.50 },
+        { "label": "groovy", "score": 0.24 }
+      ],
+      "valence": [
+        { "label": "high valence", "score": 0.77 },
+        { "label": "moderate valence", "score": 0.14 }
+      ],
+      "arousal": [
+        { "label": "high arousal", "score": 0.59 },
+        { "label": "moderate arousal", "score": 0.25 }
+      ],
+      "tension": [
+        { "label": "low tension", "score": 0.46 },
+        { "label": "moderate tension", "score": 0.34 }
+      ]
+    }
+  }
+]
