@@ -1,4 +1,6 @@
 UNAME := $(shell uname)		#check your os
+APP := drones
+SONG ?= ../audio/testSong.mp3
 
 ifeq ($(UNAME), Darwin)
 LDFLAGS = -framework OpenGL -framework GLUT	# macos
@@ -12,11 +14,15 @@ OSQP_FLAGS = -Iosqp/osqp/include/public \
 			 -Losqp/osqp/build/out -losqp -lm \
 			 -Wl,-rpath,'$$ORIGIN/osqp/osqp/build/out'
 
+.PHONY: basicVisuals trajectories osqp_test run
+
 basicVisuals:
-	$(CXX) -std=c++17 cbf_solver.cpp basicVisuals.cpp boids.cpp $(LDFLAGS) $(OSQP_FLAGS) -o drones
+	$(CXX) -std=c++17 cbf_solver.cpp basicVisuals.cpp boids.cpp $(LDFLAGS) $(OSQP_FLAGS) -o $(APP)
 
 trajectories:
 	$(CXX) -std=c++17 cbf_solver.cpp simulateBoids.cpp boids.cpp $(LDFLAGS) $(OSQP_FLAGS) -o traj
 
 osqp_test:
 	$(CXX) -std=c++17 osqp_test.cpp $(OSQP_FLAGS) -o osqp_test
+
+

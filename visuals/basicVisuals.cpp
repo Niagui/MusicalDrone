@@ -35,6 +35,7 @@
 #include <cstdio>
 #include <iostream>
 #include <filesystem>
+#include <string>
 
 #include <thread>
 #include <chrono>
@@ -64,6 +65,7 @@ bool  gUseBoids = true;        // b toggles, true by default
 static std::string gHudMsg;
 static char gHudBuf[128];
 static float gHudUntil = 0.0; 
+static const float kLineToCircleTime = 1.2f;
 
 // Sphere cam params
 float gCamTheta = 0.7f;   // azimuth
@@ -84,6 +86,17 @@ std::vector<Vec3> gSlots; //target position
 
 static inline float clampf(float x, float lo, float hi){ return x<lo?lo:(x>hi?hi:x); }
 static inline float Lerp(float a, float b, float t) { return a + (b-a)*t; }
+static inline float smooth01(float x) {
+    x = clampf(x, 0.0f, 1.0f);
+    return x * x * (3.0f - 2.0f * x);
+}
+static inline Vec3 LerpVec3(const Vec3& a, const Vec3& b, float t) {
+    return {
+        Lerp(a.x, b.x, t),
+        Lerp(a.y, b.y, t),
+        Lerp(a.z, b.z, t)
+    };
+}
 
 //music
 ma_engine gEngine;
@@ -92,6 +105,8 @@ bool gAudioInit = false;
 static bool gAudioLoaded = false;      // Track if sound file is loaded
 static bool gAudioSyncMode = false;    // When true, sync visuals to audio
 static float gAudioDuration = 0.0f;    // Total audio length in seconds
+static const char* kDefaultAudioFile = "testSong.mp3";
+static std::string gAudioInputPath = kDefaultAudioFile;
 
 
 //collision prints
@@ -99,8 +114,97 @@ static int   gFrameIndex = 0;
 static float gLastCollisionPrintTime = -1e9f;
 
 
+static std::filesystem::path ResolveAudioPath(const std::string& filename)
+{
+    namespace fs = std::filesystem;
+
+    fs::path input(filename);
+    std::vector<fs::path> candidates;
+
+    if (input.is_absolute()) {
+        candidates.push_back(input);
+    } else {
+        fs::path cwd = fs::current_path();
+        candidates.push_back(cwd / input);
+        candidates.push_back(cwd / "audio" / input);
+        candidates.push_back(cwd.parent_path() / "audio" / input);
+    }
+
+    std::error_code ec;
+    for (const fs::path& candidate : candidates) {
+        if (fs::exists(candidate, ec)) {
+            return candidate.lexically_normal();
+        }
+        ec.clear();
+    }
+
+    if (input.is_absolute()) {
+        return input.lexically_normal();
+    }
+
+    return (fs::current_path() / input).lexically_normal();
+}
+
+static void PrintUsage(const char* exeName)
+{
+    std::cout << "Usage: " << exeName << " [song-path]\n";
+    std::cout << "   or: " << exeName << " --song <song-path>\n";
+    std::cout << "Example: " << exeName << " ../audio/testSong.mp3\n";
+}
+
+static void ParseCommandLine(int* argc, char** argv)
+{
+    std::vector<char*> filteredArgs;
+    filteredArgs.reserve(*argc + 1);
+    filteredArgs.push_back(argv[0]);
+
+    bool audioPathSet = false;
+    const std::string songPrefix = "--song=";
+
+    for (int i = 1; i < *argc; ++i) {
+        std::string arg = argv[i];
+
+        if (arg == "--help" || arg == "-h") {
+            PrintUsage(argv[0]);
+            std::exit(0);
+        }
+
+        if (arg == "--song" || arg == "-s") {
+            if (i + 1 >= *argc) {
+                std::cerr << "Missing value for " << arg << "\n";
+                PrintUsage(argv[0]);
+                std::exit(1);
+            }
+
+            gAudioInputPath = argv[++i];
+            audioPathSet = true;
+            continue;
+        }
+
+        if (arg.rfind(songPrefix, 0) == 0) {
+            gAudioInputPath = arg.substr(songPrefix.size());
+            audioPathSet = true;
+            continue;
+        }
+
+        if (!audioPathSet && !arg.empty() && arg[0] != '-') {
+            gAudioInputPath = arg;
+            audioPathSet = true;
+            continue;
+        }
+
+        filteredArgs.push_back(argv[i]);
+    }
+
+    filteredArgs.push_back(nullptr);
+    for (int i = 0; i < static_cast<int>(filteredArgs.size()); ++i) {
+        argv[i] = filteredArgs[i];
+    }
+    *argc = static_cast<int>(filteredArgs.size()) - 1;
+}
+
 //music helper functions
-void StartAudio(const std::string &filename = "testSong.mp3")
+void StartAudio(const std::string &filename)
 {
     namespace fs = std::filesystem;
 
@@ -120,11 +224,17 @@ void StartAudio(const std::string &filename = "testSong.mp3")
         ma_sound_uninit(&gMusic);
         gAudioLoaded = false;
     }
-    
-    // Build file path
-    fs::path cwd  = fs::current_path();
-    fs::path path = cwd.parent_path() / "audio" / filename;
+
+    gAudioDuration = 0.0f;
+    gAudioSyncMode = false;
+
+    fs::path path = ResolveAudioPath(filename);
     std::string pathStr = path.string();
+
+    if (!fs::exists(path)) {
+        std::cerr << "Audio file not found: " << pathStr << "\n";
+        return;
+    }
 
     std::cout << "Loading audio: " << pathStr << "\n";
 
@@ -261,6 +371,18 @@ static std::vector<Vec3> SampleHeart(int n, float scale, float phase){
     return pts;
 }
 
+static std::vector<Vec3> BlendSlots(const std::vector<Vec3>& from,
+                                    const std::vector<Vec3>& to,
+                                    float t)
+{
+    std::vector<Vec3> blended;
+    blended.reserve(from.size());
+    for (size_t i = 0; i < from.size() && i < to.size(); ++i) {
+        blended.push_back(LerpVec3(from[i], to[i], t));
+    }
+    return blended;
+}
+
 
 static void DrawBoundsBox()
 {
@@ -302,8 +424,11 @@ static void DrawBoundsBox()
 
 // Compute the target slots for current formation at time gTime
 static void ResampleSlots(){
-    float t = gTime;
-    gSlots = SampleLine(gDroneCount);
+    float blend = smooth01(gSimTime / kLineToCircleTime);
+    float circleRadius = (cfg.drone_config.init_dist * gDroneCount) / (2.0f * M_PI);
+    std::vector<Vec3> lineSlots = SampleLine(gDroneCount);
+    std::vector<Vec3> circleSlots = SampleCircle(gDroneCount, circleRadius, 0.0f);
+    gSlots = BlendSlots(lineSlots, circleSlots, blend);
 }
 
 // Resize/initialize arrays and seed positions
@@ -312,7 +437,7 @@ static void ResizeArrays(){
     gSlots.resize(gDroneCount);
     gPos.resize  (gDroneCount);
     ResizeBoids(gDroneCount);
-    // Place initial positions on a small disc around origin at altitude
+    // Start from a line; the target slots will quickly move to a circle.
     auto init = SampleLine(gDroneCount);
     for(int i=0;i<gDroneCount;i++){
         gPos[i] = { init[i].x, init[i].y, gAltitude };
@@ -600,11 +725,15 @@ static void Idle(){
     }
     SetSimTime(gSimTime);
     // 2) Update targets for this time
-    //ResampleSlots(); // still uses gTime internally
+    ResampleSlots();
 
     // 3) Advance positions - ONLY WHEN PLAYING
     if (gPlaying) {
-        UpdateBoids(dt * gSpeed, gSlots);
+        if (gUseBoids) {
+            UpdateBoids(dt * gSpeed, gSlots);
+        } else {
+            UpdateFollowSlots(dt * gSpeed);
+        }
     }
     gFrameIndex++;
     const std::vector<Vec3>& positions = gUseBoids ? GetBoidPositions() : gPos;
@@ -697,31 +826,32 @@ static void Keyboard(unsigned char key, int, int){
             // bool emotionsOk = ReloadAndApplyEmotions(t);
             
             if (!gAudioLoaded) {
-                    StartAudio("testSong.mp3");
-                }
-                
-                if (gAudioLoaded) {
-                    // Seek audio to current simulation time
-                    SeekAudioTo(t);
-                    
-                    // Start audio playback
-                    ma_sound_start(&gMusic);
-                    
-                    // Enable audio sync mode
-                    gAudioSyncMode = true;
-                    gPlaying = true;
-                    
-                    gHudMsg = "Emotions + Audio loaded and playing";
-                    std::cout << "\n=== AUDIO + EMOTIONS STARTED ===\n";
-                    std::cout << "Starting at t=" << t << "s\n";
-                    std::cout << "Audio duration: " << gAudioDuration << "s\n";
-                    std::cout << "Controls:\n";
-                    std::cout << "  Space = Pause/Resume\n";
-                    std::cout << "  R = Stop and reset\n";
-                    std::cout << "================================\n\n";
-                } else {
-                    gHudMsg = "Emotions loaded, Audio failed";
-                    std::cerr << "ERROR: Failed to load audio\n";
+                StartAudio(gAudioInputPath);
+            }
+
+            if (gAudioLoaded) {
+                // Seek audio to current simulation time
+                SeekAudioTo(t);
+
+                // Start audio playback
+                ma_sound_start(&gMusic);
+
+                // Enable audio sync mode
+                gAudioSyncMode = true;
+                gPlaying = true;
+
+                gHudMsg = "Emotions + Audio loaded and playing";
+                std::cout << "\n=== AUDIO + EMOTIONS STARTED ===\n";
+                std::cout << "Song: " << ResolveAudioPath(gAudioInputPath) << "\n";
+                std::cout << "Starting at t=" << t << "s\n";
+                std::cout << "Audio duration: " << gAudioDuration << "s\n";
+                std::cout << "Controls:\n";
+                std::cout << "  Space = Pause/Resume\n";
+                std::cout << "  R = Stop and reset\n";
+                std::cout << "================================\n\n";
+            } else {
+                gHudMsg = "Emotions loaded, Audio failed";
+                std::cerr << "ERROR: Failed to load audio\n";
             }
             
             gHudUntil = gSimTime + 2.5f;
@@ -735,6 +865,9 @@ static void Keyboard(unsigned char key, int, int){
                 StopAudioAndReset();
                 gSimTime = 0.0f;
                 gPlaying = false;
+                ResizeArrays();
+                ResampleSlots();
+                InitBoids(gDroneCount);
                 
                 gHudMsg = "Audio stopped, simulation reset to t=0";
                 gHudUntil = 1.5f;
@@ -776,8 +909,7 @@ static void Motion(int x, int y){
 
 int main(int argc, char** argv){
     gDroneCount = cfg.drone_config.num_drones;
-    // StartAudio();
-    // std::this_thread::sleep_for(std::chrono::duration<float>(0.2));
+    ParseCommandLine(&argc, argv);
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
     glutInitWindowSize(gWinW, gWinH);
@@ -804,6 +936,7 @@ int main(int argc, char** argv){
     std::cout << "\n=======================================\n";
     std::cout << "   DRONE SWARM VISUALIZER - AUDIO SYNC\n";
     std::cout << "=======================================\n";
+    std::cout << "Audio file: " << ResolveAudioPath(gAudioInputPath) << "\n";
     std::cout << "Controls:\n";
     std::cout << "  E = Load emotions + start audio\n";
     std::cout << "  Space = Pause/Resume\n";
@@ -811,6 +944,7 @@ int main(int argc, char** argv){
     std::cout << "  B = Toggle boids\n";
     std::cout << "  +/- = Change drone count\n";
     std::cout << "  1-4 = Formation shapes\n";
+    std::cout << "CLI: ./drones [song-path] or ./drones --song <song-path>\n";
     std::cout << "=======================================\n\n";
 
     glutMainLoop();

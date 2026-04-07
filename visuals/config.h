@@ -35,6 +35,11 @@ struct CBF_config
     bool verbose = false;
 };
 
+struct Boids_Param
+{
+    
+};
+
 struct Config
 {
     Drone_config drone_config;
