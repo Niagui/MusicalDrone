@@ -16,6 +16,8 @@ from cflib.positioning.position_hl_commander import PositionHlCommander
 
 import pygame
 
+from lights import LightController
+
 PATH = "trajectories.csv"
 AUDIO_PATH = "audio/oldTownRoad.mp3"
 TAKEOFF_HEIGHT = 1.0
@@ -264,6 +266,11 @@ class CBFSafetyFilter:
 cbf_filter: CBFSafetyFilter | None = None
 monitor:    CBFMonitor | None      = None
 
+#shared lighting controller created in main
+light_controller: LightController | None = None
+
+#keep one light thread per drone URI
+light_threads = {}
 
 # ---------------------------------------------------------------------------
 # Telemetry logging
@@ -316,6 +323,15 @@ def stop_logging(scf: SyncCrazyflie):
             pass
 
 
+# ---------------------------------------------------------------------------
+# Lighting
+# ---------------------------------------------------------------------------
+
+def setup_lights(scf: SyncCrazyflie):
+    #initialize LED deck for one drone
+
+    if light_controller is not None:
+        light_controller.init_drone_lights(scf)
 # ---------------------------------------------------------------------------
 # Audio
 # ---------------------------------------------------------------------------
@@ -424,6 +440,19 @@ def fly_sequence(scf: SyncCrazyflie, sequence):
         except threading.BrokenBarrierError:
             print(f'[{uri}] Barrier broken — aborting')
             return
+        
+    #start one light thread per drone after sync
+    if light_controller is not None:
+        light_controller.set_sequence_start(_sequence_start_time)
+
+        if uri not in light_threads:
+            t = threading.Thread(
+                target=light_controller.run_emotion_sync,
+                args=(scf,),
+                daemon=True
+            )
+            light_threads[uri] = t
+            t.start()
 
     if not sequence:
         print(f'[{uri}] No waypoints — hovering briefly')
@@ -512,6 +541,11 @@ def fly_sequence(scf: SyncCrazyflie, sequence):
     commander.land(velocity=DEFAULT_VELOCITY)
     print(f'[{uri}] Landed')
 
+    #turn lightd off after landing
+    if light_controller is not None:
+        light_controller.lights_off(scf)
+
+
     # Only the first drone handles audio fadeout to avoid multiple threads
     # calling stop simultaneously.
     if uri == sorted(uris)[0]:
@@ -528,6 +562,11 @@ def emergency_land(scf: SyncCrazyflie):
     """
     uri = scf.cf.link_uri
     print(f'[{uri}] EMERGENCY LAND')
+
+    #stop lighting if emergency landing enacted
+    if light_controller is not None:
+        light_controller.stop()
+
     try:
         commander = commanders.get(uri)
         if commander is not None:
@@ -542,6 +581,9 @@ def emergency_land(scf: SyncCrazyflie):
             time.sleep(2.5)
         except Exception:
             pass
+
+    if light_controller is not None:
+        light_controller.lights_off(scf)
 
 
 # ---------------------------------------------------------------------------
@@ -558,6 +600,16 @@ if __name__ == '__main__':
 
     cbf_filter = CBFSafetyFilter(uris, d_safe=0.5, gamma=2.0, dt=0.5, z_floor=0.3)
     print(f'[CBF] Initialised | d_safe={cbf_filter.d_safe}m  γ={cbf_filter.gamma}  z_floor={cbf_filter.z_floor}m')
+
+    #create shared light controller and load clap weights
+    light_controller = LightController()
+    light_controller.load_weights("json/clap_weights.json")
+    print('[LIGHTS] Initialized')
+
+    #create shared light controller and load clap weights
+    light_controller = LightController()
+    light_controller.load_weights("json/clap_weights.json")
+    print('[LIGHTS] Initialized')
 
     _takeoff_barrier = threading.Barrier(len(uris), action=_record_sequence_start)
     print(f'[SYNC] Takeoff barrier initialised for {len(uris)} drones')
@@ -580,6 +632,9 @@ if __name__ == '__main__':
             print('Creating commanders...')
             swarm.parallel_safe(make_commander)
 
+            print('Initializing lights...')
+            swarm.parallel_safe(setup_lights)
+
             print('Flying sequences...')
             swarm.parallel_safe(fly_sequence, args_dict=seq_args)
 
@@ -593,6 +648,10 @@ if __name__ == '__main__':
                 traceback.print_exc()
 
             stop_event.set()
+
+            if light_controller is not None:
+                light_controller.stop()
+
             time.sleep(1.5)
 
             try:
