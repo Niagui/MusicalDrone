@@ -17,6 +17,9 @@ class LightController:
         # Used to stop the light thread in case of shutdown/emergency
         self.stop_event = threading.Event()
 
+        # Signals that the shared sequence start time has been published.
+        self.sequence_start_event = threading.Event()
+
         # Shared show start time, set by monitor_CBF.py after takeoff barrier
         self.sequence_start_time = None
 
@@ -43,9 +46,14 @@ class LightController:
             self.enabled[uri] = False
             print(f"[{uri}] Light init failed: {e}")
 
-    def set_sequence(self, t0):
+    def set_sequence_start(self, t0):
         #drones use same start time so light changes are synched
         self.sequence_start_time = t0
+        self.sequence_start_event.set()
+
+    def set_sequence(self, t0):
+        # Backward-compatible alias for older callers.
+        self.set_sequence_start(t0)
 
     def strongest_weight_index(self, weights):
         #returns largest weight index, returns value 0-6
@@ -86,11 +94,14 @@ class LightController:
         if not self.enabled.get(uri, False):
             return
         
-        while self.sequence_start_time is None and not self.stop_event.is_set():
-            time.sleep(0.01)
+        while not self.stop_event.is_set():
+            if self.sequence_start_event.wait(timeout=0.05):
+                break
 
-        if self.sequence_start_time is None:
+        if self.stop_event.is_set() or self.sequence_start_time is None:
             return
+
+        sequence_start_time = self.sequence_start_time
         
         #track dominant weight index so light only changes when winning emotion changes
         last_idx = None
@@ -107,7 +118,7 @@ class LightController:
                 continue
 
             #sleep until segments begins
-            scheduled = self.sequence_start_time + start
+            scheduled = sequence_start_time + start
             sleep_s = scheduled - time.perf_counter()
 
             if sleep_s > 0:
@@ -137,3 +148,4 @@ class LightController:
     def stop(self):
         #stop all light threads
         self.stop_event.set()
+        self.sequence_start_event.set()
