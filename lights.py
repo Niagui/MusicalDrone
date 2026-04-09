@@ -138,8 +138,8 @@ class LightController:
                 )
                 last_idx = idx
 
-            #turn lights off when done
-            self.set_effect(scf, 0)
+        #turn lights off when done
+        self.set_effect(scf, 0)
 
     def lights_off(self, scf):
         #turn lights off
