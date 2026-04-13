@@ -36,6 +36,8 @@ static bool gUsePhraseAttractor = true; //  llm generated phrase attractor toggl
 static bool gPhrasePlanLoaded = false;
 static bool gPhrasePlanAttempted = false;
 static json phrase_plan_json;
+static bool gUseHierarchicalPlan = false;
+static bool gHierarchicalModeResolved = false;
 
 //basic physics
 static std::vector<Vec3> position, velocity, acceleration;  //position, velocity, acceleration
@@ -111,6 +113,56 @@ struct PhrasePlanSegment {
     std::string vertical_trend = "hold";
     std::string transition_style = "smooth";
     json beat_plan = json::array();
+    bool hierarchical = false;
+    float radius_base = 0.5f;
+    std::string rotation_mode = "none";
+    float rotation_bias = 0.0f;
+    float translation_bias_x = 0.0f;
+    float translation_bias_y = 0.0f;
+    float stability = 0.5f;
+    float persistence = 0.5f;
+    std::string motif_mode = "preserve";
+    Vec3 start_center = {0.5f, 0.5f, 0.5f}; // normalized [0, 1]
+    Vec3 end_center = {0.5f, 0.5f, 0.5f};   // normalized [0, 1]
+    float start_radius = 0.42f;
+    float end_radius = 0.42f;
+    float start_rotation = 0.0f;
+    float end_rotation = 0.0f;
+    int motif_seed = 0;
+    std::string beat_pattern = "breath";
+    float body_amplitude = 0.0f;
+    float pulse_gain = 0.0f;
+    float breath_gain = 0.0f;
+    float sway_gain = 0.0f;
+    float swirl_gain = 0.0f;
+    float tangential_gain = 0.0f;
+    float tightness = 0.5f;
+    float accent_gain = 0.0f;
+    float dz_pulse = 0.0f;
+    float dr_pulse = 0.0f;
+    float dtheta_pulse = 0.0f;
+    float separation_delta = 0.0f;
+    float alignment_delta = 0.0f;
+    float cohesion_delta = 0.0f;
+    float goal_weight_delta = 0.0f;
+    float jitter_delta = 0.0f;
+    bool valid = false;
+};
+
+struct HierarchicalFrame {
+    Vec3 center = {0.0f, 0.0f, 0.0f};
+    float radius_scale = 1.0f;
+    float rotation_angle = 0.0f;
+    float pulse_dz = 0.0f;
+    float local_sway = 0.0f;
+    float tangential_gain = 0.0f;
+    float tightness = 0.5f;
+    float phase = 0.0f;
+    float separation_delta = 0.0f;
+    float alignment_delta = 0.0f;
+    float cohesion_delta = 0.0f;
+    float goal_weight_delta = 0.0f;
+    float jitter_delta = 0.0f;
     bool valid = false;
 };
 
@@ -233,6 +285,16 @@ static std::filesystem::path find_json_file(const std::string &filename) {
     return {};  // empty path = not found
 }
 
+static bool UseHierarchicalPlan()
+{
+    if (!gHierarchicalModeResolved) {
+        const char* env = std::getenv("DRONE_USE_HIERARCHICAL");
+        gUseHierarchicalPlan = env != nullptr && std::string(env) != "0";
+        gHierarchicalModeResolved = true;
+    }
+    return gUseHierarchicalPlan;
+}
+
 bool LoadPhrasePlanFile(const std::string& path){
     std::ifstream f(path);
     if (!f) return false;
@@ -331,7 +393,20 @@ void EnsurePhrasePlanLoaded()
     if (!gUsePhraseAttractor || gPhrasePlanLoaded || gPhrasePlanAttempted) return;
     gPhrasePlanAttempted = true;
 
-    auto phrase_path = find_json_file("phrase_plan.json");
+    std::filesystem::path phrase_path;
+    if (UseHierarchicalPlan()) {
+        const char* env_path = std::getenv("DRONE_HIERARCHICAL_PLAN");
+        if (env_path && std::string(env_path).size() > 0) {
+            phrase_path = std::filesystem::path(env_path);
+        } else {
+            phrase_path = find_json_file("hierarchical_plan.json");
+        }
+    }
+
+    if (phrase_path.empty()) {
+        phrase_path = find_json_file("phrase_plan.json");
+    }
+
     if (phrase_path.empty()) {
         std::cerr << "WARNING: Could not find phrase_plan.json, using fixed targets.\n";
         return;
@@ -367,6 +442,79 @@ static PhrasePlanSegment GetPhrasePlanSegment(float t)
             seg.beat_plan = item["beat_plan"];
         } else {
             seg.beat_plan = json::array();
+        }
+        seg.hierarchical = item.contains("macro_state") || item.contains("body_state") || item.contains("attractor_frame");
+
+        if (seg.hierarchical) {
+            if (item.contains("macro_state") && item["macro_state"].is_object()) {
+                const auto& macro = item["macro_state"];
+                seg.radius_base = clampf(macro.value("radius_base", 0.5f), 0.0f, 1.0f);
+                seg.rotation_mode = macro.value("rotation_mode", std::string("none"));
+                seg.rotation_bias = clampf(macro.value("rotation_bias", 0.0f), -1.0f, 1.0f);
+                seg.stability = clampf(macro.value("stability", 0.5f), 0.0f, 1.0f);
+                seg.persistence = clampf(macro.value("persistence", 0.5f), 0.0f, 1.0f);
+                seg.motif_mode = macro.value("motif_mode", std::string("preserve"));
+
+                if (macro.contains("translation_bias") && macro["translation_bias"].is_object()) {
+                    const auto& bias = macro["translation_bias"];
+                    seg.translation_bias_x = clampf(bias.value("x", 0.0f), -1.0f, 1.0f);
+                    seg.translation_bias_y = clampf(bias.value("y", 0.0f), -1.0f, 1.0f);
+                }
+            }
+
+            if (item.contains("attractor_frame") && item["attractor_frame"].is_object()) {
+                const auto& attractor = item["attractor_frame"];
+                if (attractor.contains("start_center") && attractor["start_center"].is_object()) {
+                    const auto& start_center = attractor["start_center"];
+                    seg.start_center = {
+                        clampf(start_center.value("x", 0.5f), 0.0f, 1.0f),
+                        clampf(start_center.value("y", 0.5f), 0.0f, 1.0f),
+                        clampf(start_center.value("z", 0.5f), 0.0f, 1.0f)
+                    };
+                }
+                if (attractor.contains("end_center") && attractor["end_center"].is_object()) {
+                    const auto& end_center = attractor["end_center"];
+                    seg.end_center = {
+                        clampf(end_center.value("x", 0.5f), 0.0f, 1.0f),
+                        clampf(end_center.value("y", 0.5f), 0.0f, 1.0f),
+                        clampf(end_center.value("z", 0.5f), 0.0f, 1.0f)
+                    };
+                }
+                seg.start_radius = clampf(attractor.value("start_radius", 0.42f), 0.0f, 1.0f);
+                seg.end_radius = clampf(attractor.value("end_radius", seg.start_radius), 0.0f, 1.0f);
+                seg.start_rotation = attractor.value("start_rotation", 0.0f);
+                seg.end_rotation = attractor.value("end_rotation", seg.start_rotation);
+            }
+
+            if (item.contains("body_state") && item["body_state"].is_object()) {
+                const auto& body = item["body_state"];
+                seg.motif_seed = body.value("motif_seed", 0);
+                seg.beat_pattern = body.value("beat_pattern", std::string("breath"));
+                seg.body_amplitude = clampf(body.value("body_amplitude", 0.0f), 0.0f, 1.0f);
+                seg.pulse_gain = clampf(body.value("pulse_gain", 0.0f), 0.0f, 1.0f);
+                seg.breath_gain = clampf(body.value("breath_gain", 0.0f), 0.0f, 1.0f);
+                seg.sway_gain = clampf(body.value("sway_gain", 0.0f), 0.0f, 1.0f);
+                seg.swirl_gain = clampf(body.value("swirl_gain", 0.0f), 0.0f, 1.0f);
+                seg.tangential_gain = clampf(body.value("tangential_gain", 0.0f), 0.0f, 1.0f);
+                seg.tightness = clampf(body.value("tightness", 0.5f), 0.0f, 1.0f);
+                seg.accent_gain = clampf(body.value("accent_gain", 0.0f), 0.0f, 1.0f);
+                seg.dz_pulse = body.value("dz_pulse", 0.0f);
+                seg.dr_pulse = body.value("dr_pulse", 0.0f);
+                seg.dtheta_pulse = body.value("dtheta_pulse", 0.0f);
+
+                if (body.contains("boid_deltas") && body["boid_deltas"].is_object()) {
+                    const auto& deltas = body["boid_deltas"];
+                    seg.separation_delta = deltas.value("separation", 0.0f);
+                    seg.alignment_delta = deltas.value("alignment", 0.0f);
+                    seg.cohesion_delta = deltas.value("cohesion", 0.0f);
+                    seg.goal_weight_delta = deltas.value("goal_weight", 0.0f);
+                    seg.jitter_delta = deltas.value("jitter", 0.0f);
+                }
+
+                if (body.contains("accent_events") && body["accent_events"].is_array()) {
+                    seg.beat_plan = body["accent_events"];
+                }
+            }
         }
         seg.valid = true;
     };
@@ -463,6 +611,118 @@ static Vec3 EvaluatePhraseAttractor(float t)
     motion.x *= settle_gain;
     motion.y *= settle_gain;
     return add(base, motion);
+}
+
+static float Map01(float value, float lo, float hi)
+{
+    return lerpf(lo, hi, clampf(value, 0.0f, 1.0f));
+}
+
+static Vec3 MapNormalizedCenter(Vec3 normalized)
+{
+    const float xy_margin = 0.15f;
+    const float z_margin = 0.08f;
+    return {
+        Map01(normalized.x, X_MIN + xy_margin, X_MAX - xy_margin),
+        Map01(normalized.y, Y_MIN + xy_margin, Y_MAX - xy_margin),
+        Map01(normalized.z, Z_MIN + z_margin, Z_MAX - z_margin)
+    };
+}
+
+static float SeedPhase(int seed)
+{
+    int wrapped = std::abs(seed % 1000);
+    return 6.28318530717958647692f * (float)wrapped / 1000.0f;
+}
+
+static float ActionPulseWeight(const std::string& action)
+{
+    if (action == "settle") return -0.55f;
+    if (action == "hold") return 0.20f;
+    if (action == "rise" || action == "fall") return 0.75f;
+    return 1.0f;
+}
+
+static float EvaluateAccentPulse(const PhrasePlanSegment& phrase, float u)
+{
+    float pulse = 0.0f;
+    const float beat_count = std::max(1, phrase.beat_count);
+
+    for (const auto& event : phrase.beat_plan) {
+        if (!event.is_object()) continue;
+        int beat = std::max(1, event.value("beat", 1));
+        std::string action = event.value("action", std::string("hold"));
+        float event_u = clampf((float)(beat - 1) / beat_count, 0.0f, 1.0f);
+        float dist = (u - event_u) * beat_count;
+        float envelope = std::exp(-3.0f * dist * dist);
+        pulse += ActionPulseWeight(action) * envelope;
+    }
+
+    return clampf(pulse, -1.0f, 1.5f);
+}
+
+static float EvaluateBodyWave(const PhrasePlanSegment& phrase, float u, float t)
+{
+    float phase = SeedPhase(phrase.motif_seed);
+
+    if (phrase.beat_pattern == "heartbeat") {
+        float fast = std::sin((2.0f * 3.14159265358979323846f * 2.0f * u) + phase);
+        float doublet = std::sin((2.0f * 3.14159265358979323846f * 4.0f * u) + phase * 0.5f);
+        return 0.65f * fast + 0.35f * doublet;
+    }
+    if (phrase.beat_pattern == "stagger") {
+        return std::sin((2.0f * 3.14159265358979323846f * std::max(1, phrase.beat_count) * 0.5f * u) + phase);
+    }
+    if (phrase.beat_pattern == "glide") {
+        return std::sin((2.0f * 3.14159265358979323846f * u) + phase);
+    }
+
+    return std::sin((0.55f * t) + phase);
+}
+
+static HierarchicalFrame EvaluateHierarchicalFrame(float t)
+{
+    HierarchicalFrame frame;
+    PhrasePlanSegment phrase = GetPhrasePlanSegment(t);
+    if (!phrase.valid || !phrase.hierarchical) return frame;
+
+    float duration = std::max(1e-3f, phrase.end - phrase.start);
+    float u = clampf((t - phrase.start) / duration, 0.0f, 1.0f);
+    float ease = ApplyPhraseEase(u, phrase.transition_style);
+
+    Vec3 start_center = MapNormalizedCenter(phrase.start_center);
+    Vec3 end_center = MapNormalizedCenter(phrase.end_center);
+    frame.center = add(start_center, mul(sub(end_center, start_center), ease));
+
+    float radius_level = lerpf(phrase.start_radius, phrase.end_radius, ease);
+    float rotation_level = lerpf(phrase.start_rotation, phrase.end_rotation, ease);
+    float accent = EvaluateAccentPulse(phrase, u);
+    float body_wave = EvaluateBodyWave(phrase, u, t);
+    float combined_pulse = phrase.body_amplitude *
+                           (phrase.pulse_gain * accent + phrase.breath_gain * body_wave);
+
+    frame.radius_scale = clampf(
+        lerpf(0.72f, 1.28f, radius_level) + phrase.dr_pulse * combined_pulse,
+        0.60f,
+        1.35f
+    );
+    frame.rotation_angle = rotation_level;
+    if (phrase.rotation_mode != "none") {
+        frame.rotation_angle += phrase.dtheta_pulse * (0.55f * accent + 0.45f * body_wave);
+    }
+    frame.pulse_dz = phrase.dz_pulse * combined_pulse;
+    frame.local_sway = phrase.sway_gain * phrase.body_amplitude * body_wave * 0.16f;
+    frame.tangential_gain = phrase.tangential_gain * (0.30f + 0.70f * phrase.body_amplitude) *
+                            (1.0f + 0.35f * phrase.swirl_gain);
+    frame.tightness = phrase.tightness;
+    frame.phase = SeedPhase(phrase.motif_seed);
+    frame.separation_delta = phrase.separation_delta * (0.45f + 0.55f * std::abs(accent));
+    frame.alignment_delta = phrase.alignment_delta * (0.40f + 0.60f * std::abs(body_wave));
+    frame.cohesion_delta = phrase.cohesion_delta * (0.40f + 0.60f * std::abs(body_wave));
+    frame.goal_weight_delta = phrase.goal_weight_delta * (0.40f + 0.60f * (1.0f - phrase.tightness));
+    frame.jitter_delta = phrase.jitter_delta * (0.50f + 0.50f * std::abs(accent));
+    frame.valid = true;
+    return frame;
 }
 
 
@@ -836,12 +1096,49 @@ void UpdateBoids(float dt, const std::vector<Vec3>& targets){
 
     std::vector<Vec3> goalTargets = targets;
     Vec3 phraseAttractor = {0.0f, 0.0f, P.altitude};
+    bool usingHierarchicalFrame = false;
+    HierarchicalFrame hierarchicalFrame;
     if (gUsePhraseAttractor && gPhrasePlanLoaded) {
-        phraseAttractor = EvaluatePhraseAttractor(t);
-        for (Vec3& target : goalTargets) {
-            target.x += phraseAttractor.x;
-            target.y += phraseAttractor.y;
+        PhrasePlanSegment currentPlan = GetPhrasePlanSegment(t);
+        if (currentPlan.hierarchical) {
+            hierarchicalFrame = EvaluateHierarchicalFrame(t);
+            if (hierarchicalFrame.valid) {
+                usingHierarchicalFrame = true;
+                phraseAttractor = hierarchicalFrame.center;
+
+                float c = std::cos(hierarchicalFrame.rotation_angle);
+                float s = std::sin(hierarchicalFrame.rotation_angle);
+                for (Vec3& target : goalTargets) {
+                    Vec3 transformed = target;
+                    transformed.x *= hierarchicalFrame.radius_scale;
+                    transformed.y *= hierarchicalFrame.radius_scale;
+
+                    float rx = transformed.x * c - transformed.y * s;
+                    float ry = transformed.x * s + transformed.y * c;
+                    transformed.x = rx + phraseAttractor.x;
+                    transformed.y = ry + phraseAttractor.y;
+                    target = transformed;
+                }
+            }
         }
+
+        if (!usingHierarchicalFrame) {
+            phraseAttractor = EvaluatePhraseAttractor(t);
+            for (Vec3& target : goalTargets) {
+                target.x += phraseAttractor.x;
+                target.y += phraseAttractor.y;
+            }
+        }
+    }
+
+    BoidParams activeP = P;
+    if (usingHierarchicalFrame) {
+        activeP.k_sep = clampf(P.k_sep + hierarchicalFrame.separation_delta, K_SEP_MIN, K_SEP_MAX);
+        activeP.k_ali = clampf(P.k_ali + hierarchicalFrame.alignment_delta, 0.0f, 3.0f);
+        activeP.k_coh = clampf(P.k_coh + hierarchicalFrame.cohesion_delta, 0.0f, 3.0f);
+        activeP.k_goal = clampf(P.k_goal + hierarchicalFrame.goal_weight_delta, 0.20f, 3.0f);
+        activeP.jitter = clampf(P.jitter + hierarchicalFrame.jitter_delta, 0.0f, 1.0f);
+        activeP.r_nei = std::max(activeP.r_nei, activeP.r_sep + 0.05f);
     }
 
     const Vec3 c = BoxCenter();
@@ -855,7 +1152,7 @@ void UpdateBoids(float dt, const std::vector<Vec3>& targets){
         return add(c, d);
     };
     
-    float desired_spacing = std::max(cfg.cbf_config.safety_radius * 1.10f, P.r_sep * 0.60f);
+    float desired_spacing = std::max(cfg.cbf_config.safety_radius * 1.10f, activeP.r_sep * 0.60f);
     float avail_half_x = std::max(0.10f, BoxHalfX() - margin_xy);
     float avail_half_y = std::max(0.10f, BoxHalfY() - margin_xy);
     float avail_area = (2.0f * avail_half_x) * (2.0f * avail_half_y);
@@ -864,8 +1161,8 @@ void UpdateBoids(float dt, const std::vector<Vec3>& targets){
     float goal_crowd_scale = clampf(1.0f / std::sqrt(std::max(1.0f, crowd_ratio)), 0.35f, 1.0f);
     float sep_crowd_boost = clampf(1.0f + 0.35f * std::max(0.0f, crowd_ratio - 1.0f), 1.0f, 1.8f);
     const float motion_gain = 1.0f;
-    const float vmax_eff = P.vmax * motion_gain;
-    const float amax_eff = P.amax * motion_gain;
+    const float vmax_eff = activeP.vmax * motion_gain;
+    const float amax_eff = activeP.amax * motion_gain;
     const float alt_lo = Z_MIN + 0.08f;
     const float alt_hi = Z_MAX - 0.08f;
 
@@ -884,10 +1181,10 @@ void UpdateBoids(float dt, const std::vector<Vec3>& targets){
         for(int j=(i+1)%stride;j<n;j+=stride){
             Vec3 d = sub(position[j], pi);
             float d2 = dot(d,d);
-            if(d2 < P.r_sep*P.r_sep && d2>1e-6f)
+            if(d2 < activeP.r_sep*activeP.r_sep && d2>1e-6f)
                 fsep = add(fsep, mul(d, -1.0f/std::sqrt(d2)));
             //alignment/cohesion collects within r_nei
-            if(d2 < P.r_nei*P.r_nei){
+            if(d2 < activeP.r_nei*activeP.r_nei){
                 sumPos = add(sumPos, position[j]);
                 sumVel = add(sumVel, velocity[j]);
                 nAliCoh++;
@@ -909,27 +1206,50 @@ void UpdateBoids(float dt, const std::vector<Vec3>& targets){
         Vec3 ti = ScaleTargetXY(goalTargets[i]);
 
         Vec3 fgoal = sub(ti, pi);
-        float bob = std::sin(sim_time * (0.8f + 1.2f * P.jitter) + i * 0.37f) * (0.4f * P.jitter);
+        float bob_scale = usingHierarchicalFrame ? 0.14f : 0.40f;
+        float bob = std::sin(sim_time * (0.8f + 1.2f * activeP.jitter) + i * 0.37f) * (bob_scale * activeP.jitter);
 
-        float desiredAlt = P.altitude * (1.0f + 0.35f * P.jitter);
+        float desiredAlt = activeP.altitude * (1.0f + 0.35f * activeP.jitter);
         if (gUsePhraseAttractor && gPhrasePlanLoaded) {
             desiredAlt = lerpf(desiredAlt, phraseAttractor.z, 0.7f);
+        }
+        if (usingHierarchicalFrame) {
+            desiredAlt += hierarchicalFrame.pulse_dz;
         }
         float altTarget = clampf(desiredAlt + bob, alt_lo, alt_hi);
         fgoal.z += (altTarget - pi.z);   // Z is vertical
 
         //jitters to break perfect symmetry
-        Vec3 fjit = {   (float)(rand()/double(RAND_MAX)-0.5)*P.jitter,
-                        (float)(rand()/double(RAND_MAX)-0.5)*P.jitter,
-                        (float)(rand()/double(RAND_MAX)-0.5)*0.3f*P.jitter }; // smaller vertical jitter on Z
+        Vec3 fjit = {   (float)(rand()/double(RAND_MAX)-0.5f)*activeP.jitter,
+                        (float)(rand()/double(RAND_MAX)-0.5f)*activeP.jitter,
+                        (float)(rand()/double(RAND_MAX)-0.5f)*0.3f*activeP.jitter }; // smaller vertical jitter on Z
+
+        Vec3 fbody{0,0,0};
+        if (usingHierarchicalFrame) {
+            Vec3 rel = sub(pi, Vec3{phraseAttractor.x, phraseAttractor.y, pi.z});
+            rel.z = 0.0f;
+            Vec3 radial = norm(rel);
+            Vec3 tangential = {-radial.y, radial.x, 0.0f};
+            float local_phase = hierarchicalFrame.phase + i * (0.65f + 0.20f * hierarchicalFrame.tightness);
+            float sway = hierarchicalFrame.local_sway * std::sin(sim_time * 0.9f + local_phase);
+            fbody = add(fbody, mul(radial, sway));
+            fbody = add(
+                fbody,
+                mul(
+                    tangential,
+                    hierarchicalFrame.tangential_gain * std::cos(sim_time * 1.1f + local_phase)
+                )
+            );
+        }
 
         
         //Weighted sum of directions and jitters, all normalized
         Vec3 acc{0,0,0};
-        acc = add(acc, mul(norm(fsep), P.k_sep * sep_crowd_boost));
-        acc = add(acc, mul(norm(fali), P.k_ali));
-        acc = add(acc, mul(norm(fcoh), P.k_coh));
-        acc = add(acc, mul(norm(fgoal), P.k_goal * goal_crowd_scale));
+        acc = add(acc, mul(norm(fsep), activeP.k_sep * sep_crowd_boost));
+        acc = add(acc, mul(norm(fali), activeP.k_ali));
+        acc = add(acc, mul(norm(fcoh), activeP.k_coh));
+        acc = add(acc, mul(norm(fgoal), activeP.k_goal * goal_crowd_scale));
+        acc = add(acc, fbody);
         acc = add(acc, fjit);
 
         //caps on acceleration, speed and 

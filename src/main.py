@@ -6,6 +6,7 @@ import clap as cp
 import utils
 import logger_config as logger
 from pathlib import Path
+import hierarchical_choreography as hc
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 AUDIO = PROJECT_ROOT / "audio" / "oldTownRoad.mp3"
@@ -36,6 +37,21 @@ def main():
         default="testSong.mp3",
         help="Audio file path, or filename inside the audio/ folder",
     )
+    parser.add_argument(
+        "--hierarchical",
+        action="store_true",
+        help="Also generate json/hierarchical_plan.json for the new mind/body pipeline",
+    )
+    parser.add_argument(
+        "--hierarchical-output",
+        default="json/hierarchical_plan.json",
+        help="Output path for the hierarchical choreography plan JSON",
+    )
+    parser.add_argument(
+        "--hierarchical-config",
+        default="config/hierarchical_config.json",
+        help="Config file for the hierarchical choreography planner",
+    )
     args = parser.parse_args()
     audio = resolve_audio_path(args.audio)
 
@@ -45,6 +61,7 @@ def main():
     clap = cp.Clap()
     clap.retrieve_info()
     result = clap.analyze_audio(audio)
+    utils.save_as_json("clap_results", result, folder="")
 
     logger.log_debug("reading from llm variations")
     with open("json/llm_weights.json", "r") as f:
@@ -86,6 +103,16 @@ def main():
         print("weights", final_weights)
 
     utils.save_as_json("clap_weights", js, folder="")
+
+    if args.hierarchical:
+        # Reuse the fresh CLAP segments and beat tracker output we already computed
+        # so the new planner stays aligned with the current analysis path.
+        hc.generate_hierarchical_plan(
+            clap_segments=result,
+            beat_times=list(beat_times),
+            output_path=args.hierarchical_output,
+            config_path=args.hierarchical_config,
+        )
     return w
 
 
