@@ -33,8 +33,6 @@ class AttractorFrame:
     start_rotation: float
     end_rotation: float
     rotation_mode: str
-    transition_style: str
-    stability: float
     persistence: float
 
     def to_dict(self) -> Dict[str, Any]:
@@ -60,8 +58,6 @@ class AttractorFrame:
             "start_rotation": self.start_rotation,
             "end_rotation": self.end_rotation,
             "rotation_mode": self.rotation_mode,
-            "transition_style": self.transition_style,
-            "stability": self.stability,
             "persistence": self.persistence,
         }
 
@@ -122,7 +118,6 @@ def build_attractor_frames(
         adapt = clamp01(
             base_interp
             + (1.0 - macro.persistence) * inertia_gain
-            + 0.18 * feature.novelty
         )
         end_center = lerp_vec(state.center, target_center, adapt)
         end_radius = lerp(state.radius, macro.radius_base, adapt)
@@ -133,7 +128,6 @@ def build_attractor_frames(
                 macro.rotation_bias
                 * rotation_speed
                 * max(feature.duration, 0.25)
-                * (0.45 + 0.55 * (1.0 - macro.stability))
             )
         end_rotation = lerp(start_rotation, rotation_target, min(1.0, adapt + 0.12))
 
@@ -148,8 +142,6 @@ def build_attractor_frames(
                 start_rotation=float(start_rotation),
                 end_rotation=float(end_rotation),
                 rotation_mode=macro.rotation_mode,
-                transition_style=macro.transition_style,
-                stability=macro.stability,
                 persistence=macro.persistence,
             )
         )

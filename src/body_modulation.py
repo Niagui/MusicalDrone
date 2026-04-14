@@ -10,11 +10,9 @@ import numpy as np
 
 try:  # pragma: no cover - import style depends on entry point
     from .mind_planner import MacroState
-    from .phrase_generator import PhraseBlock, build_beat_plan
     from .structure_features import StructureFeature, clamp01
 except ImportError:  # pragma: no cover
     from mind_planner import MacroState  # type: ignore
-    from phrase_generator import PhraseBlock, build_beat_plan  # type: ignore
     from structure_features import StructureFeature, clamp01  # type: ignore
 
 
@@ -90,36 +88,47 @@ def choose_beat_pattern(
     macro: MacroState,
     motif_template: Sequence[float],
 ) -> str:
-    if macro.stability >= 0.74 and feature.intensity <= 0.46:
+    base_pattern = BODY_PATTERNS[int(motif_template[0] * len(BODY_PATTERNS)) % len(BODY_PATTERNS)]
+    if feature.motif_repeat_index > 0:
+        return base_pattern
+    if feature.intensity <= 0.35 and macro.persistence >= 0.65:
         return "breath"
-    if feature.intensity >= 0.62 and feature.beat_count >= 6:
+    if feature.intensity >= 0.65 and feature.beat_count >= 6:
         return "heartbeat"
-    if feature.novelty >= 0.48:
+    if feature.novelty >= 0.5:
         return "stagger"
-    return BODY_PATTERNS[int(motif_template[0] * len(BODY_PATTERNS)) % len(BODY_PATTERNS)]
+    return base_pattern
 
 
-def compat_plan_for_body(feature: StructureFeature, macro: MacroState) -> Dict[str, Any]:
-    return {
-        "section_role": macro.section_role,
-        "motion_mode": macro.motion_mode,
-        "height_level": macro.z_base,
-        "depth_level": macro.audience_bias,
-        "speed_level": macro.energy,
-        "vertical_trend": macro.vertical_trend,
-        "transition_style": macro.transition_style,
-    }
+def build_accent_events(feature: StructureFeature, beat_pattern: str) -> tuple[Dict[str, Any], ...]:
+    beat_count = max(1, feature.beat_count)
+    if beat_count == 1:
+        return ({"beat": 1, "action": "accent"},)
 
+    events: List[Dict[str, Any]] = [{"beat": 1, "action": "accent"}]
+    midpoint = max(2, min(beat_count - 1, round(beat_count * 0.5)))
+    late = max(2, min(beat_count, round(beat_count * 0.75)))
 
-def make_phrase_block(feature: StructureFeature) -> PhraseBlock:
-    return PhraseBlock(
-        phrase_index=feature.phrase_index,
-        start=feature.start,
-        end=feature.end,
-        beat_count=feature.beat_count,
-        prompt_text="hierarchical body modulation",
-        section_index=feature.section_index,
-    )
+    if beat_pattern == "heartbeat":
+        events.append({"beat": midpoint, "action": "accent"})
+        events.append({"beat": late, "action": "accent"})
+    elif beat_pattern == "stagger":
+        events.append({"beat": midpoint, "action": "accent"})
+    elif beat_pattern == "glide":
+        events.append({"beat": beat_count, "action": "settle"})
+    else:
+        events.append({"beat": beat_count, "action": "settle"})
+
+    deduped: List[Dict[str, Any]] = []
+    seen_beats = set()
+    for event in events:
+        beat = int(event["beat"])
+        if beat in seen_beats:
+            deduped[-1] = {"beat": beat, "action": event["action"]}
+            continue
+        seen_beats.add(beat)
+        deduped.append({"beat": beat, "action": event["action"]})
+    return tuple(deduped)
 
 
 def plan_body_states(
@@ -134,27 +143,28 @@ def plan_body_states(
     preservation_strength = float(motif_cfg.get("preservation_strength", 0.72))
 
     states: List[BodyState] = []
+    motif_patterns: Dict[int, str] = {}
 
     for feature, macro in zip(features, macro_states):
         template = stable_unit_values(feature.motif_signature, count=4)
         motif_seed = int(hashlib.sha1(feature.motif_signature.encode("utf-8")).hexdigest()[:8], 16)
 
         amplitude = clamp01(
-            0.14
-            + 0.52 * feature.intensity
-            + 0.22 * feature.novelty
-            - 0.42 * macro.stability
+            0.18
+            + 0.55 * feature.intensity
+            + 0.20 * (1.0 - macro.persistence)
         )
-        if macro.motif_mode in {"preserve", "return"}:
+        if feature.motif_repeat_index > 0:
             amplitude *= 0.85 + 0.15 * preservation_strength
-        elif macro.motif_mode == "rupture":
-            amplitude = clamp01(amplitude + 0.12)
 
-        beat_pattern = choose_beat_pattern(feature, macro, template)
+        beat_pattern = motif_patterns.get(feature.motif_family)
+        if beat_pattern is None:
+            beat_pattern = choose_beat_pattern(feature, macro, template)
+            motif_patterns[feature.motif_family] = beat_pattern
         pulse_gain = clamp01(float(body_cfg.get("pulse_gain", 0.68)) * amplitude)
         breath_gain = clamp01(
             float(body_cfg.get("breath_gain", 0.48))
-            * (0.35 + 0.65 * (macro.stability if beat_pattern == "breath" else amplitude))
+            * (0.35 + 0.65 * amplitude)
         )
         sway_gain = clamp01(
             float(body_cfg.get("sway_gain", 0.42))
@@ -170,55 +180,43 @@ def plan_body_states(
             * (0.25 + 0.75 * amplitude)
         )
         tightness = clamp01(
-            0.48
-            + 0.28 * macro.stability
-            - 0.18 * macro.radius_base
-            + 0.10 * template[1]
-            - 0.12 * feature.intensity
+            0.65
+            - 0.25 * macro.radius_base
+            - 0.10 * amplitude
         )
         accent_gain = clamp01(
             float(body_cfg.get("accent_gain", 0.62))
-            * (0.35 + 0.65 * feature.intensity)
+            * (0.35 + 0.65 * amplitude)
         )
 
         dz_pulse = float(body_cfg.get("dz_pulse_max", 0.10)) * amplitude * (0.55 + 0.45 * accent_gain)
         dr_pulse = float(body_cfg.get("dr_pulse_max", 0.18)) * amplitude * (0.45 + 0.55 * (1.0 - tightness))
         dtheta_pulse = float(body_cfg.get("dtheta_pulse_max", 0.65)) * amplitude * (0.35 + 0.65 * swirl_gain)
 
-        variation_scale = {
-            "preserve": 0.55,
-            "return": 0.70,
-            "vary": 0.95,
-            "rupture": 1.15,
-        }.get(macro.motif_mode, 0.85)
+        variation_scale = 0.75 if feature.motif_repeat_index > 0 else 1.0
 
         separation_delta = bounded_delta(
-            variation_scale * (0.14 * feature.tension + 0.10 * template[2] - 0.08 * macro.radius_base),
+            variation_scale * amplitude * (template[2] - 0.5) * 0.4,
             float(delta_bounds.get("separation", 0.35)),
         )
         alignment_delta = bounded_delta(
-            variation_scale * (0.12 * (1.0 - tightness) + 0.06 * template[0] - 0.06 * feature.novelty),
+            variation_scale * (0.25 * (0.5 - tightness) + 0.10 * (template[0] - 0.5)),
             float(delta_bounds.get("alignment", 0.35)),
         )
         cohesion_delta = bounded_delta(
-            variation_scale * (0.10 * macro.radius_base - 0.08 * feature.tension + 0.05 * template[3]),
+            variation_scale * (0.25 * (0.5 - macro.radius_base) + 0.10 * (template[3] - 0.5)),
             float(delta_bounds.get("cohesion", 0.35)),
         )
         goal_weight_delta = bounded_delta(
-            variation_scale * (0.10 * macro.stability - 0.08 * feature.novelty),
+            variation_scale * (0.20 * macro.persistence - 0.10 * amplitude),
             float(delta_bounds.get("goal_weight", 0.25)),
         )
         jitter_delta = bounded_delta(
-            variation_scale * (0.16 * feature.novelty + 0.10 * feature.arousal - 0.14 * macro.stability),
+            variation_scale * amplitude * (0.35 - 0.25 * macro.persistence),
             float(delta_bounds.get("jitter", 0.35)),
         )
 
-        accent_events = tuple(
-            build_beat_plan(
-                make_phrase_block(feature),
-                compat_plan_for_body(feature, macro),
-            )
-        )
+        accent_events = build_accent_events(feature, beat_pattern)
 
         states.append(
             BodyState(

@@ -52,6 +52,12 @@ def main():
         default="config/hierarchical_config.json",
         help="Config file for the hierarchical choreography planner",
     )
+    parser.add_argument(
+        "--hierarchical-macro-planner",
+        choices=["llm", "neutral", "auto"],
+        default=None,
+        help="Choose constrained LLM or neutral macro planning for the experimental hierarchy",
+    )
     args = parser.parse_args()
     audio = resolve_audio_path(args.audio)
 
@@ -112,6 +118,7 @@ def main():
             beat_times=list(beat_times),
             output_path=args.hierarchical_output,
             config_path=args.hierarchical_config,
+            macro_planner_mode=args.hierarchical_macro_planner,
         )
     return w
 

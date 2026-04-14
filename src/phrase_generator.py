@@ -272,6 +272,14 @@ def strip_code_fences(raw: str) -> str:
     return match.group(1) if match else text
 
 
+def strip_json_comments(raw: str) -> str:
+    return re.sub(r"(^|\s)//.*?$", "", raw, flags=re.MULTILINE)
+
+
+def strip_trailing_commas(raw: str) -> str:
+    return re.sub(r",(\s*[}\]])", r"\1", raw)
+
+
 def balanced_brace_slice(raw: str) -> Optional[str]:
     start = raw.find("{")
     if start == -1:
@@ -295,8 +303,11 @@ def balanced_brace_slice(raw: str) -> Optional[str]:
 
 def parse_json_strict(raw: str) -> Dict[str, Any]:
     text = raw.strip()
+    stripped = strip_code_fences(text)
+    cleaned = strip_trailing_commas(strip_json_comments(stripped))
+    balanced = balanced_brace_slice(cleaned)
 
-    for candidate in (text, strip_code_fences(text), balanced_brace_slice(text)):
+    for candidate in (text, stripped, cleaned, balanced):
         if not candidate:
             continue
         try:

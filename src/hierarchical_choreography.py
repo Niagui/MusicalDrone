@@ -22,13 +22,13 @@ from typing import Any, Dict, List, Optional, Sequence
 try:  # pragma: no cover - import style depends on entry point
     from .attractor_state import AttractorFrame, build_attractor_frames
     from .body_modulation import BodyState, plan_body_states
-    from .mind_planner import MacroState, plan_macro_states
+    from .mind_planner import MacroPlanResult, MacroState, plan_macro_states
     from .phrase_generator import load_json, load_sections
     from .structure_features import StructureFeature, build_structure_features
 except ImportError:  # pragma: no cover
     from attractor_state import AttractorFrame, build_attractor_frames  # type: ignore
     from body_modulation import BodyState, plan_body_states  # type: ignore
-    from mind_planner import MacroState, plan_macro_states  # type: ignore
+    from mind_planner import MacroPlanResult, MacroState, plan_macro_states  # type: ignore
     from phrase_generator import load_json, load_sections  # type: ignore
     from structure_features import StructureFeature, build_structure_features  # type: ignore
 
@@ -42,14 +42,16 @@ DEFAULT_CONFIG: Dict[str, Any] = {
         "decay": 0.82,
     },
     "mind": {
-        "macro_update_interval_beats": 8,
-        "rotation_gain": 0.55,
+        "planner_mode": "llm",
+        "fallback_to_neutral": False,
+        "llm_model": "gpt-4o-mini",
+        "llm_temperature": 0.2,
+        "max_batch_phrases": 12,
     },
     "motif": {
         "preservation_strength": 0.72,
         "return_threshold": 0.18,
-        "variation_threshold": 0.34,
-        "rupture_threshold": 0.58,
+        "rupture_threshold": 0.72,
     },
     "attractor": {
         "base_interp": 0.34,
@@ -119,13 +121,6 @@ def build_phrase_payload(
         "motif_signature": feature.motif_signature,
         "motif_family": feature.motif_family,
         "motif_repeat_index": feature.motif_repeat_index,
-        "motion_mode": macro.motion_mode,
-        "height_level": macro.z_base,
-        "depth_level": macro.audience_bias,
-        "speed_level": macro.energy,
-        "vertical_trend": macro.vertical_trend,
-        "transition_style": macro.transition_style,
-        "beat_plan": list(body.accent_events),
         "feature_summary": feature.to_dict(),
         "macro_state": macro.to_dict(),
         "attractor_frame": attractor.to_dict(),
@@ -135,12 +130,13 @@ def build_phrase_payload(
 
 def build_output_payload(
     features: Sequence[StructureFeature],
-    macro_states: Sequence[MacroState],
+    macro_plan: MacroPlanResult,
     attractor_frames: Sequence[AttractorFrame],
     body_states: Sequence[BodyState],
     source_file: str,
     config_path: str,
 ) -> Dict[str, Any]:
+    macro_states = macro_plan.states
     phrases = [
         build_phrase_payload(feature, macro, attractor, body)
         for feature, macro, attractor, body in zip(
@@ -158,6 +154,10 @@ def build_output_payload(
         .isoformat()
         .replace("+00:00", "Z"),
         "planner": "hierarchical_choreography",
+        "macro_planner": {
+            "mode": macro_plan.planner_mode,
+            "model": macro_plan.model,
+        },
         "total_phrases": len(phrases),
         "phrases": phrases,
     }
@@ -174,8 +174,11 @@ def generate_hierarchical_plan(
     anchor_weights_path: str = "json/clap_weights.json",
     output_path: str = DEFAULT_OUTPUT,
     config_path: str = DEFAULT_CONFIG_PATH,
+    macro_planner_mode: Optional[str] = None,
 ) -> Dict[str, Any]:
     config = load_hierarchical_config(config_path)
+    if macro_planner_mode:
+        config.setdefault("mind", {})["planner_mode"] = macro_planner_mode
     clap_segments = list(clap_segments or load_json(source_file, default=[]) or [])
     beat_times = list(beat_times or load_json(beat_times_path, default=[]) or [])
     sections = list(sections or load_sections(sections_path))
@@ -194,12 +197,12 @@ def generate_hierarchical_plan(
         anchor_weight_segments=anchor_weight_segments,
         history_decay=float(config.get("history", {}).get("decay", 0.82)),
     )
-    macro_states = plan_macro_states(features, config=config)
-    attractor_frames = build_attractor_frames(features, macro_states, config=config)
-    body_states = plan_body_states(features, macro_states, config=config)
+    macro_plan = plan_macro_states(features, config=config)
+    attractor_frames = build_attractor_frames(features, macro_plan.states, config=config)
+    body_states = plan_body_states(features, macro_plan.states, config=config)
     payload = build_output_payload(
         features,
-        macro_states,
+        macro_plan,
         attractor_frames,
         body_states,
         source_file=source_file,
@@ -222,6 +225,12 @@ def main() -> None:
     parser.add_argument("--anchor-weights", default="json/clap_weights.json")
     parser.add_argument("--output", default=DEFAULT_OUTPUT)
     parser.add_argument("--config", default=DEFAULT_CONFIG_PATH)
+    parser.add_argument(
+        "--macro-planner",
+        choices=["llm", "neutral", "auto"],
+        default=None,
+        help="Choose the macro attractor planner mode for the experimental hierarchy",
+    )
     args = parser.parse_args()
 
     payload = generate_hierarchical_plan(
@@ -231,6 +240,7 @@ def main() -> None:
         anchor_weights_path=args.anchor_weights,
         output_path=args.output,
         config_path=args.config,
+        macro_planner_mode=args.macro_planner,
     )
     print(
         f"Wrote {args.output} with {payload['total_phrases']} hierarchical phrase plans"

@@ -66,7 +66,9 @@ class StructureFeature:
     current_emotion_vector: tuple[float, ...]
     decayed_history_vector: tuple[float, ...]
     difference_vector: tuple[float, ...]
+    normalized_difference_vector: tuple[float, ...]
     emotion_change_magnitude: float
+    normalized_change: float
     intensity: float
     strength: float
     novelty: float
@@ -232,20 +234,21 @@ def infer_section_role(
 
     section_changed = current["section_index"] != previous["section_index"]
     progress = float(current["section_progress"])
-    novelty = float(current["novelty"])
+    normalized_change = float(current["normalized_change"])
     intensity = float(current["intensity"])
-    delta_intensity = intensity - float(previous["intensity"])
-    change_mag = float(current["emotion_change_magnitude"])
+    diff_arousal = 0.0
+    if len(current["difference_vector"]) > 1:
+        diff_arousal = float(current["difference_vector"][1])
 
-    if section_changed and (novelty >= 0.18 or abs(delta_intensity) >= 0.06):
+    if section_changed and normalized_change >= 0.25:
         return "transition"
-    if novelty >= 0.58 and change_mag >= 0.35:
+    if normalized_change >= 0.75:
         return "transition"
-    if intensity >= 0.72 and progress >= 0.42:
-        return "peak"
-    if delta_intensity >= 0.08 or (progress >= 0.25 and change_mag >= 0.18):
+    if progress <= 0.35 and normalized_change >= 0.25:
         return "buildup"
-    if progress >= 0.78 or delta_intensity <= -0.08:
+    if intensity >= 0.60 and progress >= 0.45:
+        return "peak"
+    if progress >= 0.75 or diff_arousal <= -0.18:
         return "release"
     return "stable"
 
@@ -307,33 +310,24 @@ def build_structure_features(
         if len(current) < vector_len:
             current = np.pad(current, (0, vector_len - len(current)))
 
-        difference = current - history
-        change_magnitude = float(
-            np.linalg.norm(current - last_current) / np.sqrt(max(1, len(current)))
-        )
-        novelty = clamp01(
-            0.55 * np.linalg.norm(difference) / np.sqrt(max(1, len(difference)))
-            + 0.45 * cosine_distance(current, history if np.linalg.norm(history) > 0 else last_current)
-        )
+        if phrase_index == 0:
+            difference = np.zeros_like(current)
+            change_magnitude = 0.0
+        else:
+            difference = current - history
+            change_magnitude = float(
+                np.linalg.norm(difference[:3]) / np.sqrt(3.0)
+            )
 
         valence = weighted_label_score(feature, "valence", VALENCE_MAP)
         arousal = weighted_label_score(feature, "arousal", AROUSAL_MAP)
         tension = weighted_label_score(feature, "tension", TENSION_MAP)
-        top_moods = feature.get("moods", []) or []
-        top_mood_score = float(top_moods[0].get("score", 0.0)) if top_moods else 0.0
 
         intensity = clamp01(
-            0.25
-            + 0.30 * max(arousal, 0.0)
-            + 0.25 * ((tension + 1.0) * 0.5)
-            + 0.20 * top_mood_score
+            0.5 * max(arousal, 0.0)
+            + 0.5 * ((tension + 1.0) * 0.5)
         )
-        strength = clamp01(
-            0.25
-            + 0.25 * np.linalg.norm(current[:3]) / np.sqrt(3.0)
-            + 0.30 * intensity
-            + 0.20 * novelty
-        )
+        strength = clamp01(float(np.linalg.norm(current[:3]) / np.sqrt(3.0)))
         relative_position = clamp01((midpoint - total_start) / total_duration)
 
         motif_signature = build_motif_signature(
@@ -359,10 +353,12 @@ def build_structure_features(
                 "current_emotion_vector": tuple(float(value) for value in current),
                 "decayed_history_vector": tuple(float(value) for value in history),
                 "difference_vector": tuple(float(value) for value in difference),
+                "normalized_difference_vector": tuple(float(value) for value in difference),
                 "emotion_change_magnitude": change_magnitude,
+                "normalized_change": change_magnitude,
                 "intensity": intensity,
                 "strength": strength,
-                "novelty": novelty,
+                "novelty": change_magnitude,
                 "valence": valence,
                 "arousal": arousal,
                 "tension": tension,
@@ -375,6 +371,29 @@ def build_structure_features(
 
         history = history_decay * history + (1.0 - history_decay) * current
         last_current = current
+
+    if raw_records:
+        change_scale = max(
+            max(float(record["emotion_change_magnitude"]) for record in raw_records),
+            1e-6,
+        )
+        diff_matrix = np.asarray(
+            [record["difference_vector"] for record in raw_records],
+            dtype=float,
+        )
+        diff_scale = np.max(np.abs(diff_matrix), axis=0)
+        diff_scale[diff_scale < 1e-6] = 1.0
+
+        for record in raw_records:
+            diff_vector = np.asarray(record["difference_vector"], dtype=float)
+            normalized_change = clamp01(
+                float(record["emotion_change_magnitude"]) / change_scale
+            )
+            record["normalized_change"] = normalized_change
+            record["novelty"] = normalized_change
+            record["normalized_difference_vector"] = tuple(
+                float(value) for value in (diff_vector / diff_scale)
+            )
 
     motif_families: Dict[str, int] = {}
     motif_counts: Dict[str, int] = {}
