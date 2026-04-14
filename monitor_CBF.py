@@ -45,6 +45,9 @@ _sequence_start_time: float = 0.0  # perf_counter timestamp at barrier release
 def _record_sequence_start():
     global _sequence_start_time
     _sequence_start_time = time.perf_counter() + AUDIO_LEAD_S
+    # Set lighting start time atomically with the barrier release
+    if light_controller is not None:
+        light_controller.set_sequence(_sequence_start_time)
 
 # ---------------------------------------------------------------------------
 # CBF Performance Monitor
@@ -155,22 +158,23 @@ class CBFSafetyFilter:
     """
 
     def __init__(self, uris: list[str], d_safe: float = 0.4,
-                 gamma: float = 2.0, dt: float = 0.5,
-                 z_floor: float = 0.3):
+                gamma: float = 0.5, dt: float = 0.2,      # Bug 1 & 3 fix
+                z_floor: float = 0.3,
+                bounds_lo: tuple = (-1.1, -1.8, None),    # None = use z_floor
+                bounds_hi: tuple = ( 1.1,  1.8, 1.2)):
         self.d_safe  = d_safe
         self.gamma   = gamma
         self.dt      = dt
-        self.z_floor = z_floor   # metres — safe position output never goes below this
+        self.z_floor = z_floor
         self.uris    = list(uris)
 
-        self._lock = threading.Lock()
+        # Wall clamp bounds — z_lo defers to z_floor so there's one source of truth
+        self._bounds_lo = np.array([bounds_lo[0], bounds_lo[1], z_floor])
+        self._bounds_hi = np.array(list(bounds_hi))
 
-        self._positions: dict[str, np.ndarray] = {
-            uri: np.zeros(3) for uri in self.uris
-        }
-        self._velocities: dict[str, np.ndarray] = {
-            uri: np.zeros(3) for uri in self.uris
-        }
+        self._lock = threading.Lock()
+        self._positions:  dict[str, np.ndarray] = {uri: np.zeros(3) for uri in self.uris}
+        self._velocities: dict[str, np.ndarray] = {uri: np.zeros(3) for uri in self.uris}
 
     def update_state(self, uri: str, pos: np.ndarray,
                      vel: np.ndarray | None = None):
@@ -192,7 +196,7 @@ class CBFSafetyFilter:
         self.update_state(uri, pos)
 
     def filter(self, uri: str, x_des: float, y_des: float,
-               z_des: float) -> tuple[float, float, float]:
+           z_des: float) -> tuple[float, float, float]:
         """
         Return a CBF-safe target position for *uri* given its desired target.
         """
@@ -238,24 +242,30 @@ class CBFSafetyFilter:
             self._velocities[uri] = v_safe.copy()
             p_safe = p_i + v_safe * self.dt
 
-            # ---- Floor clamp -------------------------------------------------
-            # The 3-D repulsion vector can push z downward when another drone
-            # is above this one.  Enforce a hard minimum altitude so the drone
-            # is never commanded into the ground.
+            # ---- Floor clamp ------------------------------------------------
             if p_safe[2] < self.z_floor:
                 print(f'[CBF] {uri} z-floor clamp: {p_safe[2]:.3f}m → {self.z_floor}m')
                 p_safe[2] = self.z_floor
-                # Back-propagate so stored velocity stays consistent.
                 self._velocities[uri][2] = (self.z_floor - p_i[2]) / self.dt
-            # ------------------------------------------------------------------
 
-            # Compute timings inside the lock so both values are always
-            # defined together before record_cbf is called.
+            # ---- Wall clamp -------------------------------------------------
+            # The CBF repulsion vector can push p_safe outside room bounds.
+            # Clamp to the same limits used in read_csv so the drone is never
+            # commanded into a wall.
+            for axis, lo, hi in zip(range(3), self._bounds_lo, self._bounds_hi):
+                if p_safe[axis] < lo:
+                    print(f'[CBF] {uri} axis{axis} lo-clamp: {p_safe[axis]:.3f}m → {lo}m')
+                    p_safe[axis] = lo
+                    self._velocities[uri][axis] = (lo - p_i[axis]) / self.dt
+                elif p_safe[axis] > hi:
+                    print(f'[CBF] {uri} axis{axis} hi-clamp: {p_safe[axis]:.3f}m → {hi}m')
+                    p_safe[axis] = hi
+                    self._velocities[uri][axis] = (hi - p_i[axis]) / self.dt
+            # -----------------------------------------------------------------
+
             wait_s    = t_compute_start - t_wait_start
             compute_s = time.perf_counter() - t_compute_start
 
-        # Call record_cbf outside the CBF lock to avoid holding it longer
-        # than necessary.
         if monitor is not None:
             monitor.record_cbf(uri, wait_s, compute_s)
 
@@ -440,10 +450,6 @@ def fly_sequence(scf: SyncCrazyflie, sequence):
         except threading.BrokenBarrierError:
             print(f'[{uri}] Barrier broken — aborting')
             return
-        
-    #start one light thread per drone after sync
-    if light_controller is not None:
-        light_controller.set_sequence_start(_sequence_start_time)
 
         if uri not in light_threads:
             t = threading.Thread(
@@ -537,9 +543,18 @@ def fly_sequence(scf: SyncCrazyflie, sequence):
 
         print(f'[{uri}] Sequence complete')
 
+    # Signal light thread to stop cleanly before landing begins
+    if light_controller is not None:
+        light_controller.stop()                     # sets light_controller.stop_event
+
+    t_light = light_threads.get(uri)
+    if t_light is not None:
+        t_light.join(timeout=2.0)                   # wait up to 2s for clean exit
+        if t_light.is_alive():
+            print(f'[{uri}] Light thread still alive after join — proceeding anyway')
+
     print(f'[{uri}] Landing...')
     commander.land(velocity=DEFAULT_VELOCITY)
-    print(f'[{uri}] Landed')
 
     #turn lightd off after landing
     if light_controller is not None:
@@ -598,13 +613,8 @@ if __name__ == '__main__':
     monitor = CBFMonitor(window=100)
     print('[MONITOR] Initialised')
 
-    cbf_filter = CBFSafetyFilter(uris, d_safe=0.5, gamma=2.0, dt=0.5, z_floor=0.3)
+    cbf_filter = CBFSafetyFilter(uris, d_safe=0.5, gamma=0.5, dt=0.2, z_floor=0.3)
     print(f'[CBF] Initialised | d_safe={cbf_filter.d_safe}m  γ={cbf_filter.gamma}  z_floor={cbf_filter.z_floor}m')
-
-    #create shared light controller and load clap weights
-    light_controller = LightController()
-    light_controller.load_weights("json/clap_weights.json")
-    print('[LIGHTS] Initialized')
 
     #create shared light controller and load clap weights
     light_controller = LightController()
