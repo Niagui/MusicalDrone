@@ -20,11 +20,19 @@ from lights import LightController
 
 PATH = "trajectories.csv"
 AUDIO_PATH = "audio/oldTownRoad.mp3"
+WAYPOINT_LOG_PATH = "logs/actual_waypoints.csv"
 TAKEOFF_HEIGHT = 1.0
-DEFAULT_VELOCITY = 0.5
+DEFAULT_VELOCITY = 0.3
+MAX_SEGMENT_SPEED = 0.35
+
+X_WALL_MIN = -1.05
+X_WALL_MAX = 1.05
+Y_WALL_MIN = -1.05
+Y_WALL_MAX = 1.05
+Z_WALL_MIN = 0.5
+Z_WALL_MAX = 1.2
 
 uris = [
-    'radio://0/80/2M/E7E7E7E701',
     'radio://0/80/2M/E7E7E7E702',
 ]
 
@@ -32,6 +40,7 @@ commanders = {}
 loggers = {}
 audio_started = threading.Event()
 AUDIO_LEAD_S = 3.0
+waypoint_log_lock = threading.Lock()
 
 stop_event = threading.Event()
 
@@ -45,9 +54,31 @@ _sequence_start_time: float = 0.0  # perf_counter timestamp at barrier release
 def _record_sequence_start():
     global _sequence_start_time
     _sequence_start_time = time.perf_counter() + AUDIO_LEAD_S
-    # Set lighting start time atomically with the barrier release
-    if light_controller is not None:
-        light_controller.set_sequence(_sequence_start_time)
+
+
+def init_waypoint_log():
+    with waypoint_log_lock, open(WAYPOINT_LOG_PATH, "w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow([
+            "uri", "wp_idx", "target_time_s", "duration_s",
+            "measured_x", "measured_y", "measured_z",
+            "nominal_x", "nominal_y", "nominal_z",
+            "command_x", "command_y", "command_z",
+        ])
+
+
+def log_waypoint(uri: str, idx: int, target_time: float, duration_s: float,
+                 measured_pos: np.ndarray,
+                 nominal_pos: tuple[float, float, float],
+                 command_pos: tuple[float, float, float]):
+    with waypoint_log_lock, open(WAYPOINT_LOG_PATH, "a", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow([
+            uri, idx, f"{target_time:.3f}", f"{duration_s:.3f}",
+            f"{measured_pos[0]:.4f}", f"{measured_pos[1]:.4f}", f"{measured_pos[2]:.4f}",
+            f"{nominal_pos[0]:.4f}", f"{nominal_pos[1]:.4f}", f"{nominal_pos[2]:.4f}",
+            f"{command_pos[0]:.4f}", f"{command_pos[1]:.4f}", f"{command_pos[2]:.4f}",
+        ])
 
 # ---------------------------------------------------------------------------
 # CBF Performance Monitor
@@ -158,18 +189,17 @@ class CBFSafetyFilter:
     """
 
     def __init__(self, uris: list[str], d_safe: float = 0.4,
-                gamma: float = 0.5, dt: float = 0.2,      # Bug 1 & 3 fix
-                z_floor: float = 0.3,
-                bounds_lo: tuple = (-1.1, -1.8, None),    # None = use z_floor
-                bounds_hi: tuple = ( 1.1,  1.8, 1.2)):
+                gamma: float = 0.5, dt: float = 0.2,
+                z_floor: float = Z_WALL_MIN,
+                bounds_lo: tuple = (X_WALL_MIN, Y_WALL_MIN, Z_WALL_MIN),
+                bounds_hi: tuple = (X_WALL_MAX, Y_WALL_MAX, Z_WALL_MAX)):
         self.d_safe  = d_safe
         self.gamma   = gamma
         self.dt      = dt
         self.z_floor = z_floor
         self.uris    = list(uris)
 
-        # Wall clamp bounds — z_lo defers to z_floor so there's one source of truth
-        self._bounds_lo = np.array([bounds_lo[0], bounds_lo[1], z_floor])
+        self._bounds_lo = np.array(list(bounds_lo))
         self._bounds_hi = np.array(list(bounds_hi))
 
         self._lock = threading.Lock()
@@ -195,8 +225,12 @@ class CBFSafetyFilter:
         """Convenience alias for update_state with position only."""
         self.update_state(uri, pos)
 
+    def get_position(self, uri: str) -> np.ndarray:
+        with self._lock:
+            return self._positions[uri].copy()
+
     def filter(self, uri: str, x_des: float, y_des: float,
-           z_des: float) -> tuple[float, float, float]:
+           z_des: float, dt: float | None = None) -> tuple[float, float, float]:
         """
         Return a CBF-safe target position for *uri* given its desired target.
         """
@@ -204,11 +238,12 @@ class CBFSafetyFilter:
 
         with self._lock:
             t_compute_start = time.perf_counter()
+            dt_cmd = dt if dt is not None else self.dt
 
             p_i   = self._positions[uri].copy()
             p_des = np.array([x_des, y_des, z_des], dtype=float)
 
-            v_des  = (p_des - p_i) / self.dt   # m/s
+            v_des  = (p_des - p_i) / dt_cmd   # m/s
             v_safe = v_des.copy()
 
             for other_uri, p_j in self._positions.items():
@@ -240,27 +275,26 @@ class CBFSafetyFilter:
                     )
 
             self._velocities[uri] = v_safe.copy()
-            p_safe = p_i + v_safe * self.dt
+            p_safe = p_i + v_safe * dt_cmd
 
             # ---- Floor clamp ------------------------------------------------
             if p_safe[2] < self.z_floor:
                 print(f'[CBF] {uri} z-floor clamp: {p_safe[2]:.3f}m → {self.z_floor}m')
                 p_safe[2] = self.z_floor
-                self._velocities[uri][2] = (self.z_floor - p_i[2]) / self.dt
+                self._velocities[uri][2] = (self.z_floor - p_i[2]) / dt_cmd
 
             # ---- Wall clamp -------------------------------------------------
             # The CBF repulsion vector can push p_safe outside room bounds.
-            # Clamp to the same limits used in read_csv so the drone is never
-            # commanded into a wall.
+            axis_names = ("x", "y", "z")
             for axis, lo, hi in zip(range(3), self._bounds_lo, self._bounds_hi):
                 if p_safe[axis] < lo:
-                    print(f'[CBF] {uri} axis{axis} lo-clamp: {p_safe[axis]:.3f}m → {lo}m')
+                    print(f'[CBF] {uri} {axis_names[axis]} lo-clamp: {p_safe[axis]:.3f}m → {lo}m')
                     p_safe[axis] = lo
-                    self._velocities[uri][axis] = (lo - p_i[axis]) / self.dt
+                    self._velocities[uri][axis] = (lo - p_i[axis]) / dt_cmd
                 elif p_safe[axis] > hi:
-                    print(f'[CBF] {uri} axis{axis} hi-clamp: {p_safe[axis]:.3f}m → {hi}m')
+                    print(f'[CBF] {uri} {axis_names[axis]} hi-clamp: {p_safe[axis]:.3f}m → {hi}m')
                     p_safe[axis] = hi
-                    self._velocities[uri][axis] = (hi - p_i[axis]) / self.dt
+                    self._velocities[uri][axis] = (hi - p_i[axis]) / dt_cmd
             # -----------------------------------------------------------------
 
             wait_s    = t_compute_start - t_wait_start
@@ -375,8 +409,8 @@ def read_csv(path):
             waypoint_map[int(id_)].append((
                 float(t),
                 np.clip(float(x), -1.1, 1.1),
-                np.clip(float(y), -1.8, 1.8),
-                np.clip(float(z), 0.1,  1.2),
+                np.clip(float(y), -1.1, 1.1),
+                np.clip(float(z), Z_WALL_MIN, Z_WALL_MAX),
             ))
 
     for id_ in waypoint_map:
@@ -485,10 +519,22 @@ def fly_sequence(scf: SyncCrazyflie, sequence):
                 print(f'[{uri}] wp {idx} late by {-sleep_s*1000:.1f} ms')
             # ---------------------------------------------------------------
 
+            measured_pos = (
+                cbf_filter.get_position(uri)
+                if cbf_filter is not None else
+                np.array([0.0, 0.0, TAKEOFF_HEIGHT], dtype=float)
+            )
+
+            if idx + 1 < len(sequence):
+                duration_s = sequence[idx + 1][0] - target_time
+            else:
+                duration_s = cbf_filter.dt if cbf_filter else 0.5
+            duration_s = max(0.1, duration_s)   # never send a zero-duration cmd
+
             # ---- CBF safety filter ----------------------------------------
             if cbf_filter is not None:
                 x_safe, y_safe, z_safe = cbf_filter.filter(
-                    uri, x_des, y_des, z_des
+                    uri, x_des, y_des, z_des, dt=duration_s
                 )
                 if (abs(x_safe - x_des) > 0.01 or
                         abs(y_safe - y_des) > 0.01 or
@@ -521,11 +567,20 @@ def fly_sequence(scf: SyncCrazyflie, sequence):
             # Set it to the gap until the *next* waypoint so the firmware
             # trajectory matches the schedule.  For the final waypoint use
             # cbf_filter.dt (or 0.5 s) as a sensible hover duration.
-            if idx + 1 < len(sequence):
-                duration_s = sequence[idx + 1][0] - target_time
-            else:
-                duration_s = cbf_filter.dt if cbf_filter else 0.5
-            duration_s = max(0.1, duration_s)   # never send a zero-duration cmd
+            command_pos = np.array([x_safe, y_safe, z_safe], dtype=float)
+            distance = float(np.linalg.norm(command_pos - measured_pos))
+            if distance > 1e-6:
+                duration_s = max(duration_s, distance / MAX_SEGMENT_SPEED)
+
+            log_waypoint(
+                uri,
+                idx,
+                target_time,
+                duration_s,
+                measured_pos,
+                (x_des, y_des, z_des),
+                (x_safe, y_safe, z_safe),
+            )
 
             t_wp_start = time.perf_counter()
             scf.cf.high_level_commander.go_to(
@@ -607,14 +662,18 @@ def emergency_land(scf: SyncCrazyflie):
 
 if __name__ == '__main__':
     seq_args = init_data(PATH)
+    init_waypoint_log()
     cflib.crtp.init_drivers()
     factory = CachedCfFactory(rw_cache='./cache')
 
     monitor = CBFMonitor(window=100)
     print('[MONITOR] Initialised')
 
-    cbf_filter = CBFSafetyFilter(uris, d_safe=0.5, gamma=0.5, dt=0.2, z_floor=0.3)
-    print(f'[CBF] Initialised | d_safe={cbf_filter.d_safe}m  γ={cbf_filter.gamma}  z_floor={cbf_filter.z_floor}m')
+    cbf_filter = CBFSafetyFilter(uris, d_safe=0.5, gamma=0.5, dt=0.2, z_floor=Z_WALL_MIN)
+    print(
+        f'[CBF] Initialised | d_safe={cbf_filter.d_safe}m  γ={cbf_filter.gamma}  '
+        f'z_floor={cbf_filter.z_floor}m  v_max={MAX_SEGMENT_SPEED}m/s'
+    )
 
     #create shared light controller and load clap weights
     light_controller = LightController()
