@@ -1,5 +1,6 @@
 import time
 import csv
+import os
 import numpy as np
 from collections import defaultdict
 import traceback
@@ -20,7 +21,7 @@ from lights import LightController
 
 PATH = "trajectories.csv"
 AUDIO_PATH = "audio/oldTownRoad.mp3"
-WAYPOINT_LOG_PATH = "logs/actual_waypoints.csv"
+WAYPOINT_LOG_PATH = "logs/actual_waypoints.log"
 TAKEOFF_HEIGHT = 1.0
 DEFAULT_VELOCITY = 0.3
 MAX_SEGMENT_SPEED = 0.35
@@ -41,8 +42,10 @@ loggers = {}
 audio_started = threading.Event()
 AUDIO_LEAD_S = 3.0
 waypoint_log_lock = threading.Lock()
+stop_log_lock = threading.Lock()
 
 stop_event = threading.Event()
+stop_logged_uris = set()
 
 # Barrier used so every drone enters its waypoint loop at the same instant.
 # Reset in __main__ once the number of drones is known.
@@ -57,6 +60,13 @@ def _record_sequence_start():
 
 
 def init_waypoint_log():
+    log_dir = os.path.dirname(WAYPOINT_LOG_PATH)
+    if log_dir:
+        os.makedirs(log_dir, exist_ok=True)
+
+    with stop_log_lock:
+        stop_logged_uris.clear()
+
     with waypoint_log_lock, open(WAYPOINT_LOG_PATH, "w", newline="") as f:
         writer = csv.writer(f)
         writer.writerow([
@@ -64,13 +74,15 @@ def init_waypoint_log():
             "measured_x", "measured_y", "measured_z",
             "nominal_x", "nominal_y", "nominal_z",
             "command_x", "command_y", "command_z",
+            "event",
         ])
 
 
 def log_waypoint(uri: str, idx: int, target_time: float, duration_s: float,
                  measured_pos: np.ndarray,
                  nominal_pos: tuple[float, float, float],
-                 command_pos: tuple[float, float, float]):
+                 command_pos: tuple[float, float, float],
+                 event: str = "waypoint"):
     with waypoint_log_lock, open(WAYPOINT_LOG_PATH, "a", newline="") as f:
         writer = csv.writer(f)
         writer.writerow([
@@ -78,7 +90,45 @@ def log_waypoint(uri: str, idx: int, target_time: float, duration_s: float,
             f"{measured_pos[0]:.4f}", f"{measured_pos[1]:.4f}", f"{measured_pos[2]:.4f}",
             f"{nominal_pos[0]:.4f}", f"{nominal_pos[1]:.4f}", f"{nominal_pos[2]:.4f}",
             f"{command_pos[0]:.4f}", f"{command_pos[1]:.4f}", f"{command_pos[2]:.4f}",
+            event,
         ])
+
+
+def _get_measured_position(uri: str) -> np.ndarray:
+    if cbf_filter is not None:
+        return cbf_filter.get_position(uri)
+    return np.array([0.0, 0.0, TAKEOFF_HEIGHT], dtype=float)
+
+
+def _current_sequence_elapsed_s() -> float:
+    if _sequence_start_time <= 0.0:
+        return 0.0
+    return max(0.0, time.perf_counter() - _sequence_start_time)
+
+
+def log_stop_event(uri: str, idx: int,
+                   nominal_pos: tuple[float, float, float] | None = None,
+                   command_pos: tuple[float, float, float] | None = None,
+                   event: str = "emergency_stop"):
+    with stop_log_lock:
+        if uri in stop_logged_uris:
+            return
+        stop_logged_uris.add(uri)
+
+    measured_pos = _get_measured_position(uri)
+    nominal = nominal_pos if nominal_pos is not None else tuple(measured_pos.tolist())
+    command = command_pos if command_pos is not None else tuple(measured_pos.tolist())
+
+    log_waypoint(
+        uri,
+        idx,
+        _current_sequence_elapsed_s(),
+        0.0,
+        measured_pos,
+        nominal,
+        command,
+        event=event,
+    )
 
 # ---------------------------------------------------------------------------
 # CBF Performance Monitor
@@ -496,13 +546,20 @@ def fly_sequence(scf: SyncCrazyflie, sequence):
 
     if not sequence:
         print(f'[{uri}] No waypoints — hovering briefly')
-        stop_event.wait(timeout=2.0)
+        if stop_event.wait(timeout=2.0):
+            log_stop_event(uri, -1, event="stop_while_hovering")
     else:
         print(f'[{uri}] Running {len(sequence)} waypoints (CBF active)...')
         for idx, (target_time, x_des, y_des, z_des) in enumerate(sequence):
 
             if stop_event.is_set():
                 print(f'[{uri}] Stop event — aborting sequence at wp {idx}')
+                log_stop_event(
+                    uri,
+                    idx,
+                    nominal_pos=(x_des, y_des, z_des),
+                    event="stop_before_waypoint",
+                )
                 break
 
             # ---- Wait until this waypoint's scheduled time ----------------
@@ -514,6 +571,12 @@ def fly_sequence(scf: SyncCrazyflie, sequence):
             if sleep_s > 0:
                 if stop_event.wait(timeout=sleep_s):   # wakes early on stop
                     print(f'[{uri}] Stop event during wait — aborting at wp {idx}')
+                    log_stop_event(
+                        uri,
+                        idx,
+                        nominal_pos=(x_des, y_des, z_des),
+                        event="stop_during_wait",
+                    )
                     break
             elif sleep_s < -0.1:
                 print(f'[{uri}] wp {idx} late by {-sleep_s*1000:.1f} ms')
@@ -632,6 +695,7 @@ def emergency_land(scf: SyncCrazyflie):
     """
     uri = scf.cf.link_uri
     print(f'[{uri}] EMERGENCY LAND')
+    log_stop_event(uri, -1, event="emergency_land")
 
     #stop lighting if emergency landing enacted
     if light_controller is not None:
