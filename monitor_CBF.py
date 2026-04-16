@@ -24,7 +24,6 @@ AUDIO_PATH = "audio/oldTownRoad.mp3"
 WAYPOINT_LOG_PATH = "logs/actual_waypoints.log"
 TAKEOFF_HEIGHT = 1.0
 DEFAULT_VELOCITY = 0.3
-MAX_SEGMENT_SPEED = 0.35
 
 X_WALL_MIN = -1.05
 X_WALL_MAX = 1.05
@@ -630,11 +629,6 @@ def fly_sequence(scf: SyncCrazyflie, sequence):
             # Set it to the gap until the *next* waypoint so the firmware
             # trajectory matches the schedule.  For the final waypoint use
             # cbf_filter.dt (or 0.5 s) as a sensible hover duration.
-            command_pos = np.array([x_safe, y_safe, z_safe], dtype=float)
-            distance = float(np.linalg.norm(command_pos - measured_pos))
-            if distance > 1e-6:
-                duration_s = max(duration_s, distance / MAX_SEGMENT_SPEED)
-
             log_waypoint(
                 uri,
                 idx,
@@ -736,7 +730,7 @@ if __name__ == '__main__':
     cbf_filter = CBFSafetyFilter(uris, d_safe=0.5, gamma=0.5, dt=0.2, z_floor=Z_WALL_MIN)
     print(
         f'[CBF] Initialised | d_safe={cbf_filter.d_safe}m  γ={cbf_filter.gamma}  '
-        f'z_floor={cbf_filter.z_floor}m  v_max={MAX_SEGMENT_SPEED}m/s'
+        f'z_floor={cbf_filter.z_floor}m'
     )
 
     #create shared light controller and load clap weights
