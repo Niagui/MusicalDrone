@@ -323,7 +323,6 @@ class CBFSafetyFilter:
                         f'dist={dist:.3f}m  h={h:.3f}  correction λ={lam:.4f}'
                     )
 
-            self._velocities[uri] = v_safe.copy()
             p_safe = p_i + v_safe * dt_cmd
 
             # ---- Floor clamp ------------------------------------------------
