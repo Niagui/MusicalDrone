@@ -59,11 +59,12 @@ class LightController:
     def init_drone_lights(self, scf):
         """Initialize LED deck for one drone; disables lights if deck absent."""
         uri = scf.cf.link_uri
+        print("f[{uri}] Checking for LED ring/light support. . . ")
 
         required = ["ring.effect", "ring.solidRed", "ring.solidGreen", "ring.solidBlue"]
         if not all(self._param_exists(scf, p) for p in required):
             self.enabled[uri] = False
-            print(f"[{uri}] LED ring params not found, disabling lights")
+            print(f"[{uri}] LIGHTS NOT AVAILABLE: LED ring params not found, disabling lights")
             return
 
         try:
@@ -72,10 +73,10 @@ class LightController:
             scf.cf.param.set_value("ring.solidBlue",  "0")
             scf.cf.param.set_value("ring.effect", "7")   # solid color mode
             self.enabled[uri] = True
-            print(f"[{uri}] Lights initialized (solid color mode)")
+            print(f"[{uri}] CONNECTED: Lights initialized (solid color mode)")
         except Exception as e:
             self.enabled[uri] = False
-            print(f"[{uri}] Light init failed: {e}")
+            print(f"[{uri}] Lights found but init failed: {e}")
 
     # -------------------------------------------------------------------------
     # Timing sync
@@ -168,6 +169,7 @@ class LightController:
         uri = scf.cf.link_uri
 
         if not self.enabled.get(uri, False):
+            print(f"[{uri}] EMOTION SYNC FAILED: LIGHTS NOT ENABLED")
             return
 
         # Wait until the sequence start time is published (or stop is requested)
