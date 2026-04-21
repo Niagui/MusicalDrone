@@ -525,6 +525,8 @@ def fly_sequence(scf: SyncCrazyflie, sequence):
     print(f'[{uri}] Airborne — waiting at barrier')
 
     global _sequence_start_time
+    light_controller.set_sequence_start(_sequence_start_time)
+    
     if _takeoff_barrier is not None:
         try:
             _takeoff_barrier.wait(timeout=15.0)
