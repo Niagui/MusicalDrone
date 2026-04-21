@@ -529,7 +529,8 @@ def fly_sequence(scf: SyncCrazyflie, sequence):
     if _takeoff_barrier is not None:
         try:
             _takeoff_barrier.wait(timeout=15.0)
-            # _sequence_start_time set atomically by barrier action=_record_sequence_start
+            light_controller.set_sequence_start(_sequence_start_time)
+            
         except threading.BrokenBarrierError:
             print(f'[{uri}] Barrier broken — aborting')
             return
