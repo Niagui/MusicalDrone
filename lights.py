@@ -29,13 +29,13 @@ class LightController:
 
         # RGB color per emotion index (0-6)
         self.emotion_colors = {
-            0: (255,  80,  80),   # red
-            1: (255, 170,  60),   # orange
-            2: (255, 230,  80),   # yellow
-            3: ( 80, 255, 120),   # green
-            4: ( 80, 170, 255),   # blue
-            5: (170,  80, 255),   # purple
-            6: (255,  80, 200),   # pink
+            0: (255, 255, 0),    # happy -> yellow
+            1: (0, 100, 255),    # sad -> blue
+            2: (150, 100, 255),  # sleepy -> purple
+            3: (255, 0, 0),      # brave -> red
+            4: (255, 120, 0),    # grumpy -> orange
+            5: (0, 255, 255),    # scared -> light blue
+            6: (255, 120, 180),  # shy -> pink
         }
 
     # -------------------------------------------------------------------------
