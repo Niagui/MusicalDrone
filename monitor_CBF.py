@@ -525,7 +525,6 @@ def fly_sequence(scf: SyncCrazyflie, sequence):
     print(f'[{uri}] Airborne — waiting at barrier')
 
     global _sequence_start_time
-    light_controller.set_sequence_start(_sequence_start_time)
     
     if _takeoff_barrier is not None:
         try:
@@ -534,7 +533,8 @@ def fly_sequence(scf: SyncCrazyflie, sequence):
         except threading.BrokenBarrierError:
             print(f'[{uri}] Barrier broken — aborting')
             return
-
+        
+        light_controller.set_sequence_start(_sequence_start_time)
         if uri not in light_threads:
             t = threading.Thread(
                 target=light_controller.run_emotion_sync,
