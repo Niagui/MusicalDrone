@@ -31,9 +31,9 @@ class LightController:
 		1: (255, 170, 60),	#orange
 		2: (255, 230, 80),	#yellow
 		3: (80, 255, 120),	#green
-		4: (80, 170, 255),   	#blue
-            	5: (170, 80, 255),   	#purple
-            	6: (255, 80, 200),   	#pink
+		4: (80, 170, 255),   #blue
+        5: (170, 80, 255),   #purple
+        6: (255, 80, 200),   #pink
 	}
 
     def load_weights(self, path="json/clap_weights.json"):
@@ -58,13 +58,13 @@ class LightController:
 
         uri = scf.cf.link_uri
 
-	has_effect = self._param_exists(scf, "ring.effect")
+		has_effect = self._param_exists(scf, "ring.effect")
         has_r = self._param_exists(scf, "ring.solidRed")
         has_g = self._param_exists(scf, "ring.solidGreen")
         has_b = self._param_exists(scf, "ring.solidBlue")
 
-	if not (has_effect and has_r and has_g and has_b):
-            self.enabled[uri] = False
+		if not (has_effect and has_r and has_g and has_b):
+        	self.enabled[uri] = False
             print(f"[{uri}] LED ring params not found, disabling lights")
             return
 
