@@ -32,11 +32,7 @@ except Exception:  # pragma: no cover - optional dependency
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-
-INPUT_JSON = "json/clap_results.json"
-BEATS_JSON = "json/beat_times.json"
-SECTIONS_JSON = "json/sections.json"
-OUTPUT_JSON = "json/phrase_plan.json"
+JSON_DIR_ENV_VAR = "DRONE_JSON_DIR"
 MODEL_NAME = os.getenv("OPENAI_PHRASE_MODEL", "gpt-4o-mini")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 OPENAI_CHAT_COMPLETIONS_URL = os.getenv(
@@ -116,15 +112,35 @@ _load_repo_env()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 
-def load_json(path: str, default: Any = None) -> Any:
-    file_path = PROJECT_ROOT / path
+def get_generated_json_dir() -> Path:
+    override = os.getenv(JSON_DIR_ENV_VAR)
+    if override:
+        return Path(override).expanduser().resolve()
+    return PROJECT_ROOT / "json"
+
+
+def get_generated_json_path(filename: str) -> Path:
+    return get_generated_json_dir() / f"{filename}.json"
+
+
+def get_pipeline_json_path(filename: str) -> Path:
+    generated_path = get_generated_json_path(filename)
+    if generated_path.exists():
+        return generated_path
+    return PROJECT_ROOT / "json" / f"{filename}.json"
+
+
+def load_json(path: str | Path, default: Any = None) -> Any:
+    file_path = Path(path)
+    if not file_path.is_absolute():
+        file_path = PROJECT_ROOT / file_path
     if not file_path.exists():
         return default
     with open(file_path, "r", encoding="utf-8") as handle:
         return json.load(handle)
 
 
-def load_sections(path: str) -> List[SectionSpan]:
+def load_sections(path: str | Path) -> List[SectionSpan]:
     raw = load_json(path, default=[]) or []
     sections: List[SectionSpan] = []
     for index, item in enumerate(raw):
@@ -572,12 +588,17 @@ def build_output_payload(
 
 
 def main() -> None:
-    clap_phrases = load_json(INPUT_JSON, default=[]) or []
-    beat_times = load_json(BEATS_JSON, default=[]) or []
-    sections = load_sections(SECTIONS_JSON)
+    input_json_path = get_generated_json_path("clap_results")
+    beats_json_path = get_generated_json_path("beat_times")
+    sections_json_path = get_pipeline_json_path("sections")
+    output_json_path = get_generated_json_path("phrase_plan")
+
+    clap_phrases = load_json(input_json_path, default=[]) or []
+    beat_times = load_json(beats_json_path, default=[]) or []
+    sections = load_sections(sections_json_path)
 
     if not clap_phrases:
-        raise RuntimeError(f"No phrase data found in {INPUT_JSON}.")
+        raise RuntimeError(f"No phrase data found in {input_json_path}.")
 
     blocks = build_phrase_blocks(clap_phrases, beat_times=beat_times, sections=sections)
     batches = pack_batches(blocks)
@@ -603,12 +624,12 @@ def main() -> None:
 
         plan_records.update(batch_records)
 
-    payload = build_output_payload(blocks, plan_records, INPUT_JSON, MODEL_NAME)
-    output_path = PROJECT_ROOT / OUTPUT_JSON
-    with open(output_path, "w", encoding="utf-8") as handle:
+    payload = build_output_payload(blocks, plan_records, input_json_path.name, MODEL_NAME)
+    output_json_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(output_json_path, "w", encoding="utf-8") as handle:
         json.dump(payload, handle, indent=2)
 
-    print(f"Wrote {OUTPUT_JSON}")
+    print(f"Wrote {output_json_path}")
 
 
 if __name__ == "__main__":

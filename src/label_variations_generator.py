@@ -18,6 +18,7 @@ import json
 import re
 import time
 import datetime
+from pathlib import Path
 from typing import Any, Dict, List, Tuple, Optional
 from dataclasses import dataclass
 from dotenv import load_dotenv
@@ -34,12 +35,12 @@ except Exception:
 # Configuration
 # =============================================================================
 load_dotenv()
-INPUT_JSON = "json/clap_results.json"  # path to CLAP export
-OUTPUT_JSON = "json/llm_weights.json"  # where we write variations
 MODEL_NAME = "gpt-4o-mini"  # model to use
 OPENAI_API_KEY = os.getenv(
     "OPENAI_API_KEY"
 )  # set your API key here or use os.environ['OPENAI_API_KEY']
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+JSON_DIR_ENV_VAR = "DRONE_JSON_DIR"
 
 # Sizing & batching
 TARGET_PROMPT_TOKENS = 1400
@@ -60,6 +61,17 @@ OUTPUT_USD_PER_1K = None
 # REFACTORED: Only include moods
 CATEGORIES = ["moods"]
 TOP_PER_CATEGORY = 2
+
+
+def get_generated_json_dir() -> Path:
+    override = os.getenv(JSON_DIR_ENV_VAR)
+    if override:
+        return Path(override).expanduser().resolve()
+    return PROJECT_ROOT / "json"
+
+
+def get_generated_json_path(filename: str) -> Path:
+    return get_generated_json_dir() / f"{filename}.json"
 
 # =============================================================================
 # Utility Functions
@@ -436,13 +448,16 @@ def distribute_variations_to_segments(
 
 def main():
     """Main execution function"""
+    input_json_path = get_generated_json_path("clap_results")
+    output_json_path = get_generated_json_path("llm_weights")
+
     print("=" * 70)
     print("Label Variation Generator — Moods & Characteristics Only")
     print("(Preserving Time Segments)")
     print("=" * 70)
 
     print("\nLoading CLAP results...")
-    clap = load_clap(INPUT_JSON)
+    clap = load_clap(str(input_json_path))
     print(f"Loaded {len(clap)} segments")
 
     print("\nPlanning batches...")
@@ -500,7 +515,7 @@ def main():
     # Write output
     print("\nWriting output...")
     out = {
-        "source_file": os.path.basename(INPUT_JSON),
+        "source_file": input_json_path.name,
         "model": MODEL_NAME,
         "generated_at": datetime.datetime.utcnow().replace(microsecond=0).isoformat()
         + "Z",
@@ -509,7 +524,8 @@ def main():
         "segments": output_segments,
     }
 
-    with open(OUTPUT_JSON, "w", encoding="utf-8") as f:
+    output_json_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(output_json_path, "w", encoding="utf-8") as f:
         json.dump(out, f, ensure_ascii=False, indent=2)
 
     # Calculate statistics
@@ -519,7 +535,7 @@ def main():
     print("\n" + "=" * 70)
     print("SUMMARY")
     print("=" * 70)
-    print(f"Output file: {OUTPUT_JSON}")
+    print(f"Output file: {output_json_path}")
     print(f"Total segments: {len(output_segments)}")
     print(f"Segments with variations: {segments_with_variations}")
     print(f"Usage: {usage_total}")

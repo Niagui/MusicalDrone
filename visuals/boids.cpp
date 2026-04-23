@@ -216,13 +216,18 @@ static std::filesystem::path find_json_file(const std::string &filename) {
     namespace fs = std::filesystem;
     fs::path cwd = fs::current_path();
 
-    // look from these folder:
-    std::vector<fs::path> candidates = {
-        cwd / "json" / filename,
-        cwd.parent_path() / "json" / filename,
-    };
+    std::vector<fs::path> search_roots;
+    if (const char* env_json_dir = std::getenv("DRONE_JSON_DIR"); env_json_dir && *env_json_dir) {
+        fs::path env_path(env_json_dir);
+        search_roots.push_back(env_path);
+        search_roots.push_back(env_path / "json");
+    }
 
-    for (const auto &p : candidates) {
+    search_roots.push_back(cwd / "json");
+    search_roots.push_back(cwd.parent_path() / "json");
+
+    for (const auto &root : search_roots) {
+        fs::path p = root / filename;
         std::cerr << "[DEBUG] trying: " << p.string() << "\n";
 
         if (fs::exists(p)) {

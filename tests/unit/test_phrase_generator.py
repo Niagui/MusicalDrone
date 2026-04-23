@@ -1,6 +1,9 @@
 import json
+import os
+import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 from src import phrase_generator as pg
 
@@ -157,6 +160,24 @@ class PhraseGeneratorTests(unittest.TestCase):
             [0, 1, 2],
         )
         self.assertIn("beat_plan", payload["phrases"][0])
+
+    def test_generated_json_path_uses_cache_override(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            cache_dir = Path(temp_dir) / "json-cache"
+            with mock.patch.dict(os.environ, {"DRONE_JSON_DIR": str(cache_dir)}):
+                self.assertEqual(
+                    pg.get_generated_json_path("phrase_plan"),
+                    cache_dir / "phrase_plan.json",
+                )
+
+    def test_pipeline_json_path_falls_back_to_repo_json(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            cache_dir = Path(temp_dir) / "json-cache"
+            with mock.patch.dict(os.environ, {"DRONE_JSON_DIR": str(cache_dir)}):
+                self.assertEqual(
+                    pg.get_pipeline_json_path("sections"),
+                    pg.PROJECT_ROOT / "json" / "sections.json",
+                )
 
 
 if __name__ == "__main__":
