@@ -39,8 +39,10 @@ def main():
     args = parser.parse_args()
     audio = resolve_audio_path(args.audio)
 
-    beat_times, _ = bt.beat_track(audio)
-    bt.group_beats(beat_times, save_to_json=True)
+    beat_times, tempo = bt.beat_track(audio)
+    utils.save_as_json("beat_times", list(beat_times), folder="../")
+    segments = bt.group_beats(beat_times)
+    utils.save_as_json("k_beat_segments", segments, folder="../")
     utils.check_environment()
     clap = cp.Clap()
     clap.retrieve_info()

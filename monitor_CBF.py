@@ -738,6 +738,7 @@ if __name__ == '__main__':
     #create shared light controller and load clap weights
     light_controller = LightController()
     light_controller.load_weights("json/clap_weights.json")
+    light_controller.load_beat_times("json/beat_times.json")
     print('[LIGHTS] Initialized')
 
     _takeoff_barrier = threading.Barrier(len(uris), action=_record_sequence_start)

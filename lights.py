@@ -27,6 +27,8 @@ class LightController:
         # Loaded JSON segments from clap_weights.json
         self.segments = []
 
+        self.beat_times = []          # beat timestamps in seconds
+        self.beat_flash_s = 0.08      # how long the white flash holds
         # RGB color per emotion index (0-6)
         self.emotion_colors = {
             0: (255, 255, 0),    # happy -> yellow
@@ -46,6 +48,16 @@ class LightController:
         with open(path, "r") as f:
             self.segments = json.load(f)
         print(f"[LIGHTS] Loaded {len(self.segments)}")
+
+    def load_beat_times(self, path="json/beat_times.json"):
+      with open(path, "r") as f:
+          self.beat_times = json.load(f)   # list of floats
+      print(f"[LIGHTS] Loaded {len(self.beat_times)} beats")
+
+    @staticmethod
+    def _brighten(rgb, factor=1.6):
+        """Scale an RGB tuple up, clamped to 255."""
+        return tuple(min(255, int(c * factor)) for c in rgb)
 
     def _param_exists(self, scf, name):
         """Return True if *name* (e.g. 'ring.effect') is present in the TOC."""
@@ -164,52 +176,71 @@ class LightController:
     # -------------------------------------------------------------------------
 
     def run_emotion_sync(self, scf):
-        """Lighting thread for one drone: follows emotion weights in real time."""
         uri = scf.cf.link_uri
-
         if not self.enabled.get(uri, False):
+            print(f"[{uri}] EMOTION SYNC FAILED: LIGHTS NOT ENABLED")
             return
 
-        # Wait until the sequence start time is published (or stop is requested)
         while not self.stop_event.is_set():
             if self.sequence_start_event.wait(timeout=0.05):
                 break
-
         if self.stop_event.is_set() or self.sequence_start_time is None:
             return
 
         sequence_start_time = self.sequence_start_time
-        last_idx = None
 
+        # --- Build merged timeline ---
+        events = []
         for seg in self.segments:
+            try:
+                events.append({
+                    "time":    float(seg["start"]),
+                    "type":    "segment",
+                    "weights": seg["weights"],
+                })
+            except (KeyError, TypeError, ValueError) as e:
+                print(f"[{uri}] Bad segment skipped: {e}")
+
+        for bt in self.beat_times:
+            t = float(bt)
+            events.append({"time": t,                        "type": "beat_on"})
+            events.append({"time": t + self.beat_flash_s,    "type": "beat_off"})
+
+        events.sort(key=lambda e: e["time"])
+
+        current_rgb = (0, 0, 0)
+        last_emotion_idx = None
+
+        for event in events:
             if self.stop_event.is_set():
                 break
 
-            try:
-                start   = float(seg["start"])
-                weights = seg["weights"]
-            except (KeyError, TypeError, ValueError) as e:
-                print(f"[{uri}] Bad light segment skipped: {e}")
-                continue
-
-            # Sleep until this segment's scheduled wall-clock time
-            sleep_s = (sequence_start_time + start) - time.perf_counter()
+            sleep_s = (sequence_start_time + event["time"]) - time.perf_counter()
             if sleep_s > 0:
                 if self.stop_event.wait(timeout=sleep_s):
                     break
 
-            idx = self.strongest_weight_index(weights)
+            etype = event["type"]
 
-            # Only send a command when the dominant emotion actually changes
-            if idx != last_idx:
+            if etype == "segment":
+                idx = self.strongest_weight_index(event["weights"])
                 r, g, b = self.emotion_index_to_rgb(idx)
-                # self.set_rgb(scf, r, g, b)        # hard cut
-                self.set_fade_rgb(scf, r, g, b)     # smooth fade
-                print(f"[{uri}] Light change at {start:.2f}s: "
-                      f"emotion {idx} -> RGB ({r},{g},{b})")
-                last_idx = idx
+                current_rgb = (r, g, b)
+                if idx != last_emotion_idx:
+                    self.set_fade_rgb(scf, r, g, b, fade_time=0.25)
+                    print(f"[{uri}] Emotion → {idx} RGB({r},{g},{b}) "
+                          f"@ {event['time']:.2f}s")
+                    last_emotion_idx = idx
 
-        # Sequence finished (or stop_event set) — turn off LEDs
+            elif etype == "beat_on":
+                # White flash — always fires, no duplicate check needed
+                self.set_rgb(scf, 255, 255, 255)
+
+            elif etype == "beat_off":
+                # Restore to current emotion color
+                r, g, b = current_rgb
+                self.set_rgb(scf, r, g, b)
+
         self.lights_off(scf)
 
     # -------------------------------------------------------------------------
