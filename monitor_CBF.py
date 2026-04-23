@@ -35,6 +35,10 @@ Z_WALL_MAX = 1.2
 uris = [
     'radio://0/80/2M/E7E7E7E702',
 ]
+# URIs that pulse white on every beat; others show emotion color only
+BEAT_FLASH_URIS = {
+    'radio://0/80/2M/E7E7E7E702',
+}
 
 commanders = {}
 loggers = {}
@@ -539,7 +543,7 @@ def fly_sequence(scf: SyncCrazyflie, sequence):
         if uri not in light_threads:
             t = threading.Thread(
                 target=light_controller.run_emotion_sync,
-                args=(scf,),
+                args=(scf, uri in BEAT_FLASH_URIS),
                 daemon=True
             )
             light_threads[uri] = t

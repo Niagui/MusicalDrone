@@ -28,7 +28,7 @@ class LightController:
         self.segments = []
 
         self.beat_times = []          # beat timestamps in seconds
-        self.beat_flash_s = 0.08      # how long the white flash holds
+        self.beat_flash_s = 0.05      # how long the white flash holds
         # RGB color per emotion index (0-6)
         self.emotion_colors = {
             0: (255, 255, 0),    # happy -> yellow
@@ -175,7 +175,8 @@ class LightController:
     # Main lighting thread
     # -------------------------------------------------------------------------
 
-    def run_emotion_sync(self, scf):
+    def run_emotion_sync(self, scf, beat_flash=True):
+
         uri = scf.cf.link_uri
         if not self.enabled.get(uri, False):
             print(f"[{uri}] EMOTION SYNC FAILED: LIGHTS NOT ENABLED")
@@ -234,12 +235,14 @@ class LightController:
 
             elif etype == "beat_on":
                 # White flash — always fires, no duplicate check needed
-                self.set_rgb(scf, 255, 255, 255)
+                if beat_flash:
+                    self.set_rgb(scf, 255, 255, 255)
 
             elif etype == "beat_off":
                 # Restore to current emotion color
-                r, g, b = current_rgb
-                self.set_rgb(scf, r, g, b)
+                if beat_flash:
+                    r, g, b = current_rgb
+                    self.set_rgb(scf, r, g, b)
 
         self.lights_off(scf)
 
