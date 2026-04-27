@@ -13,11 +13,11 @@ The current system analyzes music in beat-aligned segments, classifies each segm
 
 ## Demo
 
-<video src="demo/5dronesdemo.mp4" controls width="720" title="Five Crazyflie drones flying inside a protected indoor flight cage during a hardware test"></video>
+![Five Crazyflie drones flying inside a protected indoor flight cage during a hardware test](demo/5dronesdemo.gif)
 
-*Video: five Crazyflie drones flying inside a protected indoor flight cage during a hardware test.*
+*Demo preview: five Crazyflie drones flying inside a protected indoor flight cage during a hardware test.*
 
-If the embedded player does not render, open the clip directly: [five-drone flight demo](demo/5dronesdemo.mp4)
+Watch or download the full MP4: [five-drone flight demo](demo/5dronesdemo.mp4?raw=true)
 
 ### Hardware
 
@@ -247,6 +247,7 @@ Exploratory or supporting components:
 Local demo assets are included in `demo/`, including simulation media and hardware attempts:
 
 - `demo/5dronesdemo.mp4`
+- `demo/5dronesdemo.gif`
 - `demo/crazyflies.jpg`
 - `demo/lightring.jpg`
 - `demo/swarm_animation.gif`
