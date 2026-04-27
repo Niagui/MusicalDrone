@@ -8,12 +8,17 @@ Drone choreography for music-based performance is usually time-consuming to auth
 
 The current system analyzes music in beat-aligned segments, classifies each segment against affective audio labels, maps the resulting weights onto swarm-control parameters, and generates trajectory CSV output for visualization or Crazyflie-based execution. Optional language-model components add a compact phrase-level plan that can steer a shared attractor while leaving low-level trajectory generation and safety filtering to the robotics stack.
 
-![Pipeline diagram](demo/pipeline.drawio.png)
-*Figure: the active pipeline converts an audio file into cached analysis JSON, emotion-weighted swarm parameters, and trajectory output for simulation or drone execution.*
+![Pipeline diagram showing audio input, CLAP emotional analysis, optional LLM variation generation, emotion-to-boid parameter mapping, trajectory planning, CBF safety layers, and flight simulation](demo/pipeline.png)
+*Figure: the system architecture starts with audio processing, uses CLAP to estimate segment-level musical affect, optionally expands labels with an LLM variation generator, maps emotion weights into boids-control parameters, and sends the result through a trajectory planner. The generated trajectory uses planner-level CBF in the C++ simulation path; hardware playback through `monitor_CBF.py` adds a separate real-time CBF layer.*
+
+## Demo
+
+![Two Crazyflie drones in the protected drone cage during a hardware test](demo/drone_flight_still.png)
+*Figure: still frame from the two-drone hardware test in `demo/demo video 2 drones attempt.mp4`.*
 
 ## Highlights
 
-- **Start from music, not hand-authored waypoints.** Provide an audio file and generate a timed trajectory CSV that follows beat-aligned musical segments.
+- **Start from music without hand-authored waypoints.** Provide an audio file and generate a timed trajectory CSV that follows beat-aligned musical segments.
 - **Shape motion with interpretable affective labels.** The system maps music descriptors into emotion-anchor weights so creators can inspect why a segment changes the swarm behavior.
 - **Coordinate movement and lights from the same timing source.** Crazyflie LED cues use the same segment timing as the generated motion, so color changes can align with musical transitions.
 - **Experiment safely before hardware.** The C++ trajectory generator includes workspace bounds, speed and acceleration caps, and OSQP-backed CBF filtering before trajectories are sent to real drones.
@@ -23,7 +28,7 @@ The current system analyzes music in beat-aligned segments, classifies each segm
 
 View the project on GitHub: [github.com/Niagui/MusicalDrone](https://github.com/Niagui/MusicalDrone)
 
-Generate a trajectory from one of the included audio files:
+Generate a trajectory from one of the included testing audio files:
 
 ```bash
 ./pipeline.sh --audio testSong.mp3 --output trajectories.csv
@@ -41,21 +46,21 @@ Platform notes:
 
 This repository is positioned as a technology-and-code contribution for expressive robotics. Its framing is compatible with art-robot research themes such as common language, collaboration between artists and roboticists, and the design of interpretable motion vocabularies. In particular, the project treats musical descriptors such as mood, valence, arousal, tension, phrase role, and motion mode as intermediate representations between a musical work and a robotic swarm.
 
-That framing is informed by the Frontiers Research Topic, [Speed-dating to long-term relationships: Art-robot Residencies Enabled by Common Language](https://www.frontiersin.org/research-topics/64452/speed-dating-to-long-term-relationships-art-robot-residencies-enabled-by-common-language), where applicable. The README does not claim user-study results, validated audience effects, or completed residency outcomes; those would require evidence beyond the current codebase.
-
 ## Current Pipeline
 
-The main reproducible path is implemented in `pipeline.sh`:
+The main reproducible path is implemented in `pipeline.sh`. It generates cached analysis artifacts and a trajectory CSV:
 
 ```text
 audio file
-  -> beat tracking and k-beat grouping
-  -> CLAP zero-shot audio classification
-  -> emotion-anchor weighting
-  -> optional LLM label variation and phrase planning
-  -> C++ boids simulation with CBF safety filtering
-  -> trajectory CSV
+  -> basic audio processing
+  -> CLAP-based emotional analysis
+  -> optional LLM-based label variation
+  -> emotion-to-boid parameter mapping
+  -> trajectory planner with planner CBF
+  -> trajectory CSV for simulation or Crazyflie playback
 ```
+
+The real-time CBF layer shown in the architecture diagram is part of the hardware execution path in `monitor_CBF.py`, not a step that `pipeline.sh` runs directly.
 
 Run the default pipeline:
 
@@ -230,6 +235,7 @@ Exploratory or supporting components:
 
 Local demo assets are included in `demo/`, including simulation media and hardware attempts:
 
+- `demo/drone_flight_still.png`
 - `demo/swarm_animation.gif`
 - `demo/VA_on_2d_plane.gif`
 - `demo/drones.mp4`
