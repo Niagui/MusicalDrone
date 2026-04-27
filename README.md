@@ -19,6 +19,14 @@ The current system analyzes music in beat-aligned segments, classifies each segm
 
 If the embedded player does not render, open the clip directly: [five-drone flight demo](demo/5dronesdemo.mp4)
 
+### Hardware
+
+![Crazyflie quadcopter used for the hardware flight tests](demo/crazyflies.jpg)
+*Figure: Crazyflie quadcopter used for hardware testing inside the protected flight space.*
+
+![Crazyflie light ring deck illuminated in blue](demo/lightring.jpg)
+*Figure: Crazyflie light ring deck used for emotion-synchronized LED cues.*
+
 ## Highlights
 
 - **Start from music without hand-authored waypoints.** Provide an audio file and generate a timed trajectory CSV that follows beat-aligned musical segments.
@@ -239,6 +247,8 @@ Exploratory or supporting components:
 Local demo assets are included in `demo/`, including simulation media and hardware attempts:
 
 - `demo/5dronesdemo.mp4`
+- `demo/crazyflies.jpg`
+- `demo/lightring.jpg`
 - `demo/swarm_animation.gif`
 - `demo/VA_on_2d_plane.gif`
 - `demo/drones.mp4`
