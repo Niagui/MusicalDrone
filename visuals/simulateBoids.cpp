@@ -7,11 +7,28 @@
 
 Config cfg;
 
+static inline float clampf(float x, float lo, float hi) {
+    return x < lo ? lo : (x > hi ? hi : x);
+}
+
+static inline float smooth01(float x) {
+    x = clampf(x, 0.0f, 1.0f);
+    return x * x * (3.0f - 2.0f * x);
+}
+
+static inline Vec3 LerpVec3(const Vec3& a, const Vec3& b, float t) {
+    return {
+        a.x + (b.x - a.x) * t,
+        a.y + (b.y - a.y) * t,
+        a.z + (b.z - a.z) * t
+    };
+}
+
 static std::vector<Vec3> SampleCircle(int n, float radius, float phase) {
     std::vector<Vec3> pts(n);
     for (int i = 0; i < n; ++i) {
         float a = (i / (float)n) * 2.0f * 3.14159265358979323846f + phase;
-        pts[i] = { radius * std::cos(a), 0.0f, radius * std::sin(a) };
+        pts[i] = { radius * std::cos(a), radius * std::sin(a), 0.0f };
     }
     return pts;
 }
@@ -40,11 +57,24 @@ static std::vector<Vec3> SampleLine(int n)
     return pts;
 }
 
+static std::vector<Vec3> BlendSlots(const std::vector<Vec3>& from,
+                                    const std::vector<Vec3>& to,
+                                    float t)
+{
+    std::vector<Vec3> blended;
+    blended.reserve(from.size());
+    for (size_t i = 0; i < from.size() && i < to.size(); ++i) {
+        blended.push_back(LerpVec3(from[i], to[i], t));
+    }
+    return blended;
+}
+
 int main() {
     const int   droneCount   = cfg.drone_config.num_drones;
     const float totalTime    = GetAudioLength();
     const float simDt        = 1.0f / 60.0f;
     const float outputDt     = 0.2f;  // snapshot every 0.2 sec
+    const float lineToCircleTime = 1.2f;
 
     std::cerr << totalTime << std::endl;
 
@@ -61,10 +91,12 @@ int main() {
 
     //give 2 seconds to settle
     while (t <= totalTime + 5) {
-
-        float phase = 0.25f * t; 
-        std::vector<Vec3> slots = SampleLine(droneCount);
-        for (auto& s : slots) s.z = 0.0f;  
+        const float circleRadius = (cfg.drone_config.init_dist * droneCount) /
+                                   (2.0f * 3.14159265358979323846f);
+        const float blend = smooth01(t / lineToCircleTime);
+        std::vector<Vec3> lineSlots = SampleLine(droneCount);
+        std::vector<Vec3> circleSlots = SampleCircle(droneCount, circleRadius, 0.0f);
+        std::vector<Vec3> slots = BlendSlots(lineSlots, circleSlots, blend);
 
         // updates
         SetSimTime(t);

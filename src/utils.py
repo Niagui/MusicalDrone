@@ -1,8 +1,50 @@
-import soundfile as sf
 import json
+import os
+from pathlib import Path
+
 import numpy as np
+import soundfile as sf
 import torch
+
 import logger_config as logger
+
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+SHARED_JSON_DIR = PROJECT_ROOT / "json"
+JSON_DIR_ENV_VAR = "DRONE_JSON_DIR"
+
+
+def get_shared_json_dir() -> Path:
+    return SHARED_JSON_DIR
+
+
+def get_generated_json_dir(folder: str | None = "../") -> Path:
+    override = os.getenv(JSON_DIR_ENV_VAR)
+    if override:
+        return Path(override).expanduser().resolve()
+
+    if folder in {None, "", ".", "./", "../"}:
+        return SHARED_JSON_DIR
+
+    folder_path = Path(folder).expanduser()
+    if folder_path.is_absolute():
+        return folder_path / "json"
+    return (Path.cwd() / folder_path / "json").resolve()
+
+
+def get_shared_json_path(filename: str) -> Path:
+    return get_shared_json_dir() / f"{filename}.json"
+
+
+def get_generated_json_path(filename: str, folder: str | None = "../") -> Path:
+    return get_generated_json_dir(folder) / f"{filename}.json"
+
+
+def get_pipeline_json_path(filename: str) -> Path:
+    generated_path = get_generated_json_path(filename)
+    if generated_path.exists():
+        return generated_path
+    return get_shared_json_path(filename)
 
 
 def get_duration(audio_file) -> float:
@@ -26,7 +68,9 @@ def save_as_json(filename, data, folder="../") -> None:
         filename: file name for the json file to be store (without extension)
         data (list): data stored as array
     """
-    with open(f"{folder}json/{filename}.json", "w", encoding="utf-8") as file:
+    output_path = get_generated_json_path(filename, folder)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(output_path, "w", encoding="utf-8") as file:
         json.dump(data, file, indent=4)
     return
 

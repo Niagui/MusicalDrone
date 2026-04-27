@@ -1,0 +1,1446 @@
+[
+    {
+        "start": 2.3219954648526078,
+        "end": 7.4071655328798185,
+        "feature": {
+            "moods": [
+                {
+                    "score": 0.4784450829029083,
+                    "label": "exciting"
+                },
+                {
+                    "score": 0.2048996537923813,
+                    "label": "sad"
+                },
+                {
+                    "score": 0.15760120749473572,
+                    "label": "happy"
+                }
+            ],
+            "characteristics": [
+                {
+                    "score": 0.5754909515380859,
+                    "label": "syncopated"
+                },
+                {
+                    "score": 0.38790664076805115,
+                    "label": "groovy"
+                },
+                {
+                    "score": 0.015187397599220276,
+                    "label": "dense"
+                }
+            ],
+            "valence": [
+                {
+                    "score": 0.686461865901947,
+                    "label": "high valence"
+                },
+                {
+                    "score": 0.293813019990921,
+                    "label": "moderate valence"
+                },
+                {
+                    "score": 0.01972506195306778,
+                    "label": "low valence"
+                }
+            ],
+            "arousal": [
+                {
+                    "score": 0.5102280378341675,
+                    "label": "moderate arousal"
+                },
+                {
+                    "score": 0.28719910979270935,
+                    "label": "high arousal"
+                },
+                {
+                    "score": 0.20257288217544556,
+                    "label": "low arousal"
+                }
+            ],
+            "tension": [
+                {
+                    "score": 0.43739327788352966,
+                    "label": "moderate tension"
+                },
+                {
+                    "score": 0.3186134696006775,
+                    "label": "high tension"
+                },
+                {
+                    "score": 0.24399326741695404,
+                    "label": "low tension"
+                }
+            ]
+        }
+    },
+    {
+        "start": 7.4071655328798185,
+        "end": 12.515555555555556,
+        "feature": {
+            "moods": [
+                {
+                    "score": 0.756356954574585,
+                    "label": "exciting"
+                },
+                {
+                    "score": 0.10076207667589188,
+                    "label": "happy"
+                },
+                {
+                    "score": 0.04253193736076355,
+                    "label": "brave"
+                }
+            ],
+            "characteristics": [
+                {
+                    "score": 0.8933640718460083,
+                    "label": "syncopated"
+                },
+                {
+                    "score": 0.09684745967388153,
+                    "label": "groovy"
+                },
+                {
+                    "score": 0.006060983520001173,
+                    "label": "dense"
+                }
+            ],
+            "valence": [
+                {
+                    "score": 0.7338724732398987,
+                    "label": "high valence"
+                },
+                {
+                    "score": 0.25233694911003113,
+                    "label": "moderate valence"
+                },
+                {
+                    "score": 0.01379062607884407,
+                    "label": "low valence"
+                }
+            ],
+            "arousal": [
+                {
+                    "score": 0.4867976903915405,
+                    "label": "moderate arousal"
+                },
+                {
+                    "score": 0.3206423819065094,
+                    "label": "high arousal"
+                },
+                {
+                    "score": 0.19255995750427246,
+                    "label": "low arousal"
+                }
+            ],
+            "tension": [
+                {
+                    "score": 0.683469831943512,
+                    "label": "moderate tension"
+                },
+                {
+                    "score": 0.20306707918643951,
+                    "label": "high tension"
+                },
+                {
+                    "score": 0.11346304416656494,
+                    "label": "low tension"
+                }
+            ]
+        }
+    },
+    {
+        "start": 12.515555555555556,
+        "end": 17.809705215419502,
+        "feature": {
+            "moods": [
+                {
+                    "score": 0.6767057776451111,
+                    "label": "exciting"
+                },
+                {
+                    "score": 0.17881523072719574,
+                    "label": "happy"
+                },
+                {
+                    "score": 0.09399287402629852,
+                    "label": "anxious"
+                }
+            ],
+            "characteristics": [
+                {
+                    "score": 0.5279424786567688,
+                    "label": "groovy"
+                },
+                {
+                    "score": 0.44863682985305786,
+                    "label": "syncopated"
+                },
+                {
+                    "score": 0.01056793611496687,
+                    "label": "glitchy"
+                }
+            ],
+            "valence": [
+                {
+                    "score": 0.7108574509620667,
+                    "label": "moderate valence"
+                },
+                {
+                    "score": 0.25350844860076904,
+                    "label": "high valence"
+                },
+                {
+                    "score": 0.035634081810712814,
+                    "label": "low valence"
+                }
+            ],
+            "arousal": [
+                {
+                    "score": 0.6837401390075684,
+                    "label": "moderate arousal"
+                },
+                {
+                    "score": 0.20125582814216614,
+                    "label": "low arousal"
+                },
+                {
+                    "score": 0.1150040552020073,
+                    "label": "high arousal"
+                }
+            ],
+            "tension": [
+                {
+                    "score": 0.5671958327293396,
+                    "label": "moderate tension"
+                },
+                {
+                    "score": 0.30020442605018616,
+                    "label": "high tension"
+                },
+                {
+                    "score": 0.13259975612163544,
+                    "label": "low tension"
+                }
+            ]
+        }
+    },
+    {
+        "start": 17.809705215419502,
+        "end": 22.871655328798187,
+        "feature": {
+            "moods": [
+                {
+                    "score": 0.8320558071136475,
+                    "label": "exciting"
+                },
+                {
+                    "score": 0.05522095039486885,
+                    "label": "happy"
+                },
+                {
+                    "score": 0.028695618733763695,
+                    "label": "anxious"
+                }
+            ],
+            "characteristics": [
+                {
+                    "score": 0.8808233737945557,
+                    "label": "syncopated"
+                },
+                {
+                    "score": 0.08326375484466553,
+                    "label": "groovy"
+                },
+                {
+                    "score": 0.023257998749613762,
+                    "label": "dense"
+                }
+            ],
+            "valence": [
+                {
+                    "score": 0.734736979007721,
+                    "label": "moderate valence"
+                },
+                {
+                    "score": 0.2233378291130066,
+                    "label": "high valence"
+                },
+                {
+                    "score": 0.04192518815398216,
+                    "label": "low valence"
+                }
+            ],
+            "arousal": [
+                {
+                    "score": 0.653096616268158,
+                    "label": "moderate arousal"
+                },
+                {
+                    "score": 0.21974611282348633,
+                    "label": "high arousal"
+                },
+                {
+                    "score": 0.1271573305130005,
+                    "label": "low arousal"
+                }
+            ],
+            "tension": [
+                {
+                    "score": 0.6487212181091309,
+                    "label": "moderate tension"
+                },
+                {
+                    "score": 0.1994287222623825,
+                    "label": "high tension"
+                },
+                {
+                    "score": 0.15185008943080902,
+                    "label": "low tension"
+                }
+            ]
+        }
+    },
+    {
+        "start": 22.871655328798187,
+        "end": 27.910385487528345,
+        "feature": {
+            "moods": [
+                {
+                    "score": 0.7687759399414062,
+                    "label": "exciting"
+                },
+                {
+                    "score": 0.1127750352025032,
+                    "label": "happy"
+                },
+                {
+                    "score": 0.0589570514857769,
+                    "label": "anxious"
+                }
+            ],
+            "characteristics": [
+                {
+                    "score": 0.6139100193977356,
+                    "label": "syncopated"
+                },
+                {
+                    "score": 0.3715861737728119,
+                    "label": "groovy"
+                },
+                {
+                    "score": 0.00667647086083889,
+                    "label": "dense"
+                }
+            ],
+            "valence": [
+                {
+                    "score": 0.8821220993995667,
+                    "label": "moderate valence"
+                },
+                {
+                    "score": 0.09783341735601425,
+                    "label": "high valence"
+                },
+                {
+                    "score": 0.02004450559616089,
+                    "label": "low valence"
+                }
+            ],
+            "arousal": [
+                {
+                    "score": 0.7083707451820374,
+                    "label": "moderate arousal"
+                },
+                {
+                    "score": 0.15738916397094727,
+                    "label": "low arousal"
+                },
+                {
+                    "score": 0.13424000144004822,
+                    "label": "high arousal"
+                }
+            ],
+            "tension": [
+                {
+                    "score": 0.5726568698883057,
+                    "label": "moderate tension"
+                },
+                {
+                    "score": 0.3484988212585449,
+                    "label": "high tension"
+                },
+                {
+                    "score": 0.07884430140256882,
+                    "label": "low tension"
+                }
+            ]
+        }
+    },
+    {
+        "start": 27.910385487528345,
+        "end": 32.97233560090703,
+        "feature": {
+            "moods": [
+                {
+                    "score": 0.7174292206764221,
+                    "label": "exciting"
+                },
+                {
+                    "score": 0.15897974371910095,
+                    "label": "grumpy"
+                },
+                {
+                    "score": 0.05252254009246826,
+                    "label": "happy"
+                }
+            ],
+            "characteristics": [
+                {
+                    "score": 0.7587311267852783,
+                    "label": "syncopated"
+                },
+                {
+                    "score": 0.16190361976623535,
+                    "label": "groovy"
+                },
+                {
+                    "score": 0.060660235583782196,
+                    "label": "dense"
+                }
+            ],
+            "valence": [
+                {
+                    "score": 0.579673707485199,
+                    "label": "moderate valence"
+                },
+                {
+                    "score": 0.22789259254932404,
+                    "label": "high valence"
+                },
+                {
+                    "score": 0.19243378937244415,
+                    "label": "low valence"
+                }
+            ],
+            "arousal": [
+                {
+                    "score": 0.5989342331886292,
+                    "label": "moderate arousal"
+                },
+                {
+                    "score": 0.2752692997455597,
+                    "label": "low arousal"
+                },
+                {
+                    "score": 0.12579640746116638,
+                    "label": "high arousal"
+                }
+            ],
+            "tension": [
+                {
+                    "score": 0.4374491572380066,
+                    "label": "moderate tension"
+                },
+                {
+                    "score": 0.3444397449493408,
+                    "label": "low tension"
+                },
+                {
+                    "score": 0.21811114251613617,
+                    "label": "high tension"
+                }
+            ]
+        }
+    },
+    {
+        "start": 32.97233560090703,
+        "end": 38.01106575963719,
+        "feature": {
+            "moods": [
+                {
+                    "score": 0.8389374613761902,
+                    "label": "exciting"
+                },
+                {
+                    "score": 0.06318895518779755,
+                    "label": "happy"
+                },
+                {
+                    "score": 0.04997261241078377,
+                    "label": "anxious"
+                }
+            ],
+            "characteristics": [
+                {
+                    "score": 0.9687328934669495,
+                    "label": "groovy"
+                },
+                {
+                    "score": 0.024483734741806984,
+                    "label": "syncopated"
+                },
+                {
+                    "score": 0.00414486275985837,
+                    "label": "dense"
+                }
+            ],
+            "valence": [
+                {
+                    "score": 0.5070177912712097,
+                    "label": "high valence"
+                },
+                {
+                    "score": 0.4449266493320465,
+                    "label": "moderate valence"
+                },
+                {
+                    "score": 0.04805554449558258,
+                    "label": "low valence"
+                }
+            ],
+            "arousal": [
+                {
+                    "score": 0.5357987880706787,
+                    "label": "moderate arousal"
+                },
+                {
+                    "score": 0.2425030916929245,
+                    "label": "high arousal"
+                },
+                {
+                    "score": 0.22169806063175201,
+                    "label": "low arousal"
+                }
+            ],
+            "tension": [
+                {
+                    "score": 0.4495570659637451,
+                    "label": "moderate tension"
+                },
+                {
+                    "score": 0.3894023895263672,
+                    "label": "high tension"
+                },
+                {
+                    "score": 0.1610405594110489,
+                    "label": "low tension"
+                }
+            ]
+        }
+    },
+    {
+        "start": 38.01106575963719,
+        "end": 43.073015873015876,
+        "feature": {
+            "moods": [
+                {
+                    "score": 0.8493825197219849,
+                    "label": "exciting"
+                },
+                {
+                    "score": 0.05488177388906479,
+                    "label": "grumpy"
+                },
+                {
+                    "score": 0.03787602484226227,
+                    "label": "happy"
+                }
+            ],
+            "characteristics": [
+                {
+                    "score": 0.9165772795677185,
+                    "label": "syncopated"
+                },
+                {
+                    "score": 0.06648344546556473,
+                    "label": "groovy"
+                },
+                {
+                    "score": 0.011819700710475445,
+                    "label": "dense"
+                }
+            ],
+            "valence": [
+                {
+                    "score": 0.4650750458240509,
+                    "label": "moderate valence"
+                },
+                {
+                    "score": 0.4101909399032593,
+                    "label": "high valence"
+                },
+                {
+                    "score": 0.12473393231630325,
+                    "label": "low valence"
+                }
+            ],
+            "arousal": [
+                {
+                    "score": 0.38393253087997437,
+                    "label": "moderate arousal"
+                },
+                {
+                    "score": 0.31562331318855286,
+                    "label": "high arousal"
+                },
+                {
+                    "score": 0.3004441559314728,
+                    "label": "low arousal"
+                }
+            ],
+            "tension": [
+                {
+                    "score": 0.4904858469963074,
+                    "label": "moderate tension"
+                },
+                {
+                    "score": 0.3099791705608368,
+                    "label": "low tension"
+                },
+                {
+                    "score": 0.19953498244285583,
+                    "label": "high tension"
+                }
+            ]
+        }
+    },
+    {
+        "start": 43.073015873015876,
+        "end": 48.134965986394555,
+        "feature": {
+            "moods": [
+                {
+                    "score": 0.7704982757568359,
+                    "label": "exciting"
+                },
+                {
+                    "score": 0.10141341388225555,
+                    "label": "anxious"
+                },
+                {
+                    "score": 0.07339668273925781,
+                    "label": "brave"
+                }
+            ],
+            "characteristics": [
+                {
+                    "score": 0.6667104959487915,
+                    "label": "syncopated"
+                },
+                {
+                    "score": 0.319844514131546,
+                    "label": "groovy"
+                },
+                {
+                    "score": 0.008251537568867207,
+                    "label": "dense"
+                }
+            ],
+            "valence": [
+                {
+                    "score": 0.7535664439201355,
+                    "label": "moderate valence"
+                },
+                {
+                    "score": 0.21664775907993317,
+                    "label": "high valence"
+                },
+                {
+                    "score": 0.029785793274641037,
+                    "label": "low valence"
+                }
+            ],
+            "arousal": [
+                {
+                    "score": 0.7605064511299133,
+                    "label": "moderate arousal"
+                },
+                {
+                    "score": 0.16449128091335297,
+                    "label": "low arousal"
+                },
+                {
+                    "score": 0.07500229775905609,
+                    "label": "high arousal"
+                }
+            ],
+            "tension": [
+                {
+                    "score": 0.5062229633331299,
+                    "label": "moderate tension"
+                },
+                {
+                    "score": 0.4201525151729584,
+                    "label": "high tension"
+                },
+                {
+                    "score": 0.07362445443868637,
+                    "label": "low tension"
+                }
+            ]
+        }
+    },
+    {
+        "start": 48.134965986394555,
+        "end": 53.173696145124715,
+        "feature": {
+            "moods": [
+                {
+                    "score": 0.9647595882415771,
+                    "label": "exciting"
+                },
+                {
+                    "score": 0.011687393300235271,
+                    "label": "happy"
+                },
+                {
+                    "score": 0.007087423466145992,
+                    "label": "anxious"
+                }
+            ],
+            "characteristics": [
+                {
+                    "score": 0.7806913256645203,
+                    "label": "syncopated"
+                },
+                {
+                    "score": 0.1719779521226883,
+                    "label": "groovy"
+                },
+                {
+                    "score": 0.028824159875512123,
+                    "label": "dense"
+                }
+            ],
+            "valence": [
+                {
+                    "score": 0.48839157819747925,
+                    "label": "moderate valence"
+                },
+                {
+                    "score": 0.4073365330696106,
+                    "label": "high valence"
+                },
+                {
+                    "score": 0.104271799325943,
+                    "label": "low valence"
+                }
+            ],
+            "arousal": [
+                {
+                    "score": 0.43364575505256653,
+                    "label": "moderate arousal"
+                },
+                {
+                    "score": 0.35547322034835815,
+                    "label": "low arousal"
+                },
+                {
+                    "score": 0.2108810395002365,
+                    "label": "high arousal"
+                }
+            ],
+            "tension": [
+                {
+                    "score": 0.4065733850002289,
+                    "label": "moderate tension"
+                },
+                {
+                    "score": 0.35215434432029724,
+                    "label": "low tension"
+                },
+                {
+                    "score": 0.24127233028411865,
+                    "label": "high tension"
+                }
+            ]
+        }
+    },
+    {
+        "start": 53.173696145124715,
+        "end": 58.2356462585034,
+        "feature": {
+            "moods": [
+                {
+                    "score": 0.8273321986198425,
+                    "label": "exciting"
+                },
+                {
+                    "score": 0.10406608879566193,
+                    "label": "happy"
+                },
+                {
+                    "score": 0.030778653919696808,
+                    "label": "sad"
+                }
+            ],
+            "characteristics": [
+                {
+                    "score": 0.5084874629974365,
+                    "label": "groovy"
+                },
+                {
+                    "score": 0.39743053913116455,
+                    "label": "syncopated"
+                },
+                {
+                    "score": 0.05838773027062416,
+                    "label": "dense"
+                }
+            ],
+            "valence": [
+                {
+                    "score": 0.7641705274581909,
+                    "label": "moderate valence"
+                },
+                {
+                    "score": 0.21061383187770844,
+                    "label": "high valence"
+                },
+                {
+                    "score": 0.0252156313508749,
+                    "label": "low valence"
+                }
+            ],
+            "arousal": [
+                {
+                    "score": 0.7605428099632263,
+                    "label": "moderate arousal"
+                },
+                {
+                    "score": 0.1304217278957367,
+                    "label": "high arousal"
+                },
+                {
+                    "score": 0.10903546959161758,
+                    "label": "low arousal"
+                }
+            ],
+            "tension": [
+                {
+                    "score": 0.6179219484329224,
+                    "label": "moderate tension"
+                },
+                {
+                    "score": 0.28070589900016785,
+                    "label": "high tension"
+                },
+                {
+                    "score": 0.10137216001749039,
+                    "label": "low tension"
+                }
+            ]
+        }
+    },
+    {
+        "start": 58.2356462585034,
+        "end": 63.297596371882086,
+        "feature": {
+            "moods": [
+                {
+                    "score": 0.6939391493797302,
+                    "label": "exciting"
+                },
+                {
+                    "score": 0.22293908894062042,
+                    "label": "happy"
+                },
+                {
+                    "score": 0.026683911681175232,
+                    "label": "anxious"
+                }
+            ],
+            "characteristics": [
+                {
+                    "score": 0.68519127368927,
+                    "label": "syncopated"
+                },
+                {
+                    "score": 0.2908563017845154,
+                    "label": "groovy"
+                },
+                {
+                    "score": 0.013188318349421024,
+                    "label": "dense"
+                }
+            ],
+            "valence": [
+                {
+                    "score": 0.5460544228553772,
+                    "label": "moderate valence"
+                },
+                {
+                    "score": 0.4392794370651245,
+                    "label": "high valence"
+                },
+                {
+                    "score": 0.014666156843304634,
+                    "label": "low valence"
+                }
+            ],
+            "arousal": [
+                {
+                    "score": 0.5813101530075073,
+                    "label": "moderate arousal"
+                },
+                {
+                    "score": 0.3130534291267395,
+                    "label": "high arousal"
+                },
+                {
+                    "score": 0.10563645511865616,
+                    "label": "low arousal"
+                }
+            ],
+            "tension": [
+                {
+                    "score": 0.4669729769229889,
+                    "label": "high tension"
+                },
+                {
+                    "score": 0.4027734100818634,
+                    "label": "moderate tension"
+                },
+                {
+                    "score": 0.1302536427974701,
+                    "label": "low tension"
+                }
+            ]
+        }
+    },
+    {
+        "start": 63.297596371882086,
+        "end": 68.33632653061224,
+        "feature": {
+            "moods": [
+                {
+                    "score": 0.4346107542514801,
+                    "label": "exciting"
+                },
+                {
+                    "score": 0.20601989328861237,
+                    "label": "anxious"
+                },
+                {
+                    "score": 0.16820459067821503,
+                    "label": "brave"
+                }
+            ],
+            "characteristics": [
+                {
+                    "score": 0.7245052456855774,
+                    "label": "syncopated"
+                },
+                {
+                    "score": 0.2384503036737442,
+                    "label": "groovy"
+                },
+                {
+                    "score": 0.013392633758485317,
+                    "label": "pulsing"
+                }
+            ],
+            "valence": [
+                {
+                    "score": 0.8720256090164185,
+                    "label": "high valence"
+                },
+                {
+                    "score": 0.1265648752450943,
+                    "label": "moderate valence"
+                },
+                {
+                    "score": 0.001409457647241652,
+                    "label": "low valence"
+                }
+            ],
+            "arousal": [
+                {
+                    "score": 0.5431214570999146,
+                    "label": "moderate arousal"
+                },
+                {
+                    "score": 0.3215722143650055,
+                    "label": "low arousal"
+                },
+                {
+                    "score": 0.1353062242269516,
+                    "label": "high arousal"
+                }
+            ],
+            "tension": [
+                {
+                    "score": 0.46265271306037903,
+                    "label": "moderate tension"
+                },
+                {
+                    "score": 0.41807255148887634,
+                    "label": "high tension"
+                },
+                {
+                    "score": 0.11927467584609985,
+                    "label": "low tension"
+                }
+            ]
+        }
+    },
+    {
+        "start": 68.33632653061224,
+        "end": 73.3750566893424,
+        "feature": {
+            "moods": [
+                {
+                    "score": 0.9420305490493774,
+                    "label": "exciting"
+                },
+                {
+                    "score": 0.029755540192127228,
+                    "label": "brave"
+                },
+                {
+                    "score": 0.009372060187160969,
+                    "label": "happy"
+                }
+            ],
+            "characteristics": [
+                {
+                    "score": 0.7592245936393738,
+                    "label": "syncopated"
+                },
+                {
+                    "score": 0.1598520129919052,
+                    "label": "groovy"
+                },
+                {
+                    "score": 0.053409382700920105,
+                    "label": "dense"
+                }
+            ],
+            "valence": [
+                {
+                    "score": 0.7645761370658875,
+                    "label": "high valence"
+                },
+                {
+                    "score": 0.1902797967195511,
+                    "label": "moderate valence"
+                },
+                {
+                    "score": 0.045144133269786835,
+                    "label": "low valence"
+                }
+            ],
+            "arousal": [
+                {
+                    "score": 0.5173627138137817,
+                    "label": "moderate arousal"
+                },
+                {
+                    "score": 0.2442241907119751,
+                    "label": "low arousal"
+                },
+                {
+                    "score": 0.23841309547424316,
+                    "label": "high arousal"
+                }
+            ],
+            "tension": [
+                {
+                    "score": 0.3966025114059448,
+                    "label": "high tension"
+                },
+                {
+                    "score": 0.3583366274833679,
+                    "label": "moderate tension"
+                },
+                {
+                    "score": 0.24506081640720367,
+                    "label": "low tension"
+                }
+            ]
+        }
+    },
+    {
+        "start": 73.3750566893424,
+        "end": 78.43700680272109,
+        "feature": {
+            "moods": [
+                {
+                    "score": 0.5329853296279907,
+                    "label": "exciting"
+                },
+                {
+                    "score": 0.22810405492782593,
+                    "label": "happy"
+                },
+                {
+                    "score": 0.19038552045822144,
+                    "label": "anxious"
+                }
+            ],
+            "characteristics": [
+                {
+                    "score": 0.5540410280227661,
+                    "label": "syncopated"
+                },
+                {
+                    "score": 0.43045884370803833,
+                    "label": "groovy"
+                },
+                {
+                    "score": 0.007871829904615879,
+                    "label": "glitchy"
+                }
+            ],
+            "valence": [
+                {
+                    "score": 0.7412739396095276,
+                    "label": "moderate valence"
+                },
+                {
+                    "score": 0.23714222013950348,
+                    "label": "high valence"
+                },
+                {
+                    "score": 0.021583836525678635,
+                    "label": "low valence"
+                }
+            ],
+            "arousal": [
+                {
+                    "score": 0.6916007995605469,
+                    "label": "moderate arousal"
+                },
+                {
+                    "score": 0.2079024761915207,
+                    "label": "low arousal"
+                },
+                {
+                    "score": 0.10049673169851303,
+                    "label": "high arousal"
+                }
+            ],
+            "tension": [
+                {
+                    "score": 0.5926545262336731,
+                    "label": "moderate tension"
+                },
+                {
+                    "score": 0.3274555504322052,
+                    "label": "high tension"
+                },
+                {
+                    "score": 0.07988990843296051,
+                    "label": "low tension"
+                }
+            ]
+        }
+    },
+    {
+        "start": 78.43700680272109,
+        "end": 83.49895691609977,
+        "feature": {
+            "moods": [
+                {
+                    "score": 0.8997036218643188,
+                    "label": "exciting"
+                },
+                {
+                    "score": 0.03252677991986275,
+                    "label": "happy"
+                },
+                {
+                    "score": 0.01874055527150631,
+                    "label": "grumpy"
+                }
+            ],
+            "characteristics": [
+                {
+                    "score": 0.8728784322738647,
+                    "label": "syncopated"
+                },
+                {
+                    "score": 0.11393294483423233,
+                    "label": "groovy"
+                },
+                {
+                    "score": 0.008236798457801342,
+                    "label": "dense"
+                }
+            ],
+            "valence": [
+                {
+                    "score": 0.7042187452316284,
+                    "label": "moderate valence"
+                },
+                {
+                    "score": 0.26588553190231323,
+                    "label": "high valence"
+                },
+                {
+                    "score": 0.029895754531025887,
+                    "label": "low valence"
+                }
+            ],
+            "arousal": [
+                {
+                    "score": 0.7163717746734619,
+                    "label": "moderate arousal"
+                },
+                {
+                    "score": 0.14723284542560577,
+                    "label": "high arousal"
+                },
+                {
+                    "score": 0.1363953799009323,
+                    "label": "low arousal"
+                }
+            ],
+            "tension": [
+                {
+                    "score": 0.6098277568817139,
+                    "label": "moderate tension"
+                },
+                {
+                    "score": 0.22940200567245483,
+                    "label": "high tension"
+                },
+                {
+                    "score": 0.1607702672481537,
+                    "label": "low tension"
+                }
+            ]
+        }
+    },
+    {
+        "start": 83.49895691609977,
+        "end": 88.56090702947846,
+        "feature": {
+            "moods": [
+                {
+                    "score": 0.8932982087135315,
+                    "label": "exciting"
+                },
+                {
+                    "score": 0.043625835329294205,
+                    "label": "happy"
+                },
+                {
+                    "score": 0.03817562013864517,
+                    "label": "anxious"
+                }
+            ],
+            "characteristics": [
+                {
+                    "score": 0.7484145760536194,
+                    "label": "syncopated"
+                },
+                {
+                    "score": 0.21914386749267578,
+                    "label": "groovy"
+                },
+                {
+                    "score": 0.013692312873899937,
+                    "label": "glitchy"
+                }
+            ],
+            "valence": [
+                {
+                    "score": 0.8777639865875244,
+                    "label": "moderate valence"
+                },
+                {
+                    "score": 0.09153155237436295,
+                    "label": "high valence"
+                },
+                {
+                    "score": 0.03070439212024212,
+                    "label": "low valence"
+                }
+            ],
+            "arousal": [
+                {
+                    "score": 0.7845925688743591,
+                    "label": "moderate arousal"
+                },
+                {
+                    "score": 0.10962305963039398,
+                    "label": "high arousal"
+                },
+                {
+                    "score": 0.10578437149524689,
+                    "label": "low arousal"
+                }
+            ],
+            "tension": [
+                {
+                    "score": 0.6411697864532471,
+                    "label": "moderate tension"
+                },
+                {
+                    "score": 0.2530485987663269,
+                    "label": "high tension"
+                },
+                {
+                    "score": 0.1057816594839096,
+                    "label": "low tension"
+                }
+            ]
+        }
+    },
+    {
+        "start": 88.56090702947846,
+        "end": 93.62285714285714,
+        "feature": {
+            "moods": [
+                {
+                    "score": 0.9233335256576538,
+                    "label": "exciting"
+                },
+                {
+                    "score": 0.02541782520711422,
+                    "label": "happy"
+                },
+                {
+                    "score": 0.021413596346974373,
+                    "label": "grumpy"
+                }
+            ],
+            "characteristics": [
+                {
+                    "score": 0.4821576774120331,
+                    "label": "groovy"
+                },
+                {
+                    "score": 0.4805493950843811,
+                    "label": "syncopated"
+                },
+                {
+                    "score": 0.03220682591199875,
+                    "label": "dense"
+                }
+            ],
+            "valence": [
+                {
+                    "score": 0.6800062656402588,
+                    "label": "moderate valence"
+                },
+                {
+                    "score": 0.2534671127796173,
+                    "label": "high valence"
+                },
+                {
+                    "score": 0.06652668118476868,
+                    "label": "low valence"
+                }
+            ],
+            "arousal": [
+                {
+                    "score": 0.7448845505714417,
+                    "label": "moderate arousal"
+                },
+                {
+                    "score": 0.17073631286621094,
+                    "label": "high arousal"
+                },
+                {
+                    "score": 0.08437911421060562,
+                    "label": "low arousal"
+                }
+            ],
+            "tension": [
+                {
+                    "score": 0.618848979473114,
+                    "label": "moderate tension"
+                },
+                {
+                    "score": 0.21543225646018982,
+                    "label": "high tension"
+                },
+                {
+                    "score": 0.16571879386901855,
+                    "label": "low tension"
+                }
+            ]
+        }
+    },
+    {
+        "start": 93.62285714285714,
+        "end": 98.70802721088435,
+        "feature": {
+            "moods": [
+                {
+                    "score": 0.5101501941680908,
+                    "label": "happy"
+                },
+                {
+                    "score": 0.25504419207572937,
+                    "label": "exciting"
+                },
+                {
+                    "score": 0.16628441214561462,
+                    "label": "anxious"
+                }
+            ],
+            "characteristics": [
+                {
+                    "score": 0.8038378357887268,
+                    "label": "syncopated"
+                },
+                {
+                    "score": 0.1383419781923294,
+                    "label": "groovy"
+                },
+                {
+                    "score": 0.02485578879714012,
+                    "label": "glitchy"
+                }
+            ],
+            "valence": [
+                {
+                    "score": 0.9077104330062866,
+                    "label": "high valence"
+                },
+                {
+                    "score": 0.09019167721271515,
+                    "label": "moderate valence"
+                },
+                {
+                    "score": 0.002097850665450096,
+                    "label": "low valence"
+                }
+            ],
+            "arousal": [
+                {
+                    "score": 0.6038872003555298,
+                    "label": "moderate arousal"
+                },
+                {
+                    "score": 0.21815265715122223,
+                    "label": "low arousal"
+                },
+                {
+                    "score": 0.17796021699905396,
+                    "label": "high arousal"
+                }
+            ],
+            "tension": [
+                {
+                    "score": 0.5520632863044739,
+                    "label": "high tension"
+                },
+                {
+                    "score": 0.3127671480178833,
+                    "label": "moderate tension"
+                },
+                {
+                    "score": 0.1351695954799652,
+                    "label": "low tension"
+                }
+            ]
+        }
+    }
+]

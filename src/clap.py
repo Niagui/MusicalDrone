@@ -43,16 +43,16 @@ class Clap:
 
     def retrieve_info(self):
         logger.log_info("retrieving clap info")
-        clap_label_json = "json/clap_labels.json"
+        clap_label_json = utils.get_shared_json_path("clap_labels")
         with open(clap_label_json, "r") as f:
             self.music_labels = json.load(f)
 
-        anchor_labels_json = "json/anchor_labels.json"
+        anchor_labels_json = utils.get_shared_json_path("anchor_labels")
         with open(anchor_labels_json, "r") as f:
             self.anchor_labels = json.load(f)
             self.anchor_labels_set = set(self.anchor_labels)  # fast lookup
 
-        time_segments_json = "json/k_beat_segments.json"
+        time_segments_json = utils.get_pipeline_json_path("k_beat_segments")
         with open(time_segments_json, "r") as f:
             self.k_beats_segments = json.load(f)
 
@@ -173,7 +173,7 @@ def clap_pipeline(audio_file):
         print("weights", final_weights)
 
     print(np.array(w))
-    utils.save_as_json("clap_weights", js, folder="")
+    utils.save_as_json("clap_weights", js)
     return w
 
 

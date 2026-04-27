@@ -32,6 +32,10 @@ static bool clap_weights_loaded = false; //only load once
 static std::vector<std::string> emotion_labels;
 static bool emo_labels_loaded = false;
 static std::vector<float> last_weights;
+static bool gUsePhraseAttractor = true; //  llm generated phrase attractor toggle
+static bool gPhrasePlanLoaded = false;
+static bool gPhrasePlanAttempted = false;
+static json phrase_plan_json;
 
 //basic physics
 static std::vector<Vec3> position, velocity, acceleration;  //position, velocity, acceleration
@@ -75,6 +79,7 @@ bool gSegmentsLoaded = false;
 // math helper functions
 //choke in range lo to hi
 static inline float clampf(float x, float lo, float hi) {return std::max(lo, std::min(hi, x));} 
+static inline float lerpf(float a, float b, float t) { return a + (b - a) * t; }
 static inline Vec3 add(Vec3 a, Vec3 b){ return {a.x+b.x,a.y+b.y,a.z+b.z}; }
 static inline Vec3 sub(Vec3 a, Vec3 b){ return {a.x-b.x,a.y-b.y,a.z-b.z}; }
 static inline Vec3 mul(Vec3 a, float s){ return {a.x*s,a.y*s,a.z*s}; }
@@ -92,6 +97,20 @@ struct EmotionSegment {
     float start = 0.0f;
     float end = 0.0f;
     std::vector<float> weights;
+    bool valid = false;
+};
+
+struct PhrasePlanSegment {
+    float start = 0.0f;
+    float end = 0.0f;
+    int beat_count = 8;
+    float height_level = 0.5f;
+    float depth_level = 0.5f;
+    float speed_level = 0.5f;
+    std::string motion_mode = "hold";
+    std::string vertical_trend = "hold";
+    std::string transition_style = "smooth";
+    json beat_plan = json::array();
     bool valid = false;
 };
 
@@ -197,13 +216,18 @@ static std::filesystem::path find_json_file(const std::string &filename) {
     namespace fs = std::filesystem;
     fs::path cwd = fs::current_path();
 
-    // look from these folder:
-    std::vector<fs::path> candidates = {
-        cwd / "json" / filename,
-        cwd.parent_path() / "json" / filename,
-    };
+    std::vector<fs::path> search_roots;
+    if (const char* env_json_dir = std::getenv("DRONE_JSON_DIR"); env_json_dir && *env_json_dir) {
+        fs::path env_path(env_json_dir);
+        search_roots.push_back(env_path);
+        search_roots.push_back(env_path / "json");
+    }
 
-    for (const auto &p : candidates) {
+    search_roots.push_back(cwd / "json");
+    search_roots.push_back(cwd.parent_path() / "json");
+
+    for (const auto &root : search_roots) {
+        fs::path p = root / filename;
         std::cerr << "[DEBUG] trying: " << p.string() << "\n";
 
         if (fs::exists(p)) {
@@ -212,6 +236,15 @@ static std::filesystem::path find_json_file(const std::string &filename) {
     }
 
     return {};  // empty path = not found
+}
+
+bool LoadPhrasePlanFile(const std::string& path){
+    std::ifstream f(path);
+    if (!f) return false;
+    json J; f >> J;
+    if (!J.is_object() || !J.contains("phrases") || !J["phrases"].is_array()) return false;
+    phrase_plan_json = std::move(J["phrases"]);
+    return phrase_plan_json.is_array() && !phrase_plan_json.empty();
 }
 
 bool LoadResetTimes(const std::string& filename = "sections.json")
@@ -296,6 +329,145 @@ void EnsureSegmentsLoaded()
         }
     }
     return;
+}
+
+void EnsurePhrasePlanLoaded()
+{
+    if (!gUsePhraseAttractor || gPhrasePlanLoaded || gPhrasePlanAttempted) return;
+    gPhrasePlanAttempted = true;
+
+    auto phrase_path = find_json_file("phrase_plan.json");
+    if (phrase_path.empty()) {
+        std::cerr << "WARNING: Could not find phrase_plan.json, using fixed targets.\n";
+        return;
+    }
+
+    bool ok = LoadPhrasePlanFile(phrase_path.string());
+    if (!ok) {
+        std::cerr << "WARNING: Could not load phrase_plan.json, using fixed targets.\n";
+        return;
+    }
+
+    std::cerr << "Loaded phrase plan successfully. #Phrases = "
+              << phrase_plan_json.size() << "\n";
+    gPhrasePlanLoaded = true;
+}
+
+static PhrasePlanSegment GetPhrasePlanSegment(float t)
+{
+    PhrasePlanSegment seg;
+    if (!phrase_plan_json.is_array() || phrase_plan_json.empty()) return seg;
+
+    auto fill_segment = [&](const json& item) {
+        seg.start = item.value("start", 0.0f);
+        seg.end = item.value("end", seg.start + 1.0f);
+        seg.beat_count = std::max(1, item.value("beat_count", 8));
+        seg.height_level = clampf(item.value("height_level", 0.5f), 0.0f, 1.0f);
+        seg.depth_level = clampf(item.value("depth_level", 0.5f), 0.0f, 1.0f);
+        seg.speed_level = clampf(item.value("speed_level", 0.5f), 0.0f, 1.0f);
+        seg.motion_mode = item.value("motion_mode", std::string("hold"));
+        seg.vertical_trend = item.value("vertical_trend", std::string("hold"));
+        seg.transition_style = item.value("transition_style", std::string("smooth"));
+        if (item.contains("beat_plan") && item["beat_plan"].is_array()) {
+            seg.beat_plan = item["beat_plan"];
+        } else {
+            seg.beat_plan = json::array();
+        }
+        seg.valid = true;
+    };
+
+    for (const auto& item : phrase_plan_json) {
+        float start = item.value("start", 0.0f);
+        float end = item.value("end", start + 1.0f);
+        if (t >= start && t < end) {
+            fill_segment(item);
+            return seg;
+        }
+    }
+
+    if (t < phrase_plan_json.front().value("start", 0.0f)) {
+        fill_segment(phrase_plan_json.front());
+        return seg;
+    }
+
+    fill_segment(phrase_plan_json.back());
+    return seg;
+}
+
+static inline float smooth01(float x)
+{
+    x = clampf(x, 0.0f, 1.0f);
+    return x * x * (3.0f - 2.0f * x);
+}
+
+static float ApplyPhraseEase(float u, const std::string& style)
+{
+    u = clampf(u, 0.0f, 1.0f);
+
+    if (style == "drift") {
+        return 0.5f - 0.5f * std::cos(u * 3.14159265358979323846f);
+    }
+    if (style == "surge") {
+        float s = smooth01(u);
+        return clampf(0.2f * u + 0.8f * s * s, 0.0f, 1.0f);
+    }
+    if (style == "snap") {
+        if (u < 0.25f) return 0.0f;
+        return smooth01((u - 0.25f) / 0.75f);
+    }
+    return smooth01(u);
+}
+
+static Vec3 PhraseActionDelta(const std::string& action, float xy_amp, float z_amp)
+{
+    if (action == "advance") return {0.0f,  xy_amp, 0.0f};
+    if (action == "retreat") return {0.0f, -xy_amp, 0.0f};
+    if (action == "sweep_left") return {-xy_amp, 0.0f, 0.0f};
+    if (action == "sweep_right") return { xy_amp, 0.0f, 0.0f};
+    if (action == "rise") return {0.0f, 0.0f, z_amp};
+    if (action == "fall") return {0.0f, 0.0f, -z_amp};
+    return {0.0f, 0.0f, 0.0f};
+}
+
+static Vec3 EvaluatePhraseAttractor(float t)
+{
+    PhrasePlanSegment phrase = GetPhrasePlanSegment(t);
+    if (!phrase.valid) return {0.0f, 0.0f, 0.0f};
+
+    float duration = std::max(1e-3f, phrase.end - phrase.start);
+    float u = clampf((t - phrase.start) / duration, 0.0f, 1.0f);
+    float ease = ApplyPhraseEase(u, phrase.transition_style);
+
+    float xy_amp = lerpf(0.12f, 0.55f, phrase.speed_level);
+    float z_amp = lerpf(0.05f, 0.20f, phrase.speed_level);
+
+    Vec3 base = {0.0f, lerpf(Y_MIN + 0.15f, Y_MAX - 0.15f, phrase.depth_level), 0.0f};
+    Vec3 motion = mul(PhraseActionDelta(phrase.motion_mode, xy_amp, z_amp), ease);
+
+    if (phrase.vertical_trend == "rise") motion.z += z_amp * ease;
+    else if (phrase.vertical_trend == "fall") motion.z -= z_amp * ease;
+
+    float settle_gain = 1.0f;
+    for (const auto& event : phrase.beat_plan) {
+        if (!event.is_object()) continue;
+        int beat = std::max(1, event.value("beat", 1));
+        std::string action = event.value("action", std::string("hold"));
+        float event_u = clampf((float)(beat - 1) / (float)phrase.beat_count, 0.0f, 1.0f);
+        float beat_progress = clampf((u - event_u) * (float)phrase.beat_count, 0.0f, 1.0f);
+        float beat_ease = ApplyPhraseEase(beat_progress, phrase.transition_style);
+        if (beat_ease <= 0.0f) continue;
+
+        if (action == "settle") {
+            settle_gain = std::min(settle_gain, 1.0f - 0.65f * beat_ease);
+            continue;
+        }
+
+        motion = add(motion, mul(PhraseActionDelta(action, xy_amp * 0.65f, z_amp), beat_ease));
+    }
+
+    motion.x *= settle_gain;
+    motion.y *= settle_gain;
+    return add(base, motion);
 }
 
 
@@ -601,6 +773,7 @@ const std::vector<float>& GetLastWeights(){
 void UpdateBoids(float dt, const std::vector<Vec3>& targets){
     EnsureEmotionsLoaded();
     EnsureSegmentsLoaded();
+    EnsurePhrasePlanLoaded();
     float t = sim_time;
     const float sXY = ScaleXY();
     const float dynScale = DynamicsScaleFromBox(sXY);
@@ -666,9 +839,19 @@ void UpdateBoids(float dt, const std::vector<Vec3>& targets){
     int n = position.size();
     if ((int)targets.size() != n) return;
 
+    std::vector<Vec3> goalTargets = targets;
+    Vec3 phraseAttractor = {0.0f, 0.0f, P.altitude};
+    if (gUsePhraseAttractor && gPhrasePlanLoaded) {
+        phraseAttractor = EvaluatePhraseAttractor(t);
+        for (Vec3& target : goalTargets) {
+            target.x += phraseAttractor.x;
+            target.y += phraseAttractor.y;
+        }
+    }
+
     const Vec3 c = BoxCenter();
     const float margin_xy = std::max(0.10f, cfg.cbf_config.safety_radius * 0.5f);
-    const float targetXYScale = FitTargetsToBoxScale(targets, c, margin_xy);
+    const float targetXYScale = FitTargetsToBoxScale(goalTargets, c, margin_xy);
     auto ScaleTargetXY = [&](Vec3 t){
         Vec3 d = sub(t, c);
         d.x *= targetXYScale;
@@ -728,12 +911,15 @@ void UpdateBoids(float dt, const std::vector<Vec3>& targets){
         }
 
         //goal seeking towards formation position
-        Vec3 ti = ScaleTargetXY(targets[i]);
+        Vec3 ti = ScaleTargetXY(goalTargets[i]);
 
         Vec3 fgoal = sub(ti, pi);
         float bob = std::sin(sim_time * (0.8f + 1.2f * P.jitter) + i * 0.37f) * (0.4f * P.jitter);
 
         float desiredAlt = P.altitude * (1.0f + 0.35f * P.jitter);
+        if (gUsePhraseAttractor && gPhrasePlanLoaded) {
+            desiredAlt = lerpf(desiredAlt, phraseAttractor.z, 0.7f);
+        }
         float altTarget = clampf(desiredAlt + bob, alt_lo, alt_hi);
         fgoal.z += (altTarget - pi.z);   // Z is vertical
 
@@ -755,7 +941,6 @@ void UpdateBoids(float dt, const std::vector<Vec3>& targets){
         acc = clampLen(acc, amax_eff);
         acceleration[i] = acc;
 
-        //TODO
         Vec3 v_nom  = clampLen(add(vi, mul(acc, dt)), vmax_eff);
         
         if (cbf_enabled) {

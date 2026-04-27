@@ -25,7 +25,7 @@ def beat_track(audio_file, save_to_json=False) -> tuple:
     tempo, beattrack = librosa.beat.beat_track(y=y, sr=sr)
     beat_times = librosa.frames_to_time(beattrack, sr=sr)
     if save_to_json:
-        utils.save_as_json("beat_times", list(beat_times), folder="")
+        utils.save_as_json("beat_times", list(beat_times))
     return np.array(beat_times), np.round(tempo)  # cast bpm to int for convenience
 
 
@@ -47,7 +47,7 @@ def group_beats(beat_times, k=8, save_to_json=False, destination=None) -> list:
     segments = list(segments)
 
     if save_to_json:
-        utils.save_as_json("k_beat_segments", segments, folder="")
+        utils.save_as_json("k_beat_segments", segments)
     return segments
 
 
