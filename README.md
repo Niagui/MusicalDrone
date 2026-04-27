@@ -13,8 +13,11 @@ The current system analyzes music in beat-aligned segments, classifies each segm
 
 ## Demo
 
-![Two Crazyflie drones in the protected drone cage during a hardware test](demo/drone_flight_still.png)
-*Figure: still frame from the two-drone hardware test in `demo/demo video 2 drones attempt.mp4`.*
+<video src="demo/5dronesdemo.mp4" controls width="720" title="Five Crazyflie drones flying inside a protected indoor flight cage during a hardware test"></video>
+
+*Video: five Crazyflie drones flying inside a protected indoor flight cage during a hardware test.*
+
+If the embedded player does not render, open the clip directly: [five-drone flight demo](demo/5dronesdemo.mp4)
 
 ## Highlights
 
@@ -235,7 +238,7 @@ Exploratory or supporting components:
 
 Local demo assets are included in `demo/`, including simulation media and hardware attempts:
 
-- `demo/drone_flight_still.png`
+- `demo/5dronesdemo.mp4`
 - `demo/swarm_animation.gif`
 - `demo/VA_on_2d_plane.gif`
 - `demo/drones.mp4`
@@ -254,7 +257,7 @@ Project contributors listed in the package metadata:
 
 Mentorship and academic context noted in the previous project documentation:
 
-- Dr. Nicole Fronda
+- Dr. Nicole Fronda, Department of EECS, Oregon State University
 - Dr. Houssam Abbas, Assistant Professor of EECS, Oregon State University 
 
 Feedback and issues: please use [GitHub Issues](https://github.com/Niagui/MusicalDrone/issues).
