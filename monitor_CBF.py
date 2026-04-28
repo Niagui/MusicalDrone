@@ -35,6 +35,10 @@ Z_WALL_MAX = 1.2
 uris = [
     'radio://0/80/2M/E7E7E7E702',
 ]
+# URIs that pulse white on every beat; others show emotion color only
+BEAT_FLASH_URIS = {
+    'radio://0/80/2M/E7E7E7E702',
+}
 
 commanders = {}
 loggers = {}
@@ -52,29 +56,6 @@ stop_logged_uris = set()
 # thread is released, so _sequence_start_time is always written before it is read.
 _takeoff_barrier: threading.Barrier | None = None
 _sequence_start_time: float = 0.0  # perf_counter timestamp at barrier release
-
-
-def _tracking_error_m(
-    measured_pos: np.ndarray,
-    command_pos: tuple[float, float, float],
-) -> float:
-    return float(np.linalg.norm(measured_pos - np.asarray(command_pos, dtype=float)))
-
-
-def _real_world_flight_feasible(
-    measured_pos: np.ndarray,
-    command_pos: tuple[float, float, float],
-    duration_s: float,
-) -> bool:
-    command = np.asarray(command_pos, dtype=float)
-    in_bounds = bool(np.all(command >= np.array([X_WALL_MIN, Y_WALL_MIN, Z_WALL_MIN])) and
-                     np.all(command <= np.array([X_WALL_MAX, Y_WALL_MAX, Z_WALL_MAX])))
-    if duration_s <= 0:
-        return False
-
-    travel_m = float(np.linalg.norm(command - measured_pos))
-    required_speed = travel_m / duration_s
-    return in_bounds and required_speed <= DEFAULT_VELOCITY
 
 def _record_sequence_start():
     global _sequence_start_time
@@ -96,7 +77,6 @@ def init_waypoint_log():
             "measured_x", "measured_y", "measured_z",
             "nominal_x", "nominal_y", "nominal_z",
             "command_x", "command_y", "command_z",
-            "actual_tracking_error_m", "real_world_flight_feasible",
             "event",
         ])
 
@@ -106,9 +86,6 @@ def log_waypoint(uri: str, idx: int, target_time: float, duration_s: float,
                  nominal_pos: tuple[float, float, float],
                  command_pos: tuple[float, float, float],
                  event: str = "waypoint"):
-    tracking_error = _tracking_error_m(measured_pos, command_pos)
-    flight_feasible = _real_world_flight_feasible(measured_pos, command_pos, duration_s)
-
     with waypoint_log_lock, open(WAYPOINT_LOG_PATH, "a", newline="") as f:
         writer = csv.writer(f)
         writer.writerow([
@@ -116,7 +93,6 @@ def log_waypoint(uri: str, idx: int, target_time: float, duration_s: float,
             f"{measured_pos[0]:.4f}", f"{measured_pos[1]:.4f}", f"{measured_pos[2]:.4f}",
             f"{nominal_pos[0]:.4f}", f"{nominal_pos[1]:.4f}", f"{nominal_pos[2]:.4f}",
             f"{command_pos[0]:.4f}", f"{command_pos[1]:.4f}", f"{command_pos[2]:.4f}",
-            f"{tracking_error:.4f}", "yes" if flight_feasible else "no",
             event,
         ])
 
@@ -567,7 +543,7 @@ def fly_sequence(scf: SyncCrazyflie, sequence):
         if uri not in light_threads:
             t = threading.Thread(
                 target=light_controller.run_emotion_sync,
-                args=(scf,),
+                args=(scf, uri in BEAT_FLASH_URIS),
                 daemon=True
             )
             light_threads[uri] = t
@@ -766,6 +742,7 @@ if __name__ == '__main__':
     #create shared light controller and load clap weights
     light_controller = LightController()
     light_controller.load_weights("json/clap_weights.json")
+    light_controller.load_beat_times("json/beat_times.json")
     print('[LIGHTS] Initialized')
 
     _takeoff_barrier = threading.Barrier(len(uris), action=_record_sequence_start)
