@@ -1,0 +1,5966 @@
+{
+  "source_file": "clap_results.json",
+  "model": "gpt-4o-mini",
+  "generated_at": "2026-04-28T20:49:57Z",
+  "categories_processed": [
+    "moods"
+  ],
+  "total_segments": 45,
+  "segments": [
+    {
+      "start": 1.207437641723356,
+      "end": 4.760090702947846,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "sad",
+            "score": 0.49623656272888184
+          },
+          {
+            "label": "exciting",
+            "score": 0.3498282730579376
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "sad",
+          "variant": "unhappy",
+          "weight": 0.493
+        },
+        {
+          "source": "sad",
+          "variant": "sorrowful",
+          "weight": 0.499
+        },
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.353
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.348
+        },
+        {
+          "source": "sad",
+          "variant": "downcast",
+          "weight": 0.82
+        },
+        {
+          "source": "sad",
+          "variant": "melancholy",
+          "weight": 0.825
+        },
+        {
+          "source": "exciting",
+          "variant": "invigorating",
+          "weight": 0.067
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.069
+        },
+        {
+          "source": "sad",
+          "variant": "dejected",
+          "weight": 0.486
+        },
+        {
+          "source": "sad",
+          "variant": "dismal",
+          "weight": 0.49
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.272
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.268
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.539
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.535
+        },
+        {
+          "source": "exciting",
+          "variant": "electric",
+          "weight": 0.051
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.512
+        },
+        {
+          "source": "exciting",
+          "variant": "exciting",
+          "weight": 0.056
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.593
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.282
+        },
+        {
+          "source": "exciting",
+          "variant": "entertaining",
+          "weight": 0.28
+        },
+        {
+          "source": "exciting",
+          "variant": "engaging",
+          "weight": 0.231
+        },
+        {
+          "source": "exciting",
+          "variant": "gripping",
+          "weight": 0.408
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.347
+        }
+      ]
+    },
+    {
+      "start": 4.760090702947846,
+      "end": 8.266303854875284,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "sad",
+            "score": 0.8233233690261841
+          },
+          {
+            "label": "exciting",
+            "score": 0.06844457983970642
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "sad",
+          "variant": "unhappy",
+          "weight": 0.493
+        },
+        {
+          "source": "sad",
+          "variant": "sorrowful",
+          "weight": 0.499
+        },
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.353
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.348
+        },
+        {
+          "source": "sad",
+          "variant": "downcast",
+          "weight": 0.82
+        },
+        {
+          "source": "sad",
+          "variant": "melancholy",
+          "weight": 0.825
+        },
+        {
+          "source": "exciting",
+          "variant": "invigorating",
+          "weight": 0.067
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.069
+        },
+        {
+          "source": "sad",
+          "variant": "dejected",
+          "weight": 0.486
+        },
+        {
+          "source": "sad",
+          "variant": "dismal",
+          "weight": 0.49
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.272
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.268
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.539
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.535
+        },
+        {
+          "source": "exciting",
+          "variant": "electric",
+          "weight": 0.051
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.512
+        },
+        {
+          "source": "exciting",
+          "variant": "exciting",
+          "weight": 0.056
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.593
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.282
+        },
+        {
+          "source": "exciting",
+          "variant": "entertaining",
+          "weight": 0.28
+        },
+        {
+          "source": "exciting",
+          "variant": "engaging",
+          "weight": 0.231
+        },
+        {
+          "source": "exciting",
+          "variant": "gripping",
+          "weight": 0.408
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.347
+        }
+      ]
+    },
+    {
+      "start": 8.266303854875284,
+      "end": 11.818956916099774,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "sad",
+            "score": 0.4880247712135315
+          },
+          {
+            "label": "exciting",
+            "score": 0.2703688442707062
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "sad",
+          "variant": "unhappy",
+          "weight": 0.493
+        },
+        {
+          "source": "sad",
+          "variant": "sorrowful",
+          "weight": 0.499
+        },
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.353
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.348
+        },
+        {
+          "source": "sad",
+          "variant": "downcast",
+          "weight": 0.82
+        },
+        {
+          "source": "sad",
+          "variant": "melancholy",
+          "weight": 0.825
+        },
+        {
+          "source": "exciting",
+          "variant": "invigorating",
+          "weight": 0.067
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.069
+        },
+        {
+          "source": "sad",
+          "variant": "dejected",
+          "weight": 0.486
+        },
+        {
+          "source": "sad",
+          "variant": "dismal",
+          "weight": 0.49
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.272
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.268
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.539
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.535
+        },
+        {
+          "source": "exciting",
+          "variant": "electric",
+          "weight": 0.051
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.512
+        },
+        {
+          "source": "exciting",
+          "variant": "exciting",
+          "weight": 0.056
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.593
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.282
+        },
+        {
+          "source": "exciting",
+          "variant": "entertaining",
+          "weight": 0.28
+        },
+        {
+          "source": "exciting",
+          "variant": "engaging",
+          "weight": 0.231
+        },
+        {
+          "source": "exciting",
+          "variant": "gripping",
+          "weight": 0.408
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.347
+        }
+      ]
+    },
+    {
+      "start": 11.818956916099774,
+      "end": 15.32517006802721,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.5366841554641724
+          },
+          {
+            "label": "brave",
+            "score": 0.43748193979263306
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.353
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.348
+        },
+        {
+          "source": "exciting",
+          "variant": "invigorating",
+          "weight": 0.067
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.069
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.272
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.268
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.539
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.439
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.535
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.914
+        },
+        {
+          "source": "exciting",
+          "variant": "electric",
+          "weight": 0.051
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.512
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.447
+        },
+        {
+          "source": "brave",
+          "variant": "heroic",
+          "weight": 0.911
+        },
+        {
+          "source": "exciting",
+          "variant": "exciting",
+          "weight": 0.056
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.593
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.198
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.437
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.282
+        },
+        {
+          "source": "exciting",
+          "variant": "entertaining",
+          "weight": 0.28
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.396
+        },
+        {
+          "source": "exciting",
+          "variant": "engaging",
+          "weight": 0.231
+        },
+        {
+          "source": "exciting",
+          "variant": "gripping",
+          "weight": 0.408
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.347
+        }
+      ]
+    },
+    {
+      "start": 15.32517006802721,
+      "end": 18.83138321995465,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.9155018329620361
+          },
+          {
+            "label": "exciting",
+            "score": 0.04957181215286255
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.353
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.348
+        },
+        {
+          "source": "exciting",
+          "variant": "invigorating",
+          "weight": 0.067
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.069
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.272
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.268
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.539
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.439
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.535
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.914
+        },
+        {
+          "source": "exciting",
+          "variant": "electric",
+          "weight": 0.051
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.512
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.447
+        },
+        {
+          "source": "brave",
+          "variant": "heroic",
+          "weight": 0.911
+        },
+        {
+          "source": "exciting",
+          "variant": "exciting",
+          "weight": 0.056
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.593
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.198
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.437
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.282
+        },
+        {
+          "source": "exciting",
+          "variant": "entertaining",
+          "weight": 0.28
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.396
+        },
+        {
+          "source": "exciting",
+          "variant": "engaging",
+          "weight": 0.231
+        },
+        {
+          "source": "exciting",
+          "variant": "gripping",
+          "weight": 0.408
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.347
+        }
+      ]
+    },
+    {
+      "start": 18.83138321995465,
+      "end": 22.407256235827663,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.5112764239311218
+          },
+          {
+            "label": "brave",
+            "score": 0.4448108673095703
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.353
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.348
+        },
+        {
+          "source": "exciting",
+          "variant": "invigorating",
+          "weight": 0.067
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.069
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.272
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.268
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.539
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.439
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.535
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.914
+        },
+        {
+          "source": "exciting",
+          "variant": "electric",
+          "weight": 0.051
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.512
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.447
+        },
+        {
+          "source": "brave",
+          "variant": "heroic",
+          "weight": 0.911
+        },
+        {
+          "source": "exciting",
+          "variant": "exciting",
+          "weight": 0.056
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.593
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.198
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.437
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.282
+        },
+        {
+          "source": "exciting",
+          "variant": "entertaining",
+          "weight": 0.28
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.396
+        },
+        {
+          "source": "exciting",
+          "variant": "engaging",
+          "weight": 0.231
+        },
+        {
+          "source": "exciting",
+          "variant": "gripping",
+          "weight": 0.408
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.347
+        }
+      ]
+    },
+    {
+      "start": 22.407256235827663,
+      "end": 25.93668934240363,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.9097890257835388
+          },
+          {
+            "label": "exciting",
+            "score": 0.05477031692862511
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.353
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.348
+        },
+        {
+          "source": "exciting",
+          "variant": "invigorating",
+          "weight": 0.067
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.069
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.272
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.268
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.539
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.439
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.535
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.914
+        },
+        {
+          "source": "exciting",
+          "variant": "electric",
+          "weight": 0.051
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.512
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.447
+        },
+        {
+          "source": "brave",
+          "variant": "heroic",
+          "weight": 0.911
+        },
+        {
+          "source": "exciting",
+          "variant": "exciting",
+          "weight": 0.056
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.593
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.198
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.437
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.282
+        },
+        {
+          "source": "exciting",
+          "variant": "entertaining",
+          "weight": 0.28
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.396
+        },
+        {
+          "source": "exciting",
+          "variant": "engaging",
+          "weight": 0.231
+        },
+        {
+          "source": "exciting",
+          "variant": "gripping",
+          "weight": 0.408
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.347
+        }
+      ]
+    },
+    {
+      "start": 25.93668934240363,
+      "end": 29.442902494331065,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.5918112397193909
+          },
+          {
+            "label": "brave",
+            "score": 0.19853076338768005
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.353
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.348
+        },
+        {
+          "source": "exciting",
+          "variant": "invigorating",
+          "weight": 0.067
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.069
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.272
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.268
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.539
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.439
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.535
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.914
+        },
+        {
+          "source": "exciting",
+          "variant": "electric",
+          "weight": 0.051
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.512
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.447
+        },
+        {
+          "source": "brave",
+          "variant": "heroic",
+          "weight": 0.911
+        },
+        {
+          "source": "exciting",
+          "variant": "exciting",
+          "weight": 0.056
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.593
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.198
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.437
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.282
+        },
+        {
+          "source": "exciting",
+          "variant": "entertaining",
+          "weight": 0.28
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.396
+        },
+        {
+          "source": "exciting",
+          "variant": "engaging",
+          "weight": 0.231
+        },
+        {
+          "source": "exciting",
+          "variant": "gripping",
+          "weight": 0.408
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.347
+        }
+      ]
+    },
+    {
+      "start": 29.442902494331065,
+      "end": 32.97233560090703,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.438296377658844
+          },
+          {
+            "label": "exciting",
+            "score": 0.2590467035770416
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.353
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.348
+        },
+        {
+          "source": "exciting",
+          "variant": "invigorating",
+          "weight": 0.067
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.069
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.272
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.268
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.539
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.439
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.535
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.914
+        },
+        {
+          "source": "exciting",
+          "variant": "electric",
+          "weight": 0.051
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.512
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.447
+        },
+        {
+          "source": "brave",
+          "variant": "heroic",
+          "weight": 0.911
+        },
+        {
+          "source": "exciting",
+          "variant": "exciting",
+          "weight": 0.056
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.593
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.198
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.437
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.282
+        },
+        {
+          "source": "exciting",
+          "variant": "entertaining",
+          "weight": 0.28
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.396
+        },
+        {
+          "source": "exciting",
+          "variant": "engaging",
+          "weight": 0.231
+        },
+        {
+          "source": "exciting",
+          "variant": "gripping",
+          "weight": 0.408
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.347
+        }
+      ]
+    },
+    {
+      "start": 32.97233560090703,
+      "end": 36.52498866213152,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.28130051493644714
+          },
+          {
+            "label": "happy",
+            "score": 0.27962347865104675
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.353
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.348
+        },
+        {
+          "source": "exciting",
+          "variant": "invigorating",
+          "weight": 0.067
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.069
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.272
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.268
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.539
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.535
+        },
+        {
+          "source": "exciting",
+          "variant": "electric",
+          "weight": 0.051
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.512
+        },
+        {
+          "source": "exciting",
+          "variant": "exciting",
+          "weight": 0.056
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.593
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.282
+        },
+        {
+          "source": "happy",
+          "variant": "joyful",
+          "weight": 0.279
+        },
+        {
+          "source": "exciting",
+          "variant": "entertaining",
+          "weight": 0.28
+        },
+        {
+          "source": "happy",
+          "variant": "content",
+          "weight": 0.283
+        },
+        {
+          "source": "exciting",
+          "variant": "engaging",
+          "weight": 0.231
+        },
+        {
+          "source": "exciting",
+          "variant": "gripping",
+          "weight": 0.408
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.347
+        }
+      ]
+    },
+    {
+      "start": 36.52498866213152,
+      "end": 40.054421768707485,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.3946246802806854
+          },
+          {
+            "label": "anxious",
+            "score": 0.1930900663137436
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.439
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.914
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.447
+        },
+        {
+          "source": "brave",
+          "variant": "heroic",
+          "weight": 0.911
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.198
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.437
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.396
+        },
+        {
+          "source": "anxious",
+          "variant": "nervous",
+          "weight": 0.194
+        },
+        {
+          "source": "anxious",
+          "variant": "worried",
+          "weight": 0.26
+        },
+        {
+          "source": "anxious",
+          "variant": "uneasy",
+          "weight": 0.25
+        },
+        {
+          "source": "anxious",
+          "variant": "restless",
+          "weight": 0.269
+        },
+        {
+          "source": "anxious",
+          "variant": "tense",
+          "weight": 0.262
+        }
+      ]
+    },
+    {
+      "start": 40.054421768707485,
+      "end": 43.58385487528345,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "happy",
+            "score": 0.28162673115730286
+          },
+          {
+            "label": "exciting",
+            "score": 0.2323707491159439
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.353
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.348
+        },
+        {
+          "source": "exciting",
+          "variant": "invigorating",
+          "weight": 0.067
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.069
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.272
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.268
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.539
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.535
+        },
+        {
+          "source": "exciting",
+          "variant": "electric",
+          "weight": 0.051
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.512
+        },
+        {
+          "source": "exciting",
+          "variant": "exciting",
+          "weight": 0.056
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.593
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.282
+        },
+        {
+          "source": "happy",
+          "variant": "joyful",
+          "weight": 0.279
+        },
+        {
+          "source": "exciting",
+          "variant": "entertaining",
+          "weight": 0.28
+        },
+        {
+          "source": "happy",
+          "variant": "content",
+          "weight": 0.283
+        },
+        {
+          "source": "exciting",
+          "variant": "engaging",
+          "weight": 0.231
+        },
+        {
+          "source": "exciting",
+          "variant": "gripping",
+          "weight": 0.408
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.347
+        }
+      ]
+    },
+    {
+      "start": 43.58385487528345,
+      "end": 47.11328798185941,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.40688496828079224
+          },
+          {
+            "label": "anxious",
+            "score": 0.2587154507637024
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.353
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.348
+        },
+        {
+          "source": "exciting",
+          "variant": "invigorating",
+          "weight": 0.067
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.069
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.272
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.268
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.539
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.535
+        },
+        {
+          "source": "exciting",
+          "variant": "electric",
+          "weight": 0.051
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.512
+        },
+        {
+          "source": "exciting",
+          "variant": "exciting",
+          "weight": 0.056
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.593
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.282
+        },
+        {
+          "source": "exciting",
+          "variant": "entertaining",
+          "weight": 0.28
+        },
+        {
+          "source": "anxious",
+          "variant": "nervous",
+          "weight": 0.194
+        },
+        {
+          "source": "exciting",
+          "variant": "engaging",
+          "weight": 0.231
+        },
+        {
+          "source": "exciting",
+          "variant": "gripping",
+          "weight": 0.408
+        },
+        {
+          "source": "anxious",
+          "variant": "worried",
+          "weight": 0.26
+        },
+        {
+          "source": "anxious",
+          "variant": "uneasy",
+          "weight": 0.25
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.347
+        },
+        {
+          "source": "anxious",
+          "variant": "restless",
+          "weight": 0.269
+        },
+        {
+          "source": "anxious",
+          "variant": "tense",
+          "weight": 0.262
+        }
+      ]
+    },
+    {
+      "start": 47.11328798185941,
+      "end": 50.64272108843537,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "grumpy",
+            "score": 0.26188477873802185
+          },
+          {
+            "label": "anxious",
+            "score": 0.2507098913192749
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "anxious",
+          "variant": "nervous",
+          "weight": 0.194
+        },
+        {
+          "source": "anxious",
+          "variant": "worried",
+          "weight": 0.26
+        },
+        {
+          "source": "grumpy",
+          "variant": "irritable",
+          "weight": 0.263
+        },
+        {
+          "source": "anxious",
+          "variant": "uneasy",
+          "weight": 0.25
+        },
+        {
+          "source": "anxious",
+          "variant": "restless",
+          "weight": 0.269
+        },
+        {
+          "source": "anxious",
+          "variant": "tense",
+          "weight": 0.262
+        },
+        {
+          "source": "grumpy",
+          "variant": "cranky",
+          "weight": 0.224
+        }
+      ]
+    },
+    {
+      "start": 50.64272108843537,
+      "end": 54.17215419501134,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.3456670641899109
+          },
+          {
+            "label": "anxious",
+            "score": 0.26788362860679626
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.353
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.348
+        },
+        {
+          "source": "exciting",
+          "variant": "invigorating",
+          "weight": 0.067
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.069
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.272
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.268
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.539
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.535
+        },
+        {
+          "source": "exciting",
+          "variant": "electric",
+          "weight": 0.051
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.512
+        },
+        {
+          "source": "exciting",
+          "variant": "exciting",
+          "weight": 0.056
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.593
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.282
+        },
+        {
+          "source": "exciting",
+          "variant": "entertaining",
+          "weight": 0.28
+        },
+        {
+          "source": "anxious",
+          "variant": "nervous",
+          "weight": 0.194
+        },
+        {
+          "source": "exciting",
+          "variant": "engaging",
+          "weight": 0.231
+        },
+        {
+          "source": "exciting",
+          "variant": "gripping",
+          "weight": 0.408
+        },
+        {
+          "source": "anxious",
+          "variant": "worried",
+          "weight": 0.26
+        },
+        {
+          "source": "anxious",
+          "variant": "uneasy",
+          "weight": 0.25
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.347
+        },
+        {
+          "source": "anxious",
+          "variant": "restless",
+          "weight": 0.269
+        },
+        {
+          "source": "anxious",
+          "variant": "tense",
+          "weight": 0.262
+        }
+      ]
+    },
+    {
+      "start": 54.17215419501134,
+      "end": 57.7015873015873,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "anxious",
+            "score": 0.2609005868434906
+          },
+          {
+            "label": "grumpy",
+            "score": 0.22537241876125336
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "anxious",
+          "variant": "nervous",
+          "weight": 0.194
+        },
+        {
+          "source": "anxious",
+          "variant": "worried",
+          "weight": 0.26
+        },
+        {
+          "source": "grumpy",
+          "variant": "irritable",
+          "weight": 0.263
+        },
+        {
+          "source": "anxious",
+          "variant": "uneasy",
+          "weight": 0.25
+        },
+        {
+          "source": "anxious",
+          "variant": "restless",
+          "weight": 0.269
+        },
+        {
+          "source": "anxious",
+          "variant": "tense",
+          "weight": 0.262
+        },
+        {
+          "source": "grumpy",
+          "variant": "cranky",
+          "weight": 0.224
+        }
+      ]
+    },
+    {
+      "start": 57.7015873015873,
+      "end": 61.23102040816327,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "happy",
+            "score": 0.29472753405570984
+          },
+          {
+            "label": "exciting",
+            "score": 0.2457297444343567
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "happy",
+          "variant": "joyful",
+          "weight": 0.295
+        },
+        {
+          "source": "happy",
+          "variant": "cheerful",
+          "weight": 0.303
+        },
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.246
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.253
+        },
+        {
+          "source": "happy",
+          "variant": "content",
+          "weight": 0.364
+        },
+        {
+          "source": "happy",
+          "variant": "elated",
+          "weight": 0.371
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.283
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.29
+        },
+        {
+          "source": "happy",
+          "variant": "delighted",
+          "weight": 0.262
+        },
+        {
+          "source": "happy",
+          "variant": "glad",
+          "weight": 0.336
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.334
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.271
+        },
+        {
+          "source": "exciting",
+          "variant": "energizing",
+          "weight": 0.385
+        },
+        {
+          "source": "exciting",
+          "variant": "riveting",
+          "weight": 0.507
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.649
+        },
+        {
+          "source": "happy",
+          "variant": "satisfied",
+          "weight": 0.152
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.494
+        },
+        {
+          "source": "exciting",
+          "variant": "adventurous",
+          "weight": 0.619
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.536
+        },
+        {
+          "source": "exciting",
+          "variant": "zesty",
+          "weight": 0.29
+        },
+        {
+          "source": "happy",
+          "variant": "radiant",
+          "weight": 0.242
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.121
+        },
+        {
+          "source": "exciting",
+          "variant": "gripping",
+          "weight": 0.305
+        },
+        {
+          "source": "exciting",
+          "variant": "rousing",
+          "weight": 0.209
+        },
+        {
+          "source": "exciting",
+          "variant": "breathtaking",
+          "weight": 0.875
+        }
+      ]
+    },
+    {
+      "start": 61.23102040816327,
+      "end": 64.76045351473923,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "happy",
+            "score": 0.3636365234851837
+          },
+          {
+            "label": "exciting",
+            "score": 0.282765656709671
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "happy",
+          "variant": "joyful",
+          "weight": 0.295
+        },
+        {
+          "source": "happy",
+          "variant": "cheerful",
+          "weight": 0.303
+        },
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.246
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.253
+        },
+        {
+          "source": "happy",
+          "variant": "content",
+          "weight": 0.364
+        },
+        {
+          "source": "happy",
+          "variant": "elated",
+          "weight": 0.371
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.283
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.29
+        },
+        {
+          "source": "happy",
+          "variant": "delighted",
+          "weight": 0.262
+        },
+        {
+          "source": "happy",
+          "variant": "glad",
+          "weight": 0.336
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.334
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.271
+        },
+        {
+          "source": "exciting",
+          "variant": "energizing",
+          "weight": 0.385
+        },
+        {
+          "source": "exciting",
+          "variant": "riveting",
+          "weight": 0.507
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.649
+        },
+        {
+          "source": "happy",
+          "variant": "satisfied",
+          "weight": 0.152
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.494
+        },
+        {
+          "source": "exciting",
+          "variant": "adventurous",
+          "weight": 0.619
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.536
+        },
+        {
+          "source": "exciting",
+          "variant": "zesty",
+          "weight": 0.29
+        },
+        {
+          "source": "happy",
+          "variant": "radiant",
+          "weight": 0.242
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.121
+        },
+        {
+          "source": "exciting",
+          "variant": "gripping",
+          "weight": 0.305
+        },
+        {
+          "source": "exciting",
+          "variant": "rousing",
+          "weight": 0.209
+        },
+        {
+          "source": "exciting",
+          "variant": "breathtaking",
+          "weight": 0.875
+        }
+      ]
+    },
+    {
+      "start": 64.76045351473923,
+      "end": 68.28988662131519,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "happy",
+            "score": 0.26166677474975586
+          },
+          {
+            "label": "anxious",
+            "score": 0.250541090965271
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "happy",
+          "variant": "joyful",
+          "weight": 0.295
+        },
+        {
+          "source": "happy",
+          "variant": "cheerful",
+          "weight": 0.303
+        },
+        {
+          "source": "happy",
+          "variant": "content",
+          "weight": 0.364
+        },
+        {
+          "source": "happy",
+          "variant": "elated",
+          "weight": 0.371
+        },
+        {
+          "source": "happy",
+          "variant": "delighted",
+          "weight": 0.262
+        },
+        {
+          "source": "anxious",
+          "variant": "nervous",
+          "weight": 0.251
+        },
+        {
+          "source": "happy",
+          "variant": "glad",
+          "weight": 0.336
+        },
+        {
+          "source": "anxious",
+          "variant": "uneasy",
+          "weight": 0.226
+        },
+        {
+          "source": "anxious",
+          "variant": "restless",
+          "weight": 0.256
+        },
+        {
+          "source": "anxious",
+          "variant": "apprehensive",
+          "weight": 0.274
+        },
+        {
+          "source": "happy",
+          "variant": "satisfied",
+          "weight": 0.152
+        },
+        {
+          "source": "anxious",
+          "variant": "worried",
+          "weight": 0.218
+        },
+        {
+          "source": "anxious",
+          "variant": "tense",
+          "weight": 0.195
+        },
+        {
+          "source": "happy",
+          "variant": "radiant",
+          "weight": 0.242
+        },
+        {
+          "source": "anxious",
+          "variant": "jittery",
+          "weight": 0.061
+        }
+      ]
+    },
+    {
+      "start": 68.28988662131519,
+      "end": 71.81931972789116,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "happy",
+            "score": 0.3363436162471771
+          },
+          {
+            "label": "exciting",
+            "score": 0.33416488766670227
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "happy",
+          "variant": "joyful",
+          "weight": 0.295
+        },
+        {
+          "source": "happy",
+          "variant": "cheerful",
+          "weight": 0.303
+        },
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.246
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.253
+        },
+        {
+          "source": "happy",
+          "variant": "content",
+          "weight": 0.364
+        },
+        {
+          "source": "happy",
+          "variant": "elated",
+          "weight": 0.371
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.283
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.29
+        },
+        {
+          "source": "happy",
+          "variant": "delighted",
+          "weight": 0.262
+        },
+        {
+          "source": "happy",
+          "variant": "glad",
+          "weight": 0.336
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.334
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.271
+        },
+        {
+          "source": "exciting",
+          "variant": "energizing",
+          "weight": 0.385
+        },
+        {
+          "source": "exciting",
+          "variant": "riveting",
+          "weight": 0.507
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.649
+        },
+        {
+          "source": "happy",
+          "variant": "satisfied",
+          "weight": 0.152
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.494
+        },
+        {
+          "source": "exciting",
+          "variant": "adventurous",
+          "weight": 0.619
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.536
+        },
+        {
+          "source": "exciting",
+          "variant": "zesty",
+          "weight": 0.29
+        },
+        {
+          "source": "happy",
+          "variant": "radiant",
+          "weight": 0.242
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.121
+        },
+        {
+          "source": "exciting",
+          "variant": "gripping",
+          "weight": 0.305
+        },
+        {
+          "source": "exciting",
+          "variant": "rousing",
+          "weight": 0.209
+        },
+        {
+          "source": "exciting",
+          "variant": "breathtaking",
+          "weight": 0.875
+        }
+      ]
+    },
+    {
+      "start": 71.81931972789116,
+      "end": 75.34875283446712,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.2712610363960266
+          },
+          {
+            "label": "anxious",
+            "score": 0.2257218211889267
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.246
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.253
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.283
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.29
+        },
+        {
+          "source": "anxious",
+          "variant": "nervous",
+          "weight": 0.251
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.334
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.271
+        },
+        {
+          "source": "anxious",
+          "variant": "uneasy",
+          "weight": 0.226
+        },
+        {
+          "source": "exciting",
+          "variant": "energizing",
+          "weight": 0.385
+        },
+        {
+          "source": "anxious",
+          "variant": "restless",
+          "weight": 0.256
+        },
+        {
+          "source": "exciting",
+          "variant": "riveting",
+          "weight": 0.507
+        },
+        {
+          "source": "anxious",
+          "variant": "apprehensive",
+          "weight": 0.274
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.649
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.494
+        },
+        {
+          "source": "anxious",
+          "variant": "worried",
+          "weight": 0.218
+        },
+        {
+          "source": "exciting",
+          "variant": "adventurous",
+          "weight": 0.619
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.536
+        },
+        {
+          "source": "anxious",
+          "variant": "tense",
+          "weight": 0.195
+        },
+        {
+          "source": "exciting",
+          "variant": "zesty",
+          "weight": 0.29
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.121
+        },
+        {
+          "source": "exciting",
+          "variant": "gripping",
+          "weight": 0.305
+        },
+        {
+          "source": "exciting",
+          "variant": "rousing",
+          "weight": 0.209
+        },
+        {
+          "source": "exciting",
+          "variant": "breathtaking",
+          "weight": 0.875
+        },
+        {
+          "source": "anxious",
+          "variant": "jittery",
+          "weight": 0.061
+        }
+      ]
+    },
+    {
+      "start": 75.34875283446712,
+      "end": 78.87818594104309,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.3846353590488434
+          },
+          {
+            "label": "anxious",
+            "score": 0.2589029371738434
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.246
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.253
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.283
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.29
+        },
+        {
+          "source": "anxious",
+          "variant": "nervous",
+          "weight": 0.251
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.334
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.271
+        },
+        {
+          "source": "anxious",
+          "variant": "uneasy",
+          "weight": 0.226
+        },
+        {
+          "source": "exciting",
+          "variant": "energizing",
+          "weight": 0.385
+        },
+        {
+          "source": "anxious",
+          "variant": "restless",
+          "weight": 0.256
+        },
+        {
+          "source": "exciting",
+          "variant": "riveting",
+          "weight": 0.507
+        },
+        {
+          "source": "anxious",
+          "variant": "apprehensive",
+          "weight": 0.274
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.649
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.494
+        },
+        {
+          "source": "anxious",
+          "variant": "worried",
+          "weight": 0.218
+        },
+        {
+          "source": "exciting",
+          "variant": "adventurous",
+          "weight": 0.619
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.536
+        },
+        {
+          "source": "anxious",
+          "variant": "tense",
+          "weight": 0.195
+        },
+        {
+          "source": "exciting",
+          "variant": "zesty",
+          "weight": 0.29
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.121
+        },
+        {
+          "source": "exciting",
+          "variant": "gripping",
+          "weight": 0.305
+        },
+        {
+          "source": "exciting",
+          "variant": "rousing",
+          "weight": 0.209
+        },
+        {
+          "source": "exciting",
+          "variant": "breathtaking",
+          "weight": 0.875
+        },
+        {
+          "source": "anxious",
+          "variant": "jittery",
+          "weight": 0.061
+        }
+      ]
+    },
+    {
+      "start": 78.87818594104309,
+      "end": 82.40761904761905,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.5073396563529968
+          },
+          {
+            "label": "anxious",
+            "score": 0.27369365096092224
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.246
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.253
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.283
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.29
+        },
+        {
+          "source": "anxious",
+          "variant": "nervous",
+          "weight": 0.251
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.334
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.271
+        },
+        {
+          "source": "anxious",
+          "variant": "uneasy",
+          "weight": 0.226
+        },
+        {
+          "source": "exciting",
+          "variant": "energizing",
+          "weight": 0.385
+        },
+        {
+          "source": "anxious",
+          "variant": "restless",
+          "weight": 0.256
+        },
+        {
+          "source": "exciting",
+          "variant": "riveting",
+          "weight": 0.507
+        },
+        {
+          "source": "anxious",
+          "variant": "apprehensive",
+          "weight": 0.274
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.649
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.494
+        },
+        {
+          "source": "anxious",
+          "variant": "worried",
+          "weight": 0.218
+        },
+        {
+          "source": "exciting",
+          "variant": "adventurous",
+          "weight": 0.619
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.536
+        },
+        {
+          "source": "anxious",
+          "variant": "tense",
+          "weight": 0.195
+        },
+        {
+          "source": "exciting",
+          "variant": "zesty",
+          "weight": 0.29
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.121
+        },
+        {
+          "source": "exciting",
+          "variant": "gripping",
+          "weight": 0.305
+        },
+        {
+          "source": "exciting",
+          "variant": "rousing",
+          "weight": 0.209
+        },
+        {
+          "source": "exciting",
+          "variant": "breathtaking",
+          "weight": 0.875
+        },
+        {
+          "source": "anxious",
+          "variant": "jittery",
+          "weight": 0.061
+        }
+      ]
+    },
+    {
+      "start": 82.40761904761905,
+      "end": 85.93705215419502,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.64933180809021
+          },
+          {
+            "label": "happy",
+            "score": 0.15175040066242218
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "happy",
+          "variant": "joyful",
+          "weight": 0.295
+        },
+        {
+          "source": "happy",
+          "variant": "cheerful",
+          "weight": 0.303
+        },
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.246
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.253
+        },
+        {
+          "source": "happy",
+          "variant": "content",
+          "weight": 0.364
+        },
+        {
+          "source": "happy",
+          "variant": "elated",
+          "weight": 0.371
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.283
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.29
+        },
+        {
+          "source": "happy",
+          "variant": "delighted",
+          "weight": 0.262
+        },
+        {
+          "source": "happy",
+          "variant": "glad",
+          "weight": 0.336
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.334
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.271
+        },
+        {
+          "source": "exciting",
+          "variant": "energizing",
+          "weight": 0.385
+        },
+        {
+          "source": "exciting",
+          "variant": "riveting",
+          "weight": 0.507
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.649
+        },
+        {
+          "source": "happy",
+          "variant": "satisfied",
+          "weight": 0.152
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.494
+        },
+        {
+          "source": "exciting",
+          "variant": "adventurous",
+          "weight": 0.619
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.536
+        },
+        {
+          "source": "exciting",
+          "variant": "zesty",
+          "weight": 0.29
+        },
+        {
+          "source": "happy",
+          "variant": "radiant",
+          "weight": 0.242
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.121
+        },
+        {
+          "source": "exciting",
+          "variant": "gripping",
+          "weight": 0.305
+        },
+        {
+          "source": "exciting",
+          "variant": "rousing",
+          "weight": 0.209
+        },
+        {
+          "source": "exciting",
+          "variant": "breathtaking",
+          "weight": 0.875
+        }
+      ]
+    },
+    {
+      "start": 85.93705215419502,
+      "end": 89.46648526077098,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.49422764778137207
+          },
+          {
+            "label": "anxious",
+            "score": 0.21847312152385712
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.246
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.253
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.283
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.29
+        },
+        {
+          "source": "anxious",
+          "variant": "nervous",
+          "weight": 0.251
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.334
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.271
+        },
+        {
+          "source": "anxious",
+          "variant": "uneasy",
+          "weight": 0.226
+        },
+        {
+          "source": "exciting",
+          "variant": "energizing",
+          "weight": 0.385
+        },
+        {
+          "source": "anxious",
+          "variant": "restless",
+          "weight": 0.256
+        },
+        {
+          "source": "exciting",
+          "variant": "riveting",
+          "weight": 0.507
+        },
+        {
+          "source": "anxious",
+          "variant": "apprehensive",
+          "weight": 0.274
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.649
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.494
+        },
+        {
+          "source": "anxious",
+          "variant": "worried",
+          "weight": 0.218
+        },
+        {
+          "source": "exciting",
+          "variant": "adventurous",
+          "weight": 0.619
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.536
+        },
+        {
+          "source": "anxious",
+          "variant": "tense",
+          "weight": 0.195
+        },
+        {
+          "source": "exciting",
+          "variant": "zesty",
+          "weight": 0.29
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.121
+        },
+        {
+          "source": "exciting",
+          "variant": "gripping",
+          "weight": 0.305
+        },
+        {
+          "source": "exciting",
+          "variant": "rousing",
+          "weight": 0.209
+        },
+        {
+          "source": "exciting",
+          "variant": "breathtaking",
+          "weight": 0.875
+        },
+        {
+          "source": "anxious",
+          "variant": "jittery",
+          "weight": 0.061
+        }
+      ]
+    },
+    {
+      "start": 89.46648526077098,
+      "end": 92.99591836734695,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.6185058951377869
+          },
+          {
+            "label": "brave",
+            "score": 0.12530095875263214
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.246
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.253
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.283
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.29
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.334
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.271
+        },
+        {
+          "source": "exciting",
+          "variant": "energizing",
+          "weight": 0.385
+        },
+        {
+          "source": "exciting",
+          "variant": "riveting",
+          "weight": 0.507
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.649
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.494
+        },
+        {
+          "source": "exciting",
+          "variant": "adventurous",
+          "weight": 0.619
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.125
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.536
+        },
+        {
+          "source": "exciting",
+          "variant": "zesty",
+          "weight": 0.29
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.851
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.121
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.64
+        },
+        {
+          "source": "exciting",
+          "variant": "gripping",
+          "weight": 0.305
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.764
+        },
+        {
+          "source": "exciting",
+          "variant": "rousing",
+          "weight": 0.209
+        },
+        {
+          "source": "exciting",
+          "variant": "breathtaking",
+          "weight": 0.875
+        }
+      ]
+    },
+    {
+      "start": 92.99591836734695,
+      "end": 96.5253514739229,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.5359632968902588
+          },
+          {
+            "label": "anxious",
+            "score": 0.19469454884529114
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.246
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.253
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.283
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.29
+        },
+        {
+          "source": "anxious",
+          "variant": "nervous",
+          "weight": 0.251
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.334
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.271
+        },
+        {
+          "source": "anxious",
+          "variant": "uneasy",
+          "weight": 0.226
+        },
+        {
+          "source": "exciting",
+          "variant": "energizing",
+          "weight": 0.385
+        },
+        {
+          "source": "anxious",
+          "variant": "restless",
+          "weight": 0.256
+        },
+        {
+          "source": "exciting",
+          "variant": "riveting",
+          "weight": 0.507
+        },
+        {
+          "source": "anxious",
+          "variant": "apprehensive",
+          "weight": 0.274
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.649
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.494
+        },
+        {
+          "source": "anxious",
+          "variant": "worried",
+          "weight": 0.218
+        },
+        {
+          "source": "exciting",
+          "variant": "adventurous",
+          "weight": 0.619
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.536
+        },
+        {
+          "source": "anxious",
+          "variant": "tense",
+          "weight": 0.195
+        },
+        {
+          "source": "exciting",
+          "variant": "zesty",
+          "weight": 0.29
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.121
+        },
+        {
+          "source": "exciting",
+          "variant": "gripping",
+          "weight": 0.305
+        },
+        {
+          "source": "exciting",
+          "variant": "rousing",
+          "weight": 0.209
+        },
+        {
+          "source": "exciting",
+          "variant": "breathtaking",
+          "weight": 0.875
+        },
+        {
+          "source": "anxious",
+          "variant": "jittery",
+          "weight": 0.061
+        }
+      ]
+    },
+    {
+      "start": 96.5253514739229,
+      "end": 100.03156462585034,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.29021990299224854
+          },
+          {
+            "label": "happy",
+            "score": 0.24189893901348114
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "happy",
+          "variant": "joyful",
+          "weight": 0.295
+        },
+        {
+          "source": "happy",
+          "variant": "cheerful",
+          "weight": 0.303
+        },
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.246
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.253
+        },
+        {
+          "source": "happy",
+          "variant": "content",
+          "weight": 0.364
+        },
+        {
+          "source": "happy",
+          "variant": "elated",
+          "weight": 0.371
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.283
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.29
+        },
+        {
+          "source": "happy",
+          "variant": "delighted",
+          "weight": 0.262
+        },
+        {
+          "source": "happy",
+          "variant": "glad",
+          "weight": 0.336
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.334
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.271
+        },
+        {
+          "source": "exciting",
+          "variant": "energizing",
+          "weight": 0.385
+        },
+        {
+          "source": "exciting",
+          "variant": "riveting",
+          "weight": 0.507
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.649
+        },
+        {
+          "source": "happy",
+          "variant": "satisfied",
+          "weight": 0.152
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.494
+        },
+        {
+          "source": "exciting",
+          "variant": "adventurous",
+          "weight": 0.619
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.536
+        },
+        {
+          "source": "exciting",
+          "variant": "zesty",
+          "weight": 0.29
+        },
+        {
+          "source": "happy",
+          "variant": "radiant",
+          "weight": 0.242
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.121
+        },
+        {
+          "source": "exciting",
+          "variant": "gripping",
+          "weight": 0.305
+        },
+        {
+          "source": "exciting",
+          "variant": "rousing",
+          "weight": 0.209
+        },
+        {
+          "source": "exciting",
+          "variant": "breathtaking",
+          "weight": 0.875
+        }
+      ]
+    },
+    {
+      "start": 100.03156462585034,
+      "end": 103.5609977324263,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.8508751392364502
+          },
+          {
+            "label": "exciting",
+            "score": 0.12139958143234253
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.246
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.253
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.283
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.29
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.334
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.271
+        },
+        {
+          "source": "exciting",
+          "variant": "energizing",
+          "weight": 0.385
+        },
+        {
+          "source": "exciting",
+          "variant": "riveting",
+          "weight": 0.507
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.649
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.494
+        },
+        {
+          "source": "exciting",
+          "variant": "adventurous",
+          "weight": 0.619
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.125
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.536
+        },
+        {
+          "source": "exciting",
+          "variant": "zesty",
+          "weight": 0.29
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.851
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.121
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.64
+        },
+        {
+          "source": "exciting",
+          "variant": "gripping",
+          "weight": 0.305
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.764
+        },
+        {
+          "source": "exciting",
+          "variant": "rousing",
+          "weight": 0.209
+        },
+        {
+          "source": "exciting",
+          "variant": "breathtaking",
+          "weight": 0.875
+        }
+      ]
+    },
+    {
+      "start": 103.5609977324263,
+      "end": 107.11365079365079,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.6400925517082214
+          },
+          {
+            "label": "exciting",
+            "score": 0.3054262697696686
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.246
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.253
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.283
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.29
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.334
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.271
+        },
+        {
+          "source": "exciting",
+          "variant": "energizing",
+          "weight": 0.385
+        },
+        {
+          "source": "exciting",
+          "variant": "riveting",
+          "weight": 0.507
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.649
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.494
+        },
+        {
+          "source": "exciting",
+          "variant": "adventurous",
+          "weight": 0.619
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.125
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.536
+        },
+        {
+          "source": "exciting",
+          "variant": "zesty",
+          "weight": 0.29
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.851
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.121
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.64
+        },
+        {
+          "source": "exciting",
+          "variant": "gripping",
+          "weight": 0.305
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.764
+        },
+        {
+          "source": "exciting",
+          "variant": "rousing",
+          "weight": 0.209
+        },
+        {
+          "source": "exciting",
+          "variant": "breathtaking",
+          "weight": 0.875
+        }
+      ]
+    },
+    {
+      "start": 107.11365079365079,
+      "end": 110.61986394557823,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.7636211514472961
+          },
+          {
+            "label": "exciting",
+            "score": 0.20865990221500397
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.246
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.253
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.283
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.29
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.334
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.271
+        },
+        {
+          "source": "exciting",
+          "variant": "energizing",
+          "weight": 0.385
+        },
+        {
+          "source": "exciting",
+          "variant": "riveting",
+          "weight": 0.507
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.649
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.494
+        },
+        {
+          "source": "exciting",
+          "variant": "adventurous",
+          "weight": 0.619
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.125
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.536
+        },
+        {
+          "source": "exciting",
+          "variant": "zesty",
+          "weight": 0.29
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.851
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.121
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.64
+        },
+        {
+          "source": "exciting",
+          "variant": "gripping",
+          "weight": 0.305
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.764
+        },
+        {
+          "source": "exciting",
+          "variant": "rousing",
+          "weight": 0.209
+        },
+        {
+          "source": "exciting",
+          "variant": "breathtaking",
+          "weight": 0.875
+        }
+      ]
+    },
+    {
+      "start": 110.61986394557823,
+      "end": 114.1492970521542,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.875130295753479
+          },
+          {
+            "label": "anxious",
+            "score": 0.06068820506334305
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.246
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.253
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.283
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.29
+        },
+        {
+          "source": "anxious",
+          "variant": "nervous",
+          "weight": 0.251
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.334
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.271
+        },
+        {
+          "source": "anxious",
+          "variant": "uneasy",
+          "weight": 0.226
+        },
+        {
+          "source": "exciting",
+          "variant": "energizing",
+          "weight": 0.385
+        },
+        {
+          "source": "anxious",
+          "variant": "restless",
+          "weight": 0.256
+        },
+        {
+          "source": "exciting",
+          "variant": "riveting",
+          "weight": 0.507
+        },
+        {
+          "source": "anxious",
+          "variant": "apprehensive",
+          "weight": 0.274
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.649
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.494
+        },
+        {
+          "source": "anxious",
+          "variant": "worried",
+          "weight": 0.218
+        },
+        {
+          "source": "exciting",
+          "variant": "adventurous",
+          "weight": 0.619
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.536
+        },
+        {
+          "source": "anxious",
+          "variant": "tense",
+          "weight": 0.195
+        },
+        {
+          "source": "exciting",
+          "variant": "zesty",
+          "weight": 0.29
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.121
+        },
+        {
+          "source": "exciting",
+          "variant": "gripping",
+          "weight": 0.305
+        },
+        {
+          "source": "exciting",
+          "variant": "rousing",
+          "weight": 0.209
+        },
+        {
+          "source": "exciting",
+          "variant": "breathtaking",
+          "weight": 0.875
+        },
+        {
+          "source": "anxious",
+          "variant": "jittery",
+          "weight": 0.061
+        }
+      ]
+    },
+    {
+      "start": 114.1492970521542,
+      "end": 117.70195011337869,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.4383038878440857
+          },
+          {
+            "label": "brave",
+            "score": 0.22847865521907806
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.438
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.445
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.228
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.234
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.377
+        },
+        {
+          "source": "exciting",
+          "variant": "invigorating",
+          "weight": 0.382
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.343
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.35
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.276
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.28
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.589
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.595
+        },
+        {
+          "source": "exciting",
+          "variant": "electric",
+          "weight": 0.448
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.455
+        },
+        {
+          "source": "exciting",
+          "variant": "breathtaking",
+          "weight": 0.792
+        },
+        {
+          "source": "exciting",
+          "variant": "awe-inspiring",
+          "weight": 0.8
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.45
+        },
+        {
+          "source": "exciting",
+          "variant": "animated",
+          "weight": 0.455
+        },
+        {
+          "source": "exciting",
+          "variant": "enticing",
+          "weight": 0.668
+        },
+        {
+          "source": "exciting",
+          "variant": "appealing",
+          "weight": 0.675
+        },
+        {
+          "source": "exciting",
+          "variant": "rousing",
+          "weight": 0.406
+        },
+        {
+          "source": "exciting",
+          "variant": "gripping",
+          "weight": 0.379
+        },
+        {
+          "source": "exciting",
+          "variant": "spellbinding",
+          "weight": 0.404
+        },
+        {
+          "source": "exciting",
+          "variant": "mind-blowing",
+          "weight": 0.547
+        },
+        {
+          "source": "exciting",
+          "variant": "jaw-dropping",
+          "weight": 0.555
+        }
+      ]
+    },
+    {
+      "start": 117.70195011337869,
+      "end": 121.23138321995465,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.376698762178421
+          },
+          {
+            "label": "happy",
+            "score": 0.20149141550064087
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.438
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.445
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.377
+        },
+        {
+          "source": "exciting",
+          "variant": "invigorating",
+          "weight": 0.382
+        },
+        {
+          "source": "happy",
+          "variant": "joyful",
+          "weight": 0.201
+        },
+        {
+          "source": "happy",
+          "variant": "cheerful",
+          "weight": 0.205
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.343
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.35
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.589
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.595
+        },
+        {
+          "source": "happy",
+          "variant": "content",
+          "weight": 0.177
+        },
+        {
+          "source": "happy",
+          "variant": "delighted",
+          "weight": 0.18
+        },
+        {
+          "source": "exciting",
+          "variant": "electric",
+          "weight": 0.448
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.455
+        },
+        {
+          "source": "exciting",
+          "variant": "breathtaking",
+          "weight": 0.792
+        },
+        {
+          "source": "exciting",
+          "variant": "awe-inspiring",
+          "weight": 0.8
+        },
+        {
+          "source": "happy",
+          "variant": "elated",
+          "weight": 0.07
+        },
+        {
+          "source": "happy",
+          "variant": "gleeful",
+          "weight": 0.072
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.45
+        },
+        {
+          "source": "exciting",
+          "variant": "animated",
+          "weight": 0.455
+        },
+        {
+          "source": "happy",
+          "variant": "satisfied",
+          "weight": 0.235
+        },
+        {
+          "source": "happy",
+          "variant": "jovial",
+          "weight": 0.24
+        },
+        {
+          "source": "exciting",
+          "variant": "enticing",
+          "weight": 0.668
+        },
+        {
+          "source": "exciting",
+          "variant": "appealing",
+          "weight": 0.675
+        },
+        {
+          "source": "happy",
+          "variant": "radiant",
+          "weight": 0.156
+        },
+        {
+          "source": "happy",
+          "variant": "bright",
+          "weight": 0.158
+        },
+        {
+          "source": "exciting",
+          "variant": "rousing",
+          "weight": 0.406
+        },
+        {
+          "source": "exciting",
+          "variant": "gripping",
+          "weight": 0.379
+        },
+        {
+          "source": "exciting",
+          "variant": "spellbinding",
+          "weight": 0.404
+        },
+        {
+          "source": "exciting",
+          "variant": "mind-blowing",
+          "weight": 0.547
+        },
+        {
+          "source": "exciting",
+          "variant": "jaw-dropping",
+          "weight": 0.555
+        }
+      ]
+    },
+    {
+      "start": 121.23138321995465,
+      "end": 124.76081632653062,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.34294360876083374
+          },
+          {
+            "label": "brave",
+            "score": 0.27617278695106506
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.438
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.445
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.228
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.234
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.377
+        },
+        {
+          "source": "exciting",
+          "variant": "invigorating",
+          "weight": 0.382
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.343
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.35
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.276
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.28
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.589
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.595
+        },
+        {
+          "source": "exciting",
+          "variant": "electric",
+          "weight": 0.448
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.455
+        },
+        {
+          "source": "exciting",
+          "variant": "breathtaking",
+          "weight": 0.792
+        },
+        {
+          "source": "exciting",
+          "variant": "awe-inspiring",
+          "weight": 0.8
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.45
+        },
+        {
+          "source": "exciting",
+          "variant": "animated",
+          "weight": 0.455
+        },
+        {
+          "source": "exciting",
+          "variant": "enticing",
+          "weight": 0.668
+        },
+        {
+          "source": "exciting",
+          "variant": "appealing",
+          "weight": 0.675
+        },
+        {
+          "source": "exciting",
+          "variant": "rousing",
+          "weight": 0.406
+        },
+        {
+          "source": "exciting",
+          "variant": "gripping",
+          "weight": 0.379
+        },
+        {
+          "source": "exciting",
+          "variant": "spellbinding",
+          "weight": 0.404
+        },
+        {
+          "source": "exciting",
+          "variant": "mind-blowing",
+          "weight": 0.547
+        },
+        {
+          "source": "exciting",
+          "variant": "jaw-dropping",
+          "weight": 0.555
+        }
+      ]
+    },
+    {
+      "start": 124.76081632653062,
+      "end": 128.29024943310657,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.58879554271698
+          },
+          {
+            "label": "happy",
+            "score": 0.17728291451931
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.438
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.445
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.377
+        },
+        {
+          "source": "exciting",
+          "variant": "invigorating",
+          "weight": 0.382
+        },
+        {
+          "source": "happy",
+          "variant": "joyful",
+          "weight": 0.201
+        },
+        {
+          "source": "happy",
+          "variant": "cheerful",
+          "weight": 0.205
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.343
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.35
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.589
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.595
+        },
+        {
+          "source": "happy",
+          "variant": "content",
+          "weight": 0.177
+        },
+        {
+          "source": "happy",
+          "variant": "delighted",
+          "weight": 0.18
+        },
+        {
+          "source": "exciting",
+          "variant": "electric",
+          "weight": 0.448
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.455
+        },
+        {
+          "source": "exciting",
+          "variant": "breathtaking",
+          "weight": 0.792
+        },
+        {
+          "source": "exciting",
+          "variant": "awe-inspiring",
+          "weight": 0.8
+        },
+        {
+          "source": "happy",
+          "variant": "elated",
+          "weight": 0.07
+        },
+        {
+          "source": "happy",
+          "variant": "gleeful",
+          "weight": 0.072
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.45
+        },
+        {
+          "source": "exciting",
+          "variant": "animated",
+          "weight": 0.455
+        },
+        {
+          "source": "happy",
+          "variant": "satisfied",
+          "weight": 0.235
+        },
+        {
+          "source": "happy",
+          "variant": "jovial",
+          "weight": 0.24
+        },
+        {
+          "source": "exciting",
+          "variant": "enticing",
+          "weight": 0.668
+        },
+        {
+          "source": "exciting",
+          "variant": "appealing",
+          "weight": 0.675
+        },
+        {
+          "source": "happy",
+          "variant": "radiant",
+          "weight": 0.156
+        },
+        {
+          "source": "happy",
+          "variant": "bright",
+          "weight": 0.158
+        },
+        {
+          "source": "exciting",
+          "variant": "rousing",
+          "weight": 0.406
+        },
+        {
+          "source": "exciting",
+          "variant": "gripping",
+          "weight": 0.379
+        },
+        {
+          "source": "exciting",
+          "variant": "spellbinding",
+          "weight": 0.404
+        },
+        {
+          "source": "exciting",
+          "variant": "mind-blowing",
+          "weight": 0.547
+        },
+        {
+          "source": "exciting",
+          "variant": "jaw-dropping",
+          "weight": 0.555
+        }
+      ]
+    },
+    {
+      "start": 128.29024943310657,
+      "end": 131.81968253968253,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.4481045603752136
+          },
+          {
+            "label": "anxious",
+            "score": 0.16084349155426025
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.438
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.445
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.377
+        },
+        {
+          "source": "exciting",
+          "variant": "invigorating",
+          "weight": 0.382
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.343
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.35
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.589
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.595
+        },
+        {
+          "source": "exciting",
+          "variant": "electric",
+          "weight": 0.448
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.455
+        },
+        {
+          "source": "anxious",
+          "variant": "nervous",
+          "weight": 0.161
+        },
+        {
+          "source": "anxious",
+          "variant": "uneasy",
+          "weight": 0.164
+        },
+        {
+          "source": "exciting",
+          "variant": "breathtaking",
+          "weight": 0.792
+        },
+        {
+          "source": "exciting",
+          "variant": "awe-inspiring",
+          "weight": 0.8
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.45
+        },
+        {
+          "source": "exciting",
+          "variant": "animated",
+          "weight": 0.455
+        },
+        {
+          "source": "exciting",
+          "variant": "enticing",
+          "weight": 0.668
+        },
+        {
+          "source": "exciting",
+          "variant": "appealing",
+          "weight": 0.675
+        },
+        {
+          "source": "exciting",
+          "variant": "rousing",
+          "weight": 0.406
+        },
+        {
+          "source": "exciting",
+          "variant": "gripping",
+          "weight": 0.379
+        },
+        {
+          "source": "exciting",
+          "variant": "spellbinding",
+          "weight": 0.404
+        },
+        {
+          "source": "exciting",
+          "variant": "mind-blowing",
+          "weight": 0.547
+        },
+        {
+          "source": "exciting",
+          "variant": "jaw-dropping",
+          "weight": 0.555
+        },
+        {
+          "source": "anxious",
+          "variant": "apprehensive",
+          "weight": 0.336
+        },
+        {
+          "source": "anxious",
+          "variant": "restless",
+          "weight": 0.34
+        }
+      ]
+    },
+    {
+      "start": 131.81968253968253,
+      "end": 135.3491156462585,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.7922369241714478
+          },
+          {
+            "label": "happy",
+            "score": 0.070170097053051
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.438
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.445
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.377
+        },
+        {
+          "source": "exciting",
+          "variant": "invigorating",
+          "weight": 0.382
+        },
+        {
+          "source": "happy",
+          "variant": "joyful",
+          "weight": 0.201
+        },
+        {
+          "source": "happy",
+          "variant": "cheerful",
+          "weight": 0.205
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.343
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.35
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.589
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.595
+        },
+        {
+          "source": "happy",
+          "variant": "content",
+          "weight": 0.177
+        },
+        {
+          "source": "happy",
+          "variant": "delighted",
+          "weight": 0.18
+        },
+        {
+          "source": "exciting",
+          "variant": "electric",
+          "weight": 0.448
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.455
+        },
+        {
+          "source": "exciting",
+          "variant": "breathtaking",
+          "weight": 0.792
+        },
+        {
+          "source": "exciting",
+          "variant": "awe-inspiring",
+          "weight": 0.8
+        },
+        {
+          "source": "happy",
+          "variant": "elated",
+          "weight": 0.07
+        },
+        {
+          "source": "happy",
+          "variant": "gleeful",
+          "weight": 0.072
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.45
+        },
+        {
+          "source": "exciting",
+          "variant": "animated",
+          "weight": 0.455
+        },
+        {
+          "source": "happy",
+          "variant": "satisfied",
+          "weight": 0.235
+        },
+        {
+          "source": "happy",
+          "variant": "jovial",
+          "weight": 0.24
+        },
+        {
+          "source": "exciting",
+          "variant": "enticing",
+          "weight": 0.668
+        },
+        {
+          "source": "exciting",
+          "variant": "appealing",
+          "weight": 0.675
+        },
+        {
+          "source": "happy",
+          "variant": "radiant",
+          "weight": 0.156
+        },
+        {
+          "source": "happy",
+          "variant": "bright",
+          "weight": 0.158
+        },
+        {
+          "source": "exciting",
+          "variant": "rousing",
+          "weight": 0.406
+        },
+        {
+          "source": "exciting",
+          "variant": "gripping",
+          "weight": 0.379
+        },
+        {
+          "source": "exciting",
+          "variant": "spellbinding",
+          "weight": 0.404
+        },
+        {
+          "source": "exciting",
+          "variant": "mind-blowing",
+          "weight": 0.547
+        },
+        {
+          "source": "exciting",
+          "variant": "jaw-dropping",
+          "weight": 0.555
+        }
+      ]
+    },
+    {
+      "start": 135.3491156462585,
+      "end": 138.87854875283446,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.4496901035308838
+          },
+          {
+            "label": "happy",
+            "score": 0.23469677567481995
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.438
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.445
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.377
+        },
+        {
+          "source": "exciting",
+          "variant": "invigorating",
+          "weight": 0.382
+        },
+        {
+          "source": "happy",
+          "variant": "joyful",
+          "weight": 0.201
+        },
+        {
+          "source": "happy",
+          "variant": "cheerful",
+          "weight": 0.205
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.343
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.35
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.589
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.595
+        },
+        {
+          "source": "happy",
+          "variant": "content",
+          "weight": 0.177
+        },
+        {
+          "source": "happy",
+          "variant": "delighted",
+          "weight": 0.18
+        },
+        {
+          "source": "exciting",
+          "variant": "electric",
+          "weight": 0.448
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.455
+        },
+        {
+          "source": "exciting",
+          "variant": "breathtaking",
+          "weight": 0.792
+        },
+        {
+          "source": "exciting",
+          "variant": "awe-inspiring",
+          "weight": 0.8
+        },
+        {
+          "source": "happy",
+          "variant": "elated",
+          "weight": 0.07
+        },
+        {
+          "source": "happy",
+          "variant": "gleeful",
+          "weight": 0.072
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.45
+        },
+        {
+          "source": "exciting",
+          "variant": "animated",
+          "weight": 0.455
+        },
+        {
+          "source": "happy",
+          "variant": "satisfied",
+          "weight": 0.235
+        },
+        {
+          "source": "happy",
+          "variant": "jovial",
+          "weight": 0.24
+        },
+        {
+          "source": "exciting",
+          "variant": "enticing",
+          "weight": 0.668
+        },
+        {
+          "source": "exciting",
+          "variant": "appealing",
+          "weight": 0.675
+        },
+        {
+          "source": "happy",
+          "variant": "radiant",
+          "weight": 0.156
+        },
+        {
+          "source": "happy",
+          "variant": "bright",
+          "weight": 0.158
+        },
+        {
+          "source": "exciting",
+          "variant": "rousing",
+          "weight": 0.406
+        },
+        {
+          "source": "exciting",
+          "variant": "gripping",
+          "weight": 0.379
+        },
+        {
+          "source": "exciting",
+          "variant": "spellbinding",
+          "weight": 0.404
+        },
+        {
+          "source": "exciting",
+          "variant": "mind-blowing",
+          "weight": 0.547
+        },
+        {
+          "source": "exciting",
+          "variant": "jaw-dropping",
+          "weight": 0.555
+        }
+      ]
+    },
+    {
+      "start": 138.87854875283446,
+      "end": 142.38476190476192,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.6683936715126038
+          },
+          {
+            "label": "happy",
+            "score": 0.15624721348285675
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.438
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.445
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.377
+        },
+        {
+          "source": "exciting",
+          "variant": "invigorating",
+          "weight": 0.382
+        },
+        {
+          "source": "happy",
+          "variant": "joyful",
+          "weight": 0.201
+        },
+        {
+          "source": "happy",
+          "variant": "cheerful",
+          "weight": 0.205
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.343
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.35
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.589
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.595
+        },
+        {
+          "source": "happy",
+          "variant": "content",
+          "weight": 0.177
+        },
+        {
+          "source": "happy",
+          "variant": "delighted",
+          "weight": 0.18
+        },
+        {
+          "source": "exciting",
+          "variant": "electric",
+          "weight": 0.448
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.455
+        },
+        {
+          "source": "exciting",
+          "variant": "breathtaking",
+          "weight": 0.792
+        },
+        {
+          "source": "exciting",
+          "variant": "awe-inspiring",
+          "weight": 0.8
+        },
+        {
+          "source": "happy",
+          "variant": "elated",
+          "weight": 0.07
+        },
+        {
+          "source": "happy",
+          "variant": "gleeful",
+          "weight": 0.072
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.45
+        },
+        {
+          "source": "exciting",
+          "variant": "animated",
+          "weight": 0.455
+        },
+        {
+          "source": "happy",
+          "variant": "satisfied",
+          "weight": 0.235
+        },
+        {
+          "source": "happy",
+          "variant": "jovial",
+          "weight": 0.24
+        },
+        {
+          "source": "exciting",
+          "variant": "enticing",
+          "weight": 0.668
+        },
+        {
+          "source": "exciting",
+          "variant": "appealing",
+          "weight": 0.675
+        },
+        {
+          "source": "happy",
+          "variant": "radiant",
+          "weight": 0.156
+        },
+        {
+          "source": "happy",
+          "variant": "bright",
+          "weight": 0.158
+        },
+        {
+          "source": "exciting",
+          "variant": "rousing",
+          "weight": 0.406
+        },
+        {
+          "source": "exciting",
+          "variant": "gripping",
+          "weight": 0.379
+        },
+        {
+          "source": "exciting",
+          "variant": "spellbinding",
+          "weight": 0.404
+        },
+        {
+          "source": "exciting",
+          "variant": "mind-blowing",
+          "weight": 0.547
+        },
+        {
+          "source": "exciting",
+          "variant": "jaw-dropping",
+          "weight": 0.555
+        }
+      ]
+    },
+    {
+      "start": 142.38476190476192,
+      "end": 145.9374149659864,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.4056926369667053
+          },
+          {
+            "label": "sad",
+            "score": 0.392745703458786
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.438
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.445
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.377
+        },
+        {
+          "source": "exciting",
+          "variant": "invigorating",
+          "weight": 0.382
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.343
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.35
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.589
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.595
+        },
+        {
+          "source": "exciting",
+          "variant": "electric",
+          "weight": 0.448
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.455
+        },
+        {
+          "source": "exciting",
+          "variant": "breathtaking",
+          "weight": 0.792
+        },
+        {
+          "source": "exciting",
+          "variant": "awe-inspiring",
+          "weight": 0.8
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.45
+        },
+        {
+          "source": "exciting",
+          "variant": "animated",
+          "weight": 0.455
+        },
+        {
+          "source": "exciting",
+          "variant": "enticing",
+          "weight": 0.668
+        },
+        {
+          "source": "exciting",
+          "variant": "appealing",
+          "weight": 0.675
+        },
+        {
+          "source": "exciting",
+          "variant": "rousing",
+          "weight": 0.406
+        },
+        {
+          "source": "sad",
+          "variant": "unhappy",
+          "weight": 0.393
+        },
+        {
+          "source": "exciting",
+          "variant": "gripping",
+          "weight": 0.379
+        },
+        {
+          "source": "sad",
+          "variant": "sorrowful",
+          "weight": 0.208
+        },
+        {
+          "source": "exciting",
+          "variant": "spellbinding",
+          "weight": 0.404
+        },
+        {
+          "source": "sad",
+          "variant": "melancholy",
+          "weight": 0.207
+        },
+        {
+          "source": "sad",
+          "variant": "downcast",
+          "weight": 0.379
+        },
+        {
+          "source": "sad",
+          "variant": "dismal",
+          "weight": 0.385
+        },
+        {
+          "source": "exciting",
+          "variant": "mind-blowing",
+          "weight": 0.547
+        },
+        {
+          "source": "exciting",
+          "variant": "jaw-dropping",
+          "weight": 0.555
+        }
+      ]
+    },
+    {
+      "start": 145.9374149659864,
+      "end": 149.46684807256236,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.3787338137626648
+          },
+          {
+            "label": "sad",
+            "score": 0.20831084251403809
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.438
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.445
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.377
+        },
+        {
+          "source": "exciting",
+          "variant": "invigorating",
+          "weight": 0.382
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.343
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.35
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.589
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.595
+        },
+        {
+          "source": "exciting",
+          "variant": "electric",
+          "weight": 0.448
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.455
+        },
+        {
+          "source": "exciting",
+          "variant": "breathtaking",
+          "weight": 0.792
+        },
+        {
+          "source": "exciting",
+          "variant": "awe-inspiring",
+          "weight": 0.8
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.45
+        },
+        {
+          "source": "exciting",
+          "variant": "animated",
+          "weight": 0.455
+        },
+        {
+          "source": "exciting",
+          "variant": "enticing",
+          "weight": 0.668
+        },
+        {
+          "source": "exciting",
+          "variant": "appealing",
+          "weight": 0.675
+        },
+        {
+          "source": "exciting",
+          "variant": "rousing",
+          "weight": 0.406
+        },
+        {
+          "source": "sad",
+          "variant": "unhappy",
+          "weight": 0.393
+        },
+        {
+          "source": "exciting",
+          "variant": "gripping",
+          "weight": 0.379
+        },
+        {
+          "source": "sad",
+          "variant": "sorrowful",
+          "weight": 0.208
+        },
+        {
+          "source": "exciting",
+          "variant": "spellbinding",
+          "weight": 0.404
+        },
+        {
+          "source": "sad",
+          "variant": "melancholy",
+          "weight": 0.207
+        },
+        {
+          "source": "sad",
+          "variant": "downcast",
+          "weight": 0.379
+        },
+        {
+          "source": "sad",
+          "variant": "dismal",
+          "weight": 0.385
+        },
+        {
+          "source": "exciting",
+          "variant": "mind-blowing",
+          "weight": 0.547
+        },
+        {
+          "source": "exciting",
+          "variant": "jaw-dropping",
+          "weight": 0.555
+        }
+      ]
+    },
+    {
+      "start": 149.46684807256236,
+      "end": 153.04272108843537,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.4041735827922821
+          },
+          {
+            "label": "sad",
+            "score": 0.207343190908432
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.438
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.445
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.377
+        },
+        {
+          "source": "exciting",
+          "variant": "invigorating",
+          "weight": 0.382
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.343
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.35
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.589
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.595
+        },
+        {
+          "source": "exciting",
+          "variant": "electric",
+          "weight": 0.448
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.455
+        },
+        {
+          "source": "exciting",
+          "variant": "breathtaking",
+          "weight": 0.792
+        },
+        {
+          "source": "exciting",
+          "variant": "awe-inspiring",
+          "weight": 0.8
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.45
+        },
+        {
+          "source": "exciting",
+          "variant": "animated",
+          "weight": 0.455
+        },
+        {
+          "source": "exciting",
+          "variant": "enticing",
+          "weight": 0.668
+        },
+        {
+          "source": "exciting",
+          "variant": "appealing",
+          "weight": 0.675
+        },
+        {
+          "source": "exciting",
+          "variant": "rousing",
+          "weight": 0.406
+        },
+        {
+          "source": "sad",
+          "variant": "unhappy",
+          "weight": 0.393
+        },
+        {
+          "source": "exciting",
+          "variant": "gripping",
+          "weight": 0.379
+        },
+        {
+          "source": "sad",
+          "variant": "sorrowful",
+          "weight": 0.208
+        },
+        {
+          "source": "exciting",
+          "variant": "spellbinding",
+          "weight": 0.404
+        },
+        {
+          "source": "sad",
+          "variant": "melancholy",
+          "weight": 0.207
+        },
+        {
+          "source": "sad",
+          "variant": "downcast",
+          "weight": 0.379
+        },
+        {
+          "source": "sad",
+          "variant": "dismal",
+          "weight": 0.385
+        },
+        {
+          "source": "exciting",
+          "variant": "mind-blowing",
+          "weight": 0.547
+        },
+        {
+          "source": "exciting",
+          "variant": "jaw-dropping",
+          "weight": 0.555
+        }
+      ]
+    },
+    {
+      "start": 153.04272108843537,
+      "end": 156.66503401360544,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "sad",
+            "score": 0.3789190351963043
+          },
+          {
+            "label": "whimsical",
+            "score": 0.24752551317214966
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "sad",
+          "variant": "unhappy",
+          "weight": 0.393
+        },
+        {
+          "source": "sad",
+          "variant": "sorrowful",
+          "weight": 0.208
+        },
+        {
+          "source": "sad",
+          "variant": "melancholy",
+          "weight": 0.207
+        },
+        {
+          "source": "sad",
+          "variant": "downcast",
+          "weight": 0.379
+        },
+        {
+          "source": "sad",
+          "variant": "dismal",
+          "weight": 0.385
+        },
+        {
+          "source": "whimsical",
+          "variant": "playful",
+          "weight": 0.248
+        },
+        {
+          "source": "whimsical",
+          "variant": "fanciful",
+          "weight": 0.25
+        }
+      ]
+    },
+    {
+      "start": 156.66503401360544,
+      "end": 160.264126984127,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "exciting",
+            "score": 0.5473924279212952
+          },
+          {
+            "label": "anxious",
+            "score": 0.335587739944458
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.438
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.445
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.377
+        },
+        {
+          "source": "exciting",
+          "variant": "invigorating",
+          "weight": 0.382
+        },
+        {
+          "source": "exciting",
+          "variant": "dynamic",
+          "weight": 0.343
+        },
+        {
+          "source": "exciting",
+          "variant": "vibrant",
+          "weight": 0.35
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.589
+        },
+        {
+          "source": "exciting",
+          "variant": "enthralling",
+          "weight": 0.595
+        },
+        {
+          "source": "exciting",
+          "variant": "electric",
+          "weight": 0.448
+        },
+        {
+          "source": "exciting",
+          "variant": "fascinating",
+          "weight": 0.455
+        },
+        {
+          "source": "anxious",
+          "variant": "nervous",
+          "weight": 0.161
+        },
+        {
+          "source": "anxious",
+          "variant": "uneasy",
+          "weight": 0.164
+        },
+        {
+          "source": "exciting",
+          "variant": "breathtaking",
+          "weight": 0.792
+        },
+        {
+          "source": "exciting",
+          "variant": "awe-inspiring",
+          "weight": 0.8
+        },
+        {
+          "source": "exciting",
+          "variant": "lively",
+          "weight": 0.45
+        },
+        {
+          "source": "exciting",
+          "variant": "animated",
+          "weight": 0.455
+        },
+        {
+          "source": "exciting",
+          "variant": "enticing",
+          "weight": 0.668
+        },
+        {
+          "source": "exciting",
+          "variant": "appealing",
+          "weight": 0.675
+        },
+        {
+          "source": "exciting",
+          "variant": "rousing",
+          "weight": 0.406
+        },
+        {
+          "source": "exciting",
+          "variant": "gripping",
+          "weight": 0.379
+        },
+        {
+          "source": "exciting",
+          "variant": "spellbinding",
+          "weight": 0.404
+        },
+        {
+          "source": "exciting",
+          "variant": "mind-blowing",
+          "weight": 0.547
+        },
+        {
+          "source": "exciting",
+          "variant": "jaw-dropping",
+          "weight": 0.555
+        },
+        {
+          "source": "anxious",
+          "variant": "apprehensive",
+          "weight": 0.336
+        },
+        {
+          "source": "anxious",
+          "variant": "restless",
+          "weight": 0.34
+        }
+      ]
+    }
+  ]
+}

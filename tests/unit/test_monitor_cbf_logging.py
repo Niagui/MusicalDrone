@@ -160,6 +160,35 @@ class StopDuringWaitEvent:
 
 
 class MonitorWaypointLoggingTests(unittest.TestCase):
+    def test_log_waypoint_records_tracking_error_and_feasibility(self):
+        monitor = load_monitor_module()
+        uri = "radio://test"
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            log_path = f"{tmpdir}/actual_waypoints.log"
+            monitor.WAYPOINT_LOG_PATH = log_path
+            monitor.init_waypoint_log()
+
+            monitor.log_waypoint(
+                uri,
+                3,
+                1.0,
+                1.0,
+                np.array([0.0, 0.0, monitor.TAKEOFF_HEIGHT], dtype=float),
+                (0.1, 0.2, monitor.TAKEOFF_HEIGHT),
+                (0.1, 0.2, monitor.TAKEOFF_HEIGHT),
+            )
+
+            with open(log_path, newline="") as f:
+                rows = list(csv.reader(f))
+
+        self.assertEqual(rows[0][-3:], [
+            "actual_tracking_error_m",
+            "real_world_flight_feasible",
+            "event",
+        ])
+        self.assertEqual(rows[1][-3:], ["0.2236", "yes", "waypoint"])
+
     def test_fly_sequence_logs_stop_during_wait(self):
         monitor = load_monitor_module()
         uri = "radio://test"

@@ -85,11 +85,18 @@ Run with optional LLM-assisted label variation and phrase planning:
 ./pipeline.sh --audio testSong.mp3 --output trajectories.csv --llm
 ```
 
+Skip the evaluation stage when only the trajectory is needed:
+
+```bash
+./pipeline.sh --audio testSong.mp3 --output trajectories.csv --no-eval
+```
+
 Generated artifacts are cached per audio file under:
 
 ```text
 cache/<audio-file>/json/
 cache/<audio-file>/trajectory.csv
+cache/<audio-file>/evaluation/
 ```
 
 The `DRONE_JSON_DIR` environment variable is used internally so each audio run can read and write isolated JSON artifacts.

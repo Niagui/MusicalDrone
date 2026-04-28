@@ -1,0 +1,4182 @@
+{
+  "source_file": "clap_results.json",
+  "model": "gpt-4o-mini",
+  "generated_at": "2026-04-28T20:38:06Z",
+  "categories_processed": [
+    "moods"
+  ],
+  "total_segments": 22,
+  "segments": [
+    {
+      "start": 1.9272562358276644,
+      "end": 5.340589569160998,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "sad",
+            "score": 0.973371148109436
+          },
+          {
+            "label": "brave",
+            "score": 0.012611118145287037
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "sad",
+          "variant": "unhappy",
+          "weight": 0.973
+        },
+        {
+          "source": "sad",
+          "variant": "sorrowful",
+          "weight": 0.965
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.013
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.012
+        },
+        {
+          "source": "sad",
+          "variant": "downcast",
+          "weight": 0.647
+        },
+        {
+          "source": "sad",
+          "variant": "melancholy",
+          "weight": 0.635
+        },
+        {
+          "source": "sad",
+          "variant": "dejected",
+          "weight": 0.733
+        },
+        {
+          "source": "sad",
+          "variant": "dismal",
+          "weight": 0.724
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.142
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.14
+        },
+        {
+          "source": "sad",
+          "variant": "woeful",
+          "weight": 0.944
+        },
+        {
+          "source": "sad",
+          "variant": "heartbroken",
+          "weight": 0.935
+        },
+        {
+          "source": "sad",
+          "variant": "gloomy",
+          "weight": 0.818
+        },
+        {
+          "source": "sad",
+          "variant": "blue",
+          "weight": 0.81
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.1
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.098
+        },
+        {
+          "source": "sad",
+          "variant": "despondent",
+          "weight": 0.672
+        },
+        {
+          "source": "sad",
+          "variant": "downhearted",
+          "weight": 0.665
+        },
+        {
+          "source": "brave",
+          "variant": "daring",
+          "weight": 0.284
+        },
+        {
+          "source": "brave",
+          "variant": "heroic",
+          "weight": 0.28
+        },
+        {
+          "source": "sad",
+          "variant": "distressed",
+          "weight": 0.986
+        },
+        {
+          "source": "sad",
+          "variant": "troubled",
+          "weight": 0.98
+        },
+        {
+          "source": "sad",
+          "variant": "mournful",
+          "weight": 0.854
+        },
+        {
+          "source": "sad",
+          "variant": "forlorn",
+          "weight": 0.845
+        },
+        {
+          "source": "brave",
+          "variant": "resolute",
+          "weight": 0.056
+        },
+        {
+          "source": "brave",
+          "variant": "steadfast",
+          "weight": 0.055
+        },
+        {
+          "source": "sad",
+          "variant": "heavy-hearted",
+          "weight": 0.98
+        },
+        {
+          "source": "sad",
+          "variant": "crestfallen",
+          "weight": 0.975
+        },
+        {
+          "source": "brave",
+          "variant": "plucky",
+          "weight": 0.01
+        },
+        {
+          "source": "brave",
+          "variant": "spunky",
+          "weight": 0.009
+        },
+        {
+          "source": "sad",
+          "variant": "saddened",
+          "weight": 0.735
+        },
+        {
+          "source": "sad",
+          "variant": "glum",
+          "weight": 0.73
+        },
+        {
+          "source": "brave",
+          "variant": "valorous",
+          "weight": 0.205
+        },
+        {
+          "source": "brave",
+          "variant": "noble",
+          "weight": 0.2
+        },
+        {
+          "source": "brave",
+          "variant": "gallant",
+          "weight": 0.728
+        },
+        {
+          "source": "sad",
+          "variant": "pensive",
+          "weight": 0.237
+        },
+        {
+          "source": "brave",
+          "variant": "bold-hearted",
+          "weight": 0.295
+        },
+        {
+          "source": "sad",
+          "variant": "wistful",
+          "weight": 0.648
+        },
+        {
+          "source": "brave",
+          "variant": "stout-hearted",
+          "weight": 0.237
+        },
+        {
+          "source": "sad",
+          "variant": "disheartened",
+          "weight": 0.708
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.242
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.676
+        },
+        {
+          "source": "sad",
+          "variant": "sorrowful",
+          "weight": 0.242
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.319
+        },
+        {
+          "source": "sad",
+          "variant": "unhappy",
+          "weight": 0.207
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.719
+        }
+      ]
+    },
+    {
+      "start": 5.340589569160998,
+      "end": 9.05578231292517,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "sad",
+            "score": 0.6473617553710938
+          },
+          {
+            "label": "exciting",
+            "score": 0.2811135947704315
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "sad",
+          "variant": "unhappy",
+          "weight": 0.973
+        },
+        {
+          "source": "sad",
+          "variant": "sorrowful",
+          "weight": 0.965
+        },
+        {
+          "source": "sad",
+          "variant": "downcast",
+          "weight": 0.647
+        },
+        {
+          "source": "sad",
+          "variant": "melancholy",
+          "weight": 0.635
+        },
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.281
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.275
+        },
+        {
+          "source": "sad",
+          "variant": "dejected",
+          "weight": 0.733
+        },
+        {
+          "source": "sad",
+          "variant": "dismal",
+          "weight": 0.724
+        },
+        {
+          "source": "sad",
+          "variant": "woeful",
+          "weight": 0.944
+        },
+        {
+          "source": "sad",
+          "variant": "heartbroken",
+          "weight": 0.935
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.035
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.034
+        },
+        {
+          "source": "sad",
+          "variant": "gloomy",
+          "weight": 0.818
+        },
+        {
+          "source": "sad",
+          "variant": "blue",
+          "weight": 0.81
+        },
+        {
+          "source": "sad",
+          "variant": "despondent",
+          "weight": 0.672
+        },
+        {
+          "source": "sad",
+          "variant": "downhearted",
+          "weight": 0.665
+        },
+        {
+          "source": "sad",
+          "variant": "distressed",
+          "weight": 0.986
+        },
+        {
+          "source": "sad",
+          "variant": "troubled",
+          "weight": 0.98
+        },
+        {
+          "source": "sad",
+          "variant": "mournful",
+          "weight": 0.854
+        },
+        {
+          "source": "sad",
+          "variant": "forlorn",
+          "weight": 0.845
+        },
+        {
+          "source": "sad",
+          "variant": "heavy-hearted",
+          "weight": 0.98
+        },
+        {
+          "source": "sad",
+          "variant": "crestfallen",
+          "weight": 0.975
+        },
+        {
+          "source": "sad",
+          "variant": "saddened",
+          "weight": 0.735
+        },
+        {
+          "source": "sad",
+          "variant": "glum",
+          "weight": 0.73
+        },
+        {
+          "source": "sad",
+          "variant": "pensive",
+          "weight": 0.237
+        },
+        {
+          "source": "sad",
+          "variant": "wistful",
+          "weight": 0.648
+        },
+        {
+          "source": "sad",
+          "variant": "disheartened",
+          "weight": 0.708
+        },
+        {
+          "source": "sad",
+          "variant": "sorrowful",
+          "weight": 0.242
+        },
+        {
+          "source": "sad",
+          "variant": "unhappy",
+          "weight": 0.207
+        }
+      ]
+    },
+    {
+      "start": 9.05578231292517,
+      "end": 12.747755102040816,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "sad",
+            "score": 0.7331985831260681
+          },
+          {
+            "label": "brave",
+            "score": 0.14153900742530823
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "sad",
+          "variant": "unhappy",
+          "weight": 0.973
+        },
+        {
+          "source": "sad",
+          "variant": "sorrowful",
+          "weight": 0.965
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.013
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.012
+        },
+        {
+          "source": "sad",
+          "variant": "downcast",
+          "weight": 0.647
+        },
+        {
+          "source": "sad",
+          "variant": "melancholy",
+          "weight": 0.635
+        },
+        {
+          "source": "sad",
+          "variant": "dejected",
+          "weight": 0.733
+        },
+        {
+          "source": "sad",
+          "variant": "dismal",
+          "weight": 0.724
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.142
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.14
+        },
+        {
+          "source": "sad",
+          "variant": "woeful",
+          "weight": 0.944
+        },
+        {
+          "source": "sad",
+          "variant": "heartbroken",
+          "weight": 0.935
+        },
+        {
+          "source": "sad",
+          "variant": "gloomy",
+          "weight": 0.818
+        },
+        {
+          "source": "sad",
+          "variant": "blue",
+          "weight": 0.81
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.1
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.098
+        },
+        {
+          "source": "sad",
+          "variant": "despondent",
+          "weight": 0.672
+        },
+        {
+          "source": "sad",
+          "variant": "downhearted",
+          "weight": 0.665
+        },
+        {
+          "source": "brave",
+          "variant": "daring",
+          "weight": 0.284
+        },
+        {
+          "source": "brave",
+          "variant": "heroic",
+          "weight": 0.28
+        },
+        {
+          "source": "sad",
+          "variant": "distressed",
+          "weight": 0.986
+        },
+        {
+          "source": "sad",
+          "variant": "troubled",
+          "weight": 0.98
+        },
+        {
+          "source": "sad",
+          "variant": "mournful",
+          "weight": 0.854
+        },
+        {
+          "source": "sad",
+          "variant": "forlorn",
+          "weight": 0.845
+        },
+        {
+          "source": "brave",
+          "variant": "resolute",
+          "weight": 0.056
+        },
+        {
+          "source": "brave",
+          "variant": "steadfast",
+          "weight": 0.055
+        },
+        {
+          "source": "sad",
+          "variant": "heavy-hearted",
+          "weight": 0.98
+        },
+        {
+          "source": "sad",
+          "variant": "crestfallen",
+          "weight": 0.975
+        },
+        {
+          "source": "brave",
+          "variant": "plucky",
+          "weight": 0.01
+        },
+        {
+          "source": "brave",
+          "variant": "spunky",
+          "weight": 0.009
+        },
+        {
+          "source": "sad",
+          "variant": "saddened",
+          "weight": 0.735
+        },
+        {
+          "source": "sad",
+          "variant": "glum",
+          "weight": 0.73
+        },
+        {
+          "source": "brave",
+          "variant": "valorous",
+          "weight": 0.205
+        },
+        {
+          "source": "brave",
+          "variant": "noble",
+          "weight": 0.2
+        },
+        {
+          "source": "brave",
+          "variant": "gallant",
+          "weight": 0.728
+        },
+        {
+          "source": "sad",
+          "variant": "pensive",
+          "weight": 0.237
+        },
+        {
+          "source": "brave",
+          "variant": "bold-hearted",
+          "weight": 0.295
+        },
+        {
+          "source": "sad",
+          "variant": "wistful",
+          "weight": 0.648
+        },
+        {
+          "source": "brave",
+          "variant": "stout-hearted",
+          "weight": 0.237
+        },
+        {
+          "source": "sad",
+          "variant": "disheartened",
+          "weight": 0.708
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.242
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.676
+        },
+        {
+          "source": "sad",
+          "variant": "sorrowful",
+          "weight": 0.242
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.319
+        },
+        {
+          "source": "sad",
+          "variant": "unhappy",
+          "weight": 0.207
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.719
+        }
+      ]
+    },
+    {
+      "start": 12.747755102040816,
+      "end": 16.300408163265306,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "sad",
+            "score": 0.9443827271461487
+          },
+          {
+            "label": "exciting",
+            "score": 0.03489772230386734
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "sad",
+          "variant": "unhappy",
+          "weight": 0.973
+        },
+        {
+          "source": "sad",
+          "variant": "sorrowful",
+          "weight": 0.965
+        },
+        {
+          "source": "sad",
+          "variant": "downcast",
+          "weight": 0.647
+        },
+        {
+          "source": "sad",
+          "variant": "melancholy",
+          "weight": 0.635
+        },
+        {
+          "source": "exciting",
+          "variant": "thrilling",
+          "weight": 0.281
+        },
+        {
+          "source": "exciting",
+          "variant": "stimulating",
+          "weight": 0.275
+        },
+        {
+          "source": "sad",
+          "variant": "dejected",
+          "weight": 0.733
+        },
+        {
+          "source": "sad",
+          "variant": "dismal",
+          "weight": 0.724
+        },
+        {
+          "source": "sad",
+          "variant": "woeful",
+          "weight": 0.944
+        },
+        {
+          "source": "sad",
+          "variant": "heartbroken",
+          "weight": 0.935
+        },
+        {
+          "source": "exciting",
+          "variant": "exhilarating",
+          "weight": 0.035
+        },
+        {
+          "source": "exciting",
+          "variant": "captivating",
+          "weight": 0.034
+        },
+        {
+          "source": "sad",
+          "variant": "gloomy",
+          "weight": 0.818
+        },
+        {
+          "source": "sad",
+          "variant": "blue",
+          "weight": 0.81
+        },
+        {
+          "source": "sad",
+          "variant": "despondent",
+          "weight": 0.672
+        },
+        {
+          "source": "sad",
+          "variant": "downhearted",
+          "weight": 0.665
+        },
+        {
+          "source": "sad",
+          "variant": "distressed",
+          "weight": 0.986
+        },
+        {
+          "source": "sad",
+          "variant": "troubled",
+          "weight": 0.98
+        },
+        {
+          "source": "sad",
+          "variant": "mournful",
+          "weight": 0.854
+        },
+        {
+          "source": "sad",
+          "variant": "forlorn",
+          "weight": 0.845
+        },
+        {
+          "source": "sad",
+          "variant": "heavy-hearted",
+          "weight": 0.98
+        },
+        {
+          "source": "sad",
+          "variant": "crestfallen",
+          "weight": 0.975
+        },
+        {
+          "source": "sad",
+          "variant": "saddened",
+          "weight": 0.735
+        },
+        {
+          "source": "sad",
+          "variant": "glum",
+          "weight": 0.73
+        },
+        {
+          "source": "sad",
+          "variant": "pensive",
+          "weight": 0.237
+        },
+        {
+          "source": "sad",
+          "variant": "wistful",
+          "weight": 0.648
+        },
+        {
+          "source": "sad",
+          "variant": "disheartened",
+          "weight": 0.708
+        },
+        {
+          "source": "sad",
+          "variant": "sorrowful",
+          "weight": 0.242
+        },
+        {
+          "source": "sad",
+          "variant": "unhappy",
+          "weight": 0.207
+        }
+      ]
+    },
+    {
+      "start": 16.300408163265306,
+      "end": 19.59764172335601,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "sad",
+            "score": 0.8175122737884521
+          },
+          {
+            "label": "brave",
+            "score": 0.09969981014728546
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "sad",
+          "variant": "unhappy",
+          "weight": 0.973
+        },
+        {
+          "source": "sad",
+          "variant": "sorrowful",
+          "weight": 0.965
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.013
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.012
+        },
+        {
+          "source": "sad",
+          "variant": "downcast",
+          "weight": 0.647
+        },
+        {
+          "source": "sad",
+          "variant": "melancholy",
+          "weight": 0.635
+        },
+        {
+          "source": "sad",
+          "variant": "dejected",
+          "weight": 0.733
+        },
+        {
+          "source": "sad",
+          "variant": "dismal",
+          "weight": 0.724
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.142
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.14
+        },
+        {
+          "source": "sad",
+          "variant": "woeful",
+          "weight": 0.944
+        },
+        {
+          "source": "sad",
+          "variant": "heartbroken",
+          "weight": 0.935
+        },
+        {
+          "source": "sad",
+          "variant": "gloomy",
+          "weight": 0.818
+        },
+        {
+          "source": "sad",
+          "variant": "blue",
+          "weight": 0.81
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.1
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.098
+        },
+        {
+          "source": "sad",
+          "variant": "despondent",
+          "weight": 0.672
+        },
+        {
+          "source": "sad",
+          "variant": "downhearted",
+          "weight": 0.665
+        },
+        {
+          "source": "brave",
+          "variant": "daring",
+          "weight": 0.284
+        },
+        {
+          "source": "brave",
+          "variant": "heroic",
+          "weight": 0.28
+        },
+        {
+          "source": "sad",
+          "variant": "distressed",
+          "weight": 0.986
+        },
+        {
+          "source": "sad",
+          "variant": "troubled",
+          "weight": 0.98
+        },
+        {
+          "source": "sad",
+          "variant": "mournful",
+          "weight": 0.854
+        },
+        {
+          "source": "sad",
+          "variant": "forlorn",
+          "weight": 0.845
+        },
+        {
+          "source": "brave",
+          "variant": "resolute",
+          "weight": 0.056
+        },
+        {
+          "source": "brave",
+          "variant": "steadfast",
+          "weight": 0.055
+        },
+        {
+          "source": "sad",
+          "variant": "heavy-hearted",
+          "weight": 0.98
+        },
+        {
+          "source": "sad",
+          "variant": "crestfallen",
+          "weight": 0.975
+        },
+        {
+          "source": "brave",
+          "variant": "plucky",
+          "weight": 0.01
+        },
+        {
+          "source": "brave",
+          "variant": "spunky",
+          "weight": 0.009
+        },
+        {
+          "source": "sad",
+          "variant": "saddened",
+          "weight": 0.735
+        },
+        {
+          "source": "sad",
+          "variant": "glum",
+          "weight": 0.73
+        },
+        {
+          "source": "brave",
+          "variant": "valorous",
+          "weight": 0.205
+        },
+        {
+          "source": "brave",
+          "variant": "noble",
+          "weight": 0.2
+        },
+        {
+          "source": "brave",
+          "variant": "gallant",
+          "weight": 0.728
+        },
+        {
+          "source": "sad",
+          "variant": "pensive",
+          "weight": 0.237
+        },
+        {
+          "source": "brave",
+          "variant": "bold-hearted",
+          "weight": 0.295
+        },
+        {
+          "source": "sad",
+          "variant": "wistful",
+          "weight": 0.648
+        },
+        {
+          "source": "brave",
+          "variant": "stout-hearted",
+          "weight": 0.237
+        },
+        {
+          "source": "sad",
+          "variant": "disheartened",
+          "weight": 0.708
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.242
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.676
+        },
+        {
+          "source": "sad",
+          "variant": "sorrowful",
+          "weight": 0.242
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.319
+        },
+        {
+          "source": "sad",
+          "variant": "unhappy",
+          "weight": 0.207
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.719
+        }
+      ]
+    },
+    {
+      "start": 19.59764172335601,
+      "end": 23.289614512471655,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "sad",
+            "score": 0.6715728044509888
+          },
+          {
+            "label": "brave",
+            "score": 0.2840151786804199
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "sad",
+          "variant": "unhappy",
+          "weight": 0.973
+        },
+        {
+          "source": "sad",
+          "variant": "sorrowful",
+          "weight": 0.965
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.013
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.012
+        },
+        {
+          "source": "sad",
+          "variant": "downcast",
+          "weight": 0.647
+        },
+        {
+          "source": "sad",
+          "variant": "melancholy",
+          "weight": 0.635
+        },
+        {
+          "source": "sad",
+          "variant": "dejected",
+          "weight": 0.733
+        },
+        {
+          "source": "sad",
+          "variant": "dismal",
+          "weight": 0.724
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.142
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.14
+        },
+        {
+          "source": "sad",
+          "variant": "woeful",
+          "weight": 0.944
+        },
+        {
+          "source": "sad",
+          "variant": "heartbroken",
+          "weight": 0.935
+        },
+        {
+          "source": "sad",
+          "variant": "gloomy",
+          "weight": 0.818
+        },
+        {
+          "source": "sad",
+          "variant": "blue",
+          "weight": 0.81
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.1
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.098
+        },
+        {
+          "source": "sad",
+          "variant": "despondent",
+          "weight": 0.672
+        },
+        {
+          "source": "sad",
+          "variant": "downhearted",
+          "weight": 0.665
+        },
+        {
+          "source": "brave",
+          "variant": "daring",
+          "weight": 0.284
+        },
+        {
+          "source": "brave",
+          "variant": "heroic",
+          "weight": 0.28
+        },
+        {
+          "source": "sad",
+          "variant": "distressed",
+          "weight": 0.986
+        },
+        {
+          "source": "sad",
+          "variant": "troubled",
+          "weight": 0.98
+        },
+        {
+          "source": "sad",
+          "variant": "mournful",
+          "weight": 0.854
+        },
+        {
+          "source": "sad",
+          "variant": "forlorn",
+          "weight": 0.845
+        },
+        {
+          "source": "brave",
+          "variant": "resolute",
+          "weight": 0.056
+        },
+        {
+          "source": "brave",
+          "variant": "steadfast",
+          "weight": 0.055
+        },
+        {
+          "source": "sad",
+          "variant": "heavy-hearted",
+          "weight": 0.98
+        },
+        {
+          "source": "sad",
+          "variant": "crestfallen",
+          "weight": 0.975
+        },
+        {
+          "source": "brave",
+          "variant": "plucky",
+          "weight": 0.01
+        },
+        {
+          "source": "brave",
+          "variant": "spunky",
+          "weight": 0.009
+        },
+        {
+          "source": "sad",
+          "variant": "saddened",
+          "weight": 0.735
+        },
+        {
+          "source": "sad",
+          "variant": "glum",
+          "weight": 0.73
+        },
+        {
+          "source": "brave",
+          "variant": "valorous",
+          "weight": 0.205
+        },
+        {
+          "source": "brave",
+          "variant": "noble",
+          "weight": 0.2
+        },
+        {
+          "source": "brave",
+          "variant": "gallant",
+          "weight": 0.728
+        },
+        {
+          "source": "sad",
+          "variant": "pensive",
+          "weight": 0.237
+        },
+        {
+          "source": "brave",
+          "variant": "bold-hearted",
+          "weight": 0.295
+        },
+        {
+          "source": "sad",
+          "variant": "wistful",
+          "weight": 0.648
+        },
+        {
+          "source": "brave",
+          "variant": "stout-hearted",
+          "weight": 0.237
+        },
+        {
+          "source": "sad",
+          "variant": "disheartened",
+          "weight": 0.708
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.242
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.676
+        },
+        {
+          "source": "sad",
+          "variant": "sorrowful",
+          "weight": 0.242
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.319
+        },
+        {
+          "source": "sad",
+          "variant": "unhappy",
+          "weight": 0.207
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.719
+        }
+      ]
+    },
+    {
+      "start": 23.289614512471655,
+      "end": 26.842267573696144,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "sad",
+            "score": 0.9861660003662109
+          },
+          {
+            "label": "happy",
+            "score": 0.004781838972121477
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "sad",
+          "variant": "unhappy",
+          "weight": 0.973
+        },
+        {
+          "source": "sad",
+          "variant": "sorrowful",
+          "weight": 0.965
+        },
+        {
+          "source": "sad",
+          "variant": "downcast",
+          "weight": 0.647
+        },
+        {
+          "source": "sad",
+          "variant": "melancholy",
+          "weight": 0.635
+        },
+        {
+          "source": "sad",
+          "variant": "dejected",
+          "weight": 0.733
+        },
+        {
+          "source": "sad",
+          "variant": "dismal",
+          "weight": 0.724
+        },
+        {
+          "source": "sad",
+          "variant": "woeful",
+          "weight": 0.944
+        },
+        {
+          "source": "sad",
+          "variant": "heartbroken",
+          "weight": 0.935
+        },
+        {
+          "source": "sad",
+          "variant": "gloomy",
+          "weight": 0.818
+        },
+        {
+          "source": "sad",
+          "variant": "blue",
+          "weight": 0.81
+        },
+        {
+          "source": "sad",
+          "variant": "despondent",
+          "weight": 0.672
+        },
+        {
+          "source": "sad",
+          "variant": "downhearted",
+          "weight": 0.665
+        },
+        {
+          "source": "sad",
+          "variant": "distressed",
+          "weight": 0.986
+        },
+        {
+          "source": "sad",
+          "variant": "troubled",
+          "weight": 0.98
+        },
+        {
+          "source": "happy",
+          "variant": "joyful",
+          "weight": 0.005
+        },
+        {
+          "source": "happy",
+          "variant": "cheerful",
+          "weight": 0.004
+        },
+        {
+          "source": "sad",
+          "variant": "mournful",
+          "weight": 0.854
+        },
+        {
+          "source": "sad",
+          "variant": "forlorn",
+          "weight": 0.845
+        },
+        {
+          "source": "sad",
+          "variant": "heavy-hearted",
+          "weight": 0.98
+        },
+        {
+          "source": "sad",
+          "variant": "crestfallen",
+          "weight": 0.975
+        },
+        {
+          "source": "sad",
+          "variant": "saddened",
+          "weight": 0.735
+        },
+        {
+          "source": "sad",
+          "variant": "glum",
+          "weight": 0.73
+        },
+        {
+          "source": "sad",
+          "variant": "pensive",
+          "weight": 0.237
+        },
+        {
+          "source": "sad",
+          "variant": "wistful",
+          "weight": 0.648
+        },
+        {
+          "source": "sad",
+          "variant": "disheartened",
+          "weight": 0.708
+        },
+        {
+          "source": "sad",
+          "variant": "sorrowful",
+          "weight": 0.242
+        },
+        {
+          "source": "sad",
+          "variant": "unhappy",
+          "weight": 0.207
+        }
+      ]
+    },
+    {
+      "start": 26.842267573696144,
+      "end": 30.278820861678003,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "sad",
+            "score": 0.8539165258407593
+          },
+          {
+            "label": "brave",
+            "score": 0.055893220007419586
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "sad",
+          "variant": "unhappy",
+          "weight": 0.973
+        },
+        {
+          "source": "sad",
+          "variant": "sorrowful",
+          "weight": 0.965
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.013
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.012
+        },
+        {
+          "source": "sad",
+          "variant": "downcast",
+          "weight": 0.647
+        },
+        {
+          "source": "sad",
+          "variant": "melancholy",
+          "weight": 0.635
+        },
+        {
+          "source": "sad",
+          "variant": "dejected",
+          "weight": 0.733
+        },
+        {
+          "source": "sad",
+          "variant": "dismal",
+          "weight": 0.724
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.142
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.14
+        },
+        {
+          "source": "sad",
+          "variant": "woeful",
+          "weight": 0.944
+        },
+        {
+          "source": "sad",
+          "variant": "heartbroken",
+          "weight": 0.935
+        },
+        {
+          "source": "sad",
+          "variant": "gloomy",
+          "weight": 0.818
+        },
+        {
+          "source": "sad",
+          "variant": "blue",
+          "weight": 0.81
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.1
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.098
+        },
+        {
+          "source": "sad",
+          "variant": "despondent",
+          "weight": 0.672
+        },
+        {
+          "source": "sad",
+          "variant": "downhearted",
+          "weight": 0.665
+        },
+        {
+          "source": "brave",
+          "variant": "daring",
+          "weight": 0.284
+        },
+        {
+          "source": "brave",
+          "variant": "heroic",
+          "weight": 0.28
+        },
+        {
+          "source": "sad",
+          "variant": "distressed",
+          "weight": 0.986
+        },
+        {
+          "source": "sad",
+          "variant": "troubled",
+          "weight": 0.98
+        },
+        {
+          "source": "sad",
+          "variant": "mournful",
+          "weight": 0.854
+        },
+        {
+          "source": "sad",
+          "variant": "forlorn",
+          "weight": 0.845
+        },
+        {
+          "source": "brave",
+          "variant": "resolute",
+          "weight": 0.056
+        },
+        {
+          "source": "brave",
+          "variant": "steadfast",
+          "weight": 0.055
+        },
+        {
+          "source": "sad",
+          "variant": "heavy-hearted",
+          "weight": 0.98
+        },
+        {
+          "source": "sad",
+          "variant": "crestfallen",
+          "weight": 0.975
+        },
+        {
+          "source": "brave",
+          "variant": "plucky",
+          "weight": 0.01
+        },
+        {
+          "source": "brave",
+          "variant": "spunky",
+          "weight": 0.009
+        },
+        {
+          "source": "sad",
+          "variant": "saddened",
+          "weight": 0.735
+        },
+        {
+          "source": "sad",
+          "variant": "glum",
+          "weight": 0.73
+        },
+        {
+          "source": "brave",
+          "variant": "valorous",
+          "weight": 0.205
+        },
+        {
+          "source": "brave",
+          "variant": "noble",
+          "weight": 0.2
+        },
+        {
+          "source": "brave",
+          "variant": "gallant",
+          "weight": 0.728
+        },
+        {
+          "source": "sad",
+          "variant": "pensive",
+          "weight": 0.237
+        },
+        {
+          "source": "brave",
+          "variant": "bold-hearted",
+          "weight": 0.295
+        },
+        {
+          "source": "sad",
+          "variant": "wistful",
+          "weight": 0.648
+        },
+        {
+          "source": "brave",
+          "variant": "stout-hearted",
+          "weight": 0.237
+        },
+        {
+          "source": "sad",
+          "variant": "disheartened",
+          "weight": 0.708
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.242
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.676
+        },
+        {
+          "source": "sad",
+          "variant": "sorrowful",
+          "weight": 0.242
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.319
+        },
+        {
+          "source": "sad",
+          "variant": "unhappy",
+          "weight": 0.207
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.719
+        }
+      ]
+    },
+    {
+      "start": 30.278820861678003,
+      "end": 33.80825396825397,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "sad",
+            "score": 0.9797964692115784
+          },
+          {
+            "label": "brave",
+            "score": 0.0096453707665205
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "sad",
+          "variant": "unhappy",
+          "weight": 0.973
+        },
+        {
+          "source": "sad",
+          "variant": "sorrowful",
+          "weight": 0.965
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.013
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.012
+        },
+        {
+          "source": "sad",
+          "variant": "downcast",
+          "weight": 0.647
+        },
+        {
+          "source": "sad",
+          "variant": "melancholy",
+          "weight": 0.635
+        },
+        {
+          "source": "sad",
+          "variant": "dejected",
+          "weight": 0.733
+        },
+        {
+          "source": "sad",
+          "variant": "dismal",
+          "weight": 0.724
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.142
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.14
+        },
+        {
+          "source": "sad",
+          "variant": "woeful",
+          "weight": 0.944
+        },
+        {
+          "source": "sad",
+          "variant": "heartbroken",
+          "weight": 0.935
+        },
+        {
+          "source": "sad",
+          "variant": "gloomy",
+          "weight": 0.818
+        },
+        {
+          "source": "sad",
+          "variant": "blue",
+          "weight": 0.81
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.1
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.098
+        },
+        {
+          "source": "sad",
+          "variant": "despondent",
+          "weight": 0.672
+        },
+        {
+          "source": "sad",
+          "variant": "downhearted",
+          "weight": 0.665
+        },
+        {
+          "source": "brave",
+          "variant": "daring",
+          "weight": 0.284
+        },
+        {
+          "source": "brave",
+          "variant": "heroic",
+          "weight": 0.28
+        },
+        {
+          "source": "sad",
+          "variant": "distressed",
+          "weight": 0.986
+        },
+        {
+          "source": "sad",
+          "variant": "troubled",
+          "weight": 0.98
+        },
+        {
+          "source": "sad",
+          "variant": "mournful",
+          "weight": 0.854
+        },
+        {
+          "source": "sad",
+          "variant": "forlorn",
+          "weight": 0.845
+        },
+        {
+          "source": "brave",
+          "variant": "resolute",
+          "weight": 0.056
+        },
+        {
+          "source": "brave",
+          "variant": "steadfast",
+          "weight": 0.055
+        },
+        {
+          "source": "sad",
+          "variant": "heavy-hearted",
+          "weight": 0.98
+        },
+        {
+          "source": "sad",
+          "variant": "crestfallen",
+          "weight": 0.975
+        },
+        {
+          "source": "brave",
+          "variant": "plucky",
+          "weight": 0.01
+        },
+        {
+          "source": "brave",
+          "variant": "spunky",
+          "weight": 0.009
+        },
+        {
+          "source": "sad",
+          "variant": "saddened",
+          "weight": 0.735
+        },
+        {
+          "source": "sad",
+          "variant": "glum",
+          "weight": 0.73
+        },
+        {
+          "source": "brave",
+          "variant": "valorous",
+          "weight": 0.205
+        },
+        {
+          "source": "brave",
+          "variant": "noble",
+          "weight": 0.2
+        },
+        {
+          "source": "brave",
+          "variant": "gallant",
+          "weight": 0.728
+        },
+        {
+          "source": "sad",
+          "variant": "pensive",
+          "weight": 0.237
+        },
+        {
+          "source": "brave",
+          "variant": "bold-hearted",
+          "weight": 0.295
+        },
+        {
+          "source": "sad",
+          "variant": "wistful",
+          "weight": 0.648
+        },
+        {
+          "source": "brave",
+          "variant": "stout-hearted",
+          "weight": 0.237
+        },
+        {
+          "source": "sad",
+          "variant": "disheartened",
+          "weight": 0.708
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.242
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.676
+        },
+        {
+          "source": "sad",
+          "variant": "sorrowful",
+          "weight": 0.242
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.319
+        },
+        {
+          "source": "sad",
+          "variant": "unhappy",
+          "weight": 0.207
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.719
+        }
+      ]
+    },
+    {
+      "start": 33.80825396825397,
+      "end": 37.50022675736962,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "sad",
+            "score": 0.7351430058479309
+          },
+          {
+            "label": "brave",
+            "score": 0.20533208549022675
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "sad",
+          "variant": "unhappy",
+          "weight": 0.973
+        },
+        {
+          "source": "sad",
+          "variant": "sorrowful",
+          "weight": 0.965
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.013
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.012
+        },
+        {
+          "source": "sad",
+          "variant": "downcast",
+          "weight": 0.647
+        },
+        {
+          "source": "sad",
+          "variant": "melancholy",
+          "weight": 0.635
+        },
+        {
+          "source": "sad",
+          "variant": "dejected",
+          "weight": 0.733
+        },
+        {
+          "source": "sad",
+          "variant": "dismal",
+          "weight": 0.724
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.142
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.14
+        },
+        {
+          "source": "sad",
+          "variant": "woeful",
+          "weight": 0.944
+        },
+        {
+          "source": "sad",
+          "variant": "heartbroken",
+          "weight": 0.935
+        },
+        {
+          "source": "sad",
+          "variant": "gloomy",
+          "weight": 0.818
+        },
+        {
+          "source": "sad",
+          "variant": "blue",
+          "weight": 0.81
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.1
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.098
+        },
+        {
+          "source": "sad",
+          "variant": "despondent",
+          "weight": 0.672
+        },
+        {
+          "source": "sad",
+          "variant": "downhearted",
+          "weight": 0.665
+        },
+        {
+          "source": "brave",
+          "variant": "daring",
+          "weight": 0.284
+        },
+        {
+          "source": "brave",
+          "variant": "heroic",
+          "weight": 0.28
+        },
+        {
+          "source": "sad",
+          "variant": "distressed",
+          "weight": 0.986
+        },
+        {
+          "source": "sad",
+          "variant": "troubled",
+          "weight": 0.98
+        },
+        {
+          "source": "sad",
+          "variant": "mournful",
+          "weight": 0.854
+        },
+        {
+          "source": "sad",
+          "variant": "forlorn",
+          "weight": 0.845
+        },
+        {
+          "source": "brave",
+          "variant": "resolute",
+          "weight": 0.056
+        },
+        {
+          "source": "brave",
+          "variant": "steadfast",
+          "weight": 0.055
+        },
+        {
+          "source": "sad",
+          "variant": "heavy-hearted",
+          "weight": 0.98
+        },
+        {
+          "source": "sad",
+          "variant": "crestfallen",
+          "weight": 0.975
+        },
+        {
+          "source": "brave",
+          "variant": "plucky",
+          "weight": 0.01
+        },
+        {
+          "source": "brave",
+          "variant": "spunky",
+          "weight": 0.009
+        },
+        {
+          "source": "sad",
+          "variant": "saddened",
+          "weight": 0.735
+        },
+        {
+          "source": "sad",
+          "variant": "glum",
+          "weight": 0.73
+        },
+        {
+          "source": "brave",
+          "variant": "valorous",
+          "weight": 0.205
+        },
+        {
+          "source": "brave",
+          "variant": "noble",
+          "weight": 0.2
+        },
+        {
+          "source": "brave",
+          "variant": "gallant",
+          "weight": 0.728
+        },
+        {
+          "source": "sad",
+          "variant": "pensive",
+          "weight": 0.237
+        },
+        {
+          "source": "brave",
+          "variant": "bold-hearted",
+          "weight": 0.295
+        },
+        {
+          "source": "sad",
+          "variant": "wistful",
+          "weight": 0.648
+        },
+        {
+          "source": "brave",
+          "variant": "stout-hearted",
+          "weight": 0.237
+        },
+        {
+          "source": "sad",
+          "variant": "disheartened",
+          "weight": 0.708
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.242
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.676
+        },
+        {
+          "source": "sad",
+          "variant": "sorrowful",
+          "weight": 0.242
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.319
+        },
+        {
+          "source": "sad",
+          "variant": "unhappy",
+          "weight": 0.207
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.719
+        }
+      ]
+    },
+    {
+      "start": 37.50022675736962,
+      "end": 41.16897959183674,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.7282515168190002
+          },
+          {
+            "label": "sad",
+            "score": 0.23715761303901672
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "sad",
+          "variant": "unhappy",
+          "weight": 0.973
+        },
+        {
+          "source": "sad",
+          "variant": "sorrowful",
+          "weight": 0.965
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.013
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.012
+        },
+        {
+          "source": "sad",
+          "variant": "downcast",
+          "weight": 0.647
+        },
+        {
+          "source": "sad",
+          "variant": "melancholy",
+          "weight": 0.635
+        },
+        {
+          "source": "sad",
+          "variant": "dejected",
+          "weight": 0.733
+        },
+        {
+          "source": "sad",
+          "variant": "dismal",
+          "weight": 0.724
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.142
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.14
+        },
+        {
+          "source": "sad",
+          "variant": "woeful",
+          "weight": 0.944
+        },
+        {
+          "source": "sad",
+          "variant": "heartbroken",
+          "weight": 0.935
+        },
+        {
+          "source": "sad",
+          "variant": "gloomy",
+          "weight": 0.818
+        },
+        {
+          "source": "sad",
+          "variant": "blue",
+          "weight": 0.81
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.1
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.098
+        },
+        {
+          "source": "sad",
+          "variant": "despondent",
+          "weight": 0.672
+        },
+        {
+          "source": "sad",
+          "variant": "downhearted",
+          "weight": 0.665
+        },
+        {
+          "source": "brave",
+          "variant": "daring",
+          "weight": 0.284
+        },
+        {
+          "source": "brave",
+          "variant": "heroic",
+          "weight": 0.28
+        },
+        {
+          "source": "sad",
+          "variant": "distressed",
+          "weight": 0.986
+        },
+        {
+          "source": "sad",
+          "variant": "troubled",
+          "weight": 0.98
+        },
+        {
+          "source": "sad",
+          "variant": "mournful",
+          "weight": 0.854
+        },
+        {
+          "source": "sad",
+          "variant": "forlorn",
+          "weight": 0.845
+        },
+        {
+          "source": "brave",
+          "variant": "resolute",
+          "weight": 0.056
+        },
+        {
+          "source": "brave",
+          "variant": "steadfast",
+          "weight": 0.055
+        },
+        {
+          "source": "sad",
+          "variant": "heavy-hearted",
+          "weight": 0.98
+        },
+        {
+          "source": "sad",
+          "variant": "crestfallen",
+          "weight": 0.975
+        },
+        {
+          "source": "brave",
+          "variant": "plucky",
+          "weight": 0.01
+        },
+        {
+          "source": "brave",
+          "variant": "spunky",
+          "weight": 0.009
+        },
+        {
+          "source": "sad",
+          "variant": "saddened",
+          "weight": 0.735
+        },
+        {
+          "source": "sad",
+          "variant": "glum",
+          "weight": 0.73
+        },
+        {
+          "source": "brave",
+          "variant": "valorous",
+          "weight": 0.205
+        },
+        {
+          "source": "brave",
+          "variant": "noble",
+          "weight": 0.2
+        },
+        {
+          "source": "brave",
+          "variant": "gallant",
+          "weight": 0.728
+        },
+        {
+          "source": "sad",
+          "variant": "pensive",
+          "weight": 0.237
+        },
+        {
+          "source": "brave",
+          "variant": "bold-hearted",
+          "weight": 0.295
+        },
+        {
+          "source": "sad",
+          "variant": "wistful",
+          "weight": 0.648
+        },
+        {
+          "source": "brave",
+          "variant": "stout-hearted",
+          "weight": 0.237
+        },
+        {
+          "source": "sad",
+          "variant": "disheartened",
+          "weight": 0.708
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.242
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.676
+        },
+        {
+          "source": "sad",
+          "variant": "sorrowful",
+          "weight": 0.242
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.319
+        },
+        {
+          "source": "sad",
+          "variant": "unhappy",
+          "weight": 0.207
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.719
+        }
+      ]
+    },
+    {
+      "start": 41.16897959183674,
+      "end": 44.698412698412696,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "sad",
+            "score": 0.6477224826812744
+          },
+          {
+            "label": "brave",
+            "score": 0.2948462665081024
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "sad",
+          "variant": "unhappy",
+          "weight": 0.973
+        },
+        {
+          "source": "sad",
+          "variant": "sorrowful",
+          "weight": 0.965
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.013
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.012
+        },
+        {
+          "source": "sad",
+          "variant": "downcast",
+          "weight": 0.647
+        },
+        {
+          "source": "sad",
+          "variant": "melancholy",
+          "weight": 0.635
+        },
+        {
+          "source": "sad",
+          "variant": "dejected",
+          "weight": 0.733
+        },
+        {
+          "source": "sad",
+          "variant": "dismal",
+          "weight": 0.724
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.142
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.14
+        },
+        {
+          "source": "sad",
+          "variant": "woeful",
+          "weight": 0.944
+        },
+        {
+          "source": "sad",
+          "variant": "heartbroken",
+          "weight": 0.935
+        },
+        {
+          "source": "sad",
+          "variant": "gloomy",
+          "weight": 0.818
+        },
+        {
+          "source": "sad",
+          "variant": "blue",
+          "weight": 0.81
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.1
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.098
+        },
+        {
+          "source": "sad",
+          "variant": "despondent",
+          "weight": 0.672
+        },
+        {
+          "source": "sad",
+          "variant": "downhearted",
+          "weight": 0.665
+        },
+        {
+          "source": "brave",
+          "variant": "daring",
+          "weight": 0.284
+        },
+        {
+          "source": "brave",
+          "variant": "heroic",
+          "weight": 0.28
+        },
+        {
+          "source": "sad",
+          "variant": "distressed",
+          "weight": 0.986
+        },
+        {
+          "source": "sad",
+          "variant": "troubled",
+          "weight": 0.98
+        },
+        {
+          "source": "sad",
+          "variant": "mournful",
+          "weight": 0.854
+        },
+        {
+          "source": "sad",
+          "variant": "forlorn",
+          "weight": 0.845
+        },
+        {
+          "source": "brave",
+          "variant": "resolute",
+          "weight": 0.056
+        },
+        {
+          "source": "brave",
+          "variant": "steadfast",
+          "weight": 0.055
+        },
+        {
+          "source": "sad",
+          "variant": "heavy-hearted",
+          "weight": 0.98
+        },
+        {
+          "source": "sad",
+          "variant": "crestfallen",
+          "weight": 0.975
+        },
+        {
+          "source": "brave",
+          "variant": "plucky",
+          "weight": 0.01
+        },
+        {
+          "source": "brave",
+          "variant": "spunky",
+          "weight": 0.009
+        },
+        {
+          "source": "sad",
+          "variant": "saddened",
+          "weight": 0.735
+        },
+        {
+          "source": "sad",
+          "variant": "glum",
+          "weight": 0.73
+        },
+        {
+          "source": "brave",
+          "variant": "valorous",
+          "weight": 0.205
+        },
+        {
+          "source": "brave",
+          "variant": "noble",
+          "weight": 0.2
+        },
+        {
+          "source": "brave",
+          "variant": "gallant",
+          "weight": 0.728
+        },
+        {
+          "source": "sad",
+          "variant": "pensive",
+          "weight": 0.237
+        },
+        {
+          "source": "brave",
+          "variant": "bold-hearted",
+          "weight": 0.295
+        },
+        {
+          "source": "sad",
+          "variant": "wistful",
+          "weight": 0.648
+        },
+        {
+          "source": "brave",
+          "variant": "stout-hearted",
+          "weight": 0.237
+        },
+        {
+          "source": "sad",
+          "variant": "disheartened",
+          "weight": 0.708
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.242
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.676
+        },
+        {
+          "source": "sad",
+          "variant": "sorrowful",
+          "weight": 0.242
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.319
+        },
+        {
+          "source": "sad",
+          "variant": "unhappy",
+          "weight": 0.207
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.719
+        }
+      ]
+    },
+    {
+      "start": 44.698412698412696,
+      "end": 48.39038548752834,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "sad",
+            "score": 0.7079066634178162
+          },
+          {
+            "label": "brave",
+            "score": 0.23653292655944824
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "sad",
+          "variant": "unhappy",
+          "weight": 0.973
+        },
+        {
+          "source": "sad",
+          "variant": "sorrowful",
+          "weight": 0.965
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.013
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.012
+        },
+        {
+          "source": "sad",
+          "variant": "downcast",
+          "weight": 0.647
+        },
+        {
+          "source": "sad",
+          "variant": "melancholy",
+          "weight": 0.635
+        },
+        {
+          "source": "sad",
+          "variant": "dejected",
+          "weight": 0.733
+        },
+        {
+          "source": "sad",
+          "variant": "dismal",
+          "weight": 0.724
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.142
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.14
+        },
+        {
+          "source": "sad",
+          "variant": "woeful",
+          "weight": 0.944
+        },
+        {
+          "source": "sad",
+          "variant": "heartbroken",
+          "weight": 0.935
+        },
+        {
+          "source": "sad",
+          "variant": "gloomy",
+          "weight": 0.818
+        },
+        {
+          "source": "sad",
+          "variant": "blue",
+          "weight": 0.81
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.1
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.098
+        },
+        {
+          "source": "sad",
+          "variant": "despondent",
+          "weight": 0.672
+        },
+        {
+          "source": "sad",
+          "variant": "downhearted",
+          "weight": 0.665
+        },
+        {
+          "source": "brave",
+          "variant": "daring",
+          "weight": 0.284
+        },
+        {
+          "source": "brave",
+          "variant": "heroic",
+          "weight": 0.28
+        },
+        {
+          "source": "sad",
+          "variant": "distressed",
+          "weight": 0.986
+        },
+        {
+          "source": "sad",
+          "variant": "troubled",
+          "weight": 0.98
+        },
+        {
+          "source": "sad",
+          "variant": "mournful",
+          "weight": 0.854
+        },
+        {
+          "source": "sad",
+          "variant": "forlorn",
+          "weight": 0.845
+        },
+        {
+          "source": "brave",
+          "variant": "resolute",
+          "weight": 0.056
+        },
+        {
+          "source": "brave",
+          "variant": "steadfast",
+          "weight": 0.055
+        },
+        {
+          "source": "sad",
+          "variant": "heavy-hearted",
+          "weight": 0.98
+        },
+        {
+          "source": "sad",
+          "variant": "crestfallen",
+          "weight": 0.975
+        },
+        {
+          "source": "brave",
+          "variant": "plucky",
+          "weight": 0.01
+        },
+        {
+          "source": "brave",
+          "variant": "spunky",
+          "weight": 0.009
+        },
+        {
+          "source": "sad",
+          "variant": "saddened",
+          "weight": 0.735
+        },
+        {
+          "source": "sad",
+          "variant": "glum",
+          "weight": 0.73
+        },
+        {
+          "source": "brave",
+          "variant": "valorous",
+          "weight": 0.205
+        },
+        {
+          "source": "brave",
+          "variant": "noble",
+          "weight": 0.2
+        },
+        {
+          "source": "brave",
+          "variant": "gallant",
+          "weight": 0.728
+        },
+        {
+          "source": "sad",
+          "variant": "pensive",
+          "weight": 0.237
+        },
+        {
+          "source": "brave",
+          "variant": "bold-hearted",
+          "weight": 0.295
+        },
+        {
+          "source": "sad",
+          "variant": "wistful",
+          "weight": 0.648
+        },
+        {
+          "source": "brave",
+          "variant": "stout-hearted",
+          "weight": 0.237
+        },
+        {
+          "source": "sad",
+          "variant": "disheartened",
+          "weight": 0.708
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.242
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.676
+        },
+        {
+          "source": "sad",
+          "variant": "sorrowful",
+          "weight": 0.242
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.319
+        },
+        {
+          "source": "sad",
+          "variant": "unhappy",
+          "weight": 0.207
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.719
+        }
+      ]
+    },
+    {
+      "start": 48.39038548752834,
+      "end": 52.082358276643994,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.6755405068397522
+          },
+          {
+            "label": "sad",
+            "score": 0.24163316190242767
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "sad",
+          "variant": "unhappy",
+          "weight": 0.973
+        },
+        {
+          "source": "sad",
+          "variant": "sorrowful",
+          "weight": 0.965
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.013
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.012
+        },
+        {
+          "source": "sad",
+          "variant": "downcast",
+          "weight": 0.647
+        },
+        {
+          "source": "sad",
+          "variant": "melancholy",
+          "weight": 0.635
+        },
+        {
+          "source": "sad",
+          "variant": "dejected",
+          "weight": 0.733
+        },
+        {
+          "source": "sad",
+          "variant": "dismal",
+          "weight": 0.724
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.142
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.14
+        },
+        {
+          "source": "sad",
+          "variant": "woeful",
+          "weight": 0.944
+        },
+        {
+          "source": "sad",
+          "variant": "heartbroken",
+          "weight": 0.935
+        },
+        {
+          "source": "sad",
+          "variant": "gloomy",
+          "weight": 0.818
+        },
+        {
+          "source": "sad",
+          "variant": "blue",
+          "weight": 0.81
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.1
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.098
+        },
+        {
+          "source": "sad",
+          "variant": "despondent",
+          "weight": 0.672
+        },
+        {
+          "source": "sad",
+          "variant": "downhearted",
+          "weight": 0.665
+        },
+        {
+          "source": "brave",
+          "variant": "daring",
+          "weight": 0.284
+        },
+        {
+          "source": "brave",
+          "variant": "heroic",
+          "weight": 0.28
+        },
+        {
+          "source": "sad",
+          "variant": "distressed",
+          "weight": 0.986
+        },
+        {
+          "source": "sad",
+          "variant": "troubled",
+          "weight": 0.98
+        },
+        {
+          "source": "sad",
+          "variant": "mournful",
+          "weight": 0.854
+        },
+        {
+          "source": "sad",
+          "variant": "forlorn",
+          "weight": 0.845
+        },
+        {
+          "source": "brave",
+          "variant": "resolute",
+          "weight": 0.056
+        },
+        {
+          "source": "brave",
+          "variant": "steadfast",
+          "weight": 0.055
+        },
+        {
+          "source": "sad",
+          "variant": "heavy-hearted",
+          "weight": 0.98
+        },
+        {
+          "source": "sad",
+          "variant": "crestfallen",
+          "weight": 0.975
+        },
+        {
+          "source": "brave",
+          "variant": "plucky",
+          "weight": 0.01
+        },
+        {
+          "source": "brave",
+          "variant": "spunky",
+          "weight": 0.009
+        },
+        {
+          "source": "sad",
+          "variant": "saddened",
+          "weight": 0.735
+        },
+        {
+          "source": "sad",
+          "variant": "glum",
+          "weight": 0.73
+        },
+        {
+          "source": "brave",
+          "variant": "valorous",
+          "weight": 0.205
+        },
+        {
+          "source": "brave",
+          "variant": "noble",
+          "weight": 0.2
+        },
+        {
+          "source": "brave",
+          "variant": "gallant",
+          "weight": 0.728
+        },
+        {
+          "source": "sad",
+          "variant": "pensive",
+          "weight": 0.237
+        },
+        {
+          "source": "brave",
+          "variant": "bold-hearted",
+          "weight": 0.295
+        },
+        {
+          "source": "sad",
+          "variant": "wistful",
+          "weight": 0.648
+        },
+        {
+          "source": "brave",
+          "variant": "stout-hearted",
+          "weight": 0.237
+        },
+        {
+          "source": "sad",
+          "variant": "disheartened",
+          "weight": 0.708
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.242
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.676
+        },
+        {
+          "source": "sad",
+          "variant": "sorrowful",
+          "weight": 0.242
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.319
+        },
+        {
+          "source": "sad",
+          "variant": "unhappy",
+          "weight": 0.207
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.719
+        }
+      ]
+    },
+    {
+      "start": 52.082358276643994,
+      "end": 55.913650793650795,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.39162084460258484
+          },
+          {
+            "label": "sad",
+            "score": 0.3189924359321594
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "sad",
+          "variant": "unhappy",
+          "weight": 0.973
+        },
+        {
+          "source": "sad",
+          "variant": "sorrowful",
+          "weight": 0.965
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.013
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.012
+        },
+        {
+          "source": "sad",
+          "variant": "downcast",
+          "weight": 0.647
+        },
+        {
+          "source": "sad",
+          "variant": "melancholy",
+          "weight": 0.635
+        },
+        {
+          "source": "sad",
+          "variant": "dejected",
+          "weight": 0.733
+        },
+        {
+          "source": "sad",
+          "variant": "dismal",
+          "weight": 0.724
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.142
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.14
+        },
+        {
+          "source": "sad",
+          "variant": "woeful",
+          "weight": 0.944
+        },
+        {
+          "source": "sad",
+          "variant": "heartbroken",
+          "weight": 0.935
+        },
+        {
+          "source": "sad",
+          "variant": "gloomy",
+          "weight": 0.818
+        },
+        {
+          "source": "sad",
+          "variant": "blue",
+          "weight": 0.81
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.1
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.098
+        },
+        {
+          "source": "sad",
+          "variant": "despondent",
+          "weight": 0.672
+        },
+        {
+          "source": "sad",
+          "variant": "downhearted",
+          "weight": 0.665
+        },
+        {
+          "source": "brave",
+          "variant": "daring",
+          "weight": 0.284
+        },
+        {
+          "source": "brave",
+          "variant": "heroic",
+          "weight": 0.28
+        },
+        {
+          "source": "sad",
+          "variant": "distressed",
+          "weight": 0.986
+        },
+        {
+          "source": "sad",
+          "variant": "troubled",
+          "weight": 0.98
+        },
+        {
+          "source": "sad",
+          "variant": "mournful",
+          "weight": 0.854
+        },
+        {
+          "source": "sad",
+          "variant": "forlorn",
+          "weight": 0.845
+        },
+        {
+          "source": "brave",
+          "variant": "resolute",
+          "weight": 0.056
+        },
+        {
+          "source": "brave",
+          "variant": "steadfast",
+          "weight": 0.055
+        },
+        {
+          "source": "sad",
+          "variant": "heavy-hearted",
+          "weight": 0.98
+        },
+        {
+          "source": "sad",
+          "variant": "crestfallen",
+          "weight": 0.975
+        },
+        {
+          "source": "brave",
+          "variant": "plucky",
+          "weight": 0.01
+        },
+        {
+          "source": "brave",
+          "variant": "spunky",
+          "weight": 0.009
+        },
+        {
+          "source": "sad",
+          "variant": "saddened",
+          "weight": 0.735
+        },
+        {
+          "source": "sad",
+          "variant": "glum",
+          "weight": 0.73
+        },
+        {
+          "source": "brave",
+          "variant": "valorous",
+          "weight": 0.205
+        },
+        {
+          "source": "brave",
+          "variant": "noble",
+          "weight": 0.2
+        },
+        {
+          "source": "brave",
+          "variant": "gallant",
+          "weight": 0.728
+        },
+        {
+          "source": "sad",
+          "variant": "pensive",
+          "weight": 0.237
+        },
+        {
+          "source": "brave",
+          "variant": "bold-hearted",
+          "weight": 0.295
+        },
+        {
+          "source": "sad",
+          "variant": "wistful",
+          "weight": 0.648
+        },
+        {
+          "source": "brave",
+          "variant": "stout-hearted",
+          "weight": 0.237
+        },
+        {
+          "source": "sad",
+          "variant": "disheartened",
+          "weight": 0.708
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.242
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.676
+        },
+        {
+          "source": "sad",
+          "variant": "sorrowful",
+          "weight": 0.242
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.319
+        },
+        {
+          "source": "sad",
+          "variant": "unhappy",
+          "weight": 0.207
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.719
+        }
+      ]
+    },
+    {
+      "start": 55.913650793650795,
+      "end": 59.7449433106576,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.7192359566688538
+          },
+          {
+            "label": "sad",
+            "score": 0.20653299987316132
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "sad",
+          "variant": "unhappy",
+          "weight": 0.973
+        },
+        {
+          "source": "sad",
+          "variant": "sorrowful",
+          "weight": 0.965
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.013
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.012
+        },
+        {
+          "source": "sad",
+          "variant": "downcast",
+          "weight": 0.647
+        },
+        {
+          "source": "sad",
+          "variant": "melancholy",
+          "weight": 0.635
+        },
+        {
+          "source": "sad",
+          "variant": "dejected",
+          "weight": 0.733
+        },
+        {
+          "source": "sad",
+          "variant": "dismal",
+          "weight": 0.724
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.142
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.14
+        },
+        {
+          "source": "sad",
+          "variant": "woeful",
+          "weight": 0.944
+        },
+        {
+          "source": "sad",
+          "variant": "heartbroken",
+          "weight": 0.935
+        },
+        {
+          "source": "sad",
+          "variant": "gloomy",
+          "weight": 0.818
+        },
+        {
+          "source": "sad",
+          "variant": "blue",
+          "weight": 0.81
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.1
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.098
+        },
+        {
+          "source": "sad",
+          "variant": "despondent",
+          "weight": 0.672
+        },
+        {
+          "source": "sad",
+          "variant": "downhearted",
+          "weight": 0.665
+        },
+        {
+          "source": "brave",
+          "variant": "daring",
+          "weight": 0.284
+        },
+        {
+          "source": "brave",
+          "variant": "heroic",
+          "weight": 0.28
+        },
+        {
+          "source": "sad",
+          "variant": "distressed",
+          "weight": 0.986
+        },
+        {
+          "source": "sad",
+          "variant": "troubled",
+          "weight": 0.98
+        },
+        {
+          "source": "sad",
+          "variant": "mournful",
+          "weight": 0.854
+        },
+        {
+          "source": "sad",
+          "variant": "forlorn",
+          "weight": 0.845
+        },
+        {
+          "source": "brave",
+          "variant": "resolute",
+          "weight": 0.056
+        },
+        {
+          "source": "brave",
+          "variant": "steadfast",
+          "weight": 0.055
+        },
+        {
+          "source": "sad",
+          "variant": "heavy-hearted",
+          "weight": 0.98
+        },
+        {
+          "source": "sad",
+          "variant": "crestfallen",
+          "weight": 0.975
+        },
+        {
+          "source": "brave",
+          "variant": "plucky",
+          "weight": 0.01
+        },
+        {
+          "source": "brave",
+          "variant": "spunky",
+          "weight": 0.009
+        },
+        {
+          "source": "sad",
+          "variant": "saddened",
+          "weight": 0.735
+        },
+        {
+          "source": "sad",
+          "variant": "glum",
+          "weight": 0.73
+        },
+        {
+          "source": "brave",
+          "variant": "valorous",
+          "weight": 0.205
+        },
+        {
+          "source": "brave",
+          "variant": "noble",
+          "weight": 0.2
+        },
+        {
+          "source": "brave",
+          "variant": "gallant",
+          "weight": 0.728
+        },
+        {
+          "source": "sad",
+          "variant": "pensive",
+          "weight": 0.237
+        },
+        {
+          "source": "brave",
+          "variant": "bold-hearted",
+          "weight": 0.295
+        },
+        {
+          "source": "sad",
+          "variant": "wistful",
+          "weight": 0.648
+        },
+        {
+          "source": "brave",
+          "variant": "stout-hearted",
+          "weight": 0.237
+        },
+        {
+          "source": "sad",
+          "variant": "disheartened",
+          "weight": 0.708
+        },
+        {
+          "source": "brave",
+          "variant": "undaunted",
+          "weight": 0.242
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.676
+        },
+        {
+          "source": "sad",
+          "variant": "sorrowful",
+          "weight": 0.242
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.319
+        },
+        {
+          "source": "sad",
+          "variant": "unhappy",
+          "weight": 0.207
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.719
+        }
+      ]
+    },
+    {
+      "start": 59.7449433106576,
+      "end": 63.43691609977324,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "sad",
+            "score": 0.7749332189559937
+          },
+          {
+            "label": "brave",
+            "score": 0.19830429553985596
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "sad",
+          "variant": "unhappy",
+          "weight": 0.769
+        },
+        {
+          "source": "sad",
+          "variant": "sorrowful",
+          "weight": 0.782
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.202
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.195
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.611
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.598
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.735
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.749
+        },
+        {
+          "source": "sad",
+          "variant": "downcast",
+          "weight": 0.605
+        },
+        {
+          "source": "sad",
+          "variant": "melancholy",
+          "weight": 0.634
+        },
+        {
+          "source": "sad",
+          "variant": "dejected",
+          "weight": 0.61
+        },
+        {
+          "source": "brave",
+          "variant": "heroic",
+          "weight": 0.315
+        },
+        {
+          "source": "sad",
+          "variant": "blue",
+          "weight": 0.516
+        },
+        {
+          "source": "sad",
+          "variant": "gloomy",
+          "weight": 0.227
+        }
+      ]
+    },
+    {
+      "start": 63.43691609977324,
+      "end": 67.1288888888889,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.6049861907958984
+          },
+          {
+            "label": "sad",
+            "score": 0.23686063289642334
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "sad",
+          "variant": "unhappy",
+          "weight": 0.769
+        },
+        {
+          "source": "sad",
+          "variant": "sorrowful",
+          "weight": 0.782
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.202
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.195
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.611
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.598
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.735
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.749
+        },
+        {
+          "source": "sad",
+          "variant": "downcast",
+          "weight": 0.605
+        },
+        {
+          "source": "sad",
+          "variant": "melancholy",
+          "weight": 0.634
+        },
+        {
+          "source": "sad",
+          "variant": "dejected",
+          "weight": 0.61
+        },
+        {
+          "source": "brave",
+          "variant": "heroic",
+          "weight": 0.315
+        },
+        {
+          "source": "sad",
+          "variant": "blue",
+          "weight": 0.516
+        },
+        {
+          "source": "sad",
+          "variant": "gloomy",
+          "weight": 0.227
+        }
+      ]
+    },
+    {
+      "start": 67.1288888888889,
+      "end": 70.4261224489796,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "brave",
+            "score": 0.7424870729446411
+          },
+          {
+            "label": "exciting",
+            "score": 0.08035740256309509
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.202
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.195
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.611
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.598
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.735
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.749
+        },
+        {
+          "source": "brave",
+          "variant": "heroic",
+          "weight": 0.315
+        }
+      ]
+    },
+    {
+      "start": 70.4261224489796,
+      "end": 74.02521541950114,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "sad",
+            "score": 0.6186490654945374
+          },
+          {
+            "label": "brave",
+            "score": 0.3075961470603943
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "sad",
+          "variant": "unhappy",
+          "weight": 0.769
+        },
+        {
+          "source": "sad",
+          "variant": "sorrowful",
+          "weight": 0.782
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.202
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.195
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.611
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.598
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.735
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.749
+        },
+        {
+          "source": "sad",
+          "variant": "downcast",
+          "weight": 0.605
+        },
+        {
+          "source": "sad",
+          "variant": "melancholy",
+          "weight": 0.634
+        },
+        {
+          "source": "sad",
+          "variant": "dejected",
+          "weight": 0.61
+        },
+        {
+          "source": "brave",
+          "variant": "heroic",
+          "weight": 0.315
+        },
+        {
+          "source": "sad",
+          "variant": "blue",
+          "weight": 0.516
+        },
+        {
+          "source": "sad",
+          "variant": "gloomy",
+          "weight": 0.227
+        }
+      ]
+    },
+    {
+      "start": 74.02521541950114,
+      "end": 77.41532879818594,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "sad",
+            "score": 0.530764102935791
+          },
+          {
+            "label": "brave",
+            "score": 0.23827189207077026
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "sad",
+          "variant": "unhappy",
+          "weight": 0.769
+        },
+        {
+          "source": "sad",
+          "variant": "sorrowful",
+          "weight": 0.782
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.202
+        },
+        {
+          "source": "brave",
+          "variant": "valiant",
+          "weight": 0.195
+        },
+        {
+          "source": "brave",
+          "variant": "fearless",
+          "weight": 0.611
+        },
+        {
+          "source": "brave",
+          "variant": "bold",
+          "weight": 0.598
+        },
+        {
+          "source": "brave",
+          "variant": "courageous",
+          "weight": 0.735
+        },
+        {
+          "source": "brave",
+          "variant": "intrepid",
+          "weight": 0.749
+        },
+        {
+          "source": "sad",
+          "variant": "downcast",
+          "weight": 0.605
+        },
+        {
+          "source": "sad",
+          "variant": "melancholy",
+          "weight": 0.634
+        },
+        {
+          "source": "sad",
+          "variant": "dejected",
+          "weight": 0.61
+        },
+        {
+          "source": "brave",
+          "variant": "heroic",
+          "weight": 0.315
+        },
+        {
+          "source": "sad",
+          "variant": "blue",
+          "weight": 0.516
+        },
+        {
+          "source": "sad",
+          "variant": "gloomy",
+          "weight": 0.227
+        }
+      ]
+    },
+    {
+      "start": 77.41532879818594,
+      "end": 80.96798185941043,
+      "original_labels": {
+        "moods": [
+          {
+            "label": "happy",
+            "score": 0.28530603647232056
+          },
+          {
+            "label": "sad",
+            "score": 0.22991347312927246
+          }
+        ]
+      },
+      "variations": [
+        {
+          "source": "sad",
+          "variant": "unhappy",
+          "weight": 0.769
+        },
+        {
+          "source": "sad",
+          "variant": "sorrowful",
+          "weight": 0.782
+        },
+        {
+          "source": "sad",
+          "variant": "downcast",
+          "weight": 0.605
+        },
+        {
+          "source": "sad",
+          "variant": "melancholy",
+          "weight": 0.634
+        },
+        {
+          "source": "sad",
+          "variant": "dejected",
+          "weight": 0.61
+        },
+        {
+          "source": "sad",
+          "variant": "blue",
+          "weight": 0.516
+        },
+        {
+          "source": "happy",
+          "variant": "joyful",
+          "weight": 0.287
+        },
+        {
+          "source": "happy",
+          "variant": "cheerful",
+          "weight": 0.283
+        },
+        {
+          "source": "sad",
+          "variant": "gloomy",
+          "weight": 0.227
+        }
+      ]
+    }
+  ]
+}

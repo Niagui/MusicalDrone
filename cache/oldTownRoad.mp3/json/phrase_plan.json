@@ -1,0 +1,1177 @@
+{
+  "source_file": "clap_results.json",
+  "model": "gpt-4o-mini",
+  "generated_at": "2026-04-28T20:50:58Z",
+  "total_phrases": 45,
+  "planner": "single_attractor_phrase_planner",
+  "phrases": [
+    {
+      "phrase_index": 0,
+      "start": 1.207437641723356,
+      "end": 4.760090702947846,
+      "beat_count": 8,
+      "section_role": "buildup",
+      "motion_mode": "advance",
+      "height_level": 0.3,
+      "depth_level": 0.2,
+      "speed_level": 0.5,
+      "vertical_trend": "rise",
+      "transition_style": "smooth",
+      "beat_plan": [
+        {
+          "beat": 1,
+          "action": "hold"
+        },
+        {
+          "beat": 6,
+          "action": "advance"
+        },
+        {
+          "beat": 8,
+          "action": "settle"
+        }
+      ],
+      "section_index": 0
+    },
+    {
+      "phrase_index": 1,
+      "start": 4.760090702947846,
+      "end": 8.266303854875284,
+      "beat_count": 8,
+      "section_role": "peak",
+      "motion_mode": "advance",
+      "height_level": 0.5,
+      "depth_level": 0.3,
+      "speed_level": 0.7,
+      "vertical_trend": "hold",
+      "transition_style": "surge",
+      "beat_plan": [
+        {
+          "beat": 1,
+          "action": "hold"
+        },
+        {
+          "beat": 6,
+          "action": "advance"
+        },
+        {
+          "beat": 8,
+          "action": "settle"
+        }
+      ],
+      "section_index": 0
+    },
+    {
+      "phrase_index": 2,
+      "start": 8.266303854875284,
+      "end": 11.818956916099774,
+      "beat_count": 8,
+      "section_role": "release",
+      "motion_mode": "retreat",
+      "height_level": 0.4,
+      "depth_level": 0.2,
+      "speed_level": 0.5,
+      "vertical_trend": "fall",
+      "transition_style": "drift",
+      "beat_plan": [
+        {
+          "beat": 1,
+          "action": "hold"
+        },
+        {
+          "beat": 4,
+          "action": "retreat"
+        },
+        {
+          "beat": 8,
+          "action": "settle"
+        }
+      ],
+      "section_index": 0
+    },
+    {
+      "phrase_index": 3,
+      "start": 11.818956916099774,
+      "end": 15.32517006802721,
+      "beat_count": 8,
+      "section_role": "stable",
+      "motion_mode": "hold",
+      "height_level": 0.4,
+      "depth_level": 0.3,
+      "speed_level": 0.4,
+      "vertical_trend": "hold",
+      "transition_style": "smooth",
+      "beat_plan": [
+        {
+          "beat": 1,
+          "action": "hold"
+        },
+        {
+          "beat": 8,
+          "action": "settle"
+        }
+      ],
+      "section_index": 0
+    },
+    {
+      "phrase_index": 4,
+      "start": 15.32517006802721,
+      "end": 18.83138321995465,
+      "beat_count": 8,
+      "section_role": "buildup",
+      "motion_mode": "advance",
+      "height_level": 0.5,
+      "depth_level": 0.4,
+      "speed_level": 0.6,
+      "vertical_trend": "rise",
+      "transition_style": "snap",
+      "beat_plan": [
+        {
+          "beat": 1,
+          "action": "hold"
+        },
+        {
+          "beat": 6,
+          "action": "advance"
+        },
+        {
+          "beat": 8,
+          "action": "settle"
+        }
+      ],
+      "section_index": 1
+    },
+    {
+      "phrase_index": 5,
+      "start": 18.83138321995465,
+      "end": 22.407256235827663,
+      "beat_count": 8,
+      "section_role": "peak",
+      "motion_mode": "advance",
+      "height_level": 0.6,
+      "depth_level": 0.5,
+      "speed_level": 0.5,
+      "vertical_trend": "hold",
+      "transition_style": "smooth",
+      "beat_plan": [
+        {
+          "beat": 1,
+          "action": "hold"
+        },
+        {
+          "beat": 6,
+          "action": "advance"
+        },
+        {
+          "beat": 8,
+          "action": "settle"
+        }
+      ],
+      "section_index": 1
+    },
+    {
+      "phrase_index": 6,
+      "start": 22.407256235827663,
+      "end": 25.93668934240363,
+      "beat_count": 8,
+      "section_role": "release",
+      "motion_mode": "retreat",
+      "height_level": 0.5,
+      "depth_level": 0.4,
+      "speed_level": 0.4,
+      "vertical_trend": "fall",
+      "transition_style": "drift",
+      "beat_plan": [
+        {
+          "beat": 1,
+          "action": "hold"
+        },
+        {
+          "beat": 4,
+          "action": "retreat"
+        },
+        {
+          "beat": 8,
+          "action": "settle"
+        }
+      ],
+      "section_index": 1
+    },
+    {
+      "phrase_index": 7,
+      "start": 25.93668934240363,
+      "end": 29.442902494331065,
+      "beat_count": 8,
+      "section_role": "stable",
+      "motion_mode": "hold",
+      "height_level": 0.4,
+      "depth_level": 0.3,
+      "speed_level": 0.3,
+      "vertical_trend": "hold",
+      "transition_style": "smooth",
+      "beat_plan": [
+        {
+          "beat": 1,
+          "action": "hold"
+        }
+      ],
+      "section_index": 2
+    },
+    {
+      "phrase_index": 8,
+      "start": 29.442902494331065,
+      "end": 32.97233560090703,
+      "beat_count": 8,
+      "section_role": "buildup",
+      "motion_mode": "advance",
+      "height_level": 0.3,
+      "depth_level": 0.2,
+      "speed_level": 0.4,
+      "vertical_trend": "rise",
+      "transition_style": "smooth",
+      "beat_plan": [
+        {
+          "beat": 1,
+          "action": "hold"
+        },
+        {
+          "beat": 6,
+          "action": "advance"
+        },
+        {
+          "beat": 8,
+          "action": "settle"
+        }
+      ],
+      "section_index": 2
+    },
+    {
+      "phrase_index": 9,
+      "start": 32.97233560090703,
+      "end": 36.52498866213152,
+      "beat_count": 8,
+      "section_role": "peak",
+      "motion_mode": "advance",
+      "height_level": 0.5,
+      "depth_level": 0.3,
+      "speed_level": 0.6,
+      "vertical_trend": "hold",
+      "transition_style": "drift",
+      "beat_plan": [
+        {
+          "beat": 1,
+          "action": "hold"
+        },
+        {
+          "beat": 6,
+          "action": "advance"
+        },
+        {
+          "beat": 8,
+          "action": "settle"
+        }
+      ],
+      "section_index": 2
+    },
+    {
+      "phrase_index": 10,
+      "start": 36.52498866213152,
+      "end": 40.054421768707485,
+      "beat_count": 8,
+      "section_role": "release",
+      "motion_mode": "retreat",
+      "height_level": 0.4,
+      "depth_level": 0.2,
+      "speed_level": 0.5,
+      "vertical_trend": "fall",
+      "transition_style": "snap",
+      "beat_plan": [
+        {
+          "beat": 1,
+          "action": "hold"
+        },
+        {
+          "beat": 4,
+          "action": "retreat"
+        }
+      ],
+      "section_index": 2
+    },
+    {
+      "phrase_index": 11,
+      "start": 40.054421768707485,
+      "end": 43.58385487528345,
+      "beat_count": 8,
+      "section_role": "stable",
+      "motion_mode": "hold",
+      "height_level": 0.3,
+      "depth_level": 0.1,
+      "speed_level": 0.3,
+      "vertical_trend": "hold",
+      "transition_style": "smooth",
+      "beat_plan": [
+        {
+          "beat": 1,
+          "action": "hold"
+        }
+      ],
+      "section_index": 3
+    },
+    {
+      "phrase_index": 12,
+      "start": 43.58385487528345,
+      "end": 47.11328798185941,
+      "beat_count": 8,
+      "section_role": "buildup",
+      "motion_mode": "advance",
+      "height_level": 0.6,
+      "depth_level": 0.4,
+      "speed_level": 0.7,
+      "vertical_trend": "rise",
+      "transition_style": "surge",
+      "beat_plan": [
+        {
+          "beat": 1,
+          "action": "hold"
+        },
+        {
+          "beat": 6,
+          "action": "advance"
+        },
+        {
+          "beat": 8,
+          "action": "settle"
+        }
+      ],
+      "section_index": 3
+    },
+    {
+      "phrase_index": 13,
+      "start": 47.11328798185941,
+      "end": 50.64272108843537,
+      "beat_count": 8,
+      "section_role": "peak",
+      "motion_mode": "hold",
+      "height_level": 0.5,
+      "depth_level": 0.3,
+      "speed_level": 0.5,
+      "vertical_trend": "hold",
+      "transition_style": "drift",
+      "beat_plan": [
+        {
+          "beat": 1,
+          "action": "hold"
+        },
+        {
+          "beat": 8,
+          "action": "settle"
+        }
+      ],
+      "section_index": 3
+    },
+    {
+      "phrase_index": 14,
+      "start": 50.64272108843537,
+      "end": 54.17215419501134,
+      "beat_count": 8,
+      "section_role": "release",
+      "motion_mode": "retreat",
+      "height_level": 0.4,
+      "depth_level": 0.2,
+      "speed_level": 0.6,
+      "vertical_trend": "fall",
+      "transition_style": "snap",
+      "beat_plan": [
+        {
+          "beat": 1,
+          "action": "hold"
+        },
+        {
+          "beat": 4,
+          "action": "retreat"
+        },
+        {
+          "beat": 8,
+          "action": "settle"
+        }
+      ],
+      "section_index": 3
+    },
+    {
+      "phrase_index": 15,
+      "start": 54.17215419501134,
+      "end": 57.7015873015873,
+      "beat_count": 8,
+      "section_role": "stable",
+      "motion_mode": "hold",
+      "height_level": 0.3,
+      "depth_level": 0.1,
+      "speed_level": 0.3,
+      "vertical_trend": "hold",
+      "transition_style": "smooth",
+      "beat_plan": [
+        {
+          "beat": 1,
+          "action": "hold"
+        }
+      ],
+      "section_index": 3
+    },
+    {
+      "phrase_index": 16,
+      "start": 57.7015873015873,
+      "end": 61.23102040816327,
+      "beat_count": 8,
+      "section_role": "buildup",
+      "motion_mode": "advance",
+      "height_level": 0.5,
+      "depth_level": 0.3,
+      "speed_level": 0.6,
+      "vertical_trend": "rise",
+      "transition_style": "smooth",
+      "beat_plan": [
+        {
+          "beat": 1,
+          "action": "hold"
+        },
+        {
+          "beat": 6,
+          "action": "advance"
+        },
+        {
+          "beat": 8,
+          "action": "settle"
+        }
+      ],
+      "section_index": 3
+    },
+    {
+      "phrase_index": 17,
+      "start": 61.23102040816327,
+      "end": 64.76045351473923,
+      "beat_count": 8,
+      "section_role": "peak",
+      "motion_mode": "hold",
+      "height_level": 0.5,
+      "depth_level": 0.3,
+      "speed_level": 0.4,
+      "vertical_trend": "hold",
+      "transition_style": "drift",
+      "beat_plan": [
+        {
+          "beat": 1,
+          "action": "hold"
+        },
+        {
+          "beat": 8,
+          "action": "settle"
+        }
+      ],
+      "section_index": 3
+    },
+    {
+      "phrase_index": 18,
+      "start": 64.76045351473923,
+      "end": 68.28988662131519,
+      "beat_count": 8,
+      "section_role": "release",
+      "motion_mode": "retreat",
+      "height_level": 0.4,
+      "depth_level": 0.2,
+      "speed_level": 0.3,
+      "vertical_trend": "fall",
+      "transition_style": "snap",
+      "beat_plan": [
+        {
+          "beat": 1,
+          "action": "hold"
+        },
+        {
+          "beat": 4,
+          "action": "retreat"
+        }
+      ],
+      "section_index": 4
+    },
+    {
+      "phrase_index": 19,
+      "start": 68.28988662131519,
+      "end": 71.81931972789116,
+      "beat_count": 8,
+      "section_role": "stable",
+      "motion_mode": "hold",
+      "height_level": 0.4,
+      "depth_level": 0.2,
+      "speed_level": 0.3,
+      "vertical_trend": "hold",
+      "transition_style": "smooth",
+      "beat_plan": [
+        {
+          "beat": 1,
+          "action": "hold"
+        }
+      ],
+      "section_index": 4
+    },
+    {
+      "phrase_index": 20,
+      "start": 71.81931972789116,
+      "end": 75.34875283446712,
+      "beat_count": 8,
+      "section_role": "buildup",
+      "motion_mode": "advance",
+      "height_level": 0.6,
+      "depth_level": 0.4,
+      "speed_level": 0.7,
+      "vertical_trend": "rise",
+      "transition_style": "surge",
+      "beat_plan": [
+        {
+          "beat": 1,
+          "action": "hold"
+        },
+        {
+          "beat": 6,
+          "action": "advance"
+        },
+        {
+          "beat": 8,
+          "action": "settle"
+        }
+      ],
+      "section_index": 4
+    },
+    {
+      "phrase_index": 21,
+      "start": 75.34875283446712,
+      "end": 78.87818594104309,
+      "beat_count": 8,
+      "section_role": "peak",
+      "motion_mode": "hold",
+      "height_level": 0.6,
+      "depth_level": 0.4,
+      "speed_level": 0.5,
+      "vertical_trend": "hold",
+      "transition_style": "drift",
+      "beat_plan": [
+        {
+          "beat": 1,
+          "action": "hold"
+        },
+        {
+          "beat": 8,
+          "action": "settle"
+        }
+      ],
+      "section_index": 4
+    },
+    {
+      "phrase_index": 22,
+      "start": 78.87818594104309,
+      "end": 82.40761904761905,
+      "beat_count": 8,
+      "section_role": "release",
+      "motion_mode": "retreat",
+      "height_level": 0.5,
+      "depth_level": 0.3,
+      "speed_level": 0.4,
+      "vertical_trend": "fall",
+      "transition_style": "snap",
+      "beat_plan": [
+        {
+          "beat": 1,
+          "action": "hold"
+        },
+        {
+          "beat": 4,
+          "action": "retreat"
+        }
+      ],
+      "section_index": 4
+    },
+    {
+      "phrase_index": 23,
+      "start": 82.40761904761905,
+      "end": 85.93705215419502,
+      "beat_count": 8,
+      "section_role": "stable",
+      "motion_mode": "hold",
+      "height_level": 0.5,
+      "depth_level": 0.3,
+      "speed_level": 0.4,
+      "vertical_trend": "hold",
+      "transition_style": "smooth",
+      "beat_plan": [
+        {
+          "beat": 1,
+          "action": "hold"
+        },
+        {
+          "beat": 8,
+          "action": "settle"
+        }
+      ],
+      "section_index": 4
+    },
+    {
+      "phrase_index": 24,
+      "start": 85.93705215419502,
+      "end": 89.46648526077098,
+      "beat_count": 8,
+      "section_role": "buildup",
+      "motion_mode": "advance",
+      "height_level": 0.3,
+      "depth_level": 0.2,
+      "speed_level": 0.4,
+      "vertical_trend": "hold",
+      "transition_style": "smooth",
+      "beat_plan": [
+        {
+          "beat": 1,
+          "action": "hold"
+        },
+        {
+          "beat": 6,
+          "action": "advance"
+        },
+        {
+          "beat": 8,
+          "action": "settle"
+        }
+      ],
+      "section_index": 4
+    },
+    {
+      "phrase_index": 25,
+      "start": 89.46648526077098,
+      "end": 92.99591836734695,
+      "beat_count": 8,
+      "section_role": "peak",
+      "motion_mode": "advance",
+      "height_level": 0.5,
+      "depth_level": 0.3,
+      "speed_level": 0.6,
+      "vertical_trend": "rise",
+      "transition_style": "surge",
+      "beat_plan": [
+        {
+          "beat": 1,
+          "action": "hold"
+        },
+        {
+          "beat": 6,
+          "action": "advance"
+        },
+        {
+          "beat": 8,
+          "action": "settle"
+        }
+      ],
+      "section_index": 4
+    },
+    {
+      "phrase_index": 26,
+      "start": 92.99591836734695,
+      "end": 96.5253514739229,
+      "beat_count": 8,
+      "section_role": "release",
+      "motion_mode": "hold",
+      "height_level": 0.4,
+      "depth_level": 0.2,
+      "speed_level": 0.5,
+      "vertical_trend": "fall",
+      "transition_style": "drift",
+      "beat_plan": [
+        {
+          "beat": 1,
+          "action": "hold"
+        },
+        {
+          "beat": 4,
+          "action": "fall"
+        },
+        {
+          "beat": 8,
+          "action": "settle"
+        }
+      ],
+      "section_index": 4
+    },
+    {
+      "phrase_index": 27,
+      "start": 96.5253514739229,
+      "end": 100.03156462585034,
+      "beat_count": 8,
+      "section_role": "stable",
+      "motion_mode": "hold",
+      "height_level": 0.4,
+      "depth_level": 0.3,
+      "speed_level": 0.5,
+      "vertical_trend": "hold",
+      "transition_style": "smooth",
+      "beat_plan": [
+        {
+          "beat": 1,
+          "action": "hold"
+        },
+        {
+          "beat": 8,
+          "action": "settle"
+        }
+      ],
+      "section_index": 4
+    },
+    {
+      "phrase_index": 28,
+      "start": 100.03156462585034,
+      "end": 103.5609977324263,
+      "beat_count": 8,
+      "section_role": "buildup",
+      "motion_mode": "advance",
+      "height_level": 0.6,
+      "depth_level": 0.4,
+      "speed_level": 0.7,
+      "vertical_trend": "rise",
+      "transition_style": "surge",
+      "beat_plan": [
+        {
+          "beat": 1,
+          "action": "hold"
+        },
+        {
+          "beat": 6,
+          "action": "advance"
+        },
+        {
+          "beat": 8,
+          "action": "settle"
+        }
+      ],
+      "section_index": 4
+    },
+    {
+      "phrase_index": 29,
+      "start": 103.5609977324263,
+      "end": 107.11365079365079,
+      "beat_count": 8,
+      "section_role": "peak",
+      "motion_mode": "advance",
+      "height_level": 0.6,
+      "depth_level": 0.4,
+      "speed_level": 0.7,
+      "vertical_trend": "rise",
+      "transition_style": "surge",
+      "beat_plan": [
+        {
+          "beat": 1,
+          "action": "hold"
+        },
+        {
+          "beat": 6,
+          "action": "advance"
+        },
+        {
+          "beat": 8,
+          "action": "settle"
+        }
+      ],
+      "section_index": 4
+    },
+    {
+      "phrase_index": 30,
+      "start": 107.11365079365079,
+      "end": 110.61986394557823,
+      "beat_count": 8,
+      "section_role": "release",
+      "motion_mode": "hold",
+      "height_level": 0.5,
+      "depth_level": 0.3,
+      "speed_level": 0.6,
+      "vertical_trend": "fall",
+      "transition_style": "drift",
+      "beat_plan": [
+        {
+          "beat": 1,
+          "action": "hold"
+        },
+        {
+          "beat": 4,
+          "action": "fall"
+        },
+        {
+          "beat": 8,
+          "action": "settle"
+        }
+      ],
+      "section_index": 5
+    },
+    {
+      "phrase_index": 31,
+      "start": 110.61986394557823,
+      "end": 114.1492970521542,
+      "beat_count": 8,
+      "section_role": "stable",
+      "motion_mode": "hold",
+      "height_level": 0.5,
+      "depth_level": 0.4,
+      "speed_level": 0.6,
+      "vertical_trend": "hold",
+      "transition_style": "smooth",
+      "beat_plan": [
+        {
+          "beat": 1,
+          "action": "hold"
+        },
+        {
+          "beat": 8,
+          "action": "settle"
+        }
+      ],
+      "section_index": 5
+    },
+    {
+      "phrase_index": 32,
+      "start": 114.1492970521542,
+      "end": 117.70195011337869,
+      "beat_count": 8,
+      "section_role": "buildup",
+      "motion_mode": "advance",
+      "height_level": 0.5,
+      "depth_level": 0.3,
+      "speed_level": 0.6,
+      "vertical_trend": "rise",
+      "transition_style": "smooth",
+      "beat_plan": [
+        {
+          "beat": 1,
+          "action": "hold"
+        },
+        {
+          "beat": 6,
+          "action": "advance"
+        },
+        {
+          "beat": 8,
+          "action": "settle"
+        }
+      ],
+      "section_index": 5
+    },
+    {
+      "phrase_index": 33,
+      "start": 117.70195011337869,
+      "end": 121.23138321995465,
+      "beat_count": 8,
+      "section_role": "peak",
+      "motion_mode": "advance",
+      "height_level": 0.7,
+      "depth_level": 0.4,
+      "speed_level": 0.7,
+      "vertical_trend": "hold",
+      "transition_style": "surge",
+      "beat_plan": [
+        {
+          "beat": 1,
+          "action": "hold"
+        },
+        {
+          "beat": 6,
+          "action": "advance"
+        },
+        {
+          "beat": 8,
+          "action": "settle"
+        }
+      ],
+      "section_index": 5
+    },
+    {
+      "phrase_index": 34,
+      "start": 121.23138321995465,
+      "end": 124.76081632653062,
+      "beat_count": 8,
+      "section_role": "release",
+      "motion_mode": "retreat",
+      "height_level": 0.6,
+      "depth_level": 0.3,
+      "speed_level": 0.5,
+      "vertical_trend": "fall",
+      "transition_style": "drift",
+      "beat_plan": [
+        {
+          "beat": 1,
+          "action": "hold"
+        },
+        {
+          "beat": 4,
+          "action": "retreat"
+        },
+        {
+          "beat": 8,
+          "action": "settle"
+        }
+      ],
+      "section_index": 5
+    },
+    {
+      "phrase_index": 35,
+      "start": 124.76081632653062,
+      "end": 128.29024943310657,
+      "beat_count": 8,
+      "section_role": "buildup",
+      "motion_mode": "advance",
+      "height_level": 0.5,
+      "depth_level": 0.4,
+      "speed_level": 0.6,
+      "vertical_trend": "rise",
+      "transition_style": "smooth",
+      "beat_plan": [
+        {
+          "beat": 1,
+          "action": "hold"
+        },
+        {
+          "beat": 6,
+          "action": "advance"
+        },
+        {
+          "beat": 8,
+          "action": "settle"
+        }
+      ],
+      "section_index": 6
+    },
+    {
+      "phrase_index": 36,
+      "start": 128.29024943310657,
+      "end": 131.81968253968253,
+      "beat_count": 8,
+      "section_role": "peak",
+      "motion_mode": "hold",
+      "height_level": 0.7,
+      "depth_level": 0.3,
+      "speed_level": 0.4,
+      "vertical_trend": "hold",
+      "transition_style": "snap",
+      "beat_plan": [
+        {
+          "beat": 1,
+          "action": "hold"
+        }
+      ],
+      "section_index": 6
+    },
+    {
+      "phrase_index": 37,
+      "start": 131.81968253968253,
+      "end": 135.3491156462585,
+      "beat_count": 8,
+      "section_role": "release",
+      "motion_mode": "retreat",
+      "height_level": 0.6,
+      "depth_level": 0.4,
+      "speed_level": 0.5,
+      "vertical_trend": "fall",
+      "transition_style": "drift",
+      "beat_plan": [
+        {
+          "beat": 1,
+          "action": "hold"
+        },
+        {
+          "beat": 4,
+          "action": "retreat"
+        },
+        {
+          "beat": 8,
+          "action": "settle"
+        }
+      ],
+      "section_index": 6
+    },
+    {
+      "phrase_index": 38,
+      "start": 135.3491156462585,
+      "end": 138.87854875283446,
+      "beat_count": 8,
+      "section_role": "stable",
+      "motion_mode": "hold",
+      "height_level": 0.5,
+      "depth_level": 0.3,
+      "speed_level": 0.4,
+      "vertical_trend": "hold",
+      "transition_style": "smooth",
+      "beat_plan": [
+        {
+          "beat": 1,
+          "action": "hold"
+        },
+        {
+          "beat": 8,
+          "action": "settle"
+        }
+      ],
+      "section_index": 6
+    },
+    {
+      "phrase_index": 39,
+      "start": 138.87854875283446,
+      "end": 142.38476190476192,
+      "beat_count": 8,
+      "section_role": "release",
+      "motion_mode": "retreat",
+      "height_level": 0.4,
+      "depth_level": 0.5,
+      "speed_level": 0.3,
+      "vertical_trend": "fall",
+      "transition_style": "snap",
+      "beat_plan": [
+        {
+          "beat": 1,
+          "action": "hold"
+        },
+        {
+          "beat": 4,
+          "action": "retreat"
+        }
+      ],
+      "section_index": 6
+    },
+    {
+      "phrase_index": 40,
+      "start": 142.38476190476192,
+      "end": 145.9374149659864,
+      "beat_count": 8,
+      "section_role": "buildup",
+      "motion_mode": "advance",
+      "height_level": 0.3,
+      "depth_level": 0.2,
+      "speed_level": 0.4,
+      "vertical_trend": "rise",
+      "transition_style": "smooth",
+      "beat_plan": [
+        {
+          "beat": 1,
+          "action": "hold"
+        },
+        {
+          "beat": 6,
+          "action": "advance"
+        },
+        {
+          "beat": 8,
+          "action": "settle"
+        }
+      ],
+      "section_index": 6
+    },
+    {
+      "phrase_index": 41,
+      "start": 145.9374149659864,
+      "end": 149.46684807256236,
+      "beat_count": 8,
+      "section_role": "peak",
+      "motion_mode": "advance",
+      "height_level": 0.5,
+      "depth_level": 0.3,
+      "speed_level": 0.6,
+      "vertical_trend": "hold",
+      "transition_style": "surge",
+      "beat_plan": [
+        {
+          "beat": 1,
+          "action": "hold"
+        },
+        {
+          "beat": 6,
+          "action": "advance"
+        },
+        {
+          "beat": 8,
+          "action": "settle"
+        }
+      ],
+      "section_index": 6
+    },
+    {
+      "phrase_index": 42,
+      "start": 149.46684807256236,
+      "end": 153.04272108843537,
+      "beat_count": 8,
+      "section_role": "release",
+      "motion_mode": "retreat",
+      "height_level": 0.4,
+      "depth_level": 0.2,
+      "speed_level": 0.5,
+      "vertical_trend": "fall",
+      "transition_style": "drift",
+      "beat_plan": [
+        {
+          "beat": 1,
+          "action": "hold"
+        },
+        {
+          "beat": 4,
+          "action": "retreat"
+        },
+        {
+          "beat": 8,
+          "action": "settle"
+        }
+      ],
+      "section_index": 6
+    },
+    {
+      "phrase_index": 43,
+      "start": 153.04272108843537,
+      "end": 156.66503401360544,
+      "beat_count": 8,
+      "section_role": "stable",
+      "motion_mode": "hold",
+      "height_level": 0.4,
+      "depth_level": 0.3,
+      "speed_level": 0.4,
+      "vertical_trend": "hold",
+      "transition_style": "smooth",
+      "beat_plan": [
+        {
+          "beat": 1,
+          "action": "hold"
+        },
+        {
+          "beat": 8,
+          "action": "settle"
+        }
+      ],
+      "section_index": 6
+    },
+    {
+      "phrase_index": 44,
+      "start": 156.66503401360544,
+      "end": 160.264126984127,
+      "beat_count": 8,
+      "section_role": "transition",
+      "motion_mode": "advance",
+      "height_level": 0.6,
+      "depth_level": 0.4,
+      "speed_level": 0.7,
+      "vertical_trend": "rise",
+      "transition_style": "snap",
+      "beat_plan": [
+        {
+          "beat": 1,
+          "action": "hold"
+        },
+        {
+          "beat": 4,
+          "action": "advance"
+        },
+        {
+          "beat": 8,
+          "action": "settle"
+        }
+      ],
+      "section_index": 6
+    }
+  ]
+}

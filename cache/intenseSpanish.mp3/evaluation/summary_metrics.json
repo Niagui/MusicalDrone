@@ -1,0 +1,39 @@
+{
+  "feature_columns": [
+    "mean_speed",
+    "max_speed",
+    "mean_accel",
+    "mean_jerk",
+    "mean_altitude",
+    "altitude_range",
+    "swarm_spread",
+    "min_pairwise_dist",
+    "boundary_margin",
+    "centroid_path_length",
+    "heading_change",
+    "formation_change"
+  ],
+  "condition_summary": {
+    "intenseSpanish.mp3": {
+      "expressive_range_mean_feature_variance": 1.0,
+      "mean_pairwise_segment_distance": 4.737809331380597,
+      "responsiveness_transition_cost": 4.14481335438172,
+      "phrase_within_group_variance": 0.7360243587546901,
+      "mode_switches": 12,
+      "safety": {
+        "min_pairwise_dist": 0.3659477831603848,
+        "min_boundary_margin": -0.16869999999999985,
+        "max_speed": 2.262270439182725,
+        "max_accel": 2.1326748251997127,
+        "segments": 19,
+        "duration_s": 103.6,
+        "drone_count": 5
+      }
+    }
+  },
+  "notes": {
+    "expressive_range": "Mean variance across z-scored motion features; higher means broader motion vocabulary.",
+    "responsiveness_transition_cost": "Mean Euclidean feature change between adjacent segments.",
+    "phrase_within_group_variance": "Mean z-scored feature variance within section_index/phrase groups; lower means more coherent local grouping."
+  }
+}
