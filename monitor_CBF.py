@@ -33,11 +33,16 @@ Z_WALL_MIN = 0.5
 Z_WALL_MAX = 1.2
 
 uris = [
-    'radio://0/80/2M/E7E7E7E702',
+    'radio://0/80/2M/E7E7E7E708',
+    'radio://0/80/2M/E7E7E7E709',
+    'radio://0/80/2M/E7E7E7E710',
+    'radio://0/80/2M/E7E7E7E711',
+    'radio://0/80/2M/E7E7E7E712',
 ]
 # URIs that pulse white on every beat; others show emotion color only
 BEAT_FLASH_URIS = {
-    'radio://0/80/2M/E7E7E7E702',
+    'radio://0/80/2M/E7E7E7E709',
+    'radio://0/80/2M/E7E7E7E711',
 }
 
 commanders = {}
@@ -480,7 +485,7 @@ def init_data(path):
     seq = {}
     for i, uri in enumerate(sorted(uris)):
         if i in waypoints:
-            slice_ = waypoints[i][150:200]
+            slice_ = waypoints[i][:200]
             if slice_:
                 t0 = slice_[0][0]  # time of first waypoint in slice
                 # shift all times so the slice starts at t=0
