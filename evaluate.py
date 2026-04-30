@@ -1,7 +1,7 @@
 """Evaluate generated drone choreography folders.
 
 Usage:
-    python evaluate.py cache/intenseSpanish.mp3
+    python evaluate.py data/intenseSpanish.mp3
     python evaluate.py evaluation/song01 --out evaluation/song01/results
 
 The input can be either:

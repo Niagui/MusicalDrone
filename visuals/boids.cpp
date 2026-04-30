@@ -69,13 +69,6 @@ void SetSimTime(float t){
     sim_time = t;
 }
 
-//resetting
-std::vector<float> gResetTimes;
-static int   gNextResetIndex = 0;
-static float gLastBoidsTime  = 0.0f;
-bool gSegmentsLoaded = false;
-
-
 // math helper functions
 //choke in range lo to hi
 static inline float clampf(float x, float lo, float hi) {return std::max(lo, std::min(hi, x));} 
@@ -217,14 +210,51 @@ static std::filesystem::path find_json_file(const std::string &filename) {
     fs::path cwd = fs::current_path();
 
     std::vector<fs::path> search_roots;
+    auto add_search_root = [&](const fs::path& root) {
+        if (root.empty()) return;
+        fs::path normalized = root.lexically_normal();
+        if (std::find(search_roots.begin(), search_roots.end(), normalized) == search_roots.end()) {
+            search_roots.push_back(normalized);
+        }
+    };
+
+    auto add_json_roots = [&](const fs::path& root) {
+        add_search_root(root);
+        if (root.filename() != "json") {
+            add_search_root(root / "json");
+        }
+    };
+
+    auto cache_to_data_path = [](const fs::path& path) -> fs::path {
+        std::string value = path.string();
+        if (value == "cache") {
+            return fs::path("data");
+        }
+
+        const std::string relative_prefix = "cache/";
+        if (value.rfind(relative_prefix, 0) == 0) {
+            value.replace(0, relative_prefix.size(), "data/");
+            return fs::path(value);
+        }
+
+        const std::string path_segment = "/cache/";
+        size_t pos = value.find(path_segment);
+        if (pos != std::string::npos) {
+            value.replace(pos + 1, std::string("cache").size(), "data");
+            return fs::path(value);
+        }
+
+        return {};
+    };
+
     if (const char* env_json_dir = std::getenv("DRONE_JSON_DIR"); env_json_dir && *env_json_dir) {
         fs::path env_path(env_json_dir);
-        search_roots.push_back(env_path);
-        search_roots.push_back(env_path / "json");
+        add_json_roots(env_path);
+        add_json_roots(cache_to_data_path(env_path));
     }
 
-    search_roots.push_back(cwd / "json");
-    search_roots.push_back(cwd.parent_path() / "json");
+    add_search_root(cwd / "json");
+    add_search_root(cwd.parent_path() / "json");
 
     for (const auto &root : search_roots) {
         fs::path p = root / filename;
@@ -245,33 +275,6 @@ bool LoadPhrasePlanFile(const std::string& path){
     if (!J.is_object() || !J.contains("phrases") || !J["phrases"].is_array()) return false;
     phrase_plan_json = std::move(J["phrases"]);
     return phrase_plan_json.is_array() && !phrase_plan_json.empty();
-}
-
-bool LoadResetTimes(const std::string& filename = "sections.json")
-{
-    auto segmentPath = find_json_file(filename).string();
-    gResetTimes.clear();
-    gNextResetIndex = 0;
-
-    std::ifstream in(segmentPath);
-    if (!in) {
-        std::cerr << "Failed to open reset-times JSON: " << segmentPath << "\n";
-        return false;
-    }
-
-    json j;
-    in >> j;
-
-    for (const auto& seg : j) {
-        if (seg.is_array() && seg.size() >= 2) {
-            float endTime = seg[1].get<float>();
-            gResetTimes.push_back(endTime);
-        }
-    }
-
-    std::cerr << "Loaded " << gResetTimes.size()
-              << " reset times from " << filename << "\n";
-    return true;
 }
 
 void EnsureEmotionsLoaded() 
@@ -313,22 +316,6 @@ void EnsureEmotionsLoaded()
         }
         emo_labels_loaded = ok;
     }
-}
-
-void EnsureSegmentsLoaded()
-{
-    if (!gSegmentsLoaded)
-    {
-        bool ok = LoadResetTimes();
-
-        if(!ok){
-            std::cerr << "Could not load segments\n";
-        }else{
-            std::cerr << "Loaded segments successfully." << "\n";
-            gSegmentsLoaded = true;
-        }
-    }
-    return;
 }
 
 void EnsurePhrasePlanLoaded()
@@ -772,7 +759,6 @@ const std::vector<float>& GetLastWeights(){
 //WARNING: this thing updates per frame not per segments
 void UpdateBoids(float dt, const std::vector<Vec3>& targets){
     EnsureEmotionsLoaded();
-    EnsureSegmentsLoaded();
     EnsurePhrasePlanLoaded();
     float t = sim_time;
     const float sXY = ScaleXY();
@@ -802,26 +788,6 @@ void UpdateBoids(float dt, const std::vector<Vec3>& targets){
         }
         return; // stop updating positions entirely
     }
-
-
-    if (gNextResetIndex < (int)gResetTimes.size()) {
-        float resetT = gResetTimes[gNextResetIndex];
-
-        // trigger when current time crosses the reset timestamp
-        if (gLastBoidsTime < resetT && t >= resetT) {
-            // std::cerr << "Resetting BoidParams at t=" << resetT << "\n";
-            
-            // // Reset parameters to neutral
-            // std::cerr << "Before reset vmax=" << P.vmax << "\n";
-            P = Neutral;
-            // std::cerr << "After reset vmax=" << P.vmax << "\n";
-
-            //Reset velocities so old emotion doesn't persist
-            ResetVelocities();
-            gNextResetIndex++;
-        }
-    }
-    gLastBoidsTime = t;
 
     //update emotion once a every some time
     auto seg = GetEmotionSegment(t);

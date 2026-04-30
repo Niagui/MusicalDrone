@@ -1,0 +1,104 @@
+{
+  "version": 1,
+  "smoothing_alpha": 0.25,
+  "anchors": [
+    {
+      "name": "happy",
+      "description": "bright, joyful, playful, optimistic",
+      "prompts": [
+        "bright joyful music",
+        "playful upbeat melody",
+        "warm cheerful musical atmosphere",
+        "light optimistic rhythm",
+        "sunny positive instrumental music"
+      ],
+      "motion_mix": {
+        "happy": 1.0
+      }
+    },
+    {
+      "name": "sad",
+      "description": "melancholic, wistful, tender, reflective",
+      "prompts": [
+        "melancholic soft music",
+        "wistful lyrical melody",
+        "low-energy sorrowful atmosphere",
+        "tender reflective piano music",
+        "gentle minor-key sadness"
+      ],
+      "motion_mix": {
+        "sad": 1.0
+      }
+    },
+    {
+      "name": "sleepy",
+      "description": "slow, calm, dreamy, floating, low arousal",
+      "prompts": [
+        "slow calm dreamy music",
+        "soft floating musical texture",
+        "quiet low-arousal atmosphere",
+        "gentle sparse lullaby-like music",
+        "relaxed drifting instrumental passage"
+      ],
+      "motion_mix": {
+        "sleepy": 1.0
+      }
+    },
+    {
+      "name": "brave",
+      "description": "bold, confident, heroic, determined",
+      "prompts": [
+        "bold confident music",
+        "heroic rising melody",
+        "strong determined rhythm",
+        "majestic courageous atmosphere",
+        "forward-moving triumphant instrumental music"
+      ],
+      "motion_mix": {
+        "brave": 1.0
+      }
+    },
+    {
+      "name": "grumpy",
+      "description": "harsh, aggressive, abrasive, irritated, angry",
+      "prompts": [
+        "harsh irritated music",
+        "abrasive aggressive rhythm",
+        "rough tense musical attack",
+        "angry heavy dissonant music",
+        "snappy frustrated musical gestures"
+      ],
+      "motion_mix": {
+        "grumpy": 1.0
+      }
+    },
+    {
+      "name": "scared",
+      "description": "anxious, eerie, uncertain, suspenseful, fearful",
+      "prompts": [
+        "anxious suspenseful music",
+        "eerie uncertain atmosphere",
+        "nervous high-tension texture",
+        "ominous fearful instrumental music",
+        "startled uneasy musical passage"
+      ],
+      "motion_mix": {
+        "scared": 1.0
+      }
+    },
+    {
+      "name": "shy",
+      "description": "quiet, delicate, restrained, fragile, intimate",
+      "prompts": [
+        "quiet delicate music",
+        "soft restrained melody",
+        "fragile intimate musical atmosphere",
+        "gentle hesitant instrumental passage",
+        "small tender sparse piano music"
+      ],
+      "motion_mix": {
+        "shy": 1.0
+      }
+    }
+  ]
+}

@@ -91,12 +91,12 @@ Skip the evaluation stage when only the trajectory is needed:
 ./pipeline.sh --audio testSong.mp3 --output trajectories.csv --no-eval
 ```
 
-Generated artifacts are cached per audio file under:
+Generated artifacts are stored per audio file under:
 
 ```text
-cache/<audio-file>/json/
-cache/<audio-file>/trajectory.csv
-cache/<audio-file>/evaluation/
+data/<audio-file>/json/
+data/<audio-file>/trajectory.csv
+data/<audio-file>/evaluation/
 ```
 
 The `DRONE_JSON_DIR` environment variable is used internally so each audio run can read and write isolated JSON artifacts.
@@ -149,7 +149,7 @@ happy, sad, sleepy, brave, grumpy, scared, shy
 
 ```text
 audio/                  sample audio files
-cache/                  per-audio generated JSON and trajectory output
+data/                   per-audio generated JSON and trajectory output
 json/                   shared labels, anchor definitions, and example artifacts
 src/                    Python audio analysis and optional LLM planning
 visuals/                C++ boids simulation, trajectory generator, and CBF solver
@@ -202,10 +202,21 @@ Generate a trajectory for an arbitrary file path:
 ./pipeline.sh --audio /path/to/song.mp3 --output trajectories.csv
 ```
 
-Use cached artifacts for a specific output directory:
+Use descriptor-anchor mode when CLAP's raw emotion labels are too literal or
+unstable:
 
 ```bash
-./pipeline.sh --audio testSong.mp3 --cache-root cache --output trajectories.csv
+./pipeline.sh --audio clairedelune.mp3 --descriptor-anchors --output trajectories.csv
+```
+
+Descriptor-anchor mode reads `json/descriptor_anchor_config.json` by default.
+Pass `--anchor-config path/to/config.json` to define custom anchor emotions and
+their descriptor prompts.
+
+Use generated artifacts from a specific output directory:
+
+```bash
+./pipeline.sh --audio testSong.mp3 --cache-root data --output trajectories.csv
 ```
 
 Run the Python analysis stage only:

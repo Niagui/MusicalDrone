@@ -175,8 +175,8 @@ class PhraseGeneratorTests(unittest.TestCase):
             cache_dir = Path(temp_dir) / "json-cache"
             with mock.patch.dict(os.environ, {"DRONE_JSON_DIR": str(cache_dir)}):
                 self.assertEqual(
-                    pg.get_pipeline_json_path("sections"),
-                    pg.PROJECT_ROOT / "json" / "sections.json",
+                    pg.get_pipeline_json_path("anchor_labels"),
+                    pg.PROJECT_ROOT / "json" / "anchor_labels.json",
                 )
 
 

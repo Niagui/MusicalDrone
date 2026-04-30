@@ -590,17 +590,15 @@ def build_output_payload(
 def main() -> None:
     input_json_path = get_generated_json_path("clap_results")
     beats_json_path = get_generated_json_path("beat_times")
-    sections_json_path = get_pipeline_json_path("sections")
     output_json_path = get_generated_json_path("phrase_plan")
 
     clap_phrases = load_json(input_json_path, default=[]) or []
     beat_times = load_json(beats_json_path, default=[]) or []
-    sections = load_sections(sections_json_path)
 
     if not clap_phrases:
         raise RuntimeError(f"No phrase data found in {input_json_path}.")
 
-    blocks = build_phrase_blocks(clap_phrases, beat_times=beat_times, sections=sections)
+    blocks = build_phrase_blocks(clap_phrases, beat_times=beat_times, sections=[])
     batches = pack_batches(blocks)
 
     print(f"Loaded {len(blocks)} phrases")

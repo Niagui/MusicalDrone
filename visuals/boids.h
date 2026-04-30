@@ -52,7 +52,6 @@ struct Boundaries {
 
 const std::vector<float>& GetLastWeights();
 bool LoadEmotionFile(const std::string& path);
-bool LoadResetTimes(const std::string& filename);
 std::vector<float> GetEmotionWeights(float t);
 void ApplyEmotion(const std::vector<float>& w, BoidParams& P);
 BoidParams ApplyEmotionHard(const std::vector<float>& w, float scale);
@@ -66,7 +65,6 @@ void SetBoidParams(const BoidParams& p);
 void SetSimTime(float t);
 void ResetVelocities();
 void EnsureEmotionsLoaded();
-void EnsureSegmentsLoaded();
 
 Boundaries GetBoxBounds();
 

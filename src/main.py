@@ -3,6 +3,7 @@ import argparse
 import numpy as np
 import beat_track as bt
 import clap as cp
+import descriptor_anchor_mapper as dam
 import utils
 import logger_config as logger
 from pathlib import Path
@@ -75,12 +76,22 @@ def main():
     parser.add_argument(
         "--use-llm",
         action="store_true",
-        help="Apply cached llm_weights.json from the current cache/json directory",
+        help="Apply llm_weights.json from the current generated json directory",
     )
     parser.add_argument(
         "--prepare-only",
         action="store_true",
-        help="Generate cacheable analysis JSON and stop before clap_weights",
+        help="Generate reusable analysis JSON and stop before clap_weights",
+    )
+    parser.add_argument(
+        "--descriptor-anchors",
+        action="store_true",
+        help="Use descriptor-anchor CLAP mapping instead of raw mood-anchor mapping",
+    )
+    parser.add_argument(
+        "--anchor-config",
+        default="json/descriptor_anchor_config.json",
+        help="Descriptor anchor config JSON path",
     )
     args = parser.parse_args()
     audio = resolve_audio_path(args.audio)
@@ -105,6 +116,24 @@ def main():
         utils.check_environment()
         clap = cp.Clap()
         clap.retrieve_info()
+
+    if args.descriptor_anchors:
+        if args.use_llm:
+            logger.log_warning(
+                "--use-llm label variations are ignored by --descriptor-anchors. "
+                "Descriptor anchors use their own LLM expansion/fallback path."
+            )
+
+        logger.log_info("Building descriptor-anchor CLAP weights")
+        clap_weights, descriptor_results, anchor_map = dam.build_descriptor_outputs(
+            clap=clap,
+            audio=audio,
+            anchor_config_path=args.anchor_config,
+        )
+        utils.save_as_json("descriptor_anchor_map", anchor_map)
+        utils.save_as_json("descriptor_clap_results", descriptor_results)
+        utils.save_as_json("clap_weights", clap_weights)
+        return [segment["weights"] for segment in clap_weights]
 
     llm_segments = None
     if args.use_llm:
