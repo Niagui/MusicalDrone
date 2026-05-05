@@ -182,12 +182,16 @@ pip install -r requirements-dev.txt
 The trajectory generator also requires a C++17 compiler and OSQP. The repository contains OSQP source under `visuals/osqp/osqp`; if it has not been built on your machine, build it before running `make trajectories`:
 
 ```bash
-cd visuals/osqp/osqp
-mkdir -p build
-cd build
+cd visuals
+cd osqp
+git clone --recurse-submodules https://github.com/osqp/osqp.git
+mkdir -p build && cd build
+
 cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DOSQP_BUILD_TESTS=OFF
 cmake --build . -j
 ```
+Then make a copy of the osqp_configure.h file here: https://github.com/Gepetto/quadruped-reactive-walking/blob/main/include/osqp_folder/include/osqp_configure.h
+and add it to visuals/osqp/osqp/include/public
 
 Then compile the trajectory generator:
 
