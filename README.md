@@ -179,6 +179,7 @@ pip install -r requirements.txt
 pip install -r requirements-dev.txt
 ```
 
+## OSQP
 The trajectory generator also requires a C++17 compiler and OSQP. The repository contains OSQP source under `visuals/osqp/osqp`; if it has not been built on your machine, build it before running `make trajectories`:
 
 ```bash
