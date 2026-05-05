@@ -20,6 +20,7 @@
 #include <string>
 #include <iostream>
 #include <filesystem>
+#include <cctype>
 #include <osqp.h>
 #include "config.h" 
 
@@ -322,6 +323,17 @@ void EnsurePhrasePlanLoaded()
 {
     if (!gUsePhraseAttractor || gPhrasePlanLoaded || gPhrasePlanAttempted) return;
     gPhrasePlanAttempted = true;
+
+    if (const char* use_phrase = std::getenv("DRONE_USE_PHRASE_PLAN"); use_phrase && *use_phrase) {
+        std::string value(use_phrase);
+        std::transform(value.begin(), value.end(), value.begin(),
+                       [](unsigned char c) { return (char)std::tolower(c); });
+        if (value == "0" || value == "false" || value == "no" || value == "off") {
+            std::cerr << "Phrase plan disabled by DRONE_USE_PHRASE_PLAN="
+                      << use_phrase << ", using fixed targets.\n";
+            return;
+        }
+    }
 
     auto phrase_path = find_json_file("phrase_plan.json");
     if (phrase_path.empty()) {

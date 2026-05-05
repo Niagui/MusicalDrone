@@ -176,6 +176,8 @@ int CBFSolver::BuildConstraints(
         row++;
 
 
+#if 0
+        // XY overlap-avoidance CBF disabled.
         //keep them separated horizontally
         const float r_xy = cfg.safety_radius * 1.1f;
         const float dx = d.x;
@@ -226,6 +228,7 @@ int CBFSolver::BuildConstraints(
                 row++;
             }
         }
+#endif
     }
     
     // Velocity limits

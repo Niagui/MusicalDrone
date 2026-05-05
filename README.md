@@ -8,6 +8,15 @@ Drone choreography for music-based performance is usually time-consuming to auth
 
 The current system analyzes music in beat-aligned segments, classifies each segment against affective audio labels, maps the resulting weights onto swarm-control parameters, and generates trajectory CSV output for visualization or Crazyflie-based execution. Optional language-model components add a compact phrase-level plan that can steer a shared attractor while leaving low-level trajectory generation and safety filtering to the robotics stack.
 
+## How to test
+
+0. make sure you have all the dependencies by doing ```pip install requirements.txt```
+1. put your song in mp3 form into /audio
+2. put your llm key into .env
+3. ```./pipeline.sh --audio SONGNAME.mp3 --output trajectories.csv --llm --phrase-plan```
+4. ```make trajectories -C visuals```
+5. ```DRONE_JSON_DIR=data/SONGNAME.mp3/json ./visuals/traj > data/SONGNAME.mp3/trajectory.csv```
+
 ![Pipeline diagram showing audio input, CLAP emotional analysis, optional LLM variation generation, emotion-to-boid parameter mapping, trajectory planning, CBF safety layers, and flight simulation](demo/pipeline.png)
 *Figure: the system architecture starts with audio processing, uses CLAP to estimate segment-level musical affect, optionally expands labels with an LLM variation generator, maps emotion weights into boids-control parameters, and sends the result through a trajectory planner. The generated trajectory uses planner-level CBF in the C++ simulation path; hardware playback through `monitor_CBF.py` adds a separate real-time CBF layer.*
 

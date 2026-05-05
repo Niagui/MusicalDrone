@@ -9,9 +9,10 @@ USE_LLM=0
 RUN_EVALUATION=1
 DESCRIPTOR_ANCHORS=0
 ANCHOR_CONFIG="json/descriptor_anchor_config.json"
+USE_PHRASE_PLAN=0
 
 usage() {
-    echo "Usage: $0 [--output output.csv] [--audio song.mp3] [--cache-root data] [--llm] [--descriptor-anchors] [--anchor-config config.json] [--no-eval]"
+    echo "Usage: $0 [--output output.csv] [--audio song.mp3] [--cache-root data] [--llm] [--descriptor-anchors] [--anchor-config config.json] [--phrase-plan] [--no-phrase-plan] [--no-eval]"
 }
 
 while [[ $# -gt 0 ]]; do
@@ -30,6 +31,7 @@ while [[ $# -gt 0 ]]; do
             ;;
         --llm)
             USE_LLM=1
+            USE_PHRASE_PLAN=1
             shift
             ;;
         --descriptor-anchors)
@@ -39,6 +41,14 @@ while [[ $# -gt 0 ]]; do
         --anchor-config)
             ANCHOR_CONFIG="$2"
             shift 2
+            ;;
+        --phrase-plan)
+            USE_PHRASE_PLAN=1
+            shift
+            ;;
+        --no-phrase-plan)
+            USE_PHRASE_PLAN=0
+            shift
             ;;
         --no-eval|--no-evaluation)
             RUN_EVALUATION=0
@@ -69,7 +79,7 @@ mkdir -p "$OUTPUT_DIR"
 echo "[data] Writing audio artifacts to $CACHE_DIR"
 
 if [[ "$DESCRIPTOR_ANCHORS" -eq 1 ]]; then
-    if [[ "$USE_LLM" -eq 1 ]]; then
+    if [[ "$USE_PHRASE_PLAN" -eq 1 ]]; then
         if [[ "$RUN_EVALUATION" -eq 1 ]]; then
             TOTAL_STEPS=6
         else
@@ -108,9 +118,17 @@ if [[ "$DESCRIPTOR_ANCHORS" -eq 1 ]]; then
     fi
 elif [[ "$USE_LLM" -eq 1 ]]; then
     if [[ "$RUN_EVALUATION" -eq 1 ]]; then
-        TOTAL_STEPS=7
+        if [[ "$USE_PHRASE_PLAN" -eq 1 ]]; then
+            TOTAL_STEPS=7
+        else
+            TOTAL_STEPS=6
+        fi
     else
-        TOTAL_STEPS=6
+        if [[ "$USE_PHRASE_PLAN" -eq 1 ]]; then
+            TOTAL_STEPS=6
+        else
+            TOTAL_STEPS=5
+        fi
     fi
     echo "[1/$TOTAL_STEPS] Preparing generated analysis JSON..."
     DRONE_JSON_DIR="$JSON_CACHE_DIR" python3 src/main.py --audio "$AUDIO_INPUT" --prepare-only
@@ -118,15 +136,24 @@ elif [[ "$USE_LLM" -eq 1 ]]; then
     echo "[2/$TOTAL_STEPS] Generating LLM label variations..."
     DRONE_JSON_DIR="$JSON_CACHE_DIR" python3 src/label_variations_generator.py
 
-    echo "[3/$TOTAL_STEPS] Generating phrase plan..."
-    DRONE_JSON_DIR="$JSON_CACHE_DIR" python3 src/phrase_generator.py
+    if [[ "$USE_PHRASE_PLAN" -eq 1 ]]; then
+        echo "[3/$TOTAL_STEPS] Generating phrase plan..."
+        DRONE_JSON_DIR="$JSON_CACHE_DIR" python3 src/phrase_generator.py
 
-    echo "[4/$TOTAL_STEPS] Building CLAP weights with generated LLM outputs..."
-    DRONE_JSON_DIR="$JSON_CACHE_DIR" python3 src/main.py --audio "$AUDIO_INPUT" --use-llm
+        echo "[4/$TOTAL_STEPS] Building CLAP weights with generated LLM outputs..."
+        DRONE_JSON_DIR="$JSON_CACHE_DIR" python3 src/main.py --audio "$AUDIO_INPUT" --use-llm
 
-    COMPILE_STEP=5
-    RUN_STEP=6
-    EVALUATION_STEP=7
+        COMPILE_STEP=5
+        RUN_STEP=6
+        EVALUATION_STEP=7
+    else
+        echo "[3/$TOTAL_STEPS] Building CLAP weights with generated LLM outputs..."
+        DRONE_JSON_DIR="$JSON_CACHE_DIR" python3 src/main.py --audio "$AUDIO_INPUT" --use-llm
+
+        COMPILE_STEP=4
+        RUN_STEP=5
+        EVALUATION_STEP=6
+    fi
 else
     if [[ "$RUN_EVALUATION" -eq 1 ]]; then
         TOTAL_STEPS=4
@@ -145,7 +172,7 @@ echo "[$COMPILE_STEP/$TOTAL_STEPS] Compiling Waypoint Planner Program..."
 make trajectories -C visuals
 
 echo "[$RUN_STEP/$TOTAL_STEPS] Running Waypoint Planner Program..."
-DRONE_JSON_DIR="$JSON_CACHE_DIR" ./visuals/traj > "$CACHED_TRAJECTORY"
+DRONE_JSON_DIR="$JSON_CACHE_DIR" DRONE_USE_PHRASE_PLAN="$USE_PHRASE_PLAN" ./visuals/traj > "$CACHED_TRAJECTORY"
 
 if [[ "$OUTPUT_CSV" != "$CACHED_TRAJECTORY" ]]; then
     cp "$CACHED_TRAJECTORY" "$OUTPUT_CSV"

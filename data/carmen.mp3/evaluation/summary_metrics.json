@@ -15,16 +15,16 @@
   ],
   "condition_summary": {
     "carmen.mp3": {
-      "expressive_range_mean_feature_variance": 1.0,
-      "mean_pairwise_segment_distance": 4.716062299211536,
-      "responsiveness_transition_cost": 4.1570570837633865,
+      "expressive_range_mean_feature_variance": 0.9999999999999999,
+      "mean_pairwise_segment_distance": 4.795759104224437,
+      "responsiveness_transition_cost": 4.083160087189304,
       "phrase_within_group_variance": 0.0,
-      "mode_switches": 24,
+      "mode_switches": 25,
       "safety": {
-        "min_pairwise_dist": 0.40919126334759404,
-        "min_boundary_margin": -0.24629999999999996,
-        "max_speed": 2.480620297425626,
-        "max_accel": 3.1446359310708414,
+        "min_pairwise_dist": 0.4989642672576866,
+        "min_boundary_margin": -0.3188,
+        "max_speed": 2.353411330388294,
+        "max_accel": 3.342263165001768,
         "segments": 33,
         "duration_s": 131.399,
         "drone_count": 5

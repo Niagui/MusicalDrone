@@ -33,8 +33,13 @@
 #include <vector>
 #include <algorithm>
 #include <cstdio>
+#include <cstdlib>
+#include <iomanip>
 #include <iostream>
 #include <filesystem>
+#include <fstream>
+#include <set>
+#include <sstream>
 #include <string>
 
 #include <thread>
@@ -44,6 +49,9 @@
 #include "miniaudio.h"
 
 #include "config.h" 
+#include "json.hpp"
+
+using json = nlohmann::json;
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
@@ -108,10 +116,34 @@ static float gAudioDuration = 0.0f;    // Total audio length in seconds
 static const char* kDefaultAudioFile = "testSong.mp3";
 static std::string gAudioInputPath = kDefaultAudioFile;
 
+struct WaypointSample {
+    float t = 0.0f;
+    Vec3 p{0.0f, 0.0f, 0.0f};
+};
+
+static bool gUseWaypointPlayback = true;
+static bool gTrajectoryLoaded = false;
+static std::string gTrajectoryInputPath = "trajectories.csv";
+static std::filesystem::path gResolvedTrajectoryPath;
+static std::vector<std::vector<WaypointSample>> gWaypointTracks;
+static float gWaypointDuration = 0.0f;
+
+struct EmotionLogSegment {
+    float start = 0.0f;
+    float end = 0.0f;
+    std::vector<float> weights;
+};
+
+static std::vector<std::string> gEmotionLogLabels;
+static std::vector<EmotionLogSegment> gEmotionLogSegments;
+static bool gEmotionLogLoaded = false;
+static int gLastEmotionLogIndex = -1;
+
 
 //collision prints
 static int   gFrameIndex = 0;
 static float gLastCollisionPrintTime = -1e9f;
+static std::set<std::pair<int, int>> gActiveCollisionPairs;
 
 
 static std::filesystem::path ResolveAudioPath(const std::string& filename)
@@ -145,11 +177,77 @@ static std::filesystem::path ResolveAudioPath(const std::string& filename)
     return (fs::current_path() / input).lexically_normal();
 }
 
+static std::filesystem::path ResolveTrajectoryPath(const std::string& filename)
+{
+    namespace fs = std::filesystem;
+
+    fs::path input(filename);
+    std::vector<fs::path> candidates;
+
+    if (input.is_absolute()) {
+        candidates.push_back(input);
+    } else {
+        fs::path cwd = fs::current_path();
+        candidates.push_back(cwd / input);
+        candidates.push_back(cwd.parent_path() / input);
+    }
+
+    std::error_code ec;
+    for (const fs::path& candidate : candidates) {
+        if (fs::exists(candidate, ec)) {
+            return candidate.lexically_normal();
+        }
+        ec.clear();
+    }
+
+    if (input.is_absolute()) {
+        return input.lexically_normal();
+    }
+
+    return (fs::current_path() / input).lexically_normal();
+}
+
+static std::filesystem::path ResolveJsonPath(const std::string& filename)
+{
+    namespace fs = std::filesystem;
+
+    fs::path cwd = fs::current_path();
+    std::vector<fs::path> candidates;
+
+    if (!gResolvedTrajectoryPath.empty()) {
+        candidates.push_back(gResolvedTrajectoryPath.parent_path() / "json" / filename);
+    }
+
+    if (const char* env_json_dir = std::getenv("DRONE_JSON_DIR"); env_json_dir && *env_json_dir) {
+        fs::path env_path(env_json_dir);
+        candidates.push_back(env_path / filename);
+        if (env_path.filename() != "json") {
+            candidates.push_back(env_path / "json" / filename);
+        }
+    }
+
+    candidates.push_back(cwd / "json" / filename);
+    candidates.push_back(cwd.parent_path() / "json" / filename);
+    candidates.push_back(cwd / filename);
+
+    std::error_code ec;
+    for (const fs::path& candidate : candidates) {
+        if (fs::exists(candidate, ec)) {
+            return candidate.lexically_normal();
+        }
+        ec.clear();
+    }
+
+    return {};
+}
+
 static void PrintUsage(const char* exeName)
 {
-    std::cout << "Usage: " << exeName << " [song-path]\n";
+    std::cout << "Usage: " << exeName << " [song-path] [--trajectory path/to/trajectory.csv]\n";
     std::cout << "   or: " << exeName << " --song <song-path>\n";
+    std::cout << "   or: " << exeName << " --live-boids\n";
     std::cout << "Example: " << exeName << " ../audio/testSong.mp3\n";
+    std::cout << "Example: " << exeName << " --song sad.mp3 --trajectory ../data/sad.mp3/trajectory.csv\n";
 }
 
 static void ParseCommandLine(int* argc, char** argv)
@@ -160,6 +258,8 @@ static void ParseCommandLine(int* argc, char** argv)
 
     bool audioPathSet = false;
     const std::string songPrefix = "--song=";
+    const std::string trajectoryPrefix = "--trajectory=";
+    const std::string waypointsPrefix = "--waypoints=";
 
     for (int i = 1; i < *argc; ++i) {
         std::string arg = argv[i];
@@ -187,6 +287,35 @@ static void ParseCommandLine(int* argc, char** argv)
             continue;
         }
 
+        if (arg == "--trajectory" || arg == "--waypoints" || arg == "-t") {
+            if (i + 1 >= *argc) {
+                std::cerr << "Missing value for " << arg << "\n";
+                PrintUsage(argv[0]);
+                std::exit(1);
+            }
+
+            gTrajectoryInputPath = argv[++i];
+            gUseWaypointPlayback = true;
+            continue;
+        }
+
+        if (arg.rfind(trajectoryPrefix, 0) == 0) {
+            gTrajectoryInputPath = arg.substr(trajectoryPrefix.size());
+            gUseWaypointPlayback = true;
+            continue;
+        }
+
+        if (arg.rfind(waypointsPrefix, 0) == 0) {
+            gTrajectoryInputPath = arg.substr(waypointsPrefix.size());
+            gUseWaypointPlayback = true;
+            continue;
+        }
+
+        if (arg == "--live-boids") {
+            gUseWaypointPlayback = false;
+            continue;
+        }
+
         if (!audioPathSet && !arg.empty() && arg[0] != '-') {
             gAudioInputPath = arg;
             audioPathSet = true;
@@ -201,6 +330,252 @@ static void ParseCommandLine(int* argc, char** argv)
         argv[i] = filteredArgs[i];
     }
     *argc = static_cast<int>(filteredArgs.size()) - 1;
+}
+
+static std::vector<std::string> SplitCsvLine(const std::string& line)
+{
+    std::vector<std::string> cells;
+    std::stringstream ss(line);
+    std::string cell;
+    while (std::getline(ss, cell, ',')) {
+        cells.push_back(cell);
+    }
+    return cells;
+}
+
+static bool ParseWaypointRow(const std::string& line, int& droneId, WaypointSample& sample)
+{
+    std::vector<std::string> cells = SplitCsvLine(line);
+    if (cells.size() < 5) return false;
+
+    try {
+        droneId = std::stoi(cells[0]);
+        sample.t = std::stof(cells[1]);
+        sample.p = {std::stof(cells[2]), std::stof(cells[3]), std::stof(cells[4])};
+    } catch (...) {
+        return false;
+    }
+
+    return droneId >= 0;
+}
+
+static bool LoadWaypointTrajectory(const std::string& filename)
+{
+    namespace fs = std::filesystem;
+
+    gResolvedTrajectoryPath = ResolveTrajectoryPath(filename);
+    std::ifstream f(gResolvedTrajectoryPath);
+    if (!f) {
+        std::cerr << "WARNING: Could not open trajectory file "
+                  << gResolvedTrajectoryPath.string()
+                  << ". Falling back to live boids.\n";
+        gTrajectoryLoaded = false;
+        return false;
+    }
+
+    std::vector<std::vector<WaypointSample>> tracks;
+    std::string line;
+    int rows = 0;
+    int maxDroneId = -1;
+    while (std::getline(f, line)) {
+        if (line.empty()) continue;
+
+        int droneId = -1;
+        WaypointSample sample;
+        if (!ParseWaypointRow(line, droneId, sample)) {
+            continue;
+        }
+
+        if (droneId >= (int)tracks.size()) {
+            tracks.resize(droneId + 1);
+        }
+        tracks[droneId].push_back(sample);
+        maxDroneId = std::max(maxDroneId, droneId);
+        rows++;
+    }
+
+    if (rows == 0 || maxDroneId < 0) {
+        std::cerr << "WARNING: No waypoint rows found in "
+                  << gResolvedTrajectoryPath.string()
+                  << ". Falling back to live boids.\n";
+        gTrajectoryLoaded = false;
+        return false;
+    }
+
+    gWaypointDuration = 0.0f;
+    for (std::vector<WaypointSample>& track : tracks) {
+        std::sort(track.begin(), track.end(), [](const WaypointSample& a, const WaypointSample& b) {
+            return a.t < b.t;
+        });
+        if (!track.empty()) {
+            gWaypointDuration = std::max(gWaypointDuration, track.back().t);
+        }
+    }
+
+    gWaypointTracks = std::move(tracks);
+    gDroneCount = (int)gWaypointTracks.size();
+    gTrajectoryLoaded = true;
+
+    std::cout << "Loaded waypoint trajectory: " << gResolvedTrajectoryPath.string() << "\n";
+    std::cout << "  drones: " << gDroneCount << "  rows: " << rows
+              << "  duration: " << gWaypointDuration << "s\n";
+    return true;
+}
+
+static Vec3 SampleWaypointTrack(const std::vector<WaypointSample>& track, float t)
+{
+    if (track.empty()) return {0.0f, 0.0f, gAltitude};
+    if (t <= track.front().t) return track.front().p;
+    if (t >= track.back().t) return track.back().p;
+
+    auto upper = std::lower_bound(
+        track.begin(),
+        track.end(),
+        t,
+        [](const WaypointSample& sample, float value) {
+            return sample.t < value;
+        }
+    );
+
+    if (upper == track.begin()) return upper->p;
+    const WaypointSample& b = *upper;
+    const WaypointSample& a = *(upper - 1);
+    float span = std::max(1e-5f, b.t - a.t);
+    float u = std::max(0.0f, std::min(1.0f, (t - a.t) / span));
+    return {
+        a.p.x + (b.p.x - a.p.x) * u,
+        a.p.y + (b.p.y - a.p.y) * u,
+        a.p.z + (b.p.z - a.p.z) * u
+    };
+}
+
+static void ApplyWaypointPlayback(float t)
+{
+    if (!gTrajectoryLoaded) return;
+
+    gPos.resize(gWaypointTracks.size());
+    for (size_t i = 0; i < gWaypointTracks.size(); ++i) {
+        gPos[i] = SampleWaypointTrack(gWaypointTracks[i], t);
+    }
+}
+
+static void LoadEmotionLogData()
+{
+    gEmotionLogLabels = {"happy", "sad", "sleepy", "brave", "grumpy", "scared", "shy"};
+    gEmotionLogSegments.clear();
+    gEmotionLogLoaded = false;
+    gLastEmotionLogIndex = -1;
+
+    std::filesystem::path labelsPath = ResolveJsonPath("anchor_labels.json");
+    if (!labelsPath.empty()) {
+        try {
+            std::ifstream labelsFile(labelsPath);
+            json labelsJson;
+            labelsFile >> labelsJson;
+            if (labelsJson.is_array()) {
+                std::vector<std::string> labels;
+                for (const auto& item : labelsJson) {
+                    if (item.is_string()) {
+                        labels.push_back(item.get<std::string>());
+                    }
+                }
+                if (!labels.empty()) {
+                    gEmotionLogLabels = std::move(labels);
+                }
+            }
+        } catch (const std::exception& err) {
+            std::cerr << "[EMOTION] Could not load labels from "
+                      << labelsPath.string() << ": " << err.what() << "\n";
+        }
+    }
+
+    std::filesystem::path weightsPath = ResolveJsonPath("clap_weights.json");
+    if (weightsPath.empty()) {
+        std::cerr << "[EMOTION] Could not find clap_weights.json; emotion logging disabled.\n";
+        return;
+    }
+
+    try {
+        std::ifstream weightsFile(weightsPath);
+        json weightsJson;
+        weightsFile >> weightsJson;
+        if (!weightsJson.is_array()) {
+            std::cerr << "[EMOTION] clap_weights.json is not an array; emotion logging disabled.\n";
+            return;
+        }
+
+        for (const auto& item : weightsJson) {
+            if (!item.is_object() || !item.contains("weights") || !item["weights"].is_array()) {
+                continue;
+            }
+
+            EmotionLogSegment segment;
+            segment.start = item.value("start", 0.0f);
+            segment.end = item.value("end", segment.start);
+            for (const auto& value : item["weights"]) {
+                if (value.is_number()) {
+                    segment.weights.push_back(value.get<float>());
+                }
+            }
+
+            if (!segment.weights.empty()) {
+                gEmotionLogSegments.push_back(segment);
+            }
+        }
+    } catch (const std::exception& err) {
+        std::cerr << "[EMOTION] Could not load weights from "
+                  << weightsPath.string() << ": " << err.what() << "\n";
+        return;
+    }
+
+    std::sort(gEmotionLogSegments.begin(), gEmotionLogSegments.end(),
+              [](const EmotionLogSegment& a, const EmotionLogSegment& b) {
+                  return a.start < b.start;
+              });
+
+    gEmotionLogLoaded = !gEmotionLogSegments.empty();
+    if (gEmotionLogLoaded) {
+        std::cout << "[EMOTION] Loaded " << gEmotionLogSegments.size()
+                  << " segments from " << weightsPath.string() << "\n";
+    } else {
+        std::cerr << "[EMOTION] No usable segments in "
+                  << weightsPath.string() << "; emotion logging disabled.\n";
+    }
+}
+
+static void LogEmotionForTime(float t)
+{
+    if (!gEmotionLogLoaded) return;
+
+    int index = -1;
+    for (int i = 0; i < (int)gEmotionLogSegments.size(); ++i) {
+        const EmotionLogSegment& segment = gEmotionLogSegments[i];
+        if (t >= segment.start && t < segment.end) {
+            index = i;
+            break;
+        }
+    }
+
+    if (index < 0 && t >= gEmotionLogSegments.back().end) {
+        index = (int)gEmotionLogSegments.size() - 1;
+    }
+
+    if (index < 0 || index == gLastEmotionLogIndex) return;
+    gLastEmotionLogIndex = index;
+
+    const EmotionLogSegment& segment = gEmotionLogSegments[index];
+    std::cout << std::fixed << std::setprecision(3)
+              << "[EMOTION] t=" << t
+              << " segment=" << segment.start << "-" << segment.end
+              << " weights:";
+
+    for (size_t i = 0; i < segment.weights.size(); ++i) {
+        const std::string label = (i < gEmotionLogLabels.size())
+            ? gEmotionLogLabels[i]
+            : ("w" + std::to_string(i));
+        std::cout << " " << label << "=" << segment.weights[i];
+    }
+    std::cout << "\n";
 }
 
 //music helper functions
@@ -486,46 +861,38 @@ static void UpdateFollowSlots(float dt) {
 // collision check: if collide then print smth
 static void CheckCollisions(const std::vector<Vec3>& pos, float nowSimTime)
 {
-    const float r = DRONE_RADIUS;
-    const float touch2 = 2*r * 2* r + 0.05;
+    const float collisionDistance = 2.0f * DRONE_RADIUS;
+    const float collisionDistance2 = collisionDistance * collisionDistance;
 
     const int n = (int)pos.size();
     if (n < 2) return;
 
-    //check every 5 frames
-    if ((gFrameIndex % 5) != 0) return;
+    std::set<std::pair<int, int>> currentCollisions;
 
-    const float printCooldown = 0.20f; //0.2 sec
-    if (nowSimTime - gLastCollisionPrintTime < printCooldown) return;
-
-    // For big swarms, don't do full O(n^2) every time.
-    // Use a stride to reduce checks
-    const int stride = std::max(1, n / 200);
-
-    int printed = 0;
-    const int maxPrintPerCall = 5;
-
-    for (int i = 0; i < n && printed < maxPrintPerCall; ++i) {
+    for (int i = 0; i < n; ++i) {
         const Vec3& a = pos[i];
-
-        // sample some j's instead of all and find euclidean distance between drones
-        for (int j = i + 1; j < n && printed < maxPrintPerCall; j += stride) {
+        for (int j = i + 1; j < n; ++j) {
             const Vec3& b = pos[j];
             float dx = a.x - b.x;
             float dy = a.y - b.y;
             float dz = a.z - b.z;
             float d2 = dx*dx + dy*dy + dz*dz;
 
-            //if inner distance < 2r they collided
-            if (d2 <= touch2) {
-                std::cout << "[COLLISION] t=" << nowSimTime
-                          << " drone " << i << " & drone " << j
-                          << " dist=" << std::sqrt(d2) << "\n";
-                ++printed;
-                gLastCollisionPrintTime = nowSimTime;
+            if (d2 <= collisionDistance2) {
+                std::pair<int, int> pair{i, j};
+                currentCollisions.insert(pair);
+                if (gActiveCollisionPairs.find(pair) == gActiveCollisionPairs.end()) {
+                    float dist = std::sqrt(d2);
+                    std::cout << "[COLLISION] t=" << nowSimTime
+                              << " drone " << i << " & drone " << j
+                              << " dist=" << dist
+                              << " threshold=" << collisionDistance << "\n";
+                }
             }
         }
     }
+
+    gActiveCollisionPairs = std::move(currentCollisions);
 }
 
 
@@ -622,7 +989,9 @@ static void Display(){
     DrawBoundsBox();
 
     // Choose positioning for either boids or example formations
-    const std::vector<Vec3>& positions = gUseBoids ? GetBoidPositions() : gPos;
+    const std::vector<Vec3>& positions =
+        (gUseWaypointPlayback && gTrajectoryLoaded) ? gPos :
+        (gUseBoids ? GetBoidPositions() : gPos);
 
     // draw drones and color by index gradient
     for (int i=0; i<gDroneCount; ++i){
@@ -647,7 +1016,15 @@ static void Display(){
     const char* state = gPlaying ? ">" : "||";  // << use string not multi-char '||'
     char buf[256];
 
-    if (gUseBoids){
+    if (gUseWaypointPlayback && gTrajectoryLoaded) {
+        std::snprintf(buf, sizeof(buf),
+            "waypoint t: %.2f / %.2f s", gSimTime, gWaypointDuration);
+        DoRasterString(0, 0.f, buf);
+
+        std::snprintf(buf, sizeof(buf),
+            "trajectory drones: %d", gDroneCount);
+        DoRasterString(0, -0.5f, buf);
+    } else if (gUseBoids){
         const BoidParams& P = GetBoidParams();
         const auto& w      = GetLastWeights();
         
@@ -718,26 +1095,32 @@ static void Idle(){
     if (dt < 0.0f) dt = 0.0f;
     if (dt > 0.1f) dt = 0.1f;
 
-    // Audio driven time sync
-    // 1) Advance simulation time if playing (no wall clock)
     if (gPlaying) {
         gSimTime += dt * gSpeed;  // you can change gSpeed to scrub faster/slower
     }
-    SetSimTime(gSimTime);
-    // 2) Update targets for this time
-    ResampleSlots();
 
-    // 3) Advance positions - ONLY WHEN PLAYING
-    if (gPlaying) {
-        if (gUseBoids) {
-            UpdateBoids(dt * gSpeed, gSlots);
-        } else {
-            UpdateFollowSlots(dt * gSpeed);
+    if (gUseWaypointPlayback && gTrajectoryLoaded) {
+        ApplyWaypointPlayback(gSimTime);
+    } else {
+        SetSimTime(gSimTime);
+        ResampleSlots();
+
+        // Advance generated positions only when playing.
+        if (gPlaying) {
+            if (gUseBoids) {
+                UpdateBoids(dt * gSpeed, gSlots);
+            } else {
+                UpdateFollowSlots(dt * gSpeed);
+            }
         }
     }
+
     gFrameIndex++;
-    const std::vector<Vec3>& positions = gUseBoids ? GetBoidPositions() : gPos;
+    const std::vector<Vec3>& positions =
+        (gUseWaypointPlayback && gTrajectoryLoaded) ? gPos :
+        (gUseBoids ? GetBoidPositions() : gPos);
     CheckCollisions(positions, gSimTime);
+    LogEmotionForTime(gSimTime);
 
 
     glutPostRedisplay();
@@ -755,6 +1138,11 @@ static void Reshape(int w, int h){
 static void Keyboard(unsigned char key, int, int){
     switch(key){
         case 'b': case 'B':
+            if (gUseWaypointPlayback && gTrajectoryLoaded) {
+                gHudMsg = "Waypoint playback is active";
+                gHudUntil = gSimTime + 1.5f;
+                break;
+            }
             gUseBoids = !gUseBoids;
             if (!gUseBoids) ResetVelocities();
             break;
@@ -868,6 +1256,12 @@ static void Keyboard(unsigned char key, int, int){
                 ResizeArrays();
                 ResampleSlots();
                 InitBoids(gDroneCount);
+                if (gUseWaypointPlayback && gTrajectoryLoaded) {
+                    ApplyWaypointPlayback(0.0f);
+                }
+                gLastEmotionLogIndex = -1;
+                gActiveCollisionPairs.clear();
+                LogEmotionForTime(gSimTime);
                 
                 gHudMsg = "Audio stopped, simulation reset to t=0";
                 gHudUntil = 1.5f;
@@ -910,6 +1304,11 @@ static void Motion(int x, int y){
 int main(int argc, char** argv){
     gDroneCount = cfg.drone_config.num_drones;
     ParseCommandLine(&argc, argv);
+    if (gUseWaypointPlayback && !LoadWaypointTrajectory(gTrajectoryInputPath)) {
+        gUseWaypointPlayback = false;
+    }
+    LoadEmotionLogData();
+
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
     glutInitWindowSize(gWinW, gWinH);
@@ -924,6 +1323,10 @@ int main(int argc, char** argv){
     ResizeArrays();         //allocate gPos/gSlots
     ResampleSlots();        //starting target positions
     InitBoids(gDroneCount); //initlialize boids
+    if (gUseWaypointPlayback && gTrajectoryLoaded) {
+        ApplyWaypointPlayback(0.0f);
+    }
+    LogEmotionForTime(0.0f);
     
 
     glutDisplayFunc(Display);
@@ -937,14 +1340,21 @@ int main(int argc, char** argv){
     std::cout << "   DRONE SWARM VISUALIZER - AUDIO SYNC\n";
     std::cout << "=======================================\n";
     std::cout << "Audio file: " << ResolveAudioPath(gAudioInputPath) << "\n";
+    if (gUseWaypointPlayback && gTrajectoryLoaded) {
+        std::cout << "Waypoint file: " << gResolvedTrajectoryPath << "\n";
+        std::cout << "Playback mode: exported waypoint CSV\n";
+    } else {
+        std::cout << "Playback mode: live boids generation\n";
+    }
     std::cout << "Controls:\n";
     std::cout << "  E = Load emotions + start audio\n";
     std::cout << "  Space = Pause/Resume\n";
     std::cout << "  R = Stop and reset\n";
-    std::cout << "  B = Toggle boids\n";
+    std::cout << "  B = Toggle boids (live mode only)\n";
     std::cout << "  +/- = Change drone count\n";
     std::cout << "  1-4 = Formation shapes\n";
-    std::cout << "CLI: ./drones [song-path] or ./drones --song <song-path>\n";
+    std::cout << "CLI: ./drones [song-path] --trajectory <trajectory.csv>\n";
+    std::cout << "     ./drones --live-boids\n";
     std::cout << "=======================================\n\n";
 
     glutMainLoop();

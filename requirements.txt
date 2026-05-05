@@ -149,3 +149,12 @@ webdataset==1.0.2
 wget==3.2
 wheel==0.45.1
 zipp==3.23.0
+
+# Drone hardware and simulation control
+cflib==1.6.2
+
+# Hardware monitoring visualization
+pygame==2.5.2
+
+# Audio analysis (optional - for valence-arousal extraction)
+essentia==2.1.0
