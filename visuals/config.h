@@ -4,7 +4,7 @@
 
 struct Drone_config
 {
-    int num_drones = 10;
+    int num_drones = 5;
     float init_dist = 0.45;
     // 0.0 = ignore box size for motion, 1.0 = full box-size scaling.
     float box_motion_scale_strength = 1.0;
@@ -15,12 +15,12 @@ struct Drone_config
 
 struct Bound_config
 {
-    float x_min = -5; //-1.1
-    float x_max = 5;  //1.1
-    float y_min = -5; //-1.1
-    float y_max = 5; // 1.1
+    float x_min = -1.1; //-1.1
+    float x_max = 1.1;  //1.1
+    float y_min = -1.1; //-1.1
+    float y_max = 1.1; // 1.1
     float z_min = 0.5; //0.5
-    float z_max = 3; //1.2
+    float z_max = 1.2; //1.2
 };
 
 struct CBF_config
