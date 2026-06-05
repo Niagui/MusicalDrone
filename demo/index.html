@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Drone Choreography Video Gallery</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: #020617;
+      color: #f8fafc;
+      padding: 32px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .header {
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 24px;
+      padding: 28px;
+      margin-bottom: 24px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+    }
+
+    .tag {
+      display: inline-block;
+      color: #67e8f9;
+      background: rgba(8, 145, 178, 0.15);
+      border: 1px solid rgba(103, 232, 249, 0.25);
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 14px;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      font-size: 42px;
+      margin-bottom: 14px;
+    }
+
+    .header p {
+      max-width: 850px;
+      color: #cbd5e1;
+      line-height: 1.6;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+      gap: 24px;
+    }
+
+    .panel {
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 24px;
+      padding: 18px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.28);
+    }
+
+    video {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: black;
+      border-radius: 18px;
+      border: 1px solid #1e293b;
+    }
+
+    .video-info {
+      margin-top: 18px;
+    }
+
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #1e293b;
+      color: #cbd5e1;
+      font-size: 13px;
+    }
+
+    .badge-emotion {
+      background: #e0f2fe;
+      color: #075985;
+    }
+
+    #video-title {
+      font-size: 26px;
+      margin-bottom: 10px;
+    }
+
+    #video-description {
+      color: #cbd5e1;
+      line-height: 1.6;
+    }
+
+    .search-box {
+      width: 100%;
+      padding: 12px 14px;
+      margin-bottom: 16px;
+      border-radius: 14px;
+      border: 1px solid #334155;
+      background: #020617;
+      color: #f8fafc;
+      font-size: 15px;
+      outline: none;
+    }
+
+    .search-box::placeholder {
+      color: #64748b;
+    }
+
+    .library-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .library-header h2 {
+      font-size: 20px;
+    }
+
+    #shown-count {
+      color: #94a3b8;
+      font-size: 14px;
+    }
+
+    .video-list {
+      max-height: 620px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding-right: 4px;
+    }
+
+    .video-card {
+      width: 100%;
+      text-align: left;
+      border: 1px solid #1e293b;
+      background: #020617;
+      color: #f8fafc;
+      padding: 14px;
+      border-radius: 18px;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .video-card:hover {
+      border-color: #22d3ee;
+      background: #1e293b;
+    }
+
+    .video-card.active {
+      border-color: #22d3ee;
+      background: rgba(8, 145, 178, 0.18);
+    }
+
+    .video-card-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .video-card-meta {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+
+    .video-card-description {
+      color: #94a3b8;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .empty-message {
+      color: #94a3b8;
+      background: #020617;
+      border: 1px solid #1e293b;
+      padding: 20px;
+      border-radius: 18px;
+      text-align: center;
+    }
+
+    @media (max-width: 850px) {
+      body {
+        padding: 18px;
+      }
+
+      h1 {
+        font-size: 32px;
+      }
+
+      .layout {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="tag">Emotion-Based Drone Choreography</div>
+      <h1>Emotion-Based Drone Choreography</h1>
+      <p>
+        Browse simulation clips and real Crazyflie flight footage generated from music emotion analysis.
+        Select a video to see how emotion weights translate into swarm movement, safety behavior, and LED expression.
+      </p>
+    </header>
+
+    <main class="layout">
+      <section class="panel">
+        <video id="main-video" controls>
+          <source id="main-video-source" src="carmen_w_audio.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+
+        <div class="video-info">
+          <div class="badges">
+            <span id="video-type" class="badge">Simulation</span>
+            <span id="video-emotion" class="badge badge-emotion">Music-Driven</span>
+            <span id="video-date" class="badge">Spring 2026</span>
+          </div>
+          <h2 id="video-title">Carmen</h2>
+          <p id="video-description">
+            Drone choreography generated from the song Carmen, composed by Georges Bizet.
+          </p>
+        </div>
+      </section>
+
+      <aside class="panel">
+        <input
+          id="search-input"
+          class="search-box"
+          type="text"
+          placeholder="Search videos..."
+        />
+
+        <div class="library-header">
+          <h2>Video Library</h2>
+          <span id="shown-count">5 shown</span>
+        </div>
+
+        <div id="video-list" class="video-list"></div>
+      </aside>
+    </main>
+  </div>
+
+  <script>
+    const videoLibrary = [
+      {
+        id: 1,
+        title: "Carmen",
+        type: "Physical",
+        emotion: "Music-Driven",
+        date: "Spring 2026",
+        src: "carmen_w_audio.mp4",
+        description: "Drone choreography generated from the song Carmen."
+      },
+      {
+        id: 2,
+        title: "Claire de Lune",
+        type: "Physical",
+        emotion: "Music-Driven",
+        date: "Spring 2026",
+        src: "caliredmelune_w_audio.mp4",
+        description: "Drone choreography generated from the song Claire De Lune."
+      },
+      {
+        id: 3,
+        title: "Fuego Español",
+        type: "Physical",
+        emotion: "Music-Driven",
+        date: "Spring 2026",
+        src: "intensespanish_w_audio.mp4",
+        description: "Drone choreography generated from the song Fuego Español."
+      },
+      {
+        id: 4,
+        title: "Old Town Road",
+        type: "Physical",
+        emotion: "Music-Driven",
+        date: "Spring 2026",
+        src: "oltTownRoad.MOV",
+        description: "Drone choreography generated from the song Old Town Road."
+      },
+      {
+        id: 5,
+        title: "Shostakovich",
+        type: "Physical",
+        emotion: "Music-Driven",
+        date: "Spring 2026",
+        src: "shostakovich.MOV",
+        description: "Drone choreography generated from a Shostakovich piece."
+      }
+    ];
+
+    const mainVideo = document.getElementById("main-video");
+    const mainVideoSource = document.getElementById("main-video-source");
+    const videoTitle = document.getElementById("video-title");
+    const videoDescription = document.getElementById("video-description");
+    const videoType = document.getElementById("video-type");
+    const videoEmotion = document.getElementById("video-emotion");
+    const videoDate = document.getElementById("video-date");
+    const videoList = document.getElementById("video-list");
+    const searchInput = document.getElementById("search-input");
+    const shownCount = document.getElementById("shown-count");
+
+    let selectedVideoId = videoLibrary[0].id;
+
+    function selectVideo(video) {
+      selectedVideoId = video.id;
+
+      mainVideoSource.src = video.src;
+      mainVideo.load();
+
+      videoTitle.textContent = video.title;
+      videoDescription.textContent = video.description;
+      videoType.textContent = video.type;
+      videoEmotion.textContent = video.emotion;
+      videoDate.textContent = video.date;
+
+      renderVideoList();
+    }
+
+    function renderVideoList() {
+      const searchTerm = searchInput.value.toLowerCase();
+
+      const filteredVideos = videoLibrary.filter((video) => {
+        const searchableText = `${video.title} ${video.type} ${video.emotion} ${video.description}`.toLowerCase();
+        return searchableText.includes(searchTerm);
+      });
+
+      shownCount.textContent = `${filteredVideos.length} shown`;
+      videoList.innerHTML = "";
+
+      if (filteredVideos.length === 0) {
+        const emptyMessage = document.createElement("div");
+        emptyMessage.className = "empty-message";
+        emptyMessage.textContent = "No videos found. Try a different search term.";
+        videoList.appendChild(emptyMessage);
+        return;
+      }
+
+      filteredVideos.forEach((video) => {
+        const card = document.createElement("button");
+        card.className = `video-card ${video.id === selectedVideoId ? "active" : ""}`;
+        card.onclick = () => selectVideo(video);
+
+        card.innerHTML = `
+          <div class="video-card-title">${video.title}</div>
+          <div class="video-card-meta">
+            <span class="badge">${video.type}</span>
+            <span class="badge badge-emotion">${video.emotion}</span>
+          </div>
+          <div class="video-card-description">${video.description}</div>
+        `;
+
+        videoList.appendChild(card);
+      });
+    }
+
+    searchInput.addEventListener("input", renderVideoList);
+
+    renderVideoList();
+  </script>
+</body>
+</html>
